@@ -275,14 +275,13 @@
     .theme-classic .header-content {
       text-align: center;
       z-index: 2;
-      margin-top: 3mm;
+      margin-top: 2mm;
     }
 
     .theme-classic .logo-box {
-      width: auto;
-      max-width: 45mm;
-      height: 36mm;
-      margin: 0 auto 3.5mm auto;
+      width: 48mm;
+      height: 40mm;
+      margin: 0 auto 2.5mm auto;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -411,10 +410,9 @@
     }
 
     .theme-minimal .logo-box {
-      width: auto;
-      max-width: 40mm;
-      height: 34mm;
-      margin: 0 auto 5mm auto;
+      width: 40mm;
+      height: 35mm;
+      margin: 0 auto 4mm auto;
     }
 
     .theme-minimal .main-title {
@@ -644,11 +642,10 @@
 
     /* Common Components inside Cards */
     .dcu-logo {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+      width: 100%;
+      height: 100%;
       display: block;
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
     }
 
     .section-heading {
@@ -733,7 +730,7 @@
       color: #555;
     }
 
-    /* Print Override */
+    /* Print Precision */
     @media print {
       @page {
         size: A4 portrait;
@@ -848,14 +845,54 @@
         <div class="corner corner-bottom-left"></div>
         <div class="corner corner-bottom-right"></div>
 
-        <!-- Official Header with University Logo -->
+        <!-- Official Header with DCU Logo (Embedded Vector) -->
         <div class="header-content">
           <div class="logo-box">
-            <img 
-              src="https://dcu.ac.bd/api/proxy/get-file/202609_brand_8cf37576_d7d9_4d81_b880_febbed456dae_app_logo.png" 
-              alt="Dhaka Central University Logo" 
-              class="dcu-logo"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="dcu-logo" viewBox="0 0 200 170">
+              <!-- Shield Outer Border -->
+              <path d="M 50 25 C 75 18, 125 18, 150 25 L 150 85 C 150 120, 100 142, 100 142 C 100 142, 50 120, 50 85 Z" fill="#ffffff" stroke="#0A2240" stroke-width="3.5"/>
+              
+              <!-- Upper Navy Section -->
+              <path d="M 52 27 C 75 20, 125 20, 148 27 L 148 72 L 52 72 Z" fill="#0A2240"/>
+              
+              <!-- Motto Text -->
+              <path d="M 55 42 Q 100 24 145 42" fill="none" id="mottoArc"/>
+              <text fill="#ffffff" font-size="6.5" font-weight="700" letter-spacing="1">
+                <textPath href="#mottoArc" startOffset="50%" text-anchor="middle">LEARN • CREATE • INSPIRE</textPath>
+              </text>
+
+              <!-- Golden Sun & Rays -->
+              <g stroke="#E5A83B" stroke-width="2" stroke-linecap="round">
+                <line x1="100" y1="55" x2="100" y2="45"/>
+                <line x1="88" y1="58" x2="80" y2="50"/>
+                <line x1="112" y1="58" x2="120" y2="50"/>
+                <line x1="82" y1="65" x2="73" y2="62"/>
+                <line x1="118" y1="65" x2="127" y2="62"/>
+              </g>
+              <path d="M 86 71 A 14 14 0 0 1 114 71 Z" fill="#E5A83B"/>
+
+              <!-- Dividers -->
+              <line x1="52" y1="72" x2="148" y2="72" stroke="#ffffff" stroke-width="2"/>
+              <line x1="100" y1="72" x2="100" y2="138" stroke="#ffffff" stroke-width="2"/>
+
+              <!-- Bottom Left (Maroon) -->
+              <path d="M 52 74 L 99 74 L 99 138 C 99 138, 52 118, 52 85 Z" fill="#7A1821"/>
+              <!-- Book Icon -->
+              <path d="M 64 88 Q 74 84 84 90 L 84 110 Q 74 104 64 108 Z" fill="none" stroke="#ffffff" stroke-width="2"/>
+              <path d="M 84 90 Q 94 84 104 88 L 104 108 Q 94 104 84 110 Z" fill="none" stroke="#ffffff" stroke-width="2"/>
+              <line x1="84" y1="90" x2="84" y2="110" stroke="#ffffff" stroke-width="2"/>
+
+              <!-- Bottom Right (Maroon) -->
+              <path d="M 101 74 L 148 74 L 148 85 C 148 118, 101 138, 101 138 Z" fill="#7A1821"/>
+              <!-- Globe Icon -->
+              <circle cx="125" cy="98" r="11" fill="none" stroke="#ffffff" stroke-width="1.8"/>
+              <ellipse cx="125" cy="98" rx="5" ry="11" fill="none" stroke="#ffffff" stroke-width="1.4"/>
+              <line x1="114" y1="98" x2="136" y2="98" stroke="#ffffff" stroke-width="1.4"/>
+              
+              <!-- Ribbon Banner -->
+              <path d="M 28 130 L 45 120 L 155 120 L 172 130 L 164 143 L 150 137 L 50 137 L 36 143 Z" fill="#0A2240" stroke="#7A1821" stroke-width="1.5"/>
+              <text x="100" y="131" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle" letter-spacing="0.8">DHAKA CENTRAL UNIVERSITY</text>
+            </svg>
           </div>
 
           <div class="header-text-wrap">
@@ -929,7 +966,7 @@
       const DEFAULT_DEPT = "DEPARTMENT OF COMPUTER SCIENCE";
       const DEFAULT_CAMPUS = "MAIN CAMPUS, DHAKA";
 
-      // Template switcher logic
+      // Template Switcher
       const templateSelector = document.getElementById("templateSelector");
       const coverTemplate = document.getElementById("cover-template");
 
