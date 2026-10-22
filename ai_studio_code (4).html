@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCU Assignment Cover Page Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background-color: #e9eef3;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #07192f, #0A2240);
+      color: #fff;
+      text-align: center;
+      padding: 24px 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      color: #E5A83B;
+      letter-spacing: 1.5px;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: #d1dcec;
+      text-transform: uppercase;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 35px;
+      padding: 25px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Input Form Styles */
+    .form-section {
+      flex: 1;
+      min-width: 320px;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(10,34,64,0.08);
+      height: fit-content;
+    }
+
+    .form-section h2 {
+      color: #0A2240;
+      font-size: 20px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid #E5A83B;
+      padding-bottom: 8px;
+    }
+
+    .form-section h3 {
+      color: #0A2240;
+      font-size: 16px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+
+    .form-section hr {
+      margin: 20px 0;
+      border: 0;
+      border-top: 1px dashed #cfd8dc;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #37474f;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 11px 13px;
+      margin-top: 6px;
+      border: 1.5px solid #cfd8dc;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    select {
+      background-color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      color: #0A2240;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #0A2240;
+      box-shadow: 0 0 0 3px rgba(10,34,64,0.1);
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #0A2240, #143560);
+      color: #E5A83B;
+      font-weight: 700;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 25px;
+      cursor: pointer;
+      font-size: 17px;
+      letter-spacing: 0.8px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(10,34,64,0.25);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #12335d, #0A2240);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(10,34,64,0.35);
+    }
+
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    /* Live Preview Section */
+    .preview-section {
+      flex: 1.3;
+      min-width: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .preview-section > h2 {
+      margin-bottom: 15px;
+      color: #0A2240;
+      font-size: 20px;
+    }
+
+    /* Base A4 Sheet */
+    .a4-page {
+      width: 210mm;
+      height: 297mm;
+      background: #ffffff;
+      position: relative;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      overflow: hidden;
+      transform: scale(0.72);
+      transform-origin: top center;
+      margin-bottom: -78mm;
+      transition: all 0.3s ease;
+    }
+
+    /* ===================================================
+       TEMPLATE 1: ROYAL CLASSIC (Default)
+    =================================================== */
+    .theme-classic {
+      padding: 16mm 18mm 14mm 18mm;
+    }
+
+    .theme-classic .top-accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5mm;
+      background: #0A2240;
+    }
+
+    .theme-classic .inner-border {
+      position: absolute;
+      top: 7mm;
+      bottom: 7mm;
+      left: 7mm;
+      right: 7mm;
+      border: 1px solid rgba(229, 168, 59, 0.45);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .theme-classic .corner {
+      position: absolute;
+      width: 0;
+      height: 0;
+      z-index: 1;
+    }
+
+    .theme-classic .corner-top-left {
+      top: 0;
+      left: 0;
+      border-top: 28mm solid #0A2240;
+      border-right: 28mm solid transparent;
+    }
+    .theme-classic .corner-top-left::after {
+      content: '';
+      position: absolute;
+      top: -28mm;
+      left: 0;
+      border-top: 20mm solid #E5A83B;
+      border-right: 20mm solid transparent;
+    }
+
+    .theme-classic .corner-top-right {
+      top: 0;
+      right: 0;
+      border-top: 28mm solid #0A2240;
+      border-left: 28mm solid transparent;
+    }
+    .theme-classic .corner-top-right::after {
+      content: '';
+      position: absolute;
+      top: -28mm;
+      right: 0;
+      border-top: 20mm solid #E5A83B;
+      border-left: 20mm solid transparent;
+    }
+
+    .theme-classic .corner-bottom-left {
+      bottom: 0;
+      left: 0;
+      border-bottom: 28mm solid #0A2240;
+      border-right: 28mm solid transparent;
+    }
+    .theme-classic .corner-bottom-left::after {
+      content: '';
+      position: absolute;
+      bottom: -28mm;
+      left: 0;
+      border-bottom: 20mm solid #E5A83B;
+      border-right: 20mm solid transparent;
+    }
+
+    .theme-classic .corner-bottom-right {
+      bottom: 0;
+      right: 0;
+      border-bottom: 28mm solid #0A2240;
+      border-left: 28mm solid transparent;
+    }
+    .theme-classic .corner-bottom-right::after {
+      content: '';
+      position: absolute;
+      bottom: -28mm;
+      right: 0;
+      border-bottom: 20mm solid #E5A83B;
+      border-left: 20mm solid transparent;
+    }
+
+    .theme-classic .header-content {
+      text-align: center;
+      z-index: 2;
+      margin-top: 3mm;
+    }
+
+    .theme-classic .logo-box {
+      width: auto;
+      max-width: 45mm;
+      height: 36mm;
+      margin: 0 auto 3.5mm auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-classic .main-title {
+      font-family: 'Cinzel', serif;
+      color: #0A2240;
+      font-size: 26pt;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      line-height: 1.15;
+    }
+
+    .theme-classic .sub-title {
+      color: #C88A1A;
+      font-size: 13pt;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-top: 1.5mm;
+    }
+
+    .theme-classic .dept-wrapper {
+      text-align: center;
+      z-index: 2;
+      margin: 3mm 0;
+    }
+
+    .theme-classic .dept-banner {
+      display: inline-block;
+      background: linear-gradient(90deg, #07192f, #0A2240, #07192f);
+      color: #ffffff;
+      padding: 4mm 12mm;
+      border-radius: 30px;
+      font-size: 14pt;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border: 1.5px solid #E5A83B;
+      box-shadow: 0 4px 10px rgba(10,34,64,0.2);
+      max-width: 95%;
+    }
+
+    .theme-classic .doc-container {
+      text-align: center;
+      margin: 2mm 0;
+      z-index: 2;
+      padding: 5mm 8mm;
+      background: rgba(247, 250, 253, 0.9);
+      border-top: 2.5px solid #0A2240;
+      border-bottom: 2.5px solid #0A2240;
+    }
+
+    .theme-classic .doc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 32pt;
+      font-weight: 900;
+      color: #0A2240;
+      letter-spacing: 6px;
+      line-height: 1;
+      margin-bottom: 3.5mm;
+    }
+
+    .theme-classic .topic-label {
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #C88A1A;
+      margin-bottom: 1.5mm;
+      text-transform: uppercase;
+    }
+
+    .theme-classic .topic-title {
+      font-size: 15pt;
+      color: #111;
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: 0.5px;
+    }
+
+    .theme-classic .info-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      z-index: 2;
+      margin-bottom: 8mm;
+      gap: 15px;
+    }
+
+    .theme-classic .info-column {
+      flex: 1;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 6mm 7mm;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .theme-classic .submitted-by {
+      border-top: 4px solid #0A2240;
+    }
+
+    .theme-classic .submitted-to {
+      border-top: 4px solid #C88A1A;
+    }
+
+    /* ===================================================
+       TEMPLATE 2: MODERN MINIMALIST
+    =================================================== */
+    .theme-minimal {
+      padding: 20mm 20mm;
+      border: 8px solid #0A2240;
+    }
+
+    .theme-minimal .top-accent-bar,
+    .theme-minimal .corner,
+    .theme-minimal .inner-border,
+    .theme-minimal .topic-label {
+      display: none !important;
+    }
+
+    .theme-minimal .header-content {
+      text-align: center;
+      margin-top: 4mm;
+    }
+
+    .theme-minimal .logo-box {
+      width: auto;
+      max-width: 40mm;
+      height: 34mm;
+      margin: 0 auto 5mm auto;
+    }
+
+    .theme-minimal .main-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 23pt;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #0A2240;
+    }
+
+    .theme-minimal .sub-title {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #555;
+      letter-spacing: 2px;
+      margin-top: 2mm;
+    }
+
+    .theme-minimal .dept-wrapper {
+      text-align: center;
+      margin: 8mm 0 4mm 0;
+    }
+
+    .theme-minimal .dept-banner {
+      display: inline-block;
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0A2240;
+      border-bottom: 2px solid #0A2240;
+      padding: 2mm 5mm;
+      letter-spacing: 1px;
+    }
+
+    .theme-minimal .doc-container {
+      text-align: center;
+      margin: 10mm 0;
+      padding: 0;
+    }
+
+    .theme-minimal .doc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 34pt;
+      font-weight: 900;
+      color: #0A2240;
+      letter-spacing: 5px;
+      margin-bottom: 4mm;
+    }
+
+    .theme-minimal .topic-title {
+      font-size: 16pt;
+      font-weight: 600;
+      color: #222;
+      max-width: 85%;
+      margin: 0 auto;
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    .theme-minimal .info-grid {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8mm;
+      gap: 30px;
+      border-top: 1px solid #ddd;
+      padding-top: 8mm;
+    }
+
+    .theme-minimal .info-column {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .theme-minimal .section-heading {
+      color: #0A2240 !important;
+      font-size: 13pt;
+      font-weight: 800;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #0A2240;
+      padding-bottom: 2mm;
+      margin-bottom: 4mm;
+    }
+
+    /* ===================================================
+       TEMPLATE 3: CORPORATE EXECUTIVE
+    =================================================== */
+    .theme-executive {
+      padding: 16mm 18mm 14mm 24mm;
+    }
+
+    .theme-executive::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 8mm;
+      background: #0A2240;
+    }
+
+    .theme-executive::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 8mm;
+      bottom: 0;
+      width: 2.5mm;
+      background: #E5A83B;
+    }
+
+    .theme-executive .top-accent-bar,
+    .theme-executive .corner,
+    .theme-executive .inner-border {
+      display: none !important;
+    }
+
+    .theme-executive .header-content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-align: left;
+      border-bottom: 3px solid #0A2240;
+      padding-bottom: 6mm;
+      margin-top: 4mm;
+    }
+
+    .theme-executive .logo-box {
+      width: 38mm;
+      height: 38mm;
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    .theme-executive .header-text-wrap {
+      flex: 1;
+    }
+
+    .theme-executive .main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 24pt;
+      font-weight: 900;
+      color: #0A2240;
+      line-height: 1.1;
+      letter-spacing: 1px;
+    }
+
+    .theme-executive .sub-title {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #C88A1A;
+      letter-spacing: 1.5px;
+      margin-top: 2mm;
+    }
+
+    .theme-executive .dept-wrapper {
+      text-align: left;
+      margin: 5mm 0 3mm 0;
+    }
+
+    .theme-executive .dept-banner {
+      display: inline-block;
+      background: #0A2240;
+      color: #ffffff;
+      font-size: 12pt;
+      font-weight: 700;
+      padding: 2.5mm 7mm;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+
+    .theme-executive .doc-container {
+      text-align: left;
+      margin: 4mm 0;
+      padding: 5mm 6mm;
+      background: #f4f7fb;
+      border-left: 5px solid #0A2240;
+    }
+
+    .theme-executive .doc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 28pt;
+      font-weight: 900;
+      color: #0A2240;
+      letter-spacing: 4px;
+      margin-bottom: 2mm;
+    }
+
+    .theme-executive .topic-label {
+      font-size: 10pt;
+      font-weight: 800;
+      color: #C88A1A;
+      letter-spacing: 1px;
+    }
+
+    .theme-executive .topic-title {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #111;
+      margin-top: 1mm;
+    }
+
+    .theme-executive .info-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 6mm;
+    }
+
+    .theme-executive .info-column {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #dcdfe4;
+      border-radius: 6px;
+      padding: 5mm 6mm;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .theme-executive .submitted-by {
+      border-left: 4px solid #0A2240;
+    }
+
+    .theme-executive .submitted-to {
+      border-left: 4px solid #C88A1A;
+    }
+
+    /* Common Components inside Cards */
+    .dcu-logo {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.12));
+    }
+
+    .section-heading {
+      color: #0A2240;
+      font-size: 14pt;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 4mm;
+      padding-bottom: 2mm;
+      border-bottom: 1.5px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .submitted-to .section-heading {
+      color: #a46d0a;
+    }
+
+    .student-name {
+      font-weight: 800;
+      font-size: 15pt !important;
+      color: #0A2240 !important;
+      margin-bottom: 2.5mm !important;
+    }
+
+    .info-row {
+      font-size: 12pt;
+      color: #333;
+      margin-bottom: 2mm;
+      line-height: 1.45;
+      display: flex;
+    }
+
+    .info-row .label-text {
+      font-weight: 700;
+      color: #444;
+      min-width: 32mm;
+    }
+
+    .info-row .val-text {
+      font-weight: 600;
+      color: #000;
+      flex: 1;
+    }
+
+    .teacher-list {
+      margin-bottom: 4mm;
+    }
+
+    .teacher-item {
+      font-size: 12.5pt;
+      color: #111;
+      margin-bottom: 2mm;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    .teacher-item.lead {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #0A2240;
+      margin-bottom: 2.5mm;
+    }
+
+    .teacher-meta {
+      margin-top: auto;
+      border-top: 1px dashed #dbe2ea;
+      padding-top: 3mm;
+    }
+
+    .teacher-dept {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 1mm;
+    }
+
+    .teacher-college {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #555;
+    }
+
+    /* Print Override */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      
+      html, body {
+        background: #fff;
+        margin: 0;
+        padding: 0;
+      }
+
+      header, .form-section, .preview-section > h2 {
+        display: none !important;
+      }
+
+      .container {
+        padding: 0;
+        margin: 0;
+        max-width: none;
+        display: block;
+      }
+
+      .preview-section {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: block;
+      }
+
+      .a4-page {
+        transform: none !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 296mm !important;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Dhaka Central University</h1>
+    <p>Official Assignment Cover Page Generator</p>
+  </header>
+
+  <main class="container">
+    <!-- Form Section -->
+    <section class="form-section">
+      <h2>তথ্য প্রদান করুন</h2>
+      <form id="coverForm">
+        <label>কভার পেজ টেমপ্লেট নির্বাচন করুন:</label>
+        <select id="templateSelector">
+          <option value="theme-classic">👑 Royal Classic (ডিফল্ট)</option>
+          <option value="theme-minimal">📄 Modern Minimalist (মার্জিত)</option>
+          <option value="theme-executive">💼 Corporate Executive (প্রিমিয়াম)</option>
+        </select>
+
+        <label>ক্যাম্পাসের নাম:</label>
+        <input type="text" id="campus" placeholder="e.g. MAIN CAMPUS">
+
+        <label>ডিপার্টমেন্ট:</label>
+        <input type="text" id="dept" placeholder="e.g. DEPARTMENT OF COMPUTER SCIENCE">
+
+        <label>অ্যাসাইনমেন্টের বিষয় (Topic):</label>
+        <input type="text" id="topic" placeholder="e.g. Introduction to Artificial Intelligence">
+
+        <hr>
+        <h3>Submitted By (শিক্ষার্থী)</h3>
+        <label>শিক্ষার্থীর পূর্ণ নাম:</label>
+        <input type="text" id="studentName" placeholder="e.g. ABDUL KARIM">
+
+        <label>ক্লাস/ডিগ্রি:</label>
+        <input type="text" id="studentClass" placeholder="e.g. BSc Honours 1st Year">
+
+        <label>ক্লাস রোল নম্বর:</label>
+        <input type="text" id="studentRoll" placeholder="e.g. 101">
+
+        <label>অ্যাকাডেমিক সেশন:</label>
+        <input type="text" id="session" placeholder="e.g. 2025-26">
+
+        <label>মোবাইল নম্বর:</label>
+        <input type="text" id="mobile" placeholder="e.g. 01700000000">
+
+        <label>জমা দেওয়ার তারিখ:</label>
+        <input type="text" id="submitDate" placeholder="e.g. 12/02/2026">
+
+        <hr>
+        <h3>Submitted To (শিক্ষক)</h3>
+        <label>শিক্ষকের নাম ও পদবি (প্রতি লাইনে একজন):</label>
+        <textarea id="teacherInfo" rows="4" placeholder="Prof. Dr. X&#10;Assoc. Prof. Y"></textarea>
+
+        <button type="button" onclick="generatePDF()">🖨️ Save as PDF / Print</button>
+      </form>
+    </section>
+
+    <!-- Preview Section -->
+    <section class="preview-section">
+      <h2>লাইভ প্রিভিউ</h2>
+      
+      <div id="cover-template" class="a4-page theme-classic">
+        <div class="top-accent-bar"></div>
+        <div class="inner-border"></div>
+
+        <div class="corner corner-top-left"></div>
+        <div class="corner corner-top-right"></div>
+        <div class="corner corner-bottom-left"></div>
+        <div class="corner corner-bottom-right"></div>
+
+        <!-- Official Header with University Logo -->
+        <div class="header-content">
+          <div class="logo-box">
+            <img 
+              src="https://dcu.ac.bd/api/proxy/get-file/202609_brand_8cf37576_d7d9_4d81_b880_febbed456dae_app_logo.png" 
+              alt="Dhaka Central University Logo" 
+              class="dcu-logo"
+            >
+          </div>
+
+          <div class="header-text-wrap">
+            <h1 class="main-title">DHAKA CENTRAL UNIVERSITY</h1>
+            <p class="sub-title uppercase" id="prev-campus">MAIN CAMPUS, DHAKA</p>
+          </div>
+        </div>
+
+        <!-- Department Banner -->
+        <div class="dept-wrapper">
+          <div class="dept-banner uppercase" id="prev-dept">DEPARTMENT OF COMPUTER SCIENCE</div>
+        </div>
+
+        <!-- Assignment Topic Showcase -->
+        <div class="doc-container">
+          <h2 class="doc-title">ASSIGNMENT</h2>
+          <div class="topic-label">TOPIC</div>
+          <p class="topic-title uppercase" id="prev-topic">INTRODUCTION TO ARTIFICIAL INTELLIGENCE</p>
+        </div>
+
+        <!-- Submitted By & Submitted To Box -->
+        <div class="info-grid">
+          <!-- Student Column -->
+          <div class="info-column submitted-by">
+            <h4 class="section-heading"><span>👤</span> SUBMITTED BY</h4>
+            <p class="student-name uppercase" id="prev-sname">ABDUL KARIM</p>
+            
+            <div class="info-row">
+              <span class="label-text">Class/Degree:</span>
+              <span class="val-text" id="prev-sclass">BSc Honours 1st Year</span>
+            </div>
+            <div class="info-row">
+              <span class="label-text">Class Roll:</span>
+              <span class="val-text" id="prev-sroll">101</span>
+            </div>
+            <div class="info-row">
+              <span class="label-text">Session:</span>
+              <span class="val-text" id="prev-session">2025-26</span>
+            </div>
+            <div class="info-row">
+              <span class="label-text">Mobile No:</span>
+              <span class="val-text" id="prev-mobile">01700000000</span>
+            </div>
+            <div class="info-row">
+              <span class="label-text">Submission Date:</span>
+              <span class="val-text" id="prev-date">12/02/2026</span>
+            </div>
+          </div>
+
+          <!-- Teacher Column -->
+          <div class="info-column submitted-to">
+            <h4 class="section-heading"><span>🎓</span> SUBMITTED TO</h4>
+            <div id="prev-teachers" class="teacher-list">
+              <p class="teacher-item lead">Prof. Dr. X</p>
+              <p class="teacher-item">Associate Professor</p>
+              <p class="teacher-item">Course Instructor</p>
+            </div>
+            
+            <div class="teacher-meta">
+              <p class="teacher-dept uppercase" id="prev-tdept">DEPARTMENT OF COMPUTER SCIENCE</p>
+              <p class="teacher-college uppercase" id="prev-tcampus">Dhaka Central University</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const DEFAULT_DEPT = "DEPARTMENT OF COMPUTER SCIENCE";
+      const DEFAULT_CAMPUS = "MAIN CAMPUS, DHAKA";
+
+      // Template switcher logic
+      const templateSelector = document.getElementById("templateSelector");
+      const coverTemplate = document.getElementById("cover-template");
+
+      if (templateSelector && coverTemplate) {
+        templateSelector.addEventListener("change", (e) => {
+          coverTemplate.className = "a4-page " + e.target.value;
+        });
+      }
+
+      // Input dynamic sync
+      const formInputs = [
+        { inputId: "campus", previewId: "prev-campus", defaultVal: DEFAULT_CAMPUS, isCampus: true },
+        { inputId: "dept", previewId: "prev-dept", defaultVal: DEFAULT_DEPT, isDept: true },
+        { inputId: "topic", previewId: "prev-topic", defaultVal: "INTRODUCTION TO ARTIFICIAL INTELLIGENCE" },
+        { inputId: "studentName", previewId: "prev-sname", defaultVal: "ABDUL KARIM" },
+        { inputId: "studentClass", previewId: "prev-sclass", defaultVal: "BSc Honours 1st Year" },
+        { inputId: "studentRoll", previewId: "prev-sroll", defaultVal: "101" },
+        { inputId: "session", previewId: "prev-session", defaultVal: "2025-26" },
+        { inputId: "mobile", previewId: "prev-mobile", defaultVal: "01700000000" },
+        { inputId: "submitDate", previewId: "prev-date", defaultVal: "12/02/2026" }
+      ];
+
+      formInputs.forEach(item => {
+        const inputElement = document.getElementById(item.inputId);
+        const previewElement = document.getElementById(item.previewId);
+        if (!inputElement || !previewElement) return;
+
+        inputElement.addEventListener("input", (e) => {
+          const val = e.target.value.trim();
+          previewElement.textContent = val !== "" ? val : item.defaultVal;
+
+          if (item.isDept) {
+            const teacherDept = document.getElementById("prev-tdept");
+            if (teacherDept) {
+              teacherDept.textContent = val !== "" ? val : DEFAULT_DEPT;
+            }
+          }
+
+          if (item.isCampus) {
+            const teacherCampus = document.getElementById("prev-tcampus");
+            if (teacherCampus) {
+              teacherCampus.textContent = val !== "" ? "Dhaka Central University, " + val : "Dhaka Central University";
+            }
+          }
+        });
+      });
+
+      // Teacher Information dynamic rendering
+      const teacherInput = document.getElementById("teacherInfo");
+      const teacherPreview = document.getElementById("prev-teachers");
+
+      function renderTeachers(lines) {
+        teacherPreview.textContent = "";
+        lines.forEach((line, index) => {
+          const p = document.createElement("p");
+          p.className = index === 0 ? "teacher-item lead" : "teacher-item";
+          p.textContent = line;
+          teacherPreview.appendChild(p);
+        });
+      }
+
+      if (teacherInput && teacherPreview) {
+        teacherInput.addEventListener("input", (e) => {
+          const lines = e.target.value
+            .split("\n")
+            .map(l => l.trim())
+            .filter(l => l !== "");
+          renderTeachers(lines.length ? lines : ["Prof. Dr. X", "Associate Professor", "Course Instructor"]);
+        });
+      }
+    });
+
+    function generatePDF() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
