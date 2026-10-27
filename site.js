@@ -72,7 +72,10 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.sf .soc{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 8px}' +
     '.sf .soc a.si{width:40px!important;height:40px!important}.sf .soc a.si svg{width:19px;height:19px}' +
     '.sf .soc a.si:hover,.sf .soc a.si:focus-visible{color:#fff!important}' +
-    '.ln{gap:10px!important}';
+    '.ln{gap:10px!important}' +
+    /* হেডার #hdr র‍্যাপারের ভেতরে ছিল বলে sticky কাজ করছিল না; র‍্যাপারকেই sticky করা হলো */
+    '#hdr{position:sticky;top:0;z-index:50}' +
+    'html{scroll-padding-top:76px}';
   document.head.appendChild(st);
 
   var soc = '<div class="soc">' + DEV.links.filter(function (l) { return l[1]; }).map(function (l) { return $SOC(l[0], l[1]); }).join('') +
