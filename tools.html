@@ -368,8 +368,10 @@ const blank=()=>[0,0,0,0,0].map(()=>({n:'',c:3,g:''}));
 let C=ld('dcuCg',null);if(!C||!C.s)C={sc:'ugc',rt:0,s:[blank()]};
 const gp=g=>{const r=GS[C.sc].find(a=>a[0]==g);return r?r[1]:null};
 let SUM='';
+const yl=n=>{if($lang()=='en'){const v=n%100,x=(v>=11&&v<=13)?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th');return n+x+' Year'}
+ const b=['','১ম','২য়','৩য়','৪র্থ','৫ম','৬ষ্ঠ','৭ম','৮ম','৯ম','১০ম'][n];return (b||String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d])+'তম')+' বর্ষ'};
 function cgR(){$('#cgs').value=C.sc;$('#cgr').checked=!!C.rt;
- $('#cgl').innerHTML=C.s.map((s,i)=>`<div class="bx"><div class="hd"><b>${L('ইয়ার|Year')} ${i+1}</b><span class="gp" id="sg${i}"></span><button class="bs" data-act="ds" data-s="${i}">${L('মুছুন|Delete')}</button></div>`+
+ $('#cgl').innerHTML=C.s.map((s,i)=>`<div class="bx"><div class="hd"><b>${yl(i+1)}</b><span class="gp" id="sg${i}"></span><button class="bs" data-act="ds" data-s="${i}">${L('মুছুন|Delete')}</button></div>`+
   s.map((r,j)=>`<div class="rw"><input data-s="${i}" data-i="${j}" data-k="n" value="${esc(r.n)}" placeholder="${L('কোর্সের নাম (ঐচ্ছিক)|Course name (optional)')}"><input data-s="${i}" data-i="${j}" data-k="c" type="number" min="0.5" step="0.5" value="${r.c}" aria-label="${L('ক্রেডিট|Credit')}"><select data-s="${i}" data-i="${j}" data-k="g" aria-label="${L('গ্রেড|Grade')}"><option value="">${L('গ্রেড|Grade')}</option>${GS[C.sc].map(a=>`<option${a[0]==r.g?' selected':''}>${a[0]}</option>`).join('')}</select><button class="ic" data-act="dr" data-s="${i}" data-i="${j}" aria-label="Delete">✕</button></div>`).join('')+
   `<button class="bs" style="margin-top:10px" data-act="ar" data-s="${i}">+ ${L('কোর্স|Course')}</button></div>`).join('');cgC()}
 function cgC(){
@@ -377,8 +379,8 @@ function cgC(){
  let TC=0,TP=0;const sg=[];
  C.s.forEach((s,i)=>{let c=0,p=0;s.forEach((r,j)=>{const q=gp(r.g),k=r.n.trim().toLowerCase();if(q===null||!(r.c>0))return;if(C.rt&&k&&(best[k].i!=i||best[k].j!=j))return;c+=r.c;p+=r.c*q});TC+=c;TP+=p;sg.push(c?p/c:null);const e=$('#sg'+i);if(e)e.textContent=c?'GPA '+(p/c).toFixed(2):'—'});
  const cg=TC?TP/TC:null;$('#cgv').textContent=cg===null?'—':cg.toFixed(2);$('#cgc').textContent=TC;
- const bi=sg.reduce((a,v,i)=>v!==null&&(a<0||v>sg[a])?i:a,-1);$('#cgb').textContent=bi<0?'—':`${L('ইয়ার|Year')} ${bi+1} (${sg[bi].toFixed(2)})`;
- $('#cgch').innerHTML=sg.map((v,i)=>`<div class="cb"><span>${v===null?'—':v.toFixed(2)}</span><i style="height:${v?v/4*80:0}%"></i><small>${L('ইয়ার|Year')} ${i+1}</small></div>`).join('');
+ const bi=sg.reduce((a,v,i)=>v!==null&&(a<0||v>sg[a])?i:a,-1);$('#cgb').textContent=bi<0?'—':`${yl(bi+1)} (${sg[bi].toFixed(2)})`;
+ $('#cgch').innerHTML=sg.map((v,i)=>`<div class="cb"><span>${v===null?'—':v.toFixed(2)}</span><i style="height:${v?v/4*80:0}%"></i><small>${yl(i+1)}</small></div>`).join('');
  const rem=+$('#tr').value,tg=+$('#tt').value;let h='';
  if(rem>0){const mxc=(TP+4*rem)/(TC+rem),mnc=TP/(TC+rem);h=`${L('সর্বোচ্চ সম্ভব CGPA|Highest possible CGPA')}: <b>${mxc.toFixed(2)}</b><br>${L('সর্বনিম্ন CGPA (সব F)|Lowest CGPA (all F)')}: <b>${mnc.toFixed(2)}</b>`;
   if(tg>0){const n=(tg*(TC+rem)-TP)/rem;h+='<br>'+(n>4?'⚠️ '+L('এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়।|This target is not reachable on a 4.00 scale.'):n<=0?'✅ '+L('লক্ষ্য আগেই অর্জিত।|Target already achieved.'):L('বাকি ইয়ারে গড় GPA লাগবে|Required average GPA for the rest')+`: <b>${n.toFixed(2)}</b>`)}}
