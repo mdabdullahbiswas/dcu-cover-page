@@ -176,7 +176,7 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 </style>
 </head>
 <body>
-<header><h1>Dhaka Central University</h1><p>Assignment Cover Page Generator</p><button type="button" id="helpBtn" onclick="tour(0)" title="Guide">❓</button><button type="button" id="langBtn" onclick="setSite(SL==='bn'?'en':'bn')" title="Language">EN</button><button type="button" id="darkBtn" onclick="toggleDark()">🌙</button></header>
+<header><h1>Dhaka Central University</h1><p>Assignment Cover Page Generator</p><a href="photo.html" style="display:inline-block;margin-top:10px;color:#e5a83b;font-weight:700;font-size:13px;text-decoration:none">📸 পাসপোর্ট / স্ট্যাম্প ছবি তৈরি করুন →</a><button type="button" id="helpBtn" onclick="tour(0)" title="Guide">❓</button><button type="button" id="langBtn" onclick="setSite(SL==='bn'?'en':'bn')" title="Language">EN</button><button type="button" id="darkBtn" onclick="toggleDark()">🌙</button></header>
 
 <main class="container">
 <section class="form-section">
@@ -526,7 +526,7 @@ const UI = Object.fromEntries([
 ['অতিরিক্ত পেজ (থিসিস / প্রজেক্ট)','Extra Pages (Thesis / Project)'],['ঘোষণাপত্র (Declaration)','Declaration'],['অনুমোদনপত্র (Approval Certificate)','Approval Certificate'],['কৃতজ্ঞতা স্বীকার (Acknowledgement)','Acknowledgement'],['সূচিপত্র (Table of Contents)','Table of Contents'],['প্রতি লাইনে: অধ্যায়ের নাম | পৃষ্ঠা নম্বর','One per line: Chapter title | Page number'],
 ['🖼️ PNG ডাউনলোড','🖼️ Download PNG'],['📝 Word (সম্পাদনাযোগ্য)','📝 Word (editable)'],['🔗 লিংক শেয়ার','🔗 Share Link'],['🗑️ সব তথ্য মুছে ফেলুন','🗑️ Clear All Data'],
 ['✅ আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।','✅ Your data is saved automatically in this browser, so you won’t need to retype it next time.'],
-['লাইভ প্রিভিউ','Live Preview'],['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],['💬 মতামত জানান','💬 Send Feedback'],
+['লাইভ প্রিভিউ','Live Preview'],['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],['💬 মতামত জানান','💬 Send Feedback'],['📸 পাসপোর্ট / স্ট্যাম্প ছবি তৈরি করুন →','📸 Make Passport / Stamp Photos →'],
 ['এড়িয়ে যান','Skip'],['পরবর্তী','Next'],['সমাপ্ত','Finish'],['— নির্বাচন করুন —','— Select —'],
 ['⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)','⚠️ Mobile number looks invalid (e.g. 01712345678)'],['⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।','⚠️ Too much text; the bottom of the cover may be cut off. Please shorten it.'],
 ['ছবি প্রস্তুত করা হচ্ছে...','Preparing image...'],['ডাউনলোড শুরু হয়েছে','Download started'],['ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন','Could not create the image; please use PDF'],['লিংক কপি করা হয়েছে','Link copied'],['প্রোফাইল সংরক্ষিত হয়েছে','Profile saved'],['প্রোফাইল লোড হয়েছে','Profile loaded'],['ছবির আকার বড়, সংরক্ষণ করা যায়নি','Image too large to save'],['Word ফাইল ডাউনলোড হয়েছে','Word file downloaded'],
@@ -536,7 +536,7 @@ const UI = Object.fromEntries([
 const T = b => SL === 'en' ? (UI[b] || b) : b;
 function applyUI(){
   document.documentElement.lang = SL;
-  document.querySelectorAll('.form-section label,.form-section h2,.form-section h3,.form-section button,.form-section option,.form-section small,.form-section .hint:not(.warn),.form-section .cb span,.preview-section>h2,footer span,footer a,#tourBox button').forEach(e => {
+  document.querySelectorAll('.form-section label,.form-section h2,.form-section h3,.form-section button,.form-section option,.form-section small,.form-section .hint:not(.warn),.form-section .cb span,.preview-section>h2,footer span,footer a,header a,#tourBox button').forEach(e => {
     if (e.children.length) return;
     const k = e.dataset.bn || (e.dataset.bn = e.textContent.trim());
     if (UI[k]) e.textContent = SL === 'en' ? UI[k] : k;
