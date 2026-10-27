@@ -39,13 +39,14 @@ body.dark .hd .gp{color:#e5a83b}
 .pg .ic,.pz .ic{display:flex;align-items:center;justify-content:center;padding:0;font-size:17px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .pz{display:flex;flex-direction:column;gap:4px}.pz .ic{width:56px;height:42px}
 details.bx2{border:1px solid var(--ln);border-radius:8px;padding:8px 12px;margin-top:12px}details.bx2 summary{cursor:pointer;font-weight:700;font-size:14px}
-canvas.dg{cursor:grab}canvas.dg:active{cursor:grabbing}
+.cw{position:relative;display:inline-block;max-width:100%;line-height:0}.cw canvas{display:block}.hit{position:absolute;border-radius:50%;cursor:grab;touch-action:none;display:none}.hit:active{cursor:grabbing}
 canvas{max-width:100%;height:auto;border-radius:10px;box-shadow:0 8px 28px rgba(10,34,64,.28)}
 .sc{overflow-x:auto}.sc canvas{width:100%;min-width:760px;box-shadow:none;border:1px solid var(--ln);border-radius:8px}
 .dy{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.dy label{margin:0;font-weight:500;border:1.5px solid var(--ln);border-radius:20px;padding:3px 12px;cursor:pointer;display:flex;align-items:center}
 .rw{display:grid;grid-template-columns:2fr .8fr 1fr auto;gap:6px;align-items:center;margin-top:6px}.rw input,.rw select{margin:0}
 .chart{display:flex;gap:8px;align-items:flex-end;height:130px;margin-top:10px;overflow-x:auto}
 .cb{flex:1;min-width:46px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:12px}
+.cb small{white-space:nowrap}
 .cb i{display:block;width:70%;background:linear-gradient(#e5a83b,#0a2240);border-radius:6px 6px 0 0;min-height:2px}
 .pb{height:8px;background:var(--ln);border-radius:5px;overflow:hidden;margin:6px 0}.pb i{display:block;height:100%;background:#2e9e5b}
 .ck{display:flex;align-items:center;margin:3px 0;font-weight:400;font-size:14px}
@@ -105,13 +106,13 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 <p class="hint t">তীর বাটনে চাপুন (ধরে রাখলে চলতে থাকবে) অথবা ছবি যোগ করার পর কার্ডের ছবির ওপর আঙুল/মাউস টেনে সরান।|Tap the arrow buttons (hold to repeat), or after adding a photo drag directly on the card.</p>
 <div class="g3"><div><label class="t">থিম|Theme</label><select id="cth"><option value="navy" class="t">নেভি ও সোনালি|Navy & Gold</option><option value="ivory" class="t">আইভরি|Ivory</option><option value="emerald" class="t">এমারেল্ড|Emerald</option><option value="wine" class="t">রয়্যাল|Royal</option></select></div>
 <div><label class="t">মাপ|Size</label><select id="csz"><option value="1080,1080" class="t">পোস্ট ১:১|Post 1:1</option><option value="1080,1350" class="t">পোর্ট্রেট ৪:৫|Portrait 4:5</option><option value="1080,1920" class="t">স্টোরি ৯:১৬|Story 9:16</option></select></div></div>
-<details class="bx2"><summary class="t">✍️ কার্ডের লেখা নিজের মতো করুন|Customize card text</summary><label class="t">উপরের শিরোনাম|Heading</label><input id="ct" value="DHAKA CENTRAL UNIVERSITY" maxlength="50"><label class="t">নিচের লাইন (ওয়েবসাইট/আইডি)|Footer line (website / ID)</label><input id="cft" maxlength="60" data-p="খালি রাখলে ওয়েবসাইটের ঠিকানা বসবে|Leave empty to use the site address"><label class="t">নিচের ছোট লেখা|Small note</label><input id="cfn" maxlength="70" data-p="খালি রাখলে ডিফল্ট লেখা বসবে|Leave empty for the default note"></details>
+
 <label class="t">শেয়ার করার লেখা (ক্যাপশন)|Share caption</label><textarea id="cst" rows="3" maxlength="400" data-p="পোস্টের সাথে যে লেখা যাবে তা নিজের মতো লিখুন|Write the text that goes with your post"></textarea><label class="ck"><input type="checkbox" id="csl" checked><span class="t">সাথে ওয়েবসাইটের লিংক দিন|Include the site link</span></label>
 <button class="bt t" id="cdl">PNG ডাউনলোড|Download PNG</button><button class="bt t" id="csh">শেয়ার করুন|Share</button><button class="bt t" id="ccp">ক্যাপশন কপি|Copy caption</button>
 <p class="hint" id="cmsg" role="status"></p>
 <p class="hint t">কিছু অ্যাপ (যেমন ফেসবুক) ছবির সাথে লেখা নেয় না। শেয়ারের সময় ক্যাপশন নিজে থেকেই কপি হয়, তাই পোস্টে Paste করে দিন।|Some apps (like Facebook) drop the text when sharing an image. The caption is copied automatically, so just paste it into your post.</p>
 </div>
-<div class="cvw"><canvas id="cdv" class="dg" width="1080" height="1080"></canvas></div>
+<div class="cvw"><div class="cw"><canvas id="cdv" width="1080" height="1080"></canvas><div class="hit" id="chit" title="ছবি টেনে সরান | Drag the photo"></div></div></div>
 </div></section>
 
 <!-- ============ ক্লাস রুটিন ============ -->
@@ -187,7 +188,7 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 <div><label class="t">থিম|Theme</label><select id="fth"><option value="navy" class="t">নেভি ও সোনালি|Navy & Gold</option><option value="ivory" class="t">আইভরি|Ivory</option><option value="emerald" class="t">এমারেল্ড|Emerald</option><option value="wine" class="t">রয়্যাল|Royal</option></select></div></div>
 <button class="bt t" id="fdl">PNG ডাউনলোড|Download PNG</button><button class="bt t" id="fsh">শেয়ার করুন|Share</button><p class="hint" id="fmsg" role="status"></p>
 <p class="hint t">ফেসবুক প্রোফাইলে ছবিটি আপলোড করলে নিজে থেকেই গোল হয়ে বসবে।|When you upload it as a profile picture, it is cropped to a circle automatically.</p></div>
-<div class="cvw"><canvas id="fcv" class="dg" width="1080" height="1080"></canvas></div></div></section>
+<div class="cvw"><div class="cw"><canvas id="fcv" width="1080" height="1080"></canvas><div class="hit" id="fhit" style="left:10%;top:10%;width:80%;height:80%" title="ছবি টেনে সরান | Drag the photo"></div></div></div></div></section>
 
 <!-- ============ সিভি বিল্ডার ============ -->
 <section id="cv"><div class="g2">
@@ -264,11 +265,12 @@ function mkPad(p){
 }
 $$('.pad').forEach(mkPad);
 const phs=()=>$$('textarea[data-p],input[data-p]').forEach(e=>{if(!e.placeholder)e.placeholder=L(e.dataset.p)});phs();
-function dragPan(cv,xs,ys,has,get){let st=null;
- cv.addEventListener('pointerdown',e=>{if(!has())return;st={x:e.clientX,y:e.clientY,px:+$('#'+xs).value,py:+$('#'+ys).value,k:cv.width/cv.getBoundingClientRect().width};try{cv.setPointerCapture(e.pointerId)}catch(_){}});
- cv.addEventListener('pointermove',e=>{if(!st)return;const m=get();if(m.mx>1)setSl(xs,st.px+(e.clientX-st.x)*st.k/m.mx,-1,1);if(m.my>1)setSl(ys,st.py+(e.clientY-st.y)*st.k/m.my,-1,1)});
- ['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>st=null));
+function dragPan(el,cv,xs,ys,get){let st=null;
+ el.addEventListener('pointerdown',e=>{e.preventDefault();st={x:e.clientX,y:e.clientY,px:+$('#'+xs).value,py:+$('#'+ys).value,k:cv.width/cv.getBoundingClientRect().width};try{el.setPointerCapture(e.pointerId)}catch(_){}});
+ el.addEventListener('pointermove',e=>{if(!st)return;const m=get();if(m.mx>1)setSl(xs,st.px+(e.clientX-st.x)*st.k/m.mx,-1,1);if(m.my>1)setSl(ys,st.py+(e.clientY-st.y)*st.k/m.my,-1,1)});
+ ['pointerup','pointercancel'].forEach(ev=>el.addEventListener(ev,()=>st=null));
 }
+
 const TB=['card','frame','cv','routine','cgpa','exam','pdf','calc','result'];
 function go(){let h=location.hash.slice(1);if(!TB.includes(h))h='card';$$('main section').forEach(s=>s.classList.toggle('on',s.id==h));$$('.tabs button').forEach(b=>{const o=b.dataset.t==h;b.classList.toggle('on',o);b.setAttribute('aria-selected',o)});if(typeof cvFit=='function')cvFit();scrollTo(0,0);requestAnimationFrame(()=>scrollTo(0,0))}
 $$('.tabs button').forEach(b=>b.onclick=()=>{if(location.hash.slice(1)==b.dataset.t)go();else location.hash=b.dataset.t});addEventListener('hashchange',go);go();
@@ -281,42 +283,47 @@ const TH={navy:{a:'#06162b',b:'#0f3566',fg:'#ffffff',ac:'#e5a83b',ac2:'#f3d08a',
  emerald:{a:'#032b26',b:'#0c6b5e',fg:'#ffffff',ac:'#f2d27a',ac2:'#ffe9a8',pf:'#032b26'},
  wine:{a:'#2a0d4f',b:'#6a2fb0',fg:'#ffffff',ac:'#f5c451',ac2:'#ffe3a1',pf:'#2a0d4f'}};
 async function card(){
- try{await Promise.all([document.fonts.load('700 40px "Hind Siliguri"'),document.fonts.load('800 40px Cinzel'),document.fonts.load('600 28px Montserrat')])}catch(e){}
+ try{await Promise.all([document.fonts.load('700 40px "Hind Siliguri"'),document.fonts.load('800 40px Cinzel'),document.fonts.load('700 28px Montserrat')])}catch(e){}
  const[W,H]=$('#csz').value.split(',').map(Number),c=$('#cdv'),x=c.getContext('2d'),t=TH[$('#cth').value];
  c.width=W;c.height=H;x.textAlign='center';x.textBaseline='alphabetic';
- const MS=($('#ce').value||'').split('\n').map(q=>q.trim()).filter(Boolean).slice(0,3),cx=W/2,S=Math.min(1.6,(H-216-Math.max(0,MS.length-1)*46)/857),top=Math.max(48,(H-150-857*S)/2);
+ const MS=($('#ce').value||'').split('\n').map(q=>q.trim()).filter(Boolean).slice(0,3),
+  base=MS.length?826+(MS.length-1)*40:780,S=Math.min(1.6,(H-220)/base),top=84+Math.max(0,(H-220-base*S)/2),cx=W/2;
  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,t.a);g.addColorStop(1,t.b);x.fillStyle=g;x.fillRect(0,0,W,H);
  x.fillStyle=t.ac;x.globalAlpha=.07;[[.92,.07,300],[.04,.95,380],[.88,.92,170],[.1,.3,120]].forEach(([a,b,r])=>{x.beginPath();x.arc(W*a,H*b,r,0,7);x.fill()});x.globalAlpha=1;
  x.strokeStyle=t.ac;x.lineWidth=5;x.beginPath();x.roundRect(34,34,W-68,H-68,30);x.stroke();
  x.globalAlpha=.4;x.lineWidth=2;x.beginPath();x.roundRect(54,54,W-108,H-108,22);x.stroke();x.globalAlpha=1;
- let y=top+38*S;const lr=38*S;
+ const lr=38*S;let y=top+lr;
  x.save();x.beginPath();x.arc(cx,y,lr,0,7);x.fillStyle='#fff';x.fill();x.clip();if(LG.complete&&LG.naturalWidth)x.drawImage(LG,cx-lr,y-lr,2*lr,2*lr);x.restore();
- y+=lr+46*S;x.fillStyle=t.ac;x.font=`800 ${36*S}px Cinzel,serif`;x.fillText($('#ct').value.trim(),cx,y,W-160);
- y+=34*S;x.fillStyle=t.fg;x.globalAlpha=.85;x.font=`500 ${26*S}px "Hind Siliguri"`;x.fillText(+$('#cb').value==4?$('#cbt').value.trim():L(BG[+$('#cb').value]),cx,y,W-160);x.globalAlpha=1;
- const r=138*S;y+=34*S+r;const cy=y;
+ y+=lr+52*S;x.fillStyle=t.ac;x.font=`800 ${36*S}px Cinzel,serif`;x.fillText('DHAKA CENTRAL UNIVERSITY',cx,y,W-160);
+ y+=36*S;x.fillStyle=t.fg;x.globalAlpha=.85;x.font=`500 ${26*S}px "Hind Siliguri"`;
+ x.fillText(+$('#cb').value==4?$('#cbt').value.trim():L(BG[+$('#cb').value]),cx,y,W-160);x.globalAlpha=1;
+ const r=138*S;y+=50*S+r;const cy=y;
  x.strokeStyle=t.ac;x.lineWidth=3;x.globalAlpha=.45;x.beginPath();x.arc(cx,cy,r+28*S,0,7);x.stroke();x.globalAlpha=1;
  x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
  if(photo){const b=Math.max(2*r/photo.width,2*r/photo.height)*+$('#pz').value,w=photo.width*b,h=photo.height*b,mx=(w-2*r)/2,my=(h-2*r)/2;CM={mx,my};x.drawImage(photo,cx-w/2+(+$('#px').value)*mx,cy-h/2+(+$('#py').value)*my,w,h)}
  else{const g2=x.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g2.addColorStop(0,t.ac);g2.addColorStop(1,t.ac2);x.fillStyle=g2;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=t.pf;x.font=`800 ${r*1.05}px "Hind Siliguri"`;x.textBaseline='middle';x.fillText([...($('#cn').value.trim()||'D')][0],cx,cy+r*.04)}
  x.restore();x.textBaseline='alphabetic';
  x.strokeStyle=t.ac;x.lineWidth=9;x.beginPath();x.arc(cx,cy,r+7,0,7);x.stroke();
- y=cy+r+78*S;
+ const ht=$('#chit');if(ht){ht.style.display=photo?'block':'none';ht.style.left=((cx-r)/W*100)+'%';ht.style.top=((cy-r)/H*100)+'%';ht.style.width=(2*r/W*100)+'%';ht.style.height=(2*r/H*100)+'%'}
+ y=cy+r+28*S+72*S;
  const T=(s,sz,w,col,fam='"Hind Siliguri"',it='')=>{if(!s)return;let f=sz;const set=()=>x.font=`${it} ${w} ${f}px ${fam}`;set();while(x.measureText(s).width>W-190&&f>18){f-=2;set()}x.fillStyle=col;x.fillText(s,cx,y);y+=f*1.4};
- T($('#cn').value.trim()||L('আপনার নাম|Your Name'),66*S,700,t.fg);
- y+=2*S;x.strokeStyle=t.ac;x.lineWidth=3;x.beginPath();x.moveTo(cx-170,y);x.lineTo(cx-20,y);x.moveTo(cx+20,y);x.lineTo(cx+170,y);x.stroke();
+ const y0=y;T($('#cn').value.trim()||L('আপনার নাম|Your Name'),66*S,700,t.fg);
+ y=y0+48*S;x.strokeStyle=t.ac;x.lineWidth=3;x.beginPath();x.moveTo(cx-170,y);x.lineTo(cx-20,y);x.moveTo(cx+20,y);x.lineTo(cx+170,y);x.stroke();
  x.fillStyle=t.ac;x.beginPath();x.moveTo(cx,y-10);x.lineTo(cx+10,y);x.lineTo(cx,y+10);x.lineTo(cx-10,y);x.fill();y+=50*S;
  T($('#cd').value.trim(),38*S,600,t.ac2);
  const ses=$('#cs').value.trim();
  if(ses){y+=10*S;x.font=`700 ${28*S}px "Hind Siliguri"`;const w=x.measureText(ses).width+60*S,h=52*S;x.fillStyle=t.ac;x.beginPath();x.roundRect(cx-w/2,y-h*.72,w,h,h/2);x.fill();x.fillStyle=t.pf;x.fillText(ses,cx,y);y+=h*.9}
- y+=14*S;MS.forEach(m=>T(m,(MS.length>1?28:32)*S,500,t.fg,'"Hind Siliguri"','italic'));
- x.fillStyle=t.ac;x.font='600 26px Montserrat';x.fillText($('#cft').value.trim()||location.host||'dcu',cx,H-100,W-160);
- x.globalAlpha=.7;x.fillStyle=t.fg;x.font='400 20px "Hind Siliguri"';x.fillText($('#cfn').value.trim()||L('অনানুষ্ঠানিক শিক্ষার্থী-উদ্যোগ|Unofficial student initiative'),cx,H-68,W-160);x.globalAlpha=1;
- c.style.touchAction=photo?'none':'';cBl=null;const tk=++cTk;c.toBlob(b=>{if(tk==cTk)cBl=b},'image/png');
+ y+=22*S;MS.forEach(m=>T(m,(MS.length>1?28:32)*S,500,t.fg,'"Hind Siliguri"','italic'));
+ /* ওয়েবসাইটের লিংক: কখনো কাটা বা চাপা হবে না, জায়গা না হলে ফন্ট ছোট হবে */
+ const SITE=(/^https?:$/.test(location.protocol)&&!/^(localhost|127\.|192\.168\.)/.test(location.hostname))?location.host:'dcu-unofficial.vercel.app';
+ let fs=34;x.font=`700 ${fs}px Montserrat,sans-serif`;while(x.measureText(SITE).width>W-200&&fs>12){fs--;x.font=`700 ${fs}px Montserrat,sans-serif`}
+ x.fillStyle=t.ac;x.fillText(SITE,cx,H-86);
+ cBl=null;const tk=++cTk;c.toBlob(b=>{if(tk==cTk)cBl=b},'image/png');
 }
-['cn','cd','cs','ce','cb','cbt','ct','cft','cfn','cth','csz','pz','px','py'].forEach(i=>$('#'+i).addEventListener('input',card));
+['cn','cd','cs','ce','cb','cbt','cth','csz','pz','px','py'].forEach(i=>$('#'+i).addEventListener('input',card));
 ['input','change'].forEach(ev=>$('#cb').addEventListener(ev,()=>{$('#cbw').style.display=$('#cb').value=='4'?'':'none'}));
 $('#cf').onchange=async e=>{const f=e.target.files[0];if(f){try{photo=await createImageBitmap(f);card()}catch(err){}}};
-dragPan($('#cdv'),'px','py',()=>!!photo,()=>CM);
+dragPan($('#chit'),$('#cdv'),'px','py',()=>CM);
 const capTxt=()=>{let q=$('#cst').value.trim()||L('আমি ঢাকা সেন্ট্রাল ইউনিভার্সিটির শিক্ষার্থী 🎓|I study at Dhaka Central University 🎓');if($('#csl').checked&&/^https?:/.test(location.origin))q+='\n'+location.origin+'/';return q};
 const cdl=async()=>{const b=cBl||await mkBlob($('#cdv'));if(b)dlBlob(b,'dcu-card.png');else dl($('#cdv').toDataURL('image/png'),'dcu-card.png')};$('#cdl').onclick=cdl;
 $('#csh').onclick=()=>shareImg($('#cdv'),cBl,'dcu-card.png',capTxt(),'cmsg');
@@ -371,7 +378,7 @@ function cgC(){
  C.s.forEach((s,i)=>{let c=0,p=0;s.forEach((r,j)=>{const q=gp(r.g),k=r.n.trim().toLowerCase();if(q===null||!(r.c>0))return;if(C.rt&&k&&(best[k].i!=i||best[k].j!=j))return;c+=r.c;p+=r.c*q});TC+=c;TP+=p;sg.push(c?p/c:null);const e=$('#sg'+i);if(e)e.textContent=c?'GPA '+(p/c).toFixed(2):'—'});
  const cg=TC?TP/TC:null;$('#cgv').textContent=cg===null?'—':cg.toFixed(2);$('#cgc').textContent=TC;
  const bi=sg.reduce((a,v,i)=>v!==null&&(a<0||v>sg[a])?i:a,-1);$('#cgb').textContent=bi<0?'—':`${L('ইয়ার|Year')} ${bi+1} (${sg[bi].toFixed(2)})`;
- $('#cgch').innerHTML=sg.map((v,i)=>`<div class="cb"><span>${v===null?'—':v.toFixed(2)}</span><i style="height:${v?v/4*80:0}%"></i><small>S${i+1}</small></div>`).join('');
+ $('#cgch').innerHTML=sg.map((v,i)=>`<div class="cb"><span>${v===null?'—':v.toFixed(2)}</span><i style="height:${v?v/4*80:0}%"></i><small>${L('ইয়ার|Year')} ${i+1}</small></div>`).join('');
  const rem=+$('#tr').value,tg=+$('#tt').value;let h='';
  if(rem>0){const mxc=(TP+4*rem)/(TC+rem),mnc=TP/(TC+rem);h=`${L('সর্বোচ্চ সম্ভব CGPA|Highest possible CGPA')}: <b>${mxc.toFixed(2)}</b><br>${L('সর্বনিম্ন CGPA (সব F)|Lowest CGPA (all F)')}: <b>${mnc.toFixed(2)}</b>`;
   if(tg>0){const n=(tg*(TC+rem)-TP)/rem;h+='<br>'+(n>4?'⚠️ '+L('এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়।|This target is not reachable on a 4.00 scale.'):n<=0?'✅ '+L('লক্ষ্য আগেই অর্জিত।|Target already achieved.'):L('বাকি ইয়ারে গড় GPA লাগবে|Required average GPA for the rest')+`: <b>${n.toFixed(2)}</b>`)}}
@@ -476,11 +483,11 @@ async function frame(){
   const bx=150,bw=780,by=720,bh=150;x.fillStyle=t.a;x.strokeStyle=t.ac;x.lineWidth=5;x.beginPath();x.roundRect(bx,by,bw,bh,16);x.fill();x.stroke();
   x.textAlign='center';x.textBaseline='middle';x.fillStyle=t.ac;x.font='800 34px Cinzel,serif';x.fillText(t1.toUpperCase().slice(0,32),cx,by+48,bw-40);x.fillStyle=t.fg;x.font='700 40px "Hind Siliguri"';x.fillText(t2,cx,by+104,bw-40);
  }
- c.style.touchAction=fph?'none':'';fBl=null;const tk=++fTk;c.toBlob(b=>{if(tk==fTk)fBl=b},'image/png');
+ {const h=$('#fhit');if(h)h.style.display=fph?'block':'none'}fBl=null;const tk=++fTk;c.toBlob(b=>{if(tk==fTk)fBl=b},'image/png');
 }
 ['ft1','ft2','fst','fth','fz','fx','fy'].forEach(i=>$('#'+i).addEventListener('input',frame));
 $('#ff').onchange=async e=>{const f=e.target.files[0];if(f){try{fph=await createImageBitmap(f);frame()}catch(err){}}};
-dragPan($('#fcv'),'fx','fy',()=>!!fph,()=>FM);
+dragPan($('#fhit'),$('#fcv'),'fx','fy',()=>FM);
 const fdl=async()=>{const b=fBl||await mkBlob($('#fcv'));if(b)dlBlob(b,'dcu-profile-frame.png');else dl($('#fcv').toDataURL('image/png'),'dcu-profile-frame.png')};$('#fdl').onclick=fdl;
 $('#fsh').onclick=()=>shareImg($('#fcv'),fBl,'dcu-profile-frame.png','','fmsg');
 
