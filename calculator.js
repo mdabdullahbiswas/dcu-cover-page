@@ -411,3 +411,31 @@ Object.assign(FN,{
 function khR(){$('#kh').innerHTML=KH.map(([d,r],i)=>`<div class="kh" data-i="${i}"><span>${esc(dsp(tokenize(d)))}</span><b>= ${esc(r)}</b></div>`).join('')||`<p class="hint">${L('এখনো কোনো হিসাব নেই।|No calculations yet.')}</p>`}
 $('#kh').onclick=e=>{const r=e.target.closest('.kh');if(r){W.on=1;loadH(+r.dataset.i);rend()}};
 $('#khc').onclick=()=>{KH=[];sv('dcuKh2',KH);khR()};
+
+/* ===== মোবাইল: ভাইব্রেশন, আটকে থাকা LCD, প্যানেল দেখানো ===== */
+(function(){
+ const wm=$('#wm');if(!wm)return;
+ const narrow=()=>matchMedia('(max-width:560px)').matches;
+ /* ভাইব্রেশন (যে ডিভাইসে সমর্থিত) */
+ const hb=$('#whap');let hap=ld('dcuHap',true);
+ if(!navigator.vibrate)hb.style.display='none';
+ const hapR=()=>{hb.style.opacity=hap?1:.4;hb.setAttribute('aria-pressed',hap)};hapR();
+ hb.onclick=()=>{hap=!hap;sv('dcuHap',hap);hapR();if(hap&&navigator.vibrate)navigator.vibrate(15)};
+ wm.addEventListener('click',e=>{if(hap&&navigator.vibrate&&e.target.closest('.kb,[data-p]'))try{navigator.vibrate(8)}catch(_){}});
+ /* কী-তে লং-প্রেসে মেনু/সিলেকশন বন্ধ */
+ wm.addEventListener('contextmenu',e=>{if(e.target.closest('.kb,.kpad'))e.preventDefault()});
+ /* সাইটের ফিক্সড/স্টিকি হেডারের নিচে LCD আটকানো */
+ let raf=0;
+ const stk=()=>{raf=0;let m=0;try{for(const el of document.elementsFromPoint(Math.round(innerWidth/2),2)){if(wm.contains(el))continue;for(let n=el;n&&n!==document.body&&n!==document.documentElement;n=n.parentElement){const p=getComputedStyle(n).position;if(p=='fixed'||p=='sticky'){m=Math.max(m,n.getBoundingClientRect().bottom);break}}}}catch(_){}
+  const r=document.documentElement.style;r.setProperty('--stk',Math.round(m)+'px');r.setProperty('--lcdh',($('#wlcd').offsetHeight||130)+'px')};
+ const qs=()=>{if(!raf)raf=requestAnimationFrame(stk)};
+ addEventListener('scroll',qs,{passive:true});addEventListener('resize',qs);addEventListener('orientationchange',qs);addEventListener('load',qs);qs();
+ /* STAT / MATRIX প্যানেল খুললে সেখানে স্ক্রল; CONST / CONV শিটের পেছনে ব্যাকড্রপ */
+ const bk=document.createElement('div');bk.id='wbk';document.body.appendChild(bk);
+ const shown=e=>e.style.display!='none';
+ const wl=$('#wlist'),sync=()=>bk.classList.toggle('on',narrow()&&shown(wl));
+ bk.onclick=()=>{wl.style.display='none';sync()};
+ new MutationObserver(sync).observe(wl,{attributes:true,attributeFilter:['style']});
+ ['#wstat','#wmat'].forEach(id=>{const el=$(id);let was=shown(el);
+  new MutationObserver(()=>{const now=shown(el);if(now&&!was&&narrow())setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),60);was=now}).observe(el,{attributes:true,attributeFilter:['style']})});
+})();
