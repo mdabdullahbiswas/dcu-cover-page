@@ -78,8 +78,6 @@ html{scroll-behavior:smooth;scroll-padding-top:80px}
 <script src="site.js"></script>
 <script>
 const $=s=>document.querySelector(s),D=$DEV,L=$L;
-D.email='abdullah84402660@gmail.com';
-D.whatsapp='8801784402660';
 const PHOTO='devloper.jpg';
 const PROFILE=[
  ['👨‍🎓 পরিচিতি|👨‍🎓 About','আমি মোঃ আব্দুল্লাহ বিশ্বাস, সরকারি বাঙলা কলেজে অর্থনীতি বিভাগের অনার্স শিক্ষার্থী (শিক্ষাবর্ষ: ২০২২–২৩)। প্রযুক্তি, ডিজিটাল দক্ষতা ও নতুন কিছু শেখার প্রতি আগ্রহী। ভবিষ্যতে নিজের দক্ষতা কাজে লাগিয়ে সৎ ও সম্মানজনক পেশাগত জীবন গড়ে তুলতে চাই।|I am Md. Abdullah Biswas, an Honours student of Economics at Government Bangla College (session 2022–23). I am interested in technology, digital skills and learning new things, and I hope to build an honest and respectable career using my skills.'],
@@ -110,14 +108,31 @@ function buttons(){
  b.push(['gh',L('GitHub-এ জানান|Report on GitHub')],['cp',L('বার্তা কপি করুন|Copy message')]);
  $('#fb2').innerHTML=b.map(([k,t],i)=>`<button type="button" class="bt${i>0?' o':''}" data-k="${k}">${t}</button>`).join('');
 }
-$('#fb2').onclick=async e=>{const k=e.target.dataset.k;if(!k)return;const m=msg(),s=$('#fs');
+function go(url,same){
+ const a=document.createElement('a');a.href=url;
+ if(!same){a.target='_blank';a.rel='noopener noreferrer'}
+ document.body.appendChild(a);a.click();a.remove();
+}
+async function copy(t){
+ try{await navigator.clipboard.writeText(t);return true}catch(x){}
+ try{const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(x){return false}
+}
+const MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('#fb2').onclick=async e=>{
+ const btn=e.target.closest('button[data-k]');if(!btn)return;
+ const k=btn.dataset.k,m=msg(),s=$('#fs'),SUB='DCU Site Feedback';
  if(!$('#fm').value.trim()){s.textContent=L('আগে আপনার বার্তা লিখুন।|Please write your message first.');$('#fm').focus();return}
- if(k=='gm')window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(D.email)}&su=${encodeURIComponent('DCU Site Feedback')}&body=${encodeURIComponent(m)}`,'_blank','noopener');
- if(k=='em')location.href=`mailto:${D.email}?subject=${encodeURIComponent('DCU Site Feedback')}&body=${encodeURIComponent(m)}`;
- if(k=='wa')window.open(`https://wa.me/${D.whatsapp}?text=${encodeURIComponent(m)}`,'_blank','noopener');
- if(k=='gh')window.open(`${D.repo}/issues/new?title=${encodeURIComponent('Feedback')}&body=${encodeURIComponent(m)}`,'_blank','noopener');
- if(k=='cp'){try{await navigator.clipboard.writeText(m);s.textContent=L('কপি হয়েছে।|Copied.')}catch(x){s.textContent=L('কপি করা যায়নি।|Could not copy.')}}
- else s.textContent=L('ধন্যবাদ! আপনার মতামত পাঠানোর জন্য নতুন ট্যাব বা অ্যাপ খুলেছে।|Thank you! A new tab or app has opened to send your message.');
+ const copied=k=='cp'?await copy(m):false;
+ if(k=='cp'){s.textContent=copied?L('বার্তা কপি হয়েছে।|Message copied.'):L('কপি করা যায়নি; লেখাটি নিজে সিলেক্ট করে কপি করুন।|Could not copy; please select and copy the text manually.');return}
+ copy(m);
+ if(k=='gm'){
+  if(MOBILE)go(`mailto:${D.email}?subject=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`,true);
+  else go(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(D.email)}&su=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`);
+ }
+ else if(k=='em')go(`mailto:${D.email}?subject=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`,true);
+ else if(k=='wa')go(`https://wa.me/${D.whatsapp}?text=${encodeURIComponent(m)}`);
+ else if(k=='gh')go(`${D.repo}/issues/new?title=${encodeURIComponent('Feedback')}&body=${encodeURIComponent(m)}`);
+ s.textContent=L('আপনার বার্তা কপি করা হয়েছে। নতুন ট্যাব বা অ্যাপ না খুললে সেখানে পেস্ট করে পাঠান।|Your message was copied. If no tab or app opened, paste it there and send.');
 };
 window.onLang=render;render();
 </script>
