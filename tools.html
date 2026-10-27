@@ -639,7 +639,6 @@ function dlDraw(){
 function cvUI(){dlDraw();Object.keys(RP).forEach(id=>{RP[id].rows=pRows($('#'+id).value,RP[id].n);rpDraw(id)});chipDraw()}
 ['cvsk','cvg'].forEach(i=>$('#'+i).addEventListener('input',chipDraw));
 $('#cvl').addEventListener('change',cvUI);
-let _cl=$lang();setInterval(()=>{if($lang()!==_cl){_cl=$lang();cvUI()}},500);
 cvUI();
 
 /* ===== ৮. সায়েন্টিফিক ক্যালকুলেটর ===== */
@@ -680,7 +679,7 @@ function resR(){$('#rl').href=$RESULT;$('#cols').innerHTML=$COLS.map(c=>`<li>${e
 $('#rcp').onclick=async()=>{try{await navigator.clipboard.writeText($RESULT)}catch(e){}};
 
 /* ===== শুরু ===== */
-window.onLang=()=>{$$('textarea[data-p]').forEach(e=>e.placeholder=L(e.dataset.p));card();frame();rtR();cgR();exR();fl('img');fl('mrg');tstop();cvR();khR();resR()};
+window.onLang=()=>{$$('textarea[data-p]').forEach(e=>e.placeholder=L(e.dataset.p));card();frame();rtR();cgR();exR();fl('img');fl('mrg');tstop();cvR();cvUI();khR();resR()};
 window.onLang();tdraw();$('#cvl').dispatchEvent(new Event('change'));
 </script>
 </body>
