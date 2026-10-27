@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DCU Student Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{font-family:'Hind Siliguri',sans-serif;background:#eef1f5;color:#1c2733;line-height:1.55}
+button,input,select{font-family:inherit;font-size:14px}
+header{background:#0a2240;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:19px;color:#e5a83b}header a{color:#fff;font-size:14px;text-decoration:none}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid #cfd7e0;position:sticky;top:0;z-index:5}
+nav button{flex:none;border:1.5px solid #cfd7e0;background:#fff;border-radius:20px;padding:7px 14px;font-weight:600;cursor:pointer}
+nav button.on{background:#0a2240;color:#e5a83b;border-color:#0a2240}
+main{max-width:1000px;margin:0 auto;padding:16px}
+section{display:none}section.on{display:block}
+.box{background:#fff;border:1px solid #cfd7e0;border-radius:10px;padding:16px;margin-bottom:14px}
+.cols{display:flex;flex-wrap:wrap;gap:16px}.cols>*{flex:1;min-width:290px}
+label{display:block;font-size:13px;font-weight:600;margin-top:10px}
+input,select{width:100%;padding:8px 10px;border:1.5px solid #cfd7e0;border-radius:6px;margin-top:4px;background:#fff}
+.p{background:#0a2240;color:#e5a83b;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;margin:12px 6px 0 0}
+.s{background:#fff;color:#0a2240;border:1.5px solid #0a2240;border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
+:focus-visible{outline:3px solid #e5a83b}
+.r{display:grid;gap:6px;align-items:end;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid #cfd7e0;padding:6px 8px;vertical-align:top}th{background:#0a2240;color:#fff;width:64px}
+.big{font-size:26px;font-weight:700;color:#0a2240}
+.hint{font-size:13px;color:#5d6b7a;margin-top:6px}
+canvas{max-width:100%;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(10,34,64,.25)}
+@media print{header,nav,.np{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<header><h1>DCU Student Tools</h1><a href="./">← কভার পেজ</a></header>
+<nav>
+<button data-t="card">শেয়ার কার্ড</button><button data-t="rt">ক্লাস রুটিন</button><button data-t="cg">CGPA</button><button data-t="ex">পরীক্ষা প্ল্যানার</button><button data-t="pdf">PDF টুল</button>
+</nav>
+<main>
+
+<section id="card"><div class="cols">
+<div class="box">
+<label>নাম</label><input id="cn" placeholder="আপনার নাম">
+<label>ডিপার্টমেন্ট</label><input id="cd" placeholder="Computer Science">
+<label>সেশন</label><input id="cs" placeholder="Session 2025-26">
+<label>আরও এক লাইন (রোল, ব্যাচ বা বার্তা)</label><input id="ce" placeholder="Class of 2026">
+<label>ছবি (ঐচ্ছিক, কোথাও আপলোড হয় না)</label><input id="cf" type="file" accept="image/*">
+<label>থিম</label><select id="cth"><option value="navy">নেভি ও সোনালি</option><option value="gold">সোনালি</option><option value="mint">সবুজ</option></select>
+<label>মাপ</label><select id="csz"><option value="1080,1080">পোস্ট (১:১)</option><option value="1080,1920">স্টোরি (৯:১৬)</option></select>
+<button class="p" id="cdl">ছবি ডাউনলোড</button><button class="p" id="csh">শেয়ার করুন</button>
+</div>
+<div style="text-align:center"><canvas id="cv" width="1080" height="1080"></canvas></div>
+</div></section>
+
+<section id="rt">
+<div class="box np"><div class="cols">
+<div><label>কোর্স</label><input id="rc" placeholder="CSE-101"></div>
+<div><label>দিন</label><select id="rd"><option value="0">শনি</option><option value="1">রবি</option><option value="2">সোম</option><option value="3">মঙ্গল</option><option value="4">বুধ</option><option value="5">বৃহস্পতি</option></select></div>
+<div><label>শুরু</label><input id="rs" type="time"></div>
+<div><label>শেষ</label><input id="re" type="time"></div>
+<div><label>রুম</label><input id="rr" placeholder="রুম ২০১"></div>
+</div><button class="p" id="rta">ক্লাস যোগ করুন</button><button class="p" onclick="print()">প্রিন্ট / PDF সেভ</button></div>
+<div class="box"><table><tbody id="rtb"></tbody></table></div>
+</section>
+
+<section id="cg">
+<div class="box"><div class="hint">সব সেমিস্টার মিলিয়ে CGPA</div><div class="big" id="cgv">—</div><div class="hint">মোট ক্রেডিট: <span id="cgc">0</span> · গ্রেড স্কেল ৪.০০ (আপনার ডিপার্টমেন্টের স্কেলের সাথে মিলিয়ে নিন)</div></div>
+<div id="cgl"></div>
+<button class="p" onclick="G.push([{n:'',c:3,g:4}]);cg()">+ সেমিস্টার যোগ করুন</button>
+<div class="box" style="margin-top:14px"><b>লক্ষ্য CGPA হিসাব</b>
+<div class="cols"><div><label>বাকি ক্রেডিট</label><input id="tr" type="number" min="1" oninput="tg()"></div><div><label>লক্ষ্য CGPA</label><input id="tt" type="number" min="0" max="4" step=".01" oninput="tg()"></div></div>
+<div class="big" id="tv" style="font-size:20px;margin-top:10px"></div></div>
+</section>
+
+<section id="ex">
+<div class="box"><div class="cols">
+<div><label>কোর্স</label><input id="xc" placeholder="CSE-101 মিডটার্ম"></div>
+<div><label>তারিখ</label><input id="xd" type="date"></div>
+<div><label>প্রতিদিন পড়ার সময় (ঘণ্টা)</label><input id="xh" type="number" min="1" max="16" value="4" oninput="ex()"></div>
+</div><button class="p" id="xa">পরীক্ষা যোগ করুন</button><div class="hint">যে পরীক্ষা যত কাছে, তাকে তত বেশি সময় দেওয়া হয়।</div></div>
+<div id="xl"></div>
+</section>
+
+<section id="pdf"><div class="cols">
+<div class="box"><b>ছবি থেকে PDF</b><label>এক বা একাধিক ছবি (নামের ক্রমে সাজানো হবে)</label><input id="pif" type="file" accept="image/*" multiple><button class="p" id="pi">PDF বানান</button></div>
+<div class="box"><b>PDF জোড়া লাগান</b><label>দুই বা বেশি PDF (নামের ক্রমে জোড়া হবে, যেমন 1-cover.pdf, 2-assignment.pdf)</label><input id="pmf" type="file" accept="application/pdf" multiple><button class="p" id="pm2">জোড়া লাগান</button></div>
+</div><p class="hint" id="pm" aria-live="polite"></p><p class="hint">ফাইল আপনার ডিভাইসেই প্রসেস হয়। শুধু প্রথমবার PDF লাইব্রেরি লোড করতে ইন্টারনেট লাগে।</p></section>
+
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,m=>'&#'+m.charCodeAt(0)+';');
+const T=['card','rt','cg','ex','pdf'];
+function go(h){h=T.includes(h)?h:'card';$$('section').forEach(s=>s.classList.toggle('on',s.id==h));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==h))}
+$$('nav button').forEach(b=>b.onclick=()=>{location.hash=b.dataset.t});
+addEventListener('hashchange',()=>go(location.hash.slice(1)));go(location.hash.slice(1));
+
+/* 1. Share card */
+let ph=null;
+const TH={navy:{bg:['#07192f','#0a2240'],fg:'#ffffff',ac:'#e5a83b'},gold:{bg:['#fbeecb','#e5a83b'],fg:'#07192f',ac:'#07192f'},mint:{bg:['#0f766e','#0b4f4a'],fg:'#ffffff',ac:'#fde68a'}};
+async function card(){
+ try{await document.fonts.load('700 40px "Hind Siliguri"')}catch(e){}
+ const[W,H]=$('#csz').value.split(',').map(Number),c=$('#cv'),x=c.getContext('2d'),t=TH[$('#cth').value];
+ c.width=W;c.height=H;x.textAlign='center';
+ const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,t.bg[0]);g.addColorStop(1,t.bg[1]);x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.strokeStyle=t.ac;x.lineWidth=6;x.strokeRect(40,40,W-80,H-80);
+ const tall=H>W,u=W/1080,m=tall?1.2:1,r=(tall?230:170)*u,hy=108*u+(tall?(H-W)*.3:0),cx=W/2,cy=hy+50*u+r;
+ x.fillStyle=t.ac;x.font=`700 ${34*u*m}px "Hind Siliguri"`;x.fillText('ঢাকা সেন্ট্রাল ইউনিভার্সিটি',cx,hy);
+ x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
+ if(ph){const s=Math.max(2*r/ph.width,2*r/ph.height);x.drawImage(ph,cx-ph.width*s/2,cy-ph.height*s/2,ph.width*s,ph.height*s)}
+ else{x.fillStyle=t.ac;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=t.bg[0];x.font=`700 ${r}px "Hind Siliguri"`;x.textBaseline='middle';x.fillText([...($('#cn').value||'D')][0],cx,cy)}
+ x.restore();x.textBaseline='alphabetic';
+ x.strokeStyle=t.ac;x.lineWidth=8*u;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();
+ let y=cy+r+(tall?150:100)*u;
+ const L=(s,sz,w,col)=>{if(!s)return;let f=sz*u*m;x.font=`${w} ${f}px "Hind Siliguri"`;while(x.measureText(s).width>W-160&&f>20){f-=2;x.font=`${w} ${f}px "Hind Siliguri"`}x.fillStyle=col;x.fillText(s,cx,y);y+=f*1.45};
+ L($('#cn').value||'আপনার নাম',84,700,t.fg);L($('#cd').value,44,600,t.ac);L($('#cs').value,40,400,t.fg);L($('#ce').value,40,400,t.fg);
+ x.fillStyle=t.ac;x.font=`600 ${30*u}px "Hind Siliguri"`;x.fillText(location.host||'DCU',cx,H-80*u);
+}
+['cn','cd','cs','ce','cth','csz'].forEach(i=>$('#'+i).oninput=card);
+$('#cf').onchange=async e=>{const f=e.target.files[0];if(f){try{ph=await createImageBitmap(f);card()}catch(err){}}};
+const cdl=()=>{const a=document.createElement('a');a.href=$('#cv').toDataURL('image/png');a.download='dcu-card.png';a.click()};
+$('#cdl').onclick=cdl;
+$('#csh').onclick=()=>$('#cv').toBlob(async b=>{const f=new File([b],'dcu-card.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:'আমার DCU কার্ড '+location.href});else cdl()}catch(e){}});
+
+/* 2. Routine */
+let R=ld('rt',[]);const D=['শনি','রবি','সোম','মঙ্গল','বুধ','বৃহস্পতি'];
+function rt(){sv('rt',R);$('#rtb').innerHTML=D.map((d,i)=>{const L=R.map((r,j)=>({...r,j})).filter(r=>r.d==i).sort((a,b)=>a.s.localeCompare(b.s));return `<tr><th>${d}</th><td>${L.map(r=>`${r.s}–${r.e} · <b>${esc(r.c)}</b> ${esc(r.r)} <button class="s np" onclick="R.splice(${r.j},1);rt()">✕</button>`).join('<br>')||'—'}</td></tr>`}).join('')}
+$('#rta').onclick=()=>{const c=$('#rc').value.trim();if(!c||!$('#rs').value||!$('#re').value)return;R.push({c,d:+$('#rd').value,s:$('#rs').value,e:$('#re').value,r:$('#rr').value.trim()});$('#rc').value='';rt()};
+
+/* 3. CGPA */
+const GR=[['A+',4],['A',3.75],['A-',3.5],['B+',3.25],['B',3],['B-',2.75],['C+',2.5],['C',2.25],['D',2],['F',0]];
+let G=ld('cg',[[{n:'',c:3,g:4}]]),TC=0,TP=0;
+function cg(){$('#cgl').innerHTML=G.map((s,i)=>`<div class="box"><b>সেমিস্টার ${i+1}</b> <span id="sg${i}" class="big" style="font-size:18px"></span> <button class="s" onclick="G.splice(${i},1);cg()">মুছুন</button>${s.map((c,j)=>`<div class="r" style="grid-template-columns:2fr 1fr 1fr auto"><input placeholder="কোর্স" value="${esc(c.n)}" oninput="G[${i}][${j}].n=this.value;gc()"><input type="number" min="0" step=".5" value="${c.c}" oninput="G[${i}][${j}].c=+this.value;gc()"><select onchange="G[${i}][${j}].g=+this.value;gc()">${GR.map(([n,v])=>`<option value="${v}"${v==c.g?' selected':''}>${n}</option>`).join('')}</select><button class="s" onclick="G[${i}].splice(${j},1);cg()">✕</button></div>`).join('')}<button class="s" style="margin-top:8px" onclick="G[${i}].push({n:'',c:3,g:4});cg()">+ কোর্স</button></div>`).join('');gc()}
+function gc(){TC=0;TP=0;G.forEach((s,i)=>{const c=s.reduce((a,x)=>a+x.c,0),p=s.reduce((a,x)=>a+x.c*x.g,0);TC+=c;TP+=p;const e=$('#sg'+i);if(e)e.textContent='GPA '+(c?(p/c).toFixed(2):'—')});$('#cgv').textContent=TC?(TP/TC).toFixed(2):'—';$('#cgc').textContent=TC;sv('cg',G);tg()}
+function tg(){const rem=+$('#tr').value,t=+$('#tt').value;if(!rem||!t){$('#tv').textContent='';return}const n=(t*(TC+rem)-TP)/rem;$('#tv').textContent=n>4?'এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়':n<=0?'লক্ষ্য আগেই অর্জিত':'বাকি সেমিস্টারে গড় GPA লাগবে: '+n.toFixed(2)}
+
+/* 4. Exams */
+let X=ld('ex',[]);
+function ex(){sv('ex',X);const h=+$('#xh').value||4,now=new Date();now.setHours(0,0,0,0);
+ const L=X.map((e,j)=>({...e,j,n:Math.round((new Date(e.d+'T00:00')-now)/864e5)})).filter(e=>e.n>=0).sort((a,b)=>a.n-b.n);
+ const w=L.map(e=>1/(e.n+1)),sum=w.reduce((a,b)=>a+b,0);
+ $('#xl').innerHTML=L.map((e,i)=>`<div class="box"><b>${esc(e.c)}</b> · ${e.d}<div class="big">${e.n?e.n+' দিন বাকি':'আজ পরীক্ষা!'}</div><div class="hint">আজকের পড়া: ${(h*w[i]/sum).toFixed(1)} ঘণ্টা</div><button class="s" onclick="X.splice(${e.j},1);ex()">মুছুন</button></div>`).join('')||'<p class="hint">পরীক্ষার কোর্স ও তারিখ যোগ করুন।</p>'}
+$('#xa').onclick=()=>{const c=$('#xc').value.trim();if(!c||!$('#xd').value)return;X.push({c,d:$('#xd').value});$('#xc').value='';ex()};
+
+/* 5. PDF toolkit */
+let PL;const lp=()=>PL||(PL=new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';s.onload=()=>ok(window.PDFLib);s.onerror=()=>{PL=null;no()};document.head.appendChild(s)}));
+const sp=m=>$('#pm').textContent=m,by=id=>[...$(id).files].sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+const jb=c=>new Promise(r=>c.toBlob(async b=>r(await b.arrayBuffer()),'image/jpeg',.9));
+const save=(b,n)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([b],{type:'application/pdf'}));a.download=n;a.click()};
+$('#pi').onclick=async()=>{const fs=by('#pif');if(!fs.length)return sp('আগে ছবি বাছুন।');
+ try{sp('PDF তৈরি হচ্ছে...');const{PDFDocument}=await lp(),d=await PDFDocument.create(),W=595,H=842;
+  for(const f of fs){const bm=await createImageBitmap(f),c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0);
+   const im=await d.embedJpg(await jb(c)),s=Math.min((W-40)/im.width,(H-40)/im.height),w=im.width*s,h=im.height*s;d.addPage([W,H]).drawImage(im,{x:(W-w)/2,y:(H-h)/2,width:w,height:h})}
+  save(await d.save(),'images.pdf');sp('PDF তৈরি হয়েছে।')}catch(e){sp('PDF বানানো যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।')}};
+$('#pm2').onclick=async()=>{const fs=by('#pmf');if(fs.length<2)return sp('কমপক্ষে ২টি PDF বাছুন।');
+ try{sp('জোড়া লাগানো হচ্ছে...');const{PDFDocument}=await lp(),o=await PDFDocument.create();
+  for(const f of fs){const s=await PDFDocument.load(await f.arrayBuffer());(await o.copyPages(s,s.getPageIndices())).forEach(p=>o.addPage(p))}
+  save(await o.save(),'merged.pdf');sp('PDF জোড়া হয়েছে।')}catch(e){sp('জোড়া লাগানো যায়নি। PDF পাসওয়ার্ড-সুরক্ষিত বা নষ্ট হতে পারে।')}};
+
+card();rt();cg();ex();
+</script>
+</body>
+</html>
