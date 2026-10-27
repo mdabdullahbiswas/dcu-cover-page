@@ -35,7 +35,8 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '<a class="t' + (isI ? ' on' : '') + '" href="./">অ্যাসাইনমেন্ট|Assignment</a>' +
     '<div class="dd"><button type="button" class="t' + (P === 'tools' ? ' on' : '') + '" id="ddb">টুলস ▾|Tools ▾</button><div class="ddm">' + tl + '</div></div>' +
     '<a class="t' + (P === 'result' ? ' on' : '') + '" href="tools.html#result">রেজাল্ট|Results</a>' +
-    '<a class="t" href="about.html#feedback">মতামত|Feedback</a></nav>' +
+    '<a class="t' + (P === 'about' ? ' on' : '') + '" href="about.html">সম্পর্কে|About</a>' +
+    '<a class="t' + (P === 'feedback' ? ' on' : '') + '" href="feedback.html">মতামত|Feedback</a></nav>' +
     '<div class="ut">' + (isI ? '<button type="button" id="helpBtn" onclick="tour(0)" title="Guide">❓</button>' : '') +
     '<button type="button" id="langBtn"' + (isI ? ' onclick="setSite(SL===\'bn\'?\'en\':\'bn\')"' : '') + ' title="Language">' + (SL === 'bn' ? 'EN' : 'বাং') + '</button>' +
     '<button type="button" id="darkBtn" onclick="toggleDark()" title="Theme">🌙</button>' +
@@ -87,7 +88,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4><a class="t" href="./">অ্যাসাইনমেন্ট কভার পেজ|Assignment Cover Page</a>' + tl + '<a class="t" href="tools.html#result">রেজাল্ট দেখুন|View Results</a></div>' +
     '<div><h4 class="t">গোপনীয়তা|Privacy</h4><p class="t">আপনার সব তথ্য ও ফাইল শুধু আপনার ডিভাইসের ব্রাউজারেই থাকে। এগুলো কোনো সার্ভারে পাঠানো হয় না, তাই কেউ চাইলেও দেখতে পারে না।|Your data and files stay in your own browser. Nothing is sent to a server, so nobody else can see it.</p><a class="t" href="about.html#privacy">বিস্তারিত|Learn more</a></div>' +
     '<div><h4 class="t">ডেভেলপার|Developer</h4><a href="about.html"><b>' + DEV.name + '</b></a><span class="t" style="display:block">' + DEV.role + '</span>' + soc +
-    '<a class="t" href="about.html#feedback">মতামত জানান|Send Feedback</a><a id="fbk" style="display:none"></a></div></div>' +
+    '<a class="t" href="feedback.html">মতামত জানান|Send Feedback</a><a id="fbk" style="display:none"></a></div></div>' +
     '<div class="sf-note"><p class="t">⚠️ এটি একটি আন-অফিশিয়াল (অনানুষ্ঠানিক) ওয়েবসাইট। Dhaka Central University কর্তৃপক্ষের সাথে এর কোনো সরকারি সম্পর্ক বা অনুমোদন নেই। অফিশিয়াল তথ্যের জন্য বিশ্ববিদ্যালয়ের নিজস্ব নোটিশ ও ওয়েবসাইট দেখুন।|⚠️ This is an unofficial website. It has no official affiliation with, or endorsement from, Dhaka Central University. For official information, please refer to the university\'s own notices and website.</p>' +
     '<p>© ' + new Date().getFullYear() + ' · <span class="t">তৈরি করেছেন|Developed by</span> <b>' + DEV.name + '</b></p></div></div>';
 
