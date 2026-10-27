@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DCU Assignment Cover Page Generator</title>
+<title>Assignment Cover Page | Dhaka Central University (Unofficial)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Noto+Serif+Bengali:wght@600;800&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
@@ -13,6 +13,7 @@
 <meta name="twitter:card" content="summary"><link rel="icon" href="logo.png">
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script><script defer src="/_vercel/insights/script.js"></script>
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0a2240">
+<link rel="stylesheet" href="site.css">
 <style>
 :root{--pri:#0a2240;--acc:#e5a83b;--pri2:color-mix(in srgb,var(--pri) 78%,#000);--acc2:color-mix(in srgb,var(--acc) 78%,#000)}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Montserrat','Hind Siliguri',sans-serif}
@@ -149,7 +150,7 @@ footer{text-align:center;padding:20px;color:#546e7a;font-size:13px}footer a{colo
 body.dark{background:#0f1722;color:#e6edf5}body.dark .form-section{background:#182231;box-shadow:none}body.dark .form-section h2,body.dark .form-section h3,body.dark label,body.dark .preview-section>h2,body.dark .tpl{color:#d7e2ef}
 body.dark input,body.dark textarea,body.dark select{background:#0f1722;color:#e6edf5;border-color:#33445a}body.dark .btns .alt{background:#182231;color:#e5a83b;border-color:#e5a83b}body.dark .hint,body.dark footer,body.dark footer a{color:#90a4ae}
 
-#darkBtn,#langBtn,#helpBtn{position:absolute;top:16px;width:auto;padding:8px 12px;background:#ffffff22;color:#fff;box-shadow:none;margin:0;font-size:14px}#langBtn{right:72px}#helpBtn{right:128px}
+
 .a4-page .info-row{font-size:calc(12pt*var(--fit,1))}.a4-page .member{font-size:calc(11.5pt*var(--fit,1))}.a4-page .teacher-item{font-size:calc(12.5pt*var(--fit,1))}.a4-page .teacher-item.lead{font-size:calc(14pt*var(--fit,1))}.a4-page .student-name{font-size:calc(15pt*var(--fit,1))}
 .wm{background:var(--wmurl,url(logo.png)) center/100mm no-repeat}.wm-on .wm{display:block}.wm-off .wm{display:none!important}
 .cb{display:flex;align-items:center;gap:8px;font-weight:500;margin-top:10px}.cb input{width:auto;margin:0}
@@ -164,7 +165,7 @@ body.dark input,body.dark textarea,body.dark select{background:#0f1722;color:#e6
 .sg{display:flex;justify-content:space-between;gap:20mm;margin-top:36mm}.sg div{flex:1;text-align:center}.sg .ln{display:block;border-top:1.2px solid #222;margin-bottom:2mm}.sg p{font-size:12pt}#prev-sign{margin:2mm 4mm 12mm;z-index:2}
 .toc{display:flex;align-items:baseline;gap:6px;font-size:13.5pt;margin-bottom:4mm}.toc i{flex:1;border-bottom:2px dotted #888}
 @media print{#supPages{display:block}.sup-page{break-before:page}}
-@media screen and (max-width:700px){#darkBtn,#langBtn,#helpBtn{position:static;display:inline-block;margin:10px 3px 0}}
+
 @media screen and (max-width:700px){.container{padding:12px}.form-section{padding:20px}.preview-section{min-width:0;width:100%;overflow:hidden}.a4-page{transform:scale(.42);margin-bottom:-170mm}}
 @media print{
 @page{size:A4 portrait;margin:0}
@@ -175,17 +176,8 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 .a4-page{transform:none!important;margin:0!important;box-shadow:none!important;width:210mm!important;height:296mm!important;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
-<body>
-<header>
-  <h1>Dhaka Central University</h1>
-  <p>Assignment Cover Page Generator</p>
-  <div>
-    <a href="tools.html" style="display:inline-block;margin-top:10px;color:#e5a83b;font-weight:700;font-size:13px;text-decoration:none">🛠️ ছাত্র টুলস →</a>
-  </div>
-  <button type="button" id="helpBtn" onclick="tour(0)" title="Guide">❓</button>
-  <button type="button" id="langBtn" onclick="setSite(SL==='bn'?'en':'bn')" title="Language">EN</button>
-  <button type="button" id="darkBtn" onclick="toggleDark()">🌙</button>
-</header>
+<body data-page="index">
+<div id="hdr"></div>
 <main class="container">
 <section class="form-section">
 <h2>তথ্য প্রদান করুন</h2>
@@ -330,9 +322,10 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <div id="supPages"></div>
 </section>
 </main>
-<footer><p id="cnt"></p><p><span>বন্ধুদের সঙ্গে শেয়ার করুন:</span> <a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a> <a id="fbk" target="_blank" rel="noopener" style="display:none">💬 মতামত জানান</a></p></footer>
+<div id="ftr"></div>
 <div id="tourBox"><p id="tourTxt"></p><div class="tb"><button type="button" class="mini alt2" onclick="tour(99)">এড়িয়ে যান</button><button type="button" class="mini" id="tourNext" onclick="tour(ti+1)">পরবর্তী</button></div></div>
 <div class="toast" id="toast"></div>
+<script src="site.js"></script>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -534,7 +527,7 @@ const UI = Object.fromEntries([
 ['অতিরিক্ত পেজ (থিসিস / প্রজেক্ট)','Extra Pages (Thesis / Project)'],['ঘোষণাপত্র (Declaration)','Declaration'],['অনুমোদনপত্র (Approval Certificate)','Approval Certificate'],['কৃতজ্ঞতা স্বীকার (Acknowledgement)','Acknowledgement'],['সূচিপত্র (Table of Contents)','Table of Contents'],['প্রতি লাইনে: অধ্যায়ের নাম | পৃষ্ঠা নম্বর','One per line: Chapter title | Page number'],
 ['🖼️ PNG ডাউনলোড','🖼️ Download PNG'],['📝 Word (সম্পাদনাযোগ্য)','📝 Word (editable)'],['🔗 লিংক শেয়ার','🔗 Share Link'],['🗑️ সব তথ্য মুছে ফেলুন','🗑️ Clear All Data'],
 ['✅ আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।','✅ Your data is saved automatically in this browser, so you won’t need to retype it next time.'],
-['লাইভ প্রিভিউ','Live Preview'],['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],['💬 মতামত জানান','💬 Send Feedback'],['📸 পাসপোর্ট / স্ট্যাম্প ছবি তৈরি করুন →','📸 Make Passport / Stamp Photos →'],
+['লাইভ প্রিভিউ','Live Preview'],['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],['💬 মতামত জানান','💬 Send Feedback'],
 ['এড়িয়ে যান','Skip'],['পরবর্তী','Next'],['সমাপ্ত','Finish'],['— নির্বাচন করুন —','— Select —'],
 ['⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)','⚠️ Mobile number looks invalid (e.g. 01712345678)'],['⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।','⚠️ Too much text; the bottom of the cover may be cut off. Please shorten it.'],
 ['ছবি প্রস্তুত করা হচ্ছে...','Preparing image...'],['ডাউনলোড শুরু হয়েছে','Download started'],['ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন','Could not create the image; please use PDF'],['লিংক কপি করা হয়েছে','Link copied'],['প্রোফাইল সংরক্ষিত হয়েছে','Profile saved'],['প্রোফাইল লোড হয়েছে','Profile loaded'],['ছবির আকার বড়, সংরক্ষণ করা যায়নি','Image too large to save'],['Word ফাইল ডাউনলোড হয়েছে','Word file downloaded'],
@@ -553,7 +546,7 @@ function applyUI(){
 function setSite(l){
   SL = l; try { localStorage.setItem('dcuSL', l); } catch(e){}
   $('langBtn').textContent = l === 'bn' ? 'EN' : 'বাং';
-  applyUI(); profList($('profSel').value); showCnt(); render();
+  applyUI(); window.$applyL&&$applyL(l); profList($('profSel').value); showCnt(); render();
 }
 const TOUR = [['.gal','১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।'],['.themes','২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।'],['#dept','৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।'],['.btns .full','৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।']];
 function tour(i){
