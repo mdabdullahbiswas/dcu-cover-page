@@ -8,6 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Noto+Serif+Bengali:wght@600;800&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<meta name="description" content="DHAKA CENTRAL UNIVERSITY assignment, lab report, project and thesis cover page generator. Free, fast, print-ready.">
+<meta property="og:type" content="website"><meta property="og:title" content="DCU Assignment Cover Page Generator"><meta property="og:description" content="এক মিনিটে সুন্দর কভার পেজ তৈরি করুন: PDF, PNG ও Word-এ ডাউনলোড।"><meta property="og:image" content="https://dcu-cover-page.vercel.app/logo.png"><meta property="og:url" content="https://dcu-cover-page.vercel.app/">
+<meta name="twitter:card" content="summary"><link rel="icon" href="logo.png">
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script><script defer src="/_vercel/insights/script.js"></script>
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0a2240">
 <style>
 :root{--pri:#0a2240;--acc:#e5a83b;--pri2:color-mix(in srgb,var(--pri) 78%,#000);--acc2:color-mix(in srgb,var(--acc) 78%,#000)}
@@ -124,11 +128,11 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,34,64,.35)
 .teacher-dept{font-size:12pt;font-weight:700;color:#222;margin-bottom:1mm}
 .teacher-college{font-size:11pt;font-weight:600;color:#555}
 
-header{position:relative}#darkBtn{position:absolute;right:16px;top:16px;width:auto;padding:8px 12px;background:#ffffff22;color:#fff;box-shadow:none;margin:0}
+header{position:relative}
 .a4-page .main-title,.a4-page .doc-title{font-family:var(--font,'Cinzel'),serif}
 .bn-lang .main-title,.bn-lang .doc-title{font-family:'Noto Serif Bengali','Hind Siliguri',serif!important}.bn-lang *{letter-spacing:0!important}
 .frame{position:absolute;inset:3mm;pointer-events:none;z-index:1}.bs-double .frame{border:3px double var(--pri)}.bs-solid .frame{border:2px solid var(--pri)}.bs-ornate .frame{border:5px ridge var(--acc)}
-.wm{display:none;position:absolute;inset:0;background:url(logo.png) center/100mm no-repeat;opacity:.07;pointer-events:none}
+.wm{display:none;position:absolute;inset:0;opacity:.07;pointer-events:none}
 .tc-bold::before{content:'';position:absolute;top:0;left:0;right:0;height:80mm;background:linear-gradient(135deg,var(--pri2),var(--pri))}
 .tc-bold .top-accent-bar,.tc-bold .corner,.tc-bold .inner-border,.tc-frame .top-accent-bar,.tc-frame .corner{display:none}
 .tc-bold .header-content{position:relative}.tc-bold .logo-box{height:34mm;width:34mm;background:#fff;border-radius:50%;padding:2.5mm}
@@ -144,6 +148,23 @@ header{position:relative}#darkBtn{position:absolute;right:16px;top:16px;width:au
 footer{text-align:center;padding:20px;color:#546e7a;font-size:13px}footer a{color:#0a2240;font-weight:700;margin:0 8px}
 body.dark{background:#0f1722;color:#e6edf5}body.dark .form-section{background:#182231;box-shadow:none}body.dark .form-section h2,body.dark .form-section h3,body.dark label,body.dark .preview-section>h2,body.dark .tpl{color:#d7e2ef}
 body.dark input,body.dark textarea,body.dark select{background:#0f1722;color:#e6edf5;border-color:#33445a}body.dark .btns .alt{background:#182231;color:#e5a83b;border-color:#e5a83b}body.dark .hint,body.dark footer,body.dark footer a{color:#90a4ae}
+
+#darkBtn,#langBtn,#helpBtn{position:absolute;top:16px;width:auto;padding:8px 12px;background:#ffffff22;color:#fff;box-shadow:none;margin:0;font-size:14px}#langBtn{right:72px}#helpBtn{right:128px}
+.a4-page .info-row{font-size:calc(12pt*var(--fit,1))}.a4-page .member{font-size:calc(11.5pt*var(--fit,1))}.a4-page .teacher-item{font-size:calc(12.5pt*var(--fit,1))}.a4-page .teacher-item.lead{font-size:calc(14pt*var(--fit,1))}.a4-page .student-name{font-size:calc(15pt*var(--fit,1))}
+.wm{background:var(--wmurl,url(logo.png)) center/100mm no-repeat}.wm-on .wm{display:block}.wm-off .wm{display:none!important}
+.cb{display:flex;align-items:center;gap:8px;font-weight:500;margin-top:10px}.cb input{width:auto;margin:0}
+.chip{width:auto;padding:6px 12px;font-size:12px;margin:6px 6px 0 0;border-radius:20px;letter-spacing:0;background:#eef3f8;color:#0a2240;box-shadow:none}
+.alt2{background:#fff;color:#0a2240;border:1px solid #0a2240;box-shadow:none}
+#tourBox{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:min(92vw,430px);background:#fff;color:#222;border-radius:12px;padding:16px;box-shadow:0 10px 40px rgba(0,0,0,.35);z-index:20}#tourBox p{font-size:14px;margin-bottom:10px}.tb{display:flex;gap:8px;justify-content:flex-end}.tb .mini{margin:0}
+.tour-hl{outline:3px solid var(--acc);outline-offset:4px;border-radius:6px}
+#supPages{display:flex;flex-direction:column;align-items:center;width:100%}
+.sup-page{padding:28mm 24mm;justify-content:flex-start}.sup-page,.sup-page *{font-family:'Times New Roman','Hind Siliguri',serif}
+.sup-page .sp-t{font-family:'Cinzel',serif;text-align:center;color:var(--pri);font-size:22pt;letter-spacing:3px;border-bottom:3px double var(--acc);padding-bottom:5mm;margin-bottom:14mm}.bn-lang .sp-t{font-family:'Noto Serif Bengali',serif!important}
+.sp-p{font-size:14pt;line-height:1.9;text-align:justify}.sp-r{margin-top:14mm;text-align:right;font-weight:700;font-size:13pt}
+.sg{display:flex;justify-content:space-between;gap:20mm;margin-top:36mm}.sg div{flex:1;text-align:center}.sg .ln{display:block;border-top:1.2px solid #222;margin-bottom:2mm}.sg p{font-size:12pt}#prev-sign{margin:2mm 4mm 12mm;z-index:2}
+.toc{display:flex;align-items:baseline;gap:6px;font-size:13.5pt;margin-bottom:4mm}.toc i{flex:1;border-bottom:2px dotted #888}
+@media print{#supPages{display:block}.sup-page{break-before:page}}
+@media screen and (max-width:700px){#darkBtn,#langBtn,#helpBtn{position:static;display:inline-block;margin:10px 3px 0}}
 @media screen and (max-width:700px){.container{padding:12px}.form-section{padding:20px}.preview-section{min-width:0;width:100%;overflow:hidden}.a4-page{transform:scale(.42);margin-bottom:-170mm}}
 @media print{
 @page{size:A4 portrait;margin:0}
@@ -155,17 +176,17 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 </style>
 </head>
 <body>
-<header><h1>Dhaka Central University</h1><p>Assignment Cover Page Generator</p><button type="button" id="darkBtn" onclick="toggleDark()">🌙</button></header>
+<header><h1>Dhaka Central University</h1><p>Assignment Cover Page Generator</p><button type="button" id="helpBtn" onclick="tour(0)" title="Guide">❓</button><button type="button" id="langBtn" onclick="setSite(SL==='bn'?'en':'bn')" title="Language">EN</button><button type="button" id="darkBtn" onclick="toggleDark()">🌙</button></header>
 
 <main class="container">
 <section class="form-section">
 <h2>তথ্য প্রদান করুন</h2>
 <form id="coverForm" onsubmit="return false">
-<label>📁 সেভ করা প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):</label><div class="prof"><select id="profSel"></select><button type="button" class="mini" onclick="profSave()">💾</button><button type="button" class="mini" onclick="profLoad()">📂</button><button type="button" class="mini" onclick="profDel()">🗑️</button></div>
-<label>কভার পেজ টেমপ্লেট:</label>
+<label>📁 সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):</label><div class="prof"><select id="profSel"></select><button type="button" class="mini" onclick="profSave()">💾</button><button type="button" class="mini" onclick="profLoad()">📂</button><button type="button" class="mini" onclick="profDel()">🗑️</button></div>
+<label>কভার পেজ টেমপ্লেট নির্বাচন করুন:</label>
 <select id="templateSelector" hidden><option value="theme-classic">Classic</option><option value="theme-minimal">Minimal</option><option value="theme-executive">Executive</option><option value="theme-classic tc-bold">Bold</option><option value="theme-classic tc-frame">Heritage</option></select><div class="gal"><button type="button" class="tpl" data-v="theme-classic"><div class="th" style="border-color:var(--pri);background:linear-gradient(var(--pri) 0 10%,#fff 10% 90%,var(--pri) 90%)"></div>Classic</button><button type="button" class="tpl" data-v="theme-minimal"><div class="th" style="border:5px solid var(--pri);background:#fff"></div>Minimal</button><button type="button" class="tpl" data-v="theme-executive"><div class="th" style="background:linear-gradient(90deg,var(--pri) 0 12%,var(--acc) 12% 18%,#fff 18%)"></div>Executive</button><button type="button" class="tpl" data-v="theme-classic tc-bold"><div class="th" style="background:linear-gradient(var(--pri) 0 42%,#fff 42%)"></div>Bold</button><button type="button" class="tpl" data-v="theme-classic tc-frame"><div class="th" style="border:4px double var(--pri);background:#fff"></div>Heritage</button></div>
 
-<label>🎨 থিম কালার:</label>
+<label>🎨 থিমের রং:</label>
 <div class="themes">
 <button type="button" class="sw" style="background:linear-gradient(135deg,#0a2240 50%,#e5a83b 50%)" data-p="#0a2240" data-a="#e5a83b" title="Navy & Gold"></button>
 <button type="button" class="sw" style="background:linear-gradient(135deg,#0b3d2e 50%,#d4a017 50%)" data-p="#0b3d2e" data-a="#d4a017" title="Green & Gold"></button>
@@ -173,17 +194,19 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <button type="button" class="sw" style="background:linear-gradient(135deg,#2d1b5e 50%,#e0a93b 50%)" data-p="#2d1b5e" data-a="#e0a93b" title="Purple & Gold"></button>
 <button type="button" class="sw" style="background:linear-gradient(135deg,#0f4c5c 50%,#f2a541 50%)" data-p="#0f4c5c" data-a="#f2a541" title="Teal & Orange"></button>
 <button type="button" class="sw" style="background:linear-gradient(135deg,#111 50%,#c9a227 50%)" data-p="#111111" data-a="#c9a227" title="Black & Gold"></button>
-<input type="color" id="cPri" title="মূল রং"><input type="color" id="cAcc" title="অ্যাকসেন্ট রং"><small>← নিজের পছন্দের রং</small>
+<input type="color" id="cPri" title="মূল রং"><input type="color" id="cAcc" title="অ্যাকসেন্ট রং"><small>← কাস্টম রং</small>
 </div>
 
 <label>📝 কভারের ধরন:</label>
 <select id="docType"><option value="assignment">অ্যাসাইনমেন্ট</option><option value="lab">ল্যাব রিপোর্ট</option><option value="presentation">প্রেজেন্টেশন</option><option value="project">প্রজেক্ট / থিসিস</option><option value="quiz">কুইজ / পরীক্ষা</option></select>
 <div class="row2"><div><label>🌐 কভারের ভাষা:</label><select id="lang"><option value="en">English</option><option value="bn">বাংলা</option></select></div>
 <div><label>🔢 সংখ্যা:</label><select id="digits"><option value="en">1 2 3</option><option value="bn">১ ২ ৩</option></select></div>
-<div><label>🔤 টাইটেল ফন্ট:</label><select id="font"><option>Cinzel</option><option>Playfair Display</option><option>Noto Serif Bengali</option><option>Montserrat</option></select></div>
-<div><label>🖼️ বর্ডার:</label><select id="bs"><option value="none">বর্ডার ছাড়া</option><option value="double">ডাবল লাইন</option><option value="solid">সলিড</option><option value="ornate">অলংকৃত</option></select></div></div>
-<label>🏛️ নিজের লোগো (ঐচ্ছিক):</label><input type="file" id="logoFile" accept="image/*"><button type="button" class="mini" onclick="logoReset()">↩️ ডিফল্ট লোগো</button>
+<div><label>🔤 শিরোনামের ফন্ট:</label><select id="font"><option>Cinzel</option><option>Playfair Display</option><option>Noto Serif Bengali</option><option>Montserrat</option></select></div>
+<div><label>🖼️ সীমারেখা (বর্ডার):</label><select id="bs"><option value="none">সীমারেখাবিহীন</option><option value="double">দ্বৈত রেখা</option><option value="solid">একক রেখা</option><option value="ornate">অলংকৃত</option></select></div></div>
+<label>🏛️ নিজস্ব লোগো (ঐচ্ছিক):</label><input type="file" id="logoFile" accept="image/*"><button type="button" class="mini" onclick="logoReset()">↩️ মূল লোগো পুনরুদ্ধার</button>
 
+<div class="row2"><div><label>💧 ওয়াটারমার্ক:</label><select id="wm"><option value="auto">টেমপ্লেট অনুযায়ী</option><option value="on">চালু</option><option value="off">বন্ধ</option></select></div>
+<div><label>✍️ স্বাক্ষরের স্থান:</label><select id="sign"><option value="off">বন্ধ</option><option value="on">চালু</option></select></div></div>
 <label>ক্যাম্পাসের নাম:</label>
 <input type="text" id="campus" placeholder="e.g. MAIN CAMPUS">
 <label>ডিপার্টমেন্ট:</label>
@@ -211,7 +234,7 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <div class="group-only">
 <label>গ্রুপ সদস্য (প্রতি লাইনে একজন: নাম, রোল):</label>
 <textarea id="members" rows="5" placeholder="ABDUL KARIM, 101&#10;RAHIM UDDIN, 102"></textarea>
-<p class="hint">সর্বোচ্চ ৮ জন দিলে সুন্দরভাবে এঁটে যাবে।</p>
+<p class="hint">সর্বোচ্চ ৮ জন সদস্য সুন্দরভাবে প্রদর্শিত হবে।</p>
 </div>
 
 <label>ক্লাস/ডিগ্রি:</label>
@@ -221,7 +244,7 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <label>মোবাইল নম্বর:</label>
 <input type="text" id="mobile" placeholder="e.g. 01700000000">
 <p class="hint warn" id="mobWarn"></p>
-<label>জমা দেওয়ার তারিখ:</label>
+<label>জমাদানের তারিখ:</label>
 <input type="text" id="submitDate" placeholder="e.g. 12/02/2026">
 <div class="prof"><select id="dateFmt"><option value="dmy">26/10/2026</option><option value="long">26 October 2026</option></select><button type="button" class="mini" onclick="today()">📅 আজকের তারিখ</button></div>
 
@@ -229,16 +252,24 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <h3>Submitted To (শিক্ষক)</h3>
 <label>শিক্ষকের নাম ও পদবি (প্রতি লাইনে একজন):</label>
 <textarea id="teacherInfo" rows="4" placeholder="Prof. Dr. X&#10;Assoc. Prof. Y"></textarea>
+<div id="tchipBox" style="display:none"><label>সংরক্ষিত শিক্ষক (ক্লিক করে ব্যবহার করুন):</label><div id="tchips"></div><button type="button" class="mini alt2" onclick="tclear()">তালিকা মুছুন</button></div>
+<hr><h3>অতিরিক্ত পেজ (থিসিস / প্রজেক্ট)</h3>
+<label class="cb"><input type="checkbox" id="pgDecl"><span>ঘোষণাপত্র (Declaration)</span></label>
+<label class="cb"><input type="checkbox" id="pgAppr"><span>অনুমোদনপত্র (Approval Certificate)</span></label>
+<label class="cb"><input type="checkbox" id="pgAck"><span>কৃতজ্ঞতা স্বীকার (Acknowledgement)</span></label>
+<div id="ackBox" style="display:none"><textarea id="ackText" rows="4" placeholder="Leave empty to use a default text"></textarea></div>
+<label class="cb"><input type="checkbox" id="pgToc"><span>সূচিপত্র (Table of Contents)</span></label>
+<div id="tocBox" style="display:none"><textarea id="tocText" rows="5" placeholder="Introduction | 1&#10;Methodology | 12"></textarea><p class="hint">প্রতি লাইনে: অধ্যায়ের নাম | পৃষ্ঠা নম্বর</p></div>
 
 <p class="hint warn" id="ovWarn"></p>
 <div class="btns">
 <button type="button" class="full" onclick="bump();window.print()">🖨️ Save as PDF / Print</button>
 <button type="button" class="alt" onclick="downloadPNG()">🖼️ PNG ডাউনলোড</button>
-<button type="button" class="alt" onclick="downloadDoc()">📝 Word (এডিটযোগ্য)</button>
+<button type="button" class="alt" onclick="downloadDoc()">📝 Word (সম্পাদনাযোগ্য)</button>
 <button type="button" class="alt full" onclick="share()">🔗 লিংক শেয়ার</button>
-<button type="button" class="danger full" onclick="resetAll()">🗑️ সব তথ্য মুছুন</button>
+<button type="button" class="danger full" onclick="resetAll()">🗑️ সব তথ্য মুছে ফেলুন</button>
 </div>
-<p class="hint">✅ আপনার তথ্য এই ব্রাউজারে অটো-সেভ হয়, পরেরবার আবার লিখতে হবে না।</p>
+<p class="hint">✅ আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।</p>
 </form>
 </section>
 
@@ -286,16 +317,19 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 </div>
 </div>
 </div>
+<div class="sg" id="prev-sign" style="display:none"><div><span class="ln"></span><p data-k="sg1">Student's Signature</p></div><div><span class="ln"></span><p data-k="sg2">Teacher's Signature</p></div></div>
 </div>
+<div id="supPages"></div>
 </section>
 </main>
-<footer><p id="cnt"></p><p>বন্ধুদের জানান: <a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a></p></footer>
+<footer><p id="cnt"></p><p><span>বন্ধুদের সঙ্গে শেয়ার করুন:</span> <a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a> <a id="fbk" target="_blank" rel="noopener" style="display:none">💬 মতামত জানান</a></p></footer>
+<div id="tourBox"><p id="tourTxt"></p><div class="tb"><button type="button" class="mini alt2" onclick="tour(99)">এড়িয়ে যান</button><button type="button" class="mini" id="tourNext" onclick="tour(ti+1)">পরবর্তী</button></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const $ = id => document.getElementById(id);
 const KEY = 'dcuCoverV2';
-const F = ['campus','dept','courseCode','courseName','topic','studentName','studentClass','studentRoll','session','mobile','submitDate','teacherInfo','members'];
+const F = ['campus','dept','courseCode','courseName','topic','studentName','studentClass','studentRoll','session','mobile','submitDate','teacherInfo','members','ackText','tocText'];
 const D = {
   campus:'MAIN CAMPUS, DHAKA', dept:'DEPARTMENT OF COMPUTER SCIENCE', topic:'INTRODUCTION TO ARTIFICIAL INTELLIGENCE',
   studentName:'ABDUL KARIM', studentClass:'BSc Honours 1st Year', studentRoll:'101', session:'2025-26',
@@ -308,7 +342,7 @@ const P = { campus:['prev-campus'], dept:['prev-dept','prev-tdept'], topic:['pre
 const val = id => $(id).value.trim() || D[id] || '';
 const lines = t => t.split('\n').map(l => l.trim()).filter(Boolean);
 
-function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2200); }
+function toast(msg){ const t=$('toast'); t.textContent=T(msg); t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2200); }
 
 function setTheme(p, a){
   document.documentElement.style.setProperty('--pri', p);
@@ -318,13 +352,14 @@ function setTheme(p, a){
 
 function get(){
   const f = {}; F.forEach(i => f[i] = $(i).value);
-  return { t:$('templateSelector').value, m:$('mode').value, c:[$('cPri').value,$('cAcc').value], x:EXTRA.map(i=>$(i).value), f };
+  return { t:$('templateSelector').value, m:$('mode').value, c:[$('cPri').value,$('cAcc').value], x:EXTRA.map(i=>$(i).value), k:CHK.map(i=>$(i).checked), f };
 }
 
 function render(){
   const cover = $('cover-template');
   const grp = $('mode').value === 'group';
-  cover.className = 'a4-page ' + $('templateSelector').value + ' bs-' + $('bs').value + ($('lang').value === 'bn' ? ' bn-lang' : '');
+  cover.className = 'a4-page ' + $('templateSelector').value + ' bs-' + $('bs').value + ($('lang').value === 'bn' ? ' bn-lang' : '') + ' wm-' + $('wm').value;
+  $('prev-sign').style.display = $('sign').value === 'on' ? 'flex' : 'none';
   cover.style.setProperty('--font', "'" + $('font').value + "'");
   document.querySelectorAll('.tpl').forEach(b => b.classList.toggle('on', b.dataset.v === $('templateSelector').value));
   document.body.classList.toggle('grp', grp);
@@ -352,7 +387,7 @@ function render(){
     row.append(a, b); mBox.appendChild(row);
   });
 
-  digitsPass(); checks();
+  supRender(); fit(); digitsPass(); checks();
   try { localStorage.setItem(KEY, JSON.stringify(get())); } catch(e){}
 }
 
@@ -361,12 +396,13 @@ function apply(s){
   $('templateSelector').value = s.t || 'theme-classic';
   $('mode').value = s.m || 'single';
   EXTRA.forEach((i,k) => $(i).value = (s.x && s.x[k]) || $(i).options[0].value);
+  CHK.forEach((i, j) => $(i).checked = !!(s.k && s.k[j]));
   setTheme(...(s.c || ['#0a2240', '#e5a83b']));
   render();
 }
 
 async function downloadPNG(){
-  toast('⏳ ছবি তৈরি হচ্ছে...');
+  toast('ছবি প্রস্তুত করা হচ্ছে...');
   try {
     const c = await html2canvas($('cover-template'), {
       scale: 3, useCORS: true, backgroundColor: '#ffffff',
@@ -375,31 +411,32 @@ async function downloadPNG(){
     const a = document.createElement('a');
     a.download = 'cover-page-' + (val('studentName').replace(/\s+/g, '-') || 'dcu') + '.png';
     a.href = c.toDataURL('image/png'); a.click();
-    toast('✅ ডাউনলোড শুরু হয়েছে'); bump();
-  } catch(e){ toast('❌ ছবি তৈরি হয়নি, PDF ব্যবহার করুন'); }
+    toast('ডাউনলোড শুরু হয়েছে'); bump();
+  } catch(e){ toast('ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন'); }
 }
 
 function share(){
   const u = location.href.split('#')[0] + '#' + btoa(unescape(encodeURIComponent(JSON.stringify(get()))));
   (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject())
-    .then(() => toast('🔗 লিংক কপি হয়েছে'))
-    .catch(() => prompt('লিংকটি কপি করুন:', u));
+    .then(() => toast('লিংক কপি করা হয়েছে'))
+    .catch(() => prompt(T('লিংকটি কপি করুন:'), u));
 }
 
 function resetAll(){
-  if (!confirm('সব তথ্য মুছে ফেলতে চান?')) return;
+  if (!confirm(T('আপনি কি সব তথ্য মুছে ফেলতে চান?'))) return;
   try { localStorage.removeItem(KEY); } catch(e){}
   history.replaceState(null, '', location.pathname);
   apply({});
 }
 
 
-const EXTRA = ['docType','lang','digits','font','bs','dateFmt'];
+const EXTRA = ['docType','lang','digits','font','bs','dateFmt','wm','sign'];
+const CHK = ['pgDecl','pgAppr','pgAck','pgToc'];
 const LG = {
-  en:{uni:'DHAKA CENTRAL UNIVERSITY',by:'SUBMITTED BY',byg:'SUBMITTED BY (GROUP)',to:'SUBMITTED TO',roll:'Class Roll:',cls:'Class/Degree:',ses:'Session:',mob:'Mobile No:',dt:'Submission Date:',course:'COURSE: ',r:'Roll: ',col:'Dhaka Central University'},
-  bn:{uni:'ঢাকা সেন্ট্রাল ইউনিভার্সিটি',by:'জমাদানকারী',byg:'জমাদানকারী (গ্রুপ)',to:'গ্রহণকারী',roll:'ক্লাস রোল:',cls:'ক্লাস/ডিগ্রি:',ses:'সেশন:',mob:'মোবাইল:',dt:'জমার তারিখ:',course:'কোর্স: ',r:'রোল: ',col:'ঢাকা সেন্ট্রাল ইউনিভার্সিটি'}
+  en:{uni:'DHAKA CENTRAL UNIVERSITY',by:'SUBMITTED BY',byg:'SUBMITTED BY (GROUP)',to:'SUBMITTED TO',roll:'Class Roll:',cls:'Class/Degree:',ses:'Session:',mob:'Mobile No:',dt:'Submission Date:',course:'COURSE: ',r:'Roll: ',col:'Dhaka Central University',sg1:"Student's Signature",sg2:"Teacher's Signature"},
+  bn:{uni:'ঢাকা সেন্ট্রাল ইউনিভার্সিটি',by:'জমাদানকারী',byg:'জমাদানকারী (গ্রুপ)',to:'জমা গ্রহণকারী',roll:'ক্লাস রোল:',cls:'ক্লাস/ডিগ্রি:',ses:'সেশন:',mob:'মোবাইল নম্বর:',dt:'জমার তারিখ:',course:'কোর্স: ',r:'রোল: ',col:'ঢাকা সেন্ট্রাল ইউনিভার্সিটি',sg1:'শিক্ষার্থীর স্বাক্ষর',sg2:'শিক্ষকের স্বাক্ষর'}
 };
-const TY = {assignment:['ASSIGNMENT','অ্যাসাইনমেন্ট','TOPIC','বিষয়'],lab:['LAB REPORT','ল্যাব রিপোর্ট','EXPERIMENT','এক্সপেরিমেন্ট'],presentation:['PRESENTATION','প্রেজেন্টেশন','TOPIC','বিষয়'],project:['PROJECT','প্রজেক্ট','TITLE','শিরোনাম'],quiz:['QUIZ','কুইজ','SUBJECT','বিষয়']};
+const TY = {assignment:['ASSIGNMENT','অ্যাসাইনমেন্ট','TOPIC','বিষয়'],lab:['LAB REPORT','ল্যাব রিপোর্ট','EXPERIMENT','পরীক্ষণ'],presentation:['PRESENTATION','প্রেজেন্টেশন','TOPIC','বিষয়'],project:['PROJECT','প্রজেক্ট','TITLE','শিরোনাম'],quiz:['QUIZ','কুইজ','SUBJECT','বিষয়']};
 const L = () => LG[$('lang').value];
 
 function loc(){
@@ -413,13 +450,13 @@ function loc(){
 }
 function digitsPass(){
   if ($('digits').value !== 'bn') return;
-  const m = '০১২৩৪৫৬৭৮৯', w = document.createTreeWalker($('cover-template'), NodeFilter.SHOW_TEXT); let n;
-  while ((n = w.nextNode())) n.nodeValue = n.nodeValue.replace(/\d/g, d => m[d]);
+  const m = '০১২৩৪৫৬৭৮৯';
+  [$('cover-template'), $('supPages')].forEach(r => { const w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) n.nodeValue = n.nodeValue.replace(/\d/g, d => m[d]); });
 }
 function checks(){
   const m = $('mobile').value.replace(/[\s-]/g, ''), c = $('cover-template');
-  $('mobWarn').textContent = (!m || /^(\+?88)?01[3-9]\d{8}$/.test(m)) ? '' : '⚠️ মোবাইল নম্বর সঠিক মনে হচ্ছে না (যেমন 01712345678)';
-  $('ovWarn').textContent = c.scrollHeight > c.clientHeight + 2 ? '⚠️ লেখা বেশি হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে, লেখা বা সদস্য কমান' : '';
+  $('mobWarn').textContent = (!m || /^(\+?88)?01[3-9]\d{8}$/.test(m)) ? '' : T('⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)');
+  $('ovWarn').textContent = c.scrollHeight > c.clientHeight + 2 ? T('⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।') : '';
 }
 function today(){
   const d = new Date(), l = $('lang').value === 'bn' ? 'bn-BD' : 'en-GB';
@@ -433,22 +470,22 @@ function toggleDark(){
 const PK = 'dcuProfiles';
 const profs = () => { try { return JSON.parse(localStorage.getItem(PK)) || {}; } catch(e){ return {}; } };
 function profList(sel){
-  const s = $('profSel'); s.innerHTML = ''; s.add(new Option('— বাছুন —', ''));
+  const s = $('profSel'); s.innerHTML = ''; s.add(new Option(T('— নির্বাচন করুন —'), ''));
   Object.keys(profs()).forEach(k => s.add(new Option(k, k))); if (sel) s.value = sel;
 }
 function profSave(){
-  const n = prompt('প্রোফাইলের নাম দিন (যেমন: CSE-101 রহমান স্যার):'); if (!n) return;
-  const p = profs(); p[n] = get(); localStorage.setItem(PK, JSON.stringify(p)); profList(n); toast('💾 প্রোফাইল সেভ হয়েছে');
+  const n = prompt(T('প্রোফাইলের নাম লিখুন (উদাহরণ: CSE-101 – রহমান স্যার):')); if (!n) return;
+  const p = profs(); p[n] = get(); localStorage.setItem(PK, JSON.stringify(p)); profList(n); toast('প্রোফাইল সংরক্ষিত হয়েছে');
 }
-function profLoad(){ const s = profs()[$('profSel').value]; if (s) { apply(s); toast('📂 প্রোফাইল লোড হয়েছে'); } }
+function profLoad(){ const s = profs()[$('profSel').value]; if (s) { apply(s); toast('প্রোফাইল লোড হয়েছে'); } }
 function profDel(){
-  const n = $('profSel').value; if (!n || !confirm('"' + n + '" মুছে ফেলবেন?')) return;
+  const n = $('profSel').value; if (!n || !confirm('"' + n + '" — ' + T('এই প্রোফাইলটি মুছে ফেলতে চান?'))) return;
   const p = profs(); delete p[n]; localStorage.setItem(PK, JSON.stringify(p)); profList();
 }
-function setLogo(src){ document.querySelector('.dcu-logo').src = src; }
-function logoReset(){ try { localStorage.removeItem('dcuLogo'); } catch(e){} setLogo('./logo.png'); $('logoFile').value = ''; }
-function showCnt(){ let n = 0; try { n = +localStorage.getItem('dcuCnt') || 0; } catch(e){} $('cnt').textContent = n ? '🎉 আপনি এ পর্যন্ত ' + n + 'টি কভার তৈরি করেছেন' : ''; }
-function bump(){ try { localStorage.setItem('dcuCnt', (+localStorage.getItem('dcuCnt') || 0) + 1); } catch(e){} showCnt(); }
+function setLogo(src){ document.querySelector('.dcu-logo').src = src; $('cover-template').style.setProperty('--wmurl', 'url(' + src + ')'); }
+function logoReset(){ try { localStorage.removeItem('dcuLogo'); } catch(e){} setLogo('./logo.png'); $('cover-template').style.removeProperty('--wmurl'); $('logoFile').value = ''; }
+function showCnt(){ let n = 0; try { n = +localStorage.getItem('dcuCnt') || 0; } catch(e){} $('cnt').textContent = n ? (SL === 'en' ? '🎉 You have created ' + n + ' cover(s) so far' : '🎉 আপনি এ পর্যন্ত ' + n + 'টি কভার তৈরি করেছেন') : ''; }
+function bump(){ tsave(); try { localStorage.setItem('dcuCnt', (+localStorage.getItem('dcuCnt') || 0) + 1); } catch(e){} showCnt(); }
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 function downloadDoc(){
   const p = $('cPri').value, a = $('cAcc').value, t = id => esc($(id).textContent), grp = $('mode').value === 'group';
@@ -468,7 +505,101 @@ function downloadDoc(){
     '<table width="100%" cellpadding="8"><tr><td width="50%" valign="top" style="border-top:3pt solid ' + p + '"><p style="color:' + p + ';font-size:13pt"><b>' + t('prev-bylabel') + '</b></p>' + li(by) +
     '</td><td width="50%" valign="top" style="border-top:3pt solid ' + a + '"><p style="color:' + a + ';font-size:13pt"><b>' + t('prev-tolabel') + '</b></p>' + li(to) + '</td></tr></table></body></html>';
   const l = document.createElement('a'); l.download = 'cover-page.doc';
-  l.href = URL.createObjectURL(new Blob(['\ufeff' + h], {type:'application/msword'})); l.click(); bump(); toast('📝 Word ফাইল ডাউনলোড হয়েছে');
+  l.href = URL.createObjectURL(new Blob(['\ufeff' + h], {type:'application/msword'})); l.click(); bump(); toast('Word ফাইল ডাউনলোড হয়েছে');
+}
+
+const FEEDBACK_URL = '';  // এখানে আপনার Google Form / WhatsApp / Messenger লিংক বসান
+let SL = 'bn', ti = -1;
+const UI = Object.fromEntries([
+['তথ্য প্রদান করুন','Enter Information'],['📁 সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):','📁 Saved Profiles (by course / teacher):'],
+['কভার পেজ টেমপ্লেট নির্বাচন করুন:','Select Cover Page Template:'],['🎨 থিমের রং:','🎨 Theme Colour:'],['← কাস্টম রং','← Custom colour'],
+['📝 কভারের ধরন:','📝 Cover Type:'],['অ্যাসাইনমেন্ট','Assignment'],['ল্যাব রিপোর্ট','Lab Report'],['প্রেজেন্টেশন','Presentation'],['প্রজেক্ট / থিসিস','Project / Thesis'],['কুইজ / পরীক্ষা','Quiz / Exam'],
+['🌐 কভারের ভাষা:','🌐 Cover Language:'],['🔢 সংখ্যা:','🔢 Digits:'],['🔤 শিরোনামের ফন্ট:','🔤 Title Font:'],['🖼️ সীমারেখা (বর্ডার):','🖼️ Border:'],
+['সীমারেখাবিহীন','No border'],['দ্বৈত রেখা','Double line'],['একক রেখা','Single line'],['অলংকৃত','Ornate'],
+['🏛️ নিজস্ব লোগো (ঐচ্ছিক):','🏛️ Custom Logo (optional):'],['↩️ মূল লোগো পুনরুদ্ধার','↩️ Restore default logo'],
+['💧 ওয়াটারমার্ক:','💧 Watermark:'],['টেমপ্লেট অনুযায়ী','Per template'],['চালু','On'],['বন্ধ','Off'],['✍️ স্বাক্ষরের স্থান:','✍️ Signature Area:'],
+['ক্যাম্পাসের নাম:','Campus Name:'],['ডিপার্টমেন্ট:','Department:'],['কোর্স কোড (ঐচ্ছিক):','Course Code (optional):'],['কোর্সের নাম (ঐচ্ছিক):','Course Name (optional):'],['অ্যাসাইনমেন্টের বিষয় (Topic):','Topic:'],
+['Submitted By (শিক্ষার্থী)','Submitted By (Student)'],['Submitted To (শিক্ষক)','Submitted To (Teacher)'],['জমাদানের ধরন:','Submission Type:'],['👤 একক (Individual)','👤 Individual'],['👥 গ্রুপ (Group)','👥 Group'],
+['শিক্ষার্থীর পূর্ণ নাম:','Student Full Name:'],['ক্লাস রোল নম্বর:','Class Roll No.:'],['গ্রুপ সদস্য (প্রতি লাইনে একজন: নাম, রোল):','Group Members (one per line: Name, Roll):'],['সর্বোচ্চ ৮ জন সদস্য সুন্দরভাবে প্রদর্শিত হবে।','Up to 8 members fit neatly.'],
+['ক্লাস/ডিগ্রি:','Class / Degree:'],['অ্যাকাডেমিক সেশন:','Academic Session:'],['মোবাইল নম্বর:','Mobile Number:'],['জমাদানের তারিখ:','Submission Date:'],['📅 আজকের তারিখ',"📅 Today's date"],
+['শিক্ষকের নাম ও পদবি (প্রতি লাইনে একজন):','Teacher Name & Designation (one per line):'],['সংরক্ষিত শিক্ষক (ক্লিক করে ব্যবহার করুন):','Saved Teachers (click to use):'],['তালিকা মুছুন','Clear list'],
+['অতিরিক্ত পেজ (থিসিস / প্রজেক্ট)','Extra Pages (Thesis / Project)'],['ঘোষণাপত্র (Declaration)','Declaration'],['অনুমোদনপত্র (Approval Certificate)','Approval Certificate'],['কৃতজ্ঞতা স্বীকার (Acknowledgement)','Acknowledgement'],['সূচিপত্র (Table of Contents)','Table of Contents'],['প্রতি লাইনে: অধ্যায়ের নাম | পৃষ্ঠা নম্বর','One per line: Chapter title | Page number'],
+['🖼️ PNG ডাউনলোড','🖼️ Download PNG'],['📝 Word (সম্পাদনাযোগ্য)','📝 Word (editable)'],['🔗 লিংক শেয়ার','🔗 Share Link'],['🗑️ সব তথ্য মুছে ফেলুন','🗑️ Clear All Data'],
+['✅ আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।','✅ Your data is saved automatically in this browser, so you won’t need to retype it next time.'],
+['লাইভ প্রিভিউ','Live Preview'],['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],['💬 মতামত জানান','💬 Send Feedback'],
+['এড়িয়ে যান','Skip'],['পরবর্তী','Next'],['সমাপ্ত','Finish'],['— নির্বাচন করুন —','— Select —'],
+['⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)','⚠️ Mobile number looks invalid (e.g. 01712345678)'],['⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।','⚠️ Too much text; the bottom of the cover may be cut off. Please shorten it.'],
+['ছবি প্রস্তুত করা হচ্ছে...','Preparing image...'],['ডাউনলোড শুরু হয়েছে','Download started'],['ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন','Could not create the image; please use PDF'],['লিংক কপি করা হয়েছে','Link copied'],['প্রোফাইল সংরক্ষিত হয়েছে','Profile saved'],['প্রোফাইল লোড হয়েছে','Profile loaded'],['ছবির আকার বড়, সংরক্ষণ করা যায়নি','Image too large to save'],['Word ফাইল ডাউনলোড হয়েছে','Word file downloaded'],
+['লিংকটি কপি করুন:','Copy this link:'],['আপনি কি সব তথ্য মুছে ফেলতে চান?','Clear all data?'],['প্রোফাইলের নাম লিখুন (উদাহরণ: CSE-101 – রহমান স্যার):','Profile name (e.g. CSE-101 – Prof. Rahman):'],['এই প্রোফাইলটি মুছে ফেলতে চান?','Delete this profile?'],
+['১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।','1/4 — Start by choosing a template.'],['২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।','2/4 — Pick a theme colour you like.'],['৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।','3/4 — Fill in department, course and your details; the preview updates live.'],['৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।','4/4 — Finally, download as PDF, PNG or Word.']
+]);
+const T = b => SL === 'en' ? (UI[b] || b) : b;
+function applyUI(){
+  document.documentElement.lang = SL;
+  document.querySelectorAll('.form-section label,.form-section h2,.form-section h3,.form-section button,.form-section option,.form-section small,.form-section .hint:not(.warn),.form-section .cb span,.preview-section>h2,footer span,footer a,#tourBox button').forEach(e => {
+    if (e.children.length) return;
+    const k = e.dataset.bn || (e.dataset.bn = e.textContent.trim());
+    if (UI[k]) e.textContent = SL === 'en' ? UI[k] : k;
+  });
+}
+function setSite(l){
+  SL = l; try { localStorage.setItem('dcuSL', l); } catch(e){}
+  $('langBtn').textContent = l === 'bn' ? 'EN' : 'বাং';
+  applyUI(); profList($('profSel').value); showCnt(); render();
+}
+const TOUR = [['.gal','১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।'],['.themes','২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।'],['#dept','৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।'],['.btns .full','৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।']];
+function tour(i){
+  document.querySelectorAll('.tour-hl').forEach(e => e.classList.remove('tour-hl'));
+  if (i >= TOUR.length) { $('tourBox').style.display = 'none'; try { localStorage.setItem('dcuTour', '1'); } catch(e){} return; }
+  ti = i; const el = document.querySelector(TOUR[i][0]); el.classList.add('tour-hl'); el.scrollIntoView({block:'center', behavior:'smooth'});
+  $('tourTxt').textContent = T(TOUR[i][1]); $('tourNext').textContent = T(i === TOUR.length - 1 ? 'সমাপ্ত' : 'পরবর্তী'); $('tourBox').style.display = 'block';
+}
+function fit(){
+  const c = $('cover-template'); let f = 1; c.style.setProperty('--fit', 1);
+  while (c.scrollHeight > c.clientHeight + 2 && f > .55) { f = Math.round((f - .05) * 100) / 100; c.style.setProperty('--fit', f); }
+}
+const TK = 'dcuTeachers';
+const tlist = () => { try { return JSON.parse(localStorage.getItem(TK)) || []; } catch(e){ return []; } };
+function tsave(){
+  const v = $('teacherInfo').value.trim(); if (!v) return;
+  const a = tlist().filter(x => x !== v); a.unshift(v); try { localStorage.setItem(TK, JSON.stringify(a.slice(0, 8))); } catch(e){} tchips();
+}
+function tchips(){
+  const b = $('tchips'), a = tlist(); b.innerHTML = '';
+  a.forEach(v => { const c = document.createElement('button'); c.type = 'button'; c.className = 'chip'; c.textContent = v.split('\n')[0]; c.title = v; c.onclick = () => { $('teacherInfo').value = v; render(); }; b.appendChild(c); });
+  $('tchipBox').style.display = a.length ? 'block' : 'none';
+}
+function tclear(){ try { localStorage.removeItem(TK); } catch(e){} tchips(); }
+const SP = {
+  en:{decl:'DECLARATION',appr:'APPROVAL CERTIFICATE',ack:'ACKNOWLEDGEMENT',toc:'TABLE OF CONTENTS',sig:'Signature',date:'Date',sup:'Supervisor',
+    declT:(n,t,k,s)=>'I, '+n+', hereby declare that the '+k+' titled “'+t+'” is my own original work'+(s?', carried out under the supervision of '+s:'')+'. It has not been submitted elsewhere for any other degree, diploma or course.',
+    apprT:(n,r,ss,t,k)=>'This is to certify that '+n+' (Roll: '+r+', Session: '+ss+') has satisfactorily completed the '+k+' titled “'+t+'” under my supervision.',
+    ackD:s=>'I would like to express my sincere gratitude to everyone who helped me complete this work. I am especially thankful to my respected supervisor'+(s?', '+s:'')+', for continuous guidance, encouragement and valuable suggestions. I also thank my teachers, friends and family for their constant support.',
+    toc0:'Introduction | 1\nLiterature Review | 5\nMethodology | 12\nResults and Discussion | 20\nConclusion | 30\nReferences | 34'},
+  bn:{decl:'ঘোষণাপত্র',appr:'অনুমোদনপত্র',ack:'কৃতজ্ঞতা স্বীকার',toc:'সূচিপত্র',sig:'স্বাক্ষর',date:'তারিখ',sup:'তত্ত্বাবধায়ক',
+    declT:(n,t,k,s)=>'আমি '+n+' ঘোষণা করছি যে “'+t+'” শীর্ষক '+k+' আমার নিজস্ব মৌলিক কর্ম'+(s?' এবং '+s+'-এর তত্ত্বাবধানে সম্পাদিত':'')+'। এটি অন্য কোনো ডিগ্রি, ডিপ্লোমা বা কোর্সের জন্য কোথাও জমা দেওয়া হয়নি।',
+    apprT:(n,r,ss,t,k)=>'এই মর্মে প্রত্যয়ন করা যাচ্ছে যে '+n+' (রোল: '+r+', সেশন: '+ss+') আমার তত্ত্বাবধানে “'+t+'” শীর্ষক '+k+' সন্তোষজনকভাবে সম্পন্ন করেছেন।',
+    ackD:s=>'এই কাজটি সম্পন্ন করতে যাঁরা সহায়তা করেছেন, তাঁদের সবার প্রতি আমি আন্তরিক কৃতজ্ঞতা জানাই। বিশেষত আমার শ্রদ্ধেয় তত্ত্বাবধায়ক'+(s?' '+s:'')+'-এর নিরন্তর দিকনির্দেশনা, উৎসাহ ও মূল্যবান পরামর্শের জন্য আমি ঋণী। এছাড়া শিক্ষকমণ্ডলী, বন্ধুবান্ধব ও পরিবারের সদস্যদের সহযোগিতার জন্যও ধন্যবাদ জানাই।',
+    toc0:'ভূমিকা | 1\nসাহিত্য পর্যালোচনা | 5\nপদ্ধতি | 12\nফলাফল ও আলোচনা | 20\nউপসংহার | 30\nগ্রন্থপঞ্জি | 34'}
+};
+function supRender(){
+  const bn = $('lang').value === 'bn', S = SP[bn ? 'bn' : 'en'], ty = TY[$('docType').value], kind = bn ? ty[1] : ty[0].toLowerCase();
+  const grp = $('mode').value === 'group', tl = lines(val('teacherInfo')), sv = esc(tl[0] || '');
+  const names = esc(grp ? lines(val('members')).map(l => l.split(/[,|]/)[0].trim()).join(', ') : val('studentName'));
+  const topic = esc(val('topic')), roll = esc(val('studentRoll')), ses = esc(val('session'));
+  const pg = (t, b) => '<div class="a4-page sup-page' + (bn ? ' bn-lang' : '') + '"><h2 class="sp-t">' + t + '</h2>' + b + '</div>';
+  const sg = (a, b) => '<div class="sg"><div><span class="ln"></span><p>' + a + '</p></div><div><span class="ln"></span><p>' + b + '</p></div></div>';
+  let h = '';
+  if ($('pgDecl').checked) h += pg(S.decl, '<p class="sp-p">' + S.declT(names, topic, kind, sv) + '</p>' + sg(S.sig + ' — ' + names, S.date));
+  if ($('pgAppr').checked) h += pg(S.appr, '<p class="sp-p">' + S.apprT(names, roll, ses, topic, kind) + '</p>' + sg(S.sup + ' — ' + sv + (tl[1] ? '<br>' + esc(tl[1]) : ''), S.date));
+  if ($('pgAck').checked) h += pg(S.ack, '<p class="sp-p">' + (esc($('ackText').value.trim()) || S.ackD(sv)).replace(/\n/g, '<br>') + '</p><p class="sp-r">' + names + '</p>');
+  if ($('pgToc').checked) h += pg(S.toc, lines($('tocText').value || S.toc0).map(l => {
+    const k = l.lastIndexOf('|'), a = k > -1 ? l.slice(0, k).trim() : l, b = k > -1 ? l.slice(k + 1).trim() : '';
+    return '<div class="toc"><span>' + esc(a) + '</span><i></i><span>' + esc(b) + '</span></div>';
+  }).join(''));
+  $('supPages').innerHTML = h;
+  $('ackBox').style.display = $('pgAck').checked ? 'block' : 'none';
+  $('tocBox').style.display = $('pgToc').checked ? 'block' : 'none';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -480,13 +611,17 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.tpl').forEach(b => b.addEventListener('click', () => { $('templateSelector').value = b.dataset.v; render(); }));
   $('logoFile').addEventListener('change', e => {
     const f = e.target.files[0]; if (!f) return; const r = new FileReader();
-    r.onload = () => { setLogo(r.result); try { localStorage.setItem('dcuLogo', r.result); } catch(x){ toast('ছবি বড়, সেভ হয়নি'); } };
+    r.onload = () => { setLogo(r.result); try { localStorage.setItem('dcuLogo', r.result); } catch(x){ toast('ছবির আকার বড়, সংরক্ষণ করা যায়নি'); } };
     r.readAsDataURL(f);
   });
   try { const lg = localStorage.getItem('dcuLogo'); if (lg) setLogo(lg); if (localStorage.getItem('dcuDark')) toggleDark(); } catch(e){}
-  profList(); showCnt();
+  try { SL = localStorage.getItem('dcuSL') || 'bn'; } catch(e){}
+  $('teacherInfo').addEventListener('blur', tsave); tchips();
+  if (FEEDBACK_URL) { $('fbk').href = FEEDBACK_URL; $('fbk').style.display = 'inline'; }
+  setSite(SL);
+  try { if (!localStorage.getItem('dcuTour') && !location.hash) setTimeout(() => tour(0), 900); } catch(e){}
   const u = location.href.split('#')[0];
-  $('wa').href = 'https://wa.me/?text=' + encodeURIComponent('এক মিনিটে অ্যাসাইনমেন্ট কভার পেজ বানান: ' + u);
+  $('wa').href = 'https://wa.me/?text=' + encodeURIComponent('মাত্র এক মিনিটে অ্যাসাইনমেন্ট কভার পেজ তৈরি করুন: ' + u);
   $('fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(u);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
