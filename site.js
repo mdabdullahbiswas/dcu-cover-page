@@ -30,7 +30,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var isI = P === 'index';
 
   var hd = '<div class="sh" role="banner"><div class="sh-in">' +
-    '<a class="brand" href="./"><img src="logo.png" alt="" onerror="this.remove()"><span>DCU Unofficial</span></a>' +
+    '<a class="brand" href="./"><img src="logo.png" alt="" onerror="this.remove()"><span>Dhaka Central University</span></a>' +
     '<nav class="mn" id="mn" aria-label="Main">' +
     '<a class="t' + (isI ? ' on' : '') + '" href="./">অ্যাসাইনমেন্ট|Assignment</a>' +
     '<div class="dd"><button type="button" class="t' + (P === 'tools' ? ' on' : '') + '" id="ddb">টুলস ▾|Tools ▾</button><div class="ddm">' + tl + '</div></div>' +
@@ -78,7 +78,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var soc = '<div class="soc">' + DEV.links.filter(function (l) { return l[1]; }).map(function (l) { return $SOC(l[0], l[1]); }).join('') +
     (DEV.email ? $SOC('email', 'mailto:' + DEV.email, 'Email', false) : '') + '</div>';
   var ft = '<div class="sf" role="contentinfo"><div class="sf-in">' +
-    '<div><div class="b"><img src="logo.png" alt="" onerror="this.remove()"><span>DCU Unofficial</span></div>' +
+    '<div><div class="b"><img src="logo.png" alt="" onerror="this.remove()"><span>Dhaka Central University</span></div>' +
     '<p class="t">শিক্ষার্থীদের জন্য বিনামূল্যের অ্যাসাইনমেন্ট কভার পেজ ও পড়াশোনার টুল।|Free assignment cover pages and study tools for students.</p><p id="cnt"></p>' +
     '<span class="t">বন্ধুদের সাথে শেয়ার করুন|Share with friends</span><a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a></div>' +
     '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4><a class="t" href="./">অ্যাসাইনমেন্ট কভার পেজ|Assignment Cover Page</a>' + tl + '<a class="t" href="tools.html#result">রেজাল্ট দেখুন|View Results</a></div>' +
