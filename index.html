@@ -174,6 +174,23 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 .container{padding:0;margin:0;max-width:none;display:block}
 .preview-section{width:100%;margin:0;padding:0;display:block}
 .a4-page{transform:none!important;margin:0!important;box-shadow:none!important;width:210mm!important;height:296mm!important;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* ===== মতামত / পরিচিতি মডাল ===== */
+#fbModal{position:fixed;inset:0;background:rgba(7,25,47,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:10000}
+#fbModal.on{display:flex}
+#fbModal .fb-box{background:#fff;color:#222;width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.35);padding:22px 22px 18px;position:relative}
+#fbModal .fb-x{position:absolute;top:10px;right:12px;width:34px;height:34px;padding:0;border-radius:50%;background:#eef2f6;color:#0a2240;font-size:18px;box-shadow:none}
+#fbModal h2{color:#0a2240;font-size:19px;border-bottom:2px solid #e5a83b;padding-bottom:8px;margin-bottom:12px;padding-right:36px}
+#fbModal .fb-sec{margin-bottom:14px}
+#fbModal .fb-sec h3{color:#0a2240;font-size:15px;margin:0 0 4px}
+#fbModal .fb-sec p,#fbModal .fb-sec li{font-size:13.5px;color:#37474f}
+#fbModal .fb-sec ul{padding-left:20px}
+#fbModal hr{border:0;border-top:1px dashed #cfd8dc;margin:14px 0}
+#fbModal textarea{min-height:96px;resize:vertical}
+#fbModal .fb-send{margin-top:12px}
+body.dark #fbModal .fb-box{background:#1b2430;color:#e6edf5}
+body.dark #fbModal h2,body.dark #fbModal .fb-sec h3{color:#e5a83b}
+body.dark #fbModal .fb-sec p,body.dark #fbModal .fb-sec li{color:#c5d0dc}
 </style>
 </head>
 <body data-page="index">
@@ -325,6 +342,28 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <div id="ftr"></div>
 <div id="tourBox"><p id="tourTxt"></p><div class="tb"><button type="button" class="mini alt2" onclick="tour(99)">এড়িয়ে যান</button><button type="button" class="mini" id="tourNext" onclick="tour(ti+1)">পরবর্তী</button></div></div>
 <div class="toast" id="toast"></div>
+<div id="fbModal" role="dialog" aria-modal="true" aria-labelledby="fbTitle">
+<div class="fb-box">
+<button type="button" class="fb-x" id="fbClose" aria-label="Close">✕</button>
+<h2 id="fbTitle" data-bn="💬 মতামত ও পরিচিতি" data-en="💬 Feedback & About">💬 মতামত ও পরিচিতি</h2>
+<div class="fb-sec"><h3 data-bn="👨‍🎓 পরিচিতি" data-en="👨‍🎓 About">👨‍🎓 পরিচিতি</h3>
+<p data-bn="আমি মোঃ আব্দুল্লাহ বিশ্বাস, সরকারি বাঙলা কলেজে অর্থনীতি বিভাগের অনার্স শিক্ষার্থী (শিক্ষাবর্ষ: ২০২২–২৩)। প্রযুক্তি, ডিজিটাল দক্ষতা ও নতুন কিছু শেখার প্রতি আগ্রহী। ভবিষ্যতে নিজের দক্ষতা কাজে লাগিয়ে সৎ ও সম্মানজনক পেশাগত জীবন গড়ে তুলতে চাই।" data-en="I am Md. Abdullah Biswas, an Honours student of Economics at Government Bangla College (session 2022–23). I am interested in technology, digital skills and learning new things, and I hope to build an honest and respectable career using my skills.">আমি মোঃ আব্দুল্লাহ বিশ্বাস, সরকারি বাঙলা কলেজে অর্থনীতি বিভাগের অনার্স শিক্ষার্থী (শিক্ষাবর্ষ: ২০২২–২৩)। প্রযুক্তি, ডিজিটাল দক্ষতা ও নতুন কিছু শেখার প্রতি আগ্রহী। ভবিষ্যতে নিজের দক্ষতা কাজে লাগিয়ে সৎ ও সম্মানজনক পেশাগত জীবন গড়ে তুলতে চাই।</p></div>
+<div class="fb-sec"><h3 data-bn="💼 পেশাগত আগ্রহ" data-en="💼 Professional interests">💼 পেশাগত আগ্রহ</h3>
+<p data-bn="কম্পিউটার অপারেশন, ডিজিটাল মার্কেটিং, গ্রাফিক ডিজাইন এবং ওয়েব ডেভেলপমেন্ট।" data-en="Computer operation, digital marketing, graphic design and web development.">কম্পিউটার অপারেশন, ডিজিটাল মার্কেটিং, গ্রাফিক ডিজাইন এবং ওয়েব ডেভেলপমেন্ট।</p></div>
+<div class="fb-sec"><h3 data-bn="🛠️ দক্ষতার তালিকা" data-en="🛠️ Skills">🛠️ দক্ষতার তালিকা</h3>
+<ul>
+<li data-bn="অফিস অ্যাপ্লিকেশন: Microsoft Word, Excel ও PowerPoint" data-en="Office applications: Microsoft Word, Excel and PowerPoint">অফিস অ্যাপ্লিকেশন: Microsoft Word, Excel ও PowerPoint</li>
+<li data-bn="গ্রাফিক ডিজাইন: Canva, Adobe Photoshop ও Illustrator-এর মৌলিক কাজ" data-en="Graphic design: Canva, and basics of Adobe Photoshop and Illustrator">গ্রাফিক ডিজাইন: Canva, Adobe Photoshop ও Illustrator-এর মৌলিক কাজ</li>
+<li data-bn="ডিজিটাল মার্কেটিং: ডিজিটাল মার্কেটিংয়ের মৌলিক ধারণা" data-en="Digital marketing: fundamentals of digital marketing">ডিজিটাল মার্কেটিং: ডিজিটাল মার্কেটিংয়ের মৌলিক ধারণা</li>
+<li data-bn="ওয়েব ও অনলাইন টুলস: Google Sites, ওয়েবসাইট ব্যবস্থাপনা ও অনলাইন রিসার্চ" data-en="Web &amp; online tools: Google Sites, website management and online research">ওয়েব ও অনলাইন টুলস: Google Sites, ওয়েবসাইট ব্যবস্থাপনা ও অনলাইন রিসার্চ</li>
+</ul></div>
+<hr>
+<div class="fb-sec"><h3 data-bn="✉️ আপনার মতামত লিখুন" data-en="✉️ Write your feedback">✉️ আপনার মতামত লিখুন</h3>
+<textarea id="fbText" placeholder="আপনার মতামত বা পরামর্শ লিখুন..." data-ph-bn="আপনার মতামত বা পরামর্শ লিখুন..." data-ph-en="Write your feedback or suggestion..."></textarea>
+<button type="button" class="fb-send" id="fbSend" data-bn="📨 মতামত পাঠান" data-en="📨 Send feedback">📨 মতামত পাঠান</button>
+<p class="hint" id="fbHint"></p></div>
+</div>
+</div>
 <script src="site.js"></script>
 
 <script>
@@ -509,7 +548,9 @@ function downloadDoc(){
   l.href = URL.createObjectURL(new Blob(['\ufeff' + h], {type:'application/msword'})); l.click(); bump(); toast('Word ফাইল ডাউনলোড হয়েছে');
 }
 
-const FEEDBACK_URL = '';  // এখানে আপনার Google Form / WhatsApp / Messenger লিংক বসান
+const FEEDBACK_URL = '';    // ঐচ্ছিক: Google Form / Messenger লিংক (খালি থাকলে মডালের ফর্ম ব্যবহৃত হবে)
+const FEEDBACK_WA = '';     // ঐচ্ছিক: WhatsApp নম্বর দেশের কোডসহ, যেমন 8801XXXXXXXXX
+const FEEDBACK_EMAIL = '';  // ঐচ্ছিক: ইমেইল ঠিকানা
 let SL = 'en', ti = -1;
 const UI = Object.fromEntries([
 ['তথ্য প্রদান করুন','Enter Information'],['📁 সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):','📁 Saved Profiles (by course / teacher):'],
@@ -618,7 +659,6 @@ document.addEventListener('DOMContentLoaded', () => {
   try { const lg = localStorage.getItem('dcuLogo'); if (lg) setLogo(lg); if (localStorage.getItem('dcuDark')) toggleDark(); } catch(e){}
   try { SL = localStorage.getItem('dcuSL') || 'en'; } catch(e){}
   $('teacherInfo').addEventListener('blur', tsave); tchips();
-  if (FEEDBACK_URL) { $('fbk').href = FEEDBACK_URL; $('fbk').style.display = 'inline'; }
   setSite(SL);
   try { if (!localStorage.getItem('dcuTour') && !location.hash) setTimeout(() => tour(0), 900); } catch(e){}
   const u = location.href.split('#')[0];
@@ -631,6 +671,57 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.sw').forEach(b => b.addEventListener('click', () => { setTheme(b.dataset.p, b.dataset.a); render(); }));
   ['cPri','cAcc'].forEach(id => $(id).addEventListener('input', () => { setTheme($('cPri').value, $('cAcc').value); render(); }));
 });
+</script>
+<script>
+/* মতামত মেনু: হেডার/ফুটারের "মতামত" লিংক বা বোতামে ক্লিক করলে মডাল খুলবে */
+(function(){
+  const g = id => document.getElementById(id);
+  const isEn = () => { try { return (localStorage.getItem('dcuSL') || 'en') === 'en'; } catch(e){ return true; } };
+  function labels(){
+    const en = isEn(), m = g('fbModal'); if (!m) return;
+    m.querySelectorAll('[data-bn]').forEach(e => { e.textContent = en ? e.dataset.en : e.dataset.bn; });
+    const t = g('fbText'); t.placeholder = en ? t.dataset.phEn : t.dataset.phBn;
+  }
+  function openFb(e){ if (e) e.preventDefault(); labels(); g('fbModal').classList.add('on'); setTimeout(() => g('fbText').focus(), 50); }
+  function closeFb(){ g('fbModal').classList.remove('on'); }
+  const say = m => { if (typeof toast === 'function') toast(m); };
+  function send(){
+    const txt = g('fbText').value.trim(), en = isEn();
+    if (!txt) { say(en ? 'Please write something first' : 'আগে কিছু লিখুন'); return; }
+    if (FEEDBACK_WA) { window.open('https://wa.me/' + FEEDBACK_WA + '?text=' + encodeURIComponent(txt), '_blank'); }
+    else if (FEEDBACK_EMAIL) { location.href = 'mailto:' + FEEDBACK_EMAIL + '?subject=' + encodeURIComponent('DCU Cover Page Feedback') + '&body=' + encodeURIComponent(txt); }
+    else if (FEEDBACK_URL) { (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.resolve()).catch(() => {}); window.open(FEEDBACK_URL, '_blank'); say(en ? 'Message copied; paste it in the form' : 'মতামত কপি হয়েছে; ফর্মে পেস্ট করুন'); return; }
+    else { (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => say(en ? 'Feedback copied' : 'মতামত কপি করা হয়েছে')).catch(() => say(en ? 'Could not copy' : 'কপি করা যায়নি')); return; }
+    g('fbText').value = ''; closeFb(); say(en ? 'Thank you!' : 'ধন্যবাদ!');
+  }
+  // মেনু/ফুটারে "মতামত" বা "Feedback" লেখা লিংক/বোতাম খুঁজে ক্লিক হ্যান্ডলার বসায় (site.js পরে তৈরি করলেও কাজ করবে)
+  const re = /মতামত|feedback/i;
+  document.addEventListener('click', e => {
+    const el = e.target.closest('a,button,li,span'); if (!el || el.closest('#fbModal')) return;
+    const host = el.closest('#hdr,#ftr,header,footer,nav'); if (!host) return;
+    const a = el.closest('a,button') || el;
+    if ((a.id === 'fbk') || re.test(a.textContent.trim()) && a.textContent.trim().length < 40) openFb(e);
+  }, true);
+  document.addEventListener('DOMContentLoaded', () => {
+    g('fbClose').addEventListener('click', closeFb);
+    g('fbSend').addEventListener('click', send);
+    g('fbModal').addEventListener('click', e => { if (e.target.id === 'fbModal') closeFb(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFb(); });
+    if (location.hash === '#feedback') openFb();
+    // মেনুতে "মতামত" লিংক না থাকলে একটি যোগ করে
+    setTimeout(() => {
+      const host = g('hdr') || document.querySelector('header,nav');
+      const has = host && [...host.querySelectorAll('a,button')].some(x => re.test(x.textContent));
+      const foot = g('ftr') && [...g('ftr').querySelectorAll('a,button')].some(x => re.test(x.textContent));
+      if (!has && !foot && !g('fbk')) {
+        const b = document.createElement('a'); b.href = '#feedback'; b.id = 'fbk'; b.textContent = '💬 মতামত';
+        b.style.cssText = 'position:fixed;right:14px;bottom:14px;background:#0a2240;color:#e5a83b;padding:10px 16px;border-radius:30px;font-weight:700;font-size:14px;text-decoration:none;z-index:9999;box-shadow:0 4px 14px rgba(0,0,0,.3)';
+        document.body.appendChild(b);
+      }
+    }, 600);
+  });
+  window.openFeedback = openFb;
+})();
 </script>
 </body>
 </html>
