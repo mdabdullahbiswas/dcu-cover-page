@@ -24,11 +24,6 @@ h2{margin:0 0 10px;font-size:21px;color:var(--ink)}
 .bt.o{background:transparent;color:var(--ink);border:1.5px solid var(--ln)}
 .sk{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.sk span{background:var(--bg);border:1px solid var(--ln);border-radius:20px;padding:3px 14px;font-size:14px}
 ul{margin:8px 0 0;padding-left:22px}li{margin:4px 0}
-label{display:block;font-weight:600;font-size:14px;margin-top:12px}
-input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--ln);border-radius:8px;background:var(--cd);color:var(--ink);font:inherit;margin-top:4px}
-textarea{min-height:120px;resize:vertical}
-.ch{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-#fs{margin-top:10px;font-size:14px;color:var(--mu)}
 .nt{background:#fff6e0;border:1px solid #f0d28a;color:#6b4b00;border-radius:10px;padding:12px 16px;font-size:14px}
 body.dark .nt{background:#3a2d0c;border-color:#6b5320;color:#f3d48a}
 :focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
@@ -64,14 +59,9 @@ html{scroll-behavior:smooth;scroll-padding-top:80px}
 <li class="t">ফন্ট ও PDF লাইব্রেরি লোড করতে ইন্টারনেট লাগে, কিন্তু আপনার ডেটা সেই সময়েও বাইরে যায় না।|Fonts and the PDF library load from the internet, but your data does not leave your device.</li>
 </ul></div>
 
-<div class="bx" id="feedback"><h2 class="t">💬 মতামত ও পরামর্শ|💬 Feedback & Suggestions</h2>
-<p class="t">কোনো সমস্যা, নতুন ফিচারের ধারণা বা প্রশ্ন থাকলে জানান। প্রতিটি মতামত গুরুত্বের সাথে দেখা হয়।|Share a problem, a feature idea or a question. Every message is read carefully.</p>
-<label class="t">ধরন|Type</label>
-<select id="ft"><option value="0" class="t">পরামর্শ|Suggestion</option><option value="1" class="t">সমস্যা (Bug)|Problem (Bug)</option><option value="2" class="t">নতুন ফিচারের অনুরোধ|Feature request</option><option value="3" class="t">প্রশ্ন|Question</option></select>
-<label class="t">আপনার বার্তা|Your message</label><textarea id="fm" data-p="এখানে লিখুন...|Write here..."></textarea>
-<label class="t">নাম ও যোগাযোগ (ঐচ্ছিক)|Name & contact (optional)</label><input id="fc" data-p="উত্তর পেতে চাইলে ইমেইল বা নম্বর দিন|Add an email or number if you want a reply">
-<div class="ch" id="fb2"></div><div id="fs" aria-live="polite"></div>
-</div>
+<div class="bx" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+<div><h2 class="t" style="margin-bottom:2px">💬 মতামত বা পরামর্শ আছে?|💬 Have feedback or a suggestion?</h2><span class="t" style="color:var(--mu)">সাইটটি আরও ভালো করতে আপনার কথা জানান।|Tell us how we can make this site better.</span></div>
+<a class="bt" href="feedback.html"><span class="t">মতামত জানান|Send Feedback</span></a></div>
 
 </main>
 <div id="ftr"></div>
@@ -99,41 +89,8 @@ function render(){
  ls.push($SOC('code',D.repo,L('সোর্স কোড|Source Code')));
  $('#dl').innerHTML=ls.join('');
  $('#ds').innerHTML='';
- buttons();
 }
-function msg(){const t=['পরামর্শ|Suggestion','সমস্যা|Problem','ফিচারের অনুরোধ|Feature request','প্রশ্ন|Question'][$('#ft').value];
- return `[${L(t)}] ${$('#fm').value.trim()}`+($('#fc').value.trim()?`\n— ${$('#fc').value.trim()}`:'')}
-function buttons(){
- const b=[];if(D.email)b.push(['gm',L('Gmail-এ পাঠান|Send via Gmail')],['em',L('ইমেইল অ্যাপে পাঠান|Send via Email App')]);if(D.whatsapp)b.push(['wa',L('WhatsApp-এ পাঠান|Send on WhatsApp')]);
- b.push(['gh',L('GitHub-এ জানান|Report on GitHub')],['cp',L('বার্তা কপি করুন|Copy message')]);
- $('#fb2').innerHTML=b.map(([k,t],i)=>`<button type="button" class="bt${i>0?' o':''}" data-k="${k}">${t}</button>`).join('');
-}
-function go(url,same){
- const a=document.createElement('a');a.href=url;
- if(!same){a.target='_blank';a.rel='noopener noreferrer'}
- document.body.appendChild(a);a.click();a.remove();
-}
-async function copy(t){
- try{await navigator.clipboard.writeText(t);return true}catch(x){}
- try{const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(x){return false}
-}
-const MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-$('#fb2').onclick=async e=>{
- const btn=e.target.closest('button[data-k]');if(!btn)return;
- const k=btn.dataset.k,m=msg(),s=$('#fs'),SUB='DCU Site Feedback';
- if(!$('#fm').value.trim()){s.textContent=L('আগে আপনার বার্তা লিখুন।|Please write your message first.');$('#fm').focus();return}
- const copied=k=='cp'?await copy(m):false;
- if(k=='cp'){s.textContent=copied?L('বার্তা কপি হয়েছে।|Message copied.'):L('কপি করা যায়নি; লেখাটি নিজে সিলেক্ট করে কপি করুন।|Could not copy; please select and copy the text manually.');return}
- copy(m);
- if(k=='gm'){
-  if(MOBILE)go(`mailto:${D.email}?subject=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`,true);
-  else go(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(D.email)}&su=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`);
- }
- else if(k=='em')go(`mailto:${D.email}?subject=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`,true);
- else if(k=='wa')go(`https://wa.me/${D.whatsapp}?text=${encodeURIComponent(m)}`);
- else if(k=='gh')go(`${D.repo}/issues/new?title=${encodeURIComponent('Feedback')}&body=${encodeURIComponent(m)}`);
- s.textContent=L('আপনার বার্তা কপি করা হয়েছে। নতুন ট্যাব বা অ্যাপ না খুললে সেখানে পেস্ট করে পাঠান।|Your message was copied. If no tab or app opened, paste it there and send.');
-};
+
 window.onLang=render;render();
 </script>
 </body>
