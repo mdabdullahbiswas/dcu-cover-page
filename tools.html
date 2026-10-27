@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>টুলস | Dhaka Central University (Unofficial)</title>
+<title>DCU Unofficial</title>
 <meta name="theme-color" content="#0a2240">
 <link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
@@ -279,6 +279,10 @@ function dragPan(el,cv,xs,ys,get){let st=null;
 const TB=['card','frame','cv','routine','cgpa','exam','pdf','calc','result'];
 function go(){let h=location.hash.slice(1);if(!TB.includes(h))h='card';$$('main section').forEach(s=>s.classList.toggle('on',s.id==h));$$('.tabs button').forEach(b=>{const o=b.dataset.t==h;b.classList.toggle('on',o);b.setAttribute('aria-selected',o)});if(typeof cvFit=='function')cvFit();scrollTo(0,0);requestAnimationFrame(()=>scrollTo(0,0))}
 $$('.tabs button').forEach(b=>b.onclick=()=>{if(location.hash.slice(1)==b.dataset.t)go();else location.hash=b.dataset.t});addEventListener('hashchange',go);go();
+/* মেনু/ফুটারের লিংকে ক্লিক করলে (এমনকি একই ট্যাবে থাকলেও) সবসময় পেজের ওপর থেকে দেখাবে */
+if('scrollRestoration' in history)history.scrollRestoration='manual';
+document.addEventListener('click',e=>{if(e.target.closest('#hdr a,#ftr a'))setTimeout(go,30)});
+addEventListener('load',()=>{scrollTo(0,0);setTimeout(()=>scrollTo(0,0),150)});
 
 /* ===== ১. শেয়ার কার্ড ===== */
 let photo=null,CM={mx:0,my:0},cBl=null,cTk=0;const LG=new Image();LG.onload=()=>card();LG.src='logo.png';
