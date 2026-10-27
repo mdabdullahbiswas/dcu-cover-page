@@ -310,7 +310,7 @@ async function card(){
  x.strokeStyle=t.ac;x.lineWidth=3;x.globalAlpha=.45;x.beginPath();x.arc(cx,cy,r+28*S,0,7);x.stroke();x.globalAlpha=1;
  x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
  if(photo){const b=Math.max(2*r/photo.width,2*r/photo.height)*+$('#pz').value,w=photo.width*b,h=photo.height*b,mx=(w-2*r)/2,my=(h-2*r)/2;CM={mx,my};x.drawImage(photo,cx-w/2+(+$('#px').value)*mx,cy-h/2+(+$('#py').value)*my,w,h)}
- else{const g2=x.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g2.addColorStop(0,t.ac);g2.addColorStop(1,t.ac2);x.fillStyle=g2;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=t.pf;x.font=`800 ${r*1.05}px "Hind Siliguri"`;x.textBaseline='middle';x.fillText([...($('#cn').value.trim()||'D')][0],cx,cy+r*.04)}
+ else{const g2=x.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g2.addColorStop(0,t.ac);g2.addColorStop(1,t.ac2);x.fillStyle=g2;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=t.pf;x.font=`800 ${r*1.05}px "Hind Siliguri"`;x.textBaseline='middle';x.fillText(GR($('#cn').value.trim()||'D')[0],cx,cy+r*.04)}
  x.restore();x.textBaseline='alphabetic';
  x.strokeStyle=t.ac;x.lineWidth=9;x.beginPath();x.arc(cx,cy,r+7,0,7);x.stroke();
  const ht=$('#chit');if(ht){ht.style.display=photo?'block':'none';ht.style.left=((cx-r)/W*100)+'%';ht.style.top=((cy-r)/H*100)+'%';ht.style.width=(2*r/W*100)+'%';ht.style.height=(2*r/H*100)+'%'}
@@ -498,11 +498,13 @@ $('#nb').onclick=async()=>{const f=$('#nf').files[0];if(!f)return pst(L('আগ�
 
 /* ===== ৬. প্রোফাইল ফ্রেম ===== */
 let fph=null,FM={mx:0,my:0},fBl=null,fTk=0;
+/* বাংলা যুক্তাক্ষর/কার-চিহ্ন না ভেঙে অক্ষরগুচ্ছ (grapheme cluster) আলাদা করে */
+const GR=s=>{const o=[];for(const c of String(s||'')){const join=/\p{M}|[\u200c\u200d]/u.test(c)||(o.length&&/\u09cd$/.test(o[o.length-1]));if(o.length&&join)o[o.length-1]+=c;else o.push(c)}return o};
 function arcT(x,s,cx,cy,r,top,fam,fs,wt,col){
- if(!s)return;const P=Math.PI;let ws,span;
- for(;;){x.font=`${wt} ${fs}px ${fam}`;ws=[...s].map(c=>x.measureText(c).width+fs*.14);span=ws.reduce((a,b)=>a+b,0)/r;if(span<=2.6||fs<=16)break;fs-=2}
+ if(!s)return;const P=Math.PI;let ws,span;const G=GR(s);
+ for(;;){x.font=`${wt} ${fs}px ${fam}`;ws=G.map(c=>x.measureText(c).width+fs*.14);span=ws.reduce((a,b)=>a+b,0)/r;if(span<=2.6||fs<=16)break;fs-=2}
  x.fillStyle=col;x.textAlign='center';x.textBaseline='middle';let a=top?-P/2-span/2:P/2+span/2;
- [...s].forEach((c,i)=>{const d=ws[i]/r;a+=top?d/2:-d/2;x.save();x.translate(cx+r*Math.cos(a),cy+r*Math.sin(a));x.rotate(top?a+P/2:a-P/2);x.fillText(c,0,0);x.restore();a+=top?d/2:-d/2});
+ G.forEach((c,i)=>{const d=ws[i]/r;a+=top?d/2:-d/2;x.save();x.translate(cx+r*Math.cos(a),cy+r*Math.sin(a));x.rotate(top?a+P/2:a-P/2);x.fillText(c,0,0);x.restore();a+=top?d/2:-d/2});
 }
 async function frame(){
  try{await Promise.all([document.fonts.load('700 40px "Hind Siliguri"'),document.fonts.load('800 40px Cinzel')])}catch(e){}
