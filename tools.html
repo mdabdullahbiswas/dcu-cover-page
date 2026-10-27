@@ -33,7 +33,14 @@ textarea{min-height:80px;resize:vertical}
 .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}.hd b{font-size:16px}.hd .gp{margin-left:auto;font-weight:700;color:#0a2240}
 body.dark .hd .gp{color:#e5a83b}
 .big{font-size:34px;font-weight:800;color:#0a2240;line-height:1.2}body.dark .big{color:#e5a83b}
-.cvw{text-align:center}canvas{max-width:100%;height:auto;border-radius:10px;box-shadow:0 8px 28px rgba(10,34,64,.28)}
+.cvw{text-align:center}.pad{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.pg{display:grid;grid-template-columns:repeat(3,46px);grid-auto-rows:42px;gap:4px}
+.pg i{display:block}
+.pg .ic,.pz .ic{display:flex;align-items:center;justify-content:center;padding:0;font-size:17px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.pz{display:flex;flex-direction:column;gap:4px}.pz .ic{width:56px;height:42px}
+details.bx2{border:1px solid var(--ln);border-radius:8px;padding:8px 12px;margin-top:12px}details.bx2 summary{cursor:pointer;font-weight:700;font-size:14px}
+canvas.dg{cursor:grab}canvas.dg:active{cursor:grabbing}
+canvas{max-width:100%;height:auto;border-radius:10px;box-shadow:0 8px 28px rgba(10,34,64,.28)}
 .sc{overflow-x:auto}.sc canvas{width:100%;min-width:760px;box-shadow:none;border:1px solid var(--ln);border-radius:8px}
 .dy{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.dy label{margin:0;font-weight:500;border:1.5px solid var(--ln);border-radius:20px;padding:3px 12px;cursor:pointer;display:flex;align-items:center}
 .rw{display:grid;grid-template-columns:2fr .8fr 1fr auto;gap:6px;align-items:center;margin-top:6px}.rw input,.rw select{margin:0}
@@ -89,15 +96,22 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 <label class="t">নাম|Name</label><input id="cn" data-p="আপনার নাম|Your name" maxlength="60">
 <label class="t">ডিপার্টমেন্ট|Department</label><input id="cd" list="deptPlain" data-p="যেমন: Computer Science|e.g. Computer Science" maxlength="70">
 <div class="g3"><div><label class="t">সেশন|Session</label><input id="cs" data-p="2025-26|2025-26" maxlength="20"></div>
-<div><label class="t">ব্যাজ|Badge</label><select id="cb"><option value="0" class="t">গর্বিত শিক্ষার্থী|Proud Student</option><option value="1" class="t">ক্লাস অব ২০২৬|Class of 2026</option><option value="2" class="t">নবীন শিক্ষার্থী|New Student</option><option value="3" class="t">গ্র্যাজুয়েট|Graduate</option></select></div></div>
-<label class="t">বার্তা (ঐচ্ছিক)|Message (optional)</label><input id="ce" data-p="একটি ছোট বার্তা বা উক্তি|A short message or quote" maxlength="80">
+<div><label class="t">ব্যাজ|Badge</label><select id="cb"><option value="0" class="t">গর্বিত শিক্ষার্থী|Proud Student</option><option value="1" class="t">ক্লাস অব ২০২৬|Class of 2026</option><option value="2" class="t">নবীন শিক্ষার্থী|New Student</option><option value="3" class="t">গ্র্যাজুয়েট|Graduate</option><option value="4" class="t">✍️ নিজে লিখুন|Write your own</option></select></div></div>
+<div id="cbw" style="display:none"><label class="t">নিজের ব্যাজ লেখা|Your own badge text</label><input id="cbt" maxlength="40" data-p="যেমন: ৫ম সেমিস্টার|e.g. 5th Semester"></div>
+<label class="t">বার্তা (ঐচ্ছিক, সর্বোচ্চ ৩ লাইন)|Message (optional, up to 3 lines)</label><textarea id="ce" rows="2" style="min-height:60px" maxlength="180" data-p="নিজের মতো করে লিখুন, নতুন লাইনে Enter চাপুন|Write in your own words; press Enter for a new line"></textarea>
 <label class="t">ছবি (ঐচ্ছিক)|Photo (optional)</label><input id="cf" type="file" accept="image/*">
 <div class="g3"><div><label class="t">জুম|Zoom</label><input id="pz" type="range" min="1" max="3" step=".05" value="1"></div><div><label class="t">ডানে-বামে|Left / Right</label><input id="px" type="range" min="-1" max="1" step=".02" value="0"></div><div><label class="t">উপরে-নিচে|Up / Down</label><input id="py" type="range" min="-1" max="1" step=".02" value="0"></div></div>
+<div class="pad" data-z="pz" data-x="px" data-y="py"></div>
+<p class="hint t">তীর বাটনে চাপুন (ধরে রাখলে চলতে থাকবে) অথবা ছবি যোগ করার পর কার্ডের ছবির ওপর আঙুল/মাউস টেনে সরান।|Tap the arrow buttons (hold to repeat), or after adding a photo drag directly on the card.</p>
 <div class="g3"><div><label class="t">থিম|Theme</label><select id="cth"><option value="navy" class="t">নেভি ও সোনালি|Navy & Gold</option><option value="ivory" class="t">আইভরি|Ivory</option><option value="emerald" class="t">এমারেল্ড|Emerald</option><option value="wine" class="t">রয়্যাল|Royal</option></select></div>
 <div><label class="t">মাপ|Size</label><select id="csz"><option value="1080,1080" class="t">পোস্ট ১:১|Post 1:1</option><option value="1080,1350" class="t">পোর্ট্রেট ৪:৫|Portrait 4:5</option><option value="1080,1920" class="t">স্টোরি ৯:১৬|Story 9:16</option></select></div></div>
-<button class="bt t" id="cdl">PNG ডাউনলোড|Download PNG</button><button class="bt t" id="csh">শেয়ার করুন|Share</button>
+<details class="bx2"><summary class="t">✍️ কার্ডের লেখা নিজের মতো করুন|Customize card text</summary><label class="t">উপরের শিরোনাম|Heading</label><input id="ct" value="DHAKA CENTRAL UNIVERSITY" maxlength="50"><label class="t">নিচের লাইন (ওয়েবসাইট/আইডি)|Footer line (website / ID)</label><input id="cft" maxlength="60" data-p="খালি রাখলে ওয়েবসাইটের ঠিকানা বসবে|Leave empty to use the site address"><label class="t">নিচের ছোট লেখা|Small note</label><input id="cfn" maxlength="70" data-p="খালি রাখলে ডিফল্ট লেখা বসবে|Leave empty for the default note"></details>
+<label class="t">শেয়ার করার লেখা (ক্যাপশন)|Share caption</label><textarea id="cst" rows="3" maxlength="400" data-p="পোস্টের সাথে যে লেখা যাবে তা নিজের মতো লিখুন|Write the text that goes with your post"></textarea><label class="ck"><input type="checkbox" id="csl" checked><span class="t">সাথে ওয়েবসাইটের লিংক দিন|Include the site link</span></label>
+<button class="bt t" id="cdl">PNG ডাউনলোড|Download PNG</button><button class="bt t" id="csh">শেয়ার করুন|Share</button><button class="bt t" id="ccp">ক্যাপশন কপি|Copy caption</button>
+<p class="hint" id="cmsg" role="status"></p>
+<p class="hint t">কিছু অ্যাপ (যেমন ফেসবুক) ছবির সাথে লেখা নেয় না। শেয়ারের সময় ক্যাপশন নিজে থেকেই কপি হয়, তাই পোস্টে Paste করে দিন।|Some apps (like Facebook) drop the text when sharing an image. The caption is copied automatically, so just paste it into your post.</p>
 </div>
-<div class="cvw"><canvas id="cdv" width="1080" height="1080"></canvas></div>
+<div class="cvw"><canvas id="cdv" class="dg" width="1080" height="1080"></canvas></div>
 </div></section>
 
 <!-- ============ ক্লাস রুটিন ============ -->
@@ -166,13 +180,14 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 <p class="hint t">ফেসবুক, ইনস্টাগ্রাম বা হোয়াটসঅ্যাপের প্রোফাইল ছবির জন্য গোল ফ্রেম বানান। ফ্রেমের লেখা বাঁকানো রিংয়ের ওপর বসে।|Make a round frame for your Facebook, Instagram or WhatsApp profile picture. The text curves along the ring.</p>
 <label class="t">ছবি|Photo</label><input id="ff" type="file" accept="image/*">
 <div class="g3"><div><label class="t">জুম|Zoom</label><input id="fz" type="range" min="1" max="3" step=".05" value="1"></div><div><label class="t">ডানে-বামে|Left / Right</label><input id="fx" type="range" min="-1" max="1" step=".02" value="0"></div><div><label class="t">উপরে-নিচে|Up / Down</label><input id="fy" type="range" min="-1" max="1" step=".02" value="0"></div></div>
+<div class="pad" data-z="fz" data-x="fx" data-y="fy"></div>
 <label class="t">উপরের লেখা|Top text</label><input id="ft1" value="DHAKA CENTRAL UNIVERSITY" maxlength="40">
 <label class="t">নিচের লেখা|Bottom text</label><input id="ft2" list="deptPlain" data-p="যেমন: Economics · 2022-23|e.g. Economics · 2022-23" maxlength="40">
 <div class="g3"><div><label class="t">ফ্রেমের ধরন|Frame style</label><select id="fst"><option value="ring" class="t">ক্লাসিক রিং|Classic Ring</option><option value="dots" class="t">ডটেড রিং|Dotted Ring</option><option value="duo" class="t">দুই রঙের রিং|Two-tone Ring</option><option value="ribbon" class="t">রিবন ব্যানার|Ribbon Banner</option></select></div>
 <div><label class="t">থিম|Theme</label><select id="fth"><option value="navy" class="t">নেভি ও সোনালি|Navy & Gold</option><option value="ivory" class="t">আইভরি|Ivory</option><option value="emerald" class="t">এমারেল্ড|Emerald</option><option value="wine" class="t">রয়্যাল|Royal</option></select></div></div>
-<button class="bt t" id="fdl">PNG ডাউনলোড|Download PNG</button><button class="bt t" id="fsh">শেয়ার করুন|Share</button>
+<button class="bt t" id="fdl">PNG ডাউনলোড|Download PNG</button><button class="bt t" id="fsh">শেয়ার করুন|Share</button><p class="hint" id="fmsg" role="status"></p>
 <p class="hint t">ফেসবুক প্রোফাইলে ছবিটি আপলোড করলে নিজে থেকেই গোল হয়ে বসবে।|When you upload it as a profile picture, it is cropped to a circle automatically.</p></div>
-<div class="cvw"><canvas id="fcv" width="1080" height="1080"></canvas></div></div></section>
+<div class="cvw"><canvas id="fcv" class="dg" width="1080" height="1080"></canvas></div></div></section>
 
 <!-- ============ সিভি বিল্ডার ============ -->
 <section id="cv"><div class="g2">
@@ -220,13 +235,46 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],L=$L;
 const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>'&#'+m.charCodeAt(0)+';');
-const dl=(href,n)=>{const a=document.createElement('a');a.href=href;a.download=n;a.click()};
+const dl=(href,n)=>{const a=document.createElement('a');a.href=href;a.download=n;a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),500)};
+if(!CanvasRenderingContext2D.prototype.roundRect)CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(typeof r=='number'?r:(r&&r[0])||0,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath()};
+const mkBlob=c=>new Promise(r=>c.toBlob(r,'image/png'));
+const dlBlob=(b,n)=>{const u=URL.createObjectURL(b);dl(u,n);setTimeout(()=>URL.revokeObjectURL(u),5000)};
+function say(id,m){const e=$('#'+id);if(!e)return;e.textContent=m;clearTimeout(e._t);e._t=setTimeout(()=>e.textContent='',7000)}
+async function shareImg(cv,blob,name,text,msg){
+ if(text&&navigator.clipboard)navigator.clipboard.writeText(text).catch(()=>{});
+ const b=blob||await mkBlob(cv),f=new File([b],name,{type:'image/png'}),data={files:[f]};if(text)data.text=text;
+ try{
+  if(navigator.canShare&&navigator.canShare(data)){await navigator.share(data);return}
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}
+ }catch(e){if(e&&e.name=='AbortError')return}
+ dlBlob(b,name);say(msg,L('এই ব্রাউজারে সরাসরি শেয়ার চলে না, তাই ছবি ডাউনলোড হয়েছে।|This browser cannot share directly, so the image was downloaded.')+(text?' '+L('ক্যাপশন কপি হয়েছে।|Caption copied.'):''));
+}
+/* জুম/পজিশন প্যাড ও টেনে সরানো */
+function setSl(id,v,mn,mx){const e=$('#'+id);e.value=Math.min(mx,Math.max(mn,v));e.dispatchEvent(new Event('input',{bubbles:true}))}
+function mkPad(p){
+ const z=p.dataset.z,x=p.dataset.x,y=p.dataset.y,N=(id,d,a,b)=>setSl(id,+$('#'+id).value+d,a,b);
+ const act={up:()=>N(y,-.08,-1,1),down:()=>N(y,.08,-1,1),left:()=>N(x,-.08,-1,1),right:()=>N(x,.08,-1,1),zin:()=>N(z,.1,1,3),zout:()=>N(z,-.1,1,3),
+  reset:()=>{$('#'+z).value=1;$('#'+x).value=0;setSl(y,0,-1,1)}};
+ const B=(a,t,l)=>`<button type="button" class="ic" data-a="${a}" title="${t}" aria-label="${t}">${l}</button>`;
+ p.innerHTML=`<div class="pg"><i></i>${B('up','উপরে / Up','▲')}<i></i>${B('left','বামে / Left','◀')}${B('reset','রিসেট / Reset','⟲')}${B('right','ডানে / Right','▶')}<i></i>${B('down','নিচে / Down','▼')}<i></i></div><div class="pz">${B('zin','জুম বাড়ান / Zoom in','＋')}${B('zout','জুম কমান / Zoom out','－')}</div>`;
+ p.querySelectorAll('button').forEach(b=>{const f=act[b.dataset.a];let tm,iv;const stop=()=>{clearTimeout(tm);clearInterval(iv)};
+  b.addEventListener('pointerdown',e=>{e.preventDefault();f();if(b.dataset.a!='reset')tm=setTimeout(()=>iv=setInterval(f,70),350)});
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));
+  b.addEventListener('keydown',e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();f()}})});
+}
+$$('.pad').forEach(mkPad);
+const phs=()=>$$('textarea[data-p],input[data-p]').forEach(e=>{if(!e.placeholder)e.placeholder=L(e.dataset.p)});phs();
+function dragPan(cv,xs,ys,has,get){let st=null;
+ cv.addEventListener('pointerdown',e=>{if(!has())return;st={x:e.clientX,y:e.clientY,px:+$('#'+xs).value,py:+$('#'+ys).value,k:cv.width/cv.getBoundingClientRect().width};try{cv.setPointerCapture(e.pointerId)}catch(_){}});
+ cv.addEventListener('pointermove',e=>{if(!st)return;const m=get();if(m.mx>1)setSl(xs,st.px+(e.clientX-st.x)*st.k/m.mx,-1,1);if(m.my>1)setSl(ys,st.py+(e.clientY-st.y)*st.k/m.my,-1,1)});
+ ['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>st=null));
+}
 const TB=['card','frame','cv','routine','cgpa','exam','pdf','calc','result'];
 function go(){let h=location.hash.slice(1);if(!TB.includes(h))h='card';$$('main section').forEach(s=>s.classList.toggle('on',s.id==h));$$('.tabs button').forEach(b=>{const o=b.dataset.t==h;b.classList.toggle('on',o);b.setAttribute('aria-selected',o)});if(typeof cvFit=='function')cvFit();scrollTo(0,0);requestAnimationFrame(()=>scrollTo(0,0))}
 $$('.tabs button').forEach(b=>b.onclick=()=>{if(location.hash.slice(1)==b.dataset.t)go();else location.hash=b.dataset.t});addEventListener('hashchange',go);go();
 
 /* ===== ১. শেয়ার কার্ড ===== */
-let photo=null;const LG=new Image();LG.onload=()=>card();LG.src='logo.png';
+let photo=null,CM={mx:0,my:0},cBl=null,cTk=0;const LG=new Image();LG.onload=()=>card();LG.src='logo.png';
 const BG=['গর্বিত শিক্ষার্থী|Proud Student','ক্লাস অব ২০২৬|Class of 2026','নবীন শিক্ষার্থী|New Student','গ্র্যাজুয়েট|Graduate'];
 const TH={navy:{a:'#06162b',b:'#0f3566',fg:'#ffffff',ac:'#e5a83b',ac2:'#f3d08a',pf:'#06162b'},
  ivory:{a:'#fffaf0',b:'#f1e2bd',fg:'#0a2240',ac:'#a8741a',ac2:'#0a2240',pf:'#ffffff'},
@@ -236,19 +284,19 @@ async function card(){
  try{await Promise.all([document.fonts.load('700 40px "Hind Siliguri"'),document.fonts.load('800 40px Cinzel'),document.fonts.load('600 28px Montserrat')])}catch(e){}
  const[W,H]=$('#csz').value.split(',').map(Number),c=$('#cdv'),x=c.getContext('2d'),t=TH[$('#cth').value];
  c.width=W;c.height=H;x.textAlign='center';x.textBaseline='alphabetic';
- const cx=W/2,S=Math.min(1.6,(H-216)/857),top=Math.max(48,(H-150-857*S)/2);
+ const MS=($('#ce').value||'').split('\n').map(q=>q.trim()).filter(Boolean).slice(0,3),cx=W/2,S=Math.min(1.6,(H-216-Math.max(0,MS.length-1)*46)/857),top=Math.max(48,(H-150-857*S)/2);
  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,t.a);g.addColorStop(1,t.b);x.fillStyle=g;x.fillRect(0,0,W,H);
  x.fillStyle=t.ac;x.globalAlpha=.07;[[.92,.07,300],[.04,.95,380],[.88,.92,170],[.1,.3,120]].forEach(([a,b,r])=>{x.beginPath();x.arc(W*a,H*b,r,0,7);x.fill()});x.globalAlpha=1;
  x.strokeStyle=t.ac;x.lineWidth=5;x.beginPath();x.roundRect(34,34,W-68,H-68,30);x.stroke();
  x.globalAlpha=.4;x.lineWidth=2;x.beginPath();x.roundRect(54,54,W-108,H-108,22);x.stroke();x.globalAlpha=1;
  let y=top+38*S;const lr=38*S;
  x.save();x.beginPath();x.arc(cx,y,lr,0,7);x.fillStyle='#fff';x.fill();x.clip();if(LG.complete&&LG.naturalWidth)x.drawImage(LG,cx-lr,y-lr,2*lr,2*lr);x.restore();
- y+=lr+46*S;x.fillStyle=t.ac;x.font=`800 ${36*S}px Cinzel,serif`;x.fillText('DHAKA CENTRAL UNIVERSITY',cx,y);
- y+=34*S;x.fillStyle=t.fg;x.globalAlpha=.85;x.font=`500 ${26*S}px "Hind Siliguri"`;x.fillText(L(BG[+$('#cb').value]),cx,y);x.globalAlpha=1;
+ y+=lr+46*S;x.fillStyle=t.ac;x.font=`800 ${36*S}px Cinzel,serif`;x.fillText($('#ct').value.trim(),cx,y,W-160);
+ y+=34*S;x.fillStyle=t.fg;x.globalAlpha=.85;x.font=`500 ${26*S}px "Hind Siliguri"`;x.fillText(+$('#cb').value==4?$('#cbt').value.trim():L(BG[+$('#cb').value]),cx,y,W-160);x.globalAlpha=1;
  const r=138*S;y+=34*S+r;const cy=y;
  x.strokeStyle=t.ac;x.lineWidth=3;x.globalAlpha=.45;x.beginPath();x.arc(cx,cy,r+28*S,0,7);x.stroke();x.globalAlpha=1;
  x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
- if(photo){const b=Math.max(2*r/photo.width,2*r/photo.height)*+$('#pz').value,w=photo.width*b,h=photo.height*b,mx=(w-2*r)/2,my=(h-2*r)/2;x.drawImage(photo,cx-w/2+(+$('#px').value)*mx,cy-h/2+(+$('#py').value)*my,w,h)}
+ if(photo){const b=Math.max(2*r/photo.width,2*r/photo.height)*+$('#pz').value,w=photo.width*b,h=photo.height*b,mx=(w-2*r)/2,my=(h-2*r)/2;CM={mx,my};x.drawImage(photo,cx-w/2+(+$('#px').value)*mx,cy-h/2+(+$('#py').value)*my,w,h)}
  else{const g2=x.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g2.addColorStop(0,t.ac);g2.addColorStop(1,t.ac2);x.fillStyle=g2;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=t.pf;x.font=`800 ${r*1.05}px "Hind Siliguri"`;x.textBaseline='middle';x.fillText([...($('#cn').value.trim()||'D')][0],cx,cy+r*.04)}
  x.restore();x.textBaseline='alphabetic';
  x.strokeStyle=t.ac;x.lineWidth=9;x.beginPath();x.arc(cx,cy,r+7,0,7);x.stroke();
@@ -260,14 +308,19 @@ async function card(){
  T($('#cd').value.trim(),38*S,600,t.ac2);
  const ses=$('#cs').value.trim();
  if(ses){y+=10*S;x.font=`700 ${28*S}px "Hind Siliguri"`;const w=x.measureText(ses).width+60*S,h=52*S;x.fillStyle=t.ac;x.beginPath();x.roundRect(cx-w/2,y-h*.72,w,h,h/2);x.fill();x.fillStyle=t.pf;x.fillText(ses,cx,y);y+=h*.9}
- y+=14*S;T($('#ce').value.trim(),32*S,500,t.fg,'"Hind Siliguri"','italic');
- x.fillStyle=t.ac;x.font='600 26px Montserrat';x.fillText(location.host||'dcu',cx,H-100);
- x.globalAlpha=.7;x.fillStyle=t.fg;x.font='400 20px "Hind Siliguri"';x.fillText(L('অনানুষ্ঠানিক শিক্ষার্থী-উদ্যোগ|Unofficial student initiative'),cx,H-68);x.globalAlpha=1;
+ y+=14*S;MS.forEach(m=>T(m,(MS.length>1?28:32)*S,500,t.fg,'"Hind Siliguri"','italic'));
+ x.fillStyle=t.ac;x.font='600 26px Montserrat';x.fillText($('#cft').value.trim()||location.host||'dcu',cx,H-100,W-160);
+ x.globalAlpha=.7;x.fillStyle=t.fg;x.font='400 20px "Hind Siliguri"';x.fillText($('#cfn').value.trim()||L('অনানুষ্ঠানিক শিক্ষার্থী-উদ্যোগ|Unofficial student initiative'),cx,H-68,W-160);x.globalAlpha=1;
+ c.style.touchAction=photo?'none':'';cBl=null;const tk=++cTk;c.toBlob(b=>{if(tk==cTk)cBl=b},'image/png');
 }
-['cn','cd','cs','ce','cb','cth','csz','pz','px','py'].forEach(i=>$('#'+i).addEventListener('input',card));
+['cn','cd','cs','ce','cb','cbt','ct','cft','cfn','cth','csz','pz','px','py'].forEach(i=>$('#'+i).addEventListener('input',card));
+['input','change'].forEach(ev=>$('#cb').addEventListener(ev,()=>{$('#cbw').style.display=$('#cb').value=='4'?'':'none'}));
 $('#cf').onchange=async e=>{const f=e.target.files[0];if(f){try{photo=await createImageBitmap(f);card()}catch(err){}}};
-const cdl=()=>dl($('#cdv').toDataURL('image/png'),'dcu-card.png');$('#cdl').onclick=cdl;
-$('#csh').onclick=()=>$('#cdv').toBlob(async b=>{const f=new File([b],'dcu-card.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:location.origin+'/'});else cdl()}catch(e){}});
+dragPan($('#cdv'),'px','py',()=>!!photo,()=>CM);
+const capTxt=()=>{let q=$('#cst').value.trim()||L('আমি ঢাকা সেন্ট্রাল ইউনিভার্সিটির শিক্ষার্থী 🎓|I study at Dhaka Central University 🎓');if($('#csl').checked&&/^https?:/.test(location.origin))q+='\n'+location.origin+'/';return q};
+const cdl=async()=>{const b=cBl||await mkBlob($('#cdv'));if(b)dlBlob(b,'dcu-card.png');else dl($('#cdv').toDataURL('image/png'),'dcu-card.png')};$('#cdl').onclick=cdl;
+$('#csh').onclick=()=>shareImg($('#cdv'),cBl,'dcu-card.png',capTxt(),'cmsg');
+$('#ccp').onclick=async()=>{try{await navigator.clipboard.writeText(capTxt());say('cmsg',L('ক্যাপশন কপি হয়েছে।|Caption copied.'))}catch(e){prompt(L('ক্যাপশন কপি করুন:|Copy the caption:'),capTxt())}};
 
 /* ===== ২. ক্লাস রুটিন ===== */
 const DN=['শনিবার|Saturday','রবিবার|Sunday','সোমবার|Monday','মঙ্গলবার|Tuesday','বুধবার|Wednesday','বৃহস্পতিবার|Thursday'];
@@ -394,7 +447,7 @@ $('#nb').onclick=async()=>{const f=$('#nf').files[0];if(!f)return pst(L('আগ�
 
 
 /* ===== ৬. প্রোফাইল ফ্রেম ===== */
-let fph=null;
+let fph=null,FM={mx:0,my:0},fBl=null,fTk=0;
 function arcT(x,s,cx,cy,r,top,fam,fs,wt,col){
  if(!s)return;const P=Math.PI;let ws,span;
  for(;;){x.font=`${wt} ${fs}px ${fam}`;ws=[...s].map(c=>x.measureText(c).width+fs*.14);span=ws.reduce((a,b)=>a+b,0)/r;if(span<=2.6||fs<=16)break;fs-=2}
@@ -406,7 +459,7 @@ async function frame(){
  const c=$('#fcv'),x=c.getContext('2d'),t=TH[$('#fth').value],st=$('#fst').value,W=1080,cx=540,cy=540,R=540,P=Math.PI;
  c.width=c.height=W;
  const bg=x.createLinearGradient(0,0,W,W);bg.addColorStop(0,t.a);bg.addColorStop(1,t.b);x.fillStyle=bg;x.fillRect(0,0,W,W);
- if(fph){const b=Math.max(W/fph.width,W/fph.height)*+$('#fz').value,w=fph.width*b,h=fph.height*b;x.drawImage(fph,cx-w/2+(+$('#fx').value)*(w-W)/2,cy-h/2+(+$('#fy').value)*(h-W)/2,w,h)}
+ if(fph){const b=Math.max(W/fph.width,W/fph.height)*+$('#fz').value,w=fph.width*b,h=fph.height*b;FM={mx:(w-W)/2,my:(h-W)/2};x.drawImage(fph,cx-w/2+(+$('#fx').value)*(w-W)/2,cy-h/2+(+$('#fy').value)*(h-W)/2,w,h)}
  else{x.fillStyle=t.ac;x.globalAlpha=.28;x.beginPath();x.arc(cx,430,150,0,7);x.fill();x.beginPath();x.ellipse(cx,860,290,250,0,0,7);x.fill();x.globalAlpha=1}
  x.fillStyle=t.a;x.beginPath();x.rect(0,0,W,W);x.moveTo(cx+R-1,cy);x.arc(cx,cy,R-1,0,7,true);x.fill('evenodd');
  const t1=$('#ft1').value.trim(),t2=$('#ft2').value.trim();
@@ -423,11 +476,13 @@ async function frame(){
   const bx=150,bw=780,by=720,bh=150;x.fillStyle=t.a;x.strokeStyle=t.ac;x.lineWidth=5;x.beginPath();x.roundRect(bx,by,bw,bh,16);x.fill();x.stroke();
   x.textAlign='center';x.textBaseline='middle';x.fillStyle=t.ac;x.font='800 34px Cinzel,serif';x.fillText(t1.toUpperCase().slice(0,32),cx,by+48,bw-40);x.fillStyle=t.fg;x.font='700 40px "Hind Siliguri"';x.fillText(t2,cx,by+104,bw-40);
  }
+ c.style.touchAction=fph?'none':'';fBl=null;const tk=++fTk;c.toBlob(b=>{if(tk==fTk)fBl=b},'image/png');
 }
 ['ft1','ft2','fst','fth','fz','fx','fy'].forEach(i=>$('#'+i).addEventListener('input',frame));
 $('#ff').onchange=async e=>{const f=e.target.files[0];if(f){try{fph=await createImageBitmap(f);frame()}catch(err){}}};
-const fdl=()=>dl($('#fcv').toDataURL('image/png'),'dcu-profile-frame.png');$('#fdl').onclick=fdl;
-$('#fsh').onclick=()=>$('#fcv').toBlob(async b=>{const f=new File([b],'dcu-profile-frame.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f]});else fdl()}catch(e){}});
+dragPan($('#fcv'),'fx','fy',()=>!!fph,()=>FM);
+const fdl=async()=>{const b=fBl||await mkBlob($('#fcv'));if(b)dlBlob(b,'dcu-profile-frame.png');else dl($('#fcv').toDataURL('image/png'),'dcu-profile-frame.png')};$('#fdl').onclick=fdl;
+$('#fsh').onclick=()=>shareImg($('#fcv'),fBl,'dcu-profile-frame.png','','fmsg');
 
 /* ===== ৭. সিভি বিল্ডার ===== */
 const CT={en:{sum:'Professional Summary',exp:'Experience',edu:'Education',sk:'Skills',lg:'Languages',pr:'Projects',ac:'Achievements & Certifications',rf:'References',ct:'Contact'},
@@ -504,7 +559,7 @@ function resR(){$('#rl').href=$RESULT;$('#cols').innerHTML=$COLS.map(c=>`<li>${e
 $('#rcp').onclick=async()=>{try{await navigator.clipboard.writeText($RESULT)}catch(e){}};
 
 /* ===== শুরু ===== */
-window.onLang=()=>{card();frame();rtR();cgR();exR();fl('img');fl('mrg');tstop();cvR();khR();resR()};
+window.onLang=()=>{$$('textarea[data-p]').forEach(e=>e.placeholder=L(e.dataset.p));card();frame();rtR();cgR();exR();fl('img');fl('mrg');tstop();cvR();khR();resR()};
 window.onLang();tdraw();$('#cvl').dispatchEvent(new Event('change'));
 </script>
 </body>
