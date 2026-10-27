@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DCU Unofficial</title>
+<meta name="theme-color" content="#0a2240">
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri','Montserrat',sans-serif;line-height:1.7}
+.w{max-width:920px;margin:0 auto;padding:22px 16px 6px}
+.ph{padding:8px 2px 4px}.ph h1{margin:0;font-size:28px;color:var(--ink)}.ph p{margin:4px 0 0;color:var(--mu);font-size:16px}
+.gd{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start}
+@media(max-width:760px){.gd{grid-template-columns:1fr}}
+.bx{background:var(--cd);border:1px solid var(--ln);border-radius:12px;padding:22px;margin:16px 0}
+.gd .bx{margin:12px 0}
+h2{margin:0 0 10px;font-size:20px;color:var(--ink)}
+.bt{display:inline-block;padding:9px 18px;border-radius:8px;background:#0a2240;color:#e5a83b;text-decoration:none;font-weight:700;font-size:14px;border:0;cursor:pointer;font-family:inherit}
+.bt.o{background:transparent;color:var(--ink);border:1.5px solid var(--ln)}
+label{display:block;font-weight:600;font-size:14px;margin-top:12px}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--ln);border-radius:8px;background:var(--cd);color:var(--ink);font:inherit;margin-top:4px}
+textarea{min-height:130px;resize:vertical}
+.ch{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#fs{margin-top:10px;font-size:14px;color:var(--mu)}
+.ct{display:flex;align-items:center;gap:12px;margin:12px 0}
+.ct b{display:block;font-size:14px;color:var(--ink)}.ct span{font-size:14px;color:var(--mu);word-break:break-all}
+.ns{font-size:13.5px;color:var(--mu);border-top:1px dashed var(--ln);margin-top:14px;padding-top:10px}
+:focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+</style>
+</head>
+<body data-page="feedback">
+<div id="hdr"></div>
+<main class="w">
+<div class="ph"><h1 class="t">💬 মতামত ও পরামর্শ|💬 Feedback & Suggestions</h1>
+<p class="t">কোনো সমস্যা, নতুন ফিচারের ধারণা বা প্রশ্ন থাকলে জানান। প্রতিটি মতামত গুরুত্বের সাথে দেখা হয়।|Share a problem, a feature idea or a question. Every message is read carefully.</p></div>
+<div class="gd" id="feedback">
+<div class="bx"><h2 class="t">বার্তা পাঠান|Send a Message</h2>
+<label class="t">ধরন|Type</label>
+<select id="ft"><option value="0" class="t">পরামর্শ|Suggestion</option><option value="1" class="t">সমস্যা (Bug)|Problem (Bug)</option><option value="2" class="t">নতুন ফিচারের অনুরোধ|Feature request</option><option value="3" class="t">প্রশ্ন|Question</option></select>
+<label class="t">আপনার বার্তা|Your message</label><textarea id="fm" data-p="এখানে লিখুন...|Write here..."></textarea>
+<label class="t">নাম ও যোগাযোগ (ঐচ্ছিক)|Name & contact (optional)</label><input id="fc" data-p="উত্তর পেতে চাইলে ইমেইল বা নম্বর দিন|Add an email or number if you want a reply">
+<div class="ch" id="fb2"></div><div id="fs" aria-live="polite"></div>
+</div>
+<div class="bx"><h2 class="t">সরাসরি যোগাযোগ|Contact Directly</h2>
+<div id="ct"></div>
+<p class="ns t">আপনার লেখা বার্তা এই সাইটে জমা থাকে না। পাঠানোর বোতাম চাপলে এটি আপনার নিজের ইমেইল বা WhatsApp-এ খোলে।|Your message is not stored on this site. The send buttons open it in your own email or WhatsApp.</p></div>
+</div>
+</main>
+<div id="ftr"></div>
+<script src="site.js"></script>
+<script>
+const $=s=>document.querySelector(s),D=$DEV,L=$L;
+function render(){
+ const c=[];
+ if(D.email)c.push(`<div class="ct">${$SOC('email','mailto:'+D.email,L('ইমেইল|Email'),false)}<div><b>${L('ইমেইল|Email')}</b><span>${D.email}</span></div></div>`);
+ if(D.whatsapp)c.push(`<div class="ct"><a class="si" style="--c:#25d366" href="https://wa.me/${D.whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-4.9A8.5 8.5 0 1 1 8 19.4L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-.8.8c-.8-.3-1.7-1.2-2-2l.8-.8-1-2L9 9.5z" fill="currentColor" stroke="none"/></svg></a><div><b>WhatsApp</b><span>+${D.whatsapp}</span></div></div>`);
+ c.push(`<div class="ct">${$SOC('github',D.repo+'/issues',L('GitHub Issues|GitHub Issues'))}<div><b>GitHub</b><span>${L('সমস্যা বা ফিচারের অনুরোধ|Bugs and feature requests')}</span></div></div>`);
+ $('#ct').outerHTML='<div id="ct">'+c.join('')+'</div>';
+ buttons();
+}
+function msg(){const t=['পরামর্শ|Suggestion','সমস্যা|Problem','ফিচারের অনুরোধ|Feature request','প্রশ্ন|Question'][$('#ft').value];
+ return `[${L(t)}] ${$('#fm').value.trim()}`+($('#fc').value.trim()?`\n— ${$('#fc').value.trim()}`:'')}
+function buttons(){
+ const b=[];if(D.email)b.push(['gm',L('Gmail-এ পাঠান|Send via Gmail')],['em',L('ইমেইল অ্যাপে পাঠান|Send via Email App')]);if(D.whatsapp)b.push(['wa',L('WhatsApp-এ পাঠান|Send on WhatsApp')]);
+ b.push(['gh',L('GitHub-এ জানান|Report on GitHub')],['cp',L('বার্তা কপি করুন|Copy message')]);
+ $('#fb2').innerHTML=b.map(([k,t],i)=>`<button type="button" class="bt${i>0?' o':''}" data-k="${k}">${t}</button>`).join('');
+}
+function go(url,same){
+ const a=document.createElement('a');a.href=url;
+ if(!same){a.target='_blank';a.rel='noopener noreferrer'}
+ document.body.appendChild(a);a.click();a.remove();
+}
+async function copy(t){
+ try{await navigator.clipboard.writeText(t);return true}catch(x){}
+ try{const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(x){return false}
+}
+const MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('#fb2').onclick=async e=>{
+ const btn=e.target.closest('button[data-k]');if(!btn)return;
+ const k=btn.dataset.k,m=msg(),s=$('#fs'),SUB='DCU Site Feedback';
+ if(!$('#fm').value.trim()){s.textContent=L('আগে আপনার বার্তা লিখুন।|Please write your message first.');$('#fm').focus();return}
+ const copied=k=='cp'?await copy(m):false;
+ if(k=='cp'){s.textContent=copied?L('বার্তা কপি হয়েছে।|Message copied.'):L('কপি করা যায়নি; লেখাটি নিজে সিলেক্ট করে কপি করুন।|Could not copy; please select and copy the text manually.');return}
+ copy(m);
+ if(k=='gm'){
+  if(MOBILE)go(`mailto:${D.email}?subject=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`,true);
+  else go(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(D.email)}&su=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`);
+ }
+ else if(k=='em')go(`mailto:${D.email}?subject=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`,true);
+ else if(k=='wa')go(`https://wa.me/${D.whatsapp}?text=${encodeURIComponent(m)}`);
+ else if(k=='gh')go(`${D.repo}/issues/new?title=${encodeURIComponent('Feedback')}&body=${encodeURIComponent(m)}`);
+ s.textContent=L('আপনার বার্তা কপি করা হয়েছে। নতুন ট্যাব বা অ্যাপ না খুললে সেখানে পেস্ট করে পাঠান।|Your message was copied. If no tab or app opened, paste it there and send.');
+};
+window.onLang=render;render();
+</script>
+</body>
+</html>
