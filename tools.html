@@ -94,6 +94,11 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 .sgc{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.sgc b{width:100%;font-size:12px;opacity:.75;margin-top:5px}
 .sgb{width:auto;padding:4px 11px;font-size:12px;border-radius:999px;border:1px solid rgba(128,128,128,.55);background:transparent;color:inherit;cursor:pointer;margin:0;box-shadow:none}
 .sgb.on{background:#0a2240;color:#e5a83b;border-color:#0a2240}
+#sgd{position:fixed;display:none;z-index:99999;max-height:240px;overflow-y:auto;background:#fff;color:#222;border:1px solid #cfd8dc;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.22);font-size:14px;line-height:1.4}
+.sgi{padding:9px 12px;cursor:pointer;border-bottom:1px solid rgba(128,128,128,.15);white-space:normal;overflow-wrap:anywhere}.sgi:last-child{border-bottom:0}
+.sgi:hover,.sgi.on{background:#0a2240;color:#e5a83b}
+body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
+.sgp{width:auto;margin:6px 0 0;padding:6px 12px;font-size:12.5px;border-radius:8px;cursor:pointer}
 @media(max-width:560px){.rg{grid-template-columns:1fr}}
 </style>
 </head>
@@ -215,7 +220,7 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 <div><label class="t">সিভির ভাষা|CV Language</label><select id="cvl"><option value="en">English</option><option value="bn">বাংলা</option></select></div></div>
 <button class="bs t" id="cvsmp" style="margin-top:10px">নমুনা তথ্য যুক্ত করুন|Load Sample Data</button> <button class="bs t" id="cvclr">সব তথ্য মুছে ফেলুন|Clear All</button>
 <div id="cvdl" style="display:none"></div>
-<div class="g3"><div><label class="t">পূর্ণ নাম|Full Name</label><input id="cvn" maxlength="60"></div><div><label class="t">পদবি / পেশাগত লক্ষ্য|Professional Title / Objective</label><input id="cvj" maxlength="80" list="dl_job"></div></div>
+<div class="g3"><div><label class="t">পূর্ণ নাম|Full Name</label><input id="cvn" maxlength="60"></div><div><label class="t">পদবি / পেশাগত লক্ষ্য|Professional Title / Objective</label><input id="cvj" maxlength="80" autocomplete="off"></div></div>
 <div class="g3"><div><label class="t">ইমেইল|Email</label><input id="cve" type="email"></div><div><label class="t">মোবাইল নম্বর|Phone</label><input id="cvh"></div><div><label class="t">ঠিকানা|Address</label><input id="cva"></div></div>
 <label class="t">পেশাগত লিংক (LinkedIn, GitHub, পোর্টফোলিও)|Professional Links (LinkedIn, GitHub, Portfolio)</label><textarea id="cvk" style="display:none"></textarea><div class="rp" id="rp_cvk"></div>
 <label class="t">প্রোফাইল ছবি (ঐচ্ছিক)|Profile Photo (optional)</label><input id="cvf" type="file" accept="image/*">
@@ -611,6 +616,30 @@ cvx:{n:4,w:[2,3],add:'+ কর্ম অভিজ্ঞতা যোগ কর�
 cvr:{n:2,w:[0,1],add:'+ প্রজেক্ট যোগ করুন|+ Add Project',f:[['প্রজেক্টের শিরোনাম|Project Title','prj','যেমন: পরিবারভিত্তিক আয় জরিপ বিশ্লেষণ|e.g. Household Income Survey Analysis'],['বিবরণ ও ফলাফল|Description & Outcome','det','কী করেছেন ও কী অর্জন হয়েছে|What you did and what you achieved']]},
 cvc:{n:1,one:1,add:'+ অর্জন / সনদ যোগ করুন|+ Add Achievement',f:[['অর্জন / সনদ|Achievement / Certificate','ach','যেমন: ডিনস লিস্ট ২০২৪|e.g. Dean’s List 2024']]},
 cvk:{n:1,one:1,add:'+ লিংক যোগ করুন|+ Add Link',f:[['লিংক|Link','lnk','যেমন: linkedin.com/in/your-name|e.g. linkedin.com/in/your-name']]}};
+/* ---- কাস্টম সাজেশন ড্রপডাউন (সব ব্রাউজার ও মোবাইলে একই রকম কাজ করে) ---- */
+const SD=h('div',{id:'sgd'});document.body.append(SD);let SA=null;
+const perList=()=>{const y=new Date().getFullYear(),p=[];[y+1,y,y-1,y-2,y-3].forEach(e=>p.push(`${e-4} – ${e}`,`${e-2} – ${e}`));p.push(`${y} – ${BL()?'বর্তমান':'Present'}`,`${y-1} – ${y}`);return p};
+const sugList=k=>k==='per'?perList():k==='org'?SG.org.concat(SG.inst).map(pv):SG[k].map(pv);
+function sdHide(){SD.style.display='none';SA=null}
+function sdPlace(){if(!SA)return;const r=SA.anchor.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return sdHide();const w=Math.min(Math.max(r.width,260),innerWidth-16),hh=SD.offsetHeight;SD.style.width=w+'px';SD.style.left=Math.max(8,Math.min(r.left,innerWidth-w-8))+'px';SD.style.top=((r.bottom+hh+6>innerHeight&&r.top>hh+6)?r.top-hh-4:r.bottom+2)+'px'}
+function sdHi(i){SA.i=i;[...SD.children].forEach((e,k)=>e.classList.toggle('on',k===i));if(SD.children[i])SD.children[i].scrollIntoView({block:'nearest'})}
+function sdPick(i){const a=SA;if(!a||i<0)return;sdHide();a.pick(a.list[i])}
+function sdShow(anchor,items,pick,q){
+ const ql=(q||'').trim().toLowerCase();let list=items.filter(t=>!ql||t.toLowerCase().includes(ql));
+ if(!ql||(list.length===1&&list[0].trim().toLowerCase()===ql))list=items.slice();
+ if(!list.length)return sdHide();
+ SD.textContent='';SA={anchor,list,pick,i:-1};
+ list.forEach((t,i)=>SD.append(h('div',{className:'sgi',textContent:t,onmousedown:e=>e.preventDefault(),onclick:()=>sdPick(i)})));
+ SD.style.display='block';SD.scrollTop=0;sdPlace()}
+function attachSug(inp,get){
+ let skip=false;const open=()=>{if(skip){skip=false;return}sdShow(inp,get(),v=>{skip=true;inp.value=v;inp.dispatchEvent(new Event('input'));inp.focus();skip=false;sdHide()},inp.value)};
+ ['focus','click','input'].forEach(ev=>inp.addEventListener(ev,open));
+ inp.addEventListener('blur',()=>setTimeout(()=>{if(SA&&SA.anchor===inp)sdHide()},200));
+ inp.addEventListener('keydown',e=>{if(!SA||SA.anchor!==inp){if(e.key==='ArrowDown')open();return}
+  const n=SA.list.length;if(e.key==='ArrowDown'){e.preventDefault();sdHi((SA.i+1)%n)}else if(e.key==='ArrowUp'){e.preventDefault();sdHi((SA.i-1+n)%n)}
+  else if(e.key==='Enter'&&SA.i>=0){e.preventDefault();sdPick(SA.i)}else if(e.key==='Escape'||e.key==='Tab')sdHide()})}
+document.addEventListener('pointerdown',e=>{if(SA&&!SD.contains(e.target)&&e.target!==SA.anchor)sdHide()});
+addEventListener('scroll',sdPlace,true);addEventListener('resize',sdPlace);
 const pRows=(t,n)=>{const r=t.split('\n').map(q=>q.trim()).filter(Boolean).map(l=>{const p=l.split('|').map(z=>z.trim());if(p.length>n)p.splice(n-1,p.length,p.slice(n-1).join(' / '));while(p.length<n)p.push('');return p});return r.length?r:[Array(n).fill('')]};
 function rpSync(id){const c=RP[id],t=$('#'+id);t.value=c.rows.map(r=>{const q=r.map(z=>String(z||'').replace(/[\r\n]+/g,' ').replace(/\|/g,'/').trim());while(q.length>1&&!q[q.length-1])q.pop();return q.some(Boolean)?q.join(' | '):''}).filter(Boolean).join('\n');t.dispatchEvent(new Event('input'))}
 function rpDraw(id){
@@ -619,11 +648,12 @@ function rpDraw(id){
  box.textContent='';
  c.rows.forEach((r,i)=>{
   const fld=c.f.map((f,j)=>{
-   const det=f[1]==='det',inp=det?h('textarea',{rows:2,value:r[j],placeholder:L(f[2])}):h('input',{value:r[j],placeholder:L(f[2]),list:'dl_'+f[1]});
+   const det=f[1]==='det',inp=det?h('textarea',{rows:2,value:r[j],placeholder:L(f[2])}):h('input',{value:r[j],placeholder:L(f[2]),autocomplete:'off'});
+   if(!det)attachSug(inp,()=>sugList(f[1]));
    inp.addEventListener('input',()=>{r[j]=inp.value;rpSync(id)});
    if(c.one)return inp;
    const kids=[h('label',{textContent:L(f[0])}),inp];
-   if(det){const sel=h('select',{},h('option',{value:'',textContent:L('💡 তৈরি বাক্য থেকে যোগ করুন|💡 Add a suggested sentence')}),...DET.map(d=>h('option',{value:pv(d),textContent:pv(d)})));sel.onchange=()=>{if(!sel.value)return;r[j]=(r[j]?r[j]+' ':'')+sel.value;inp.value=r[j];sel.selectedIndex=0;rpSync(id)};kids.push(sel)}
+   if(det){const pb=h('button',{type:'button',className:'bs sgp',textContent:L('💡 তৈরি বাক্য থেকে যোগ করুন|💡 Add a suggested sentence')});pb.onclick=()=>{if(SA&&SA.anchor===pb)return sdHide();sdShow(pb,DET.map(pv),v=>{r[j]=(r[j]?r[j]+' ':'')+v;inp.value=r[j];rpSync(id)},'')};kids.push(pb)}
    return h('div',{className:c.w.includes(j)?'w':''},...kids)});
   box.append(c.one?h('div',{className:'rs'},...fld,btn('✕','মুছুন|Remove',()=>del(i))):h('div',{className:'rc'},h('div',{className:'rh'},h('span',{textContent:'#'+(i+1)}),h('span',{},btn('↑','ওপরে|Move up',()=>mv(i,-1)),btn('↓','নিচে|Move down',()=>mv(i,1)),btn('✕','মুছুন|Remove',()=>del(i)))),h('div',{className:'rg'},...fld)))});
  box.append(h('button',{type:'button',className:'bs',textContent:L(c.add),onclick:()=>{c.rows.push(Array(c.n).fill(''));rpDraw(id);const q=box.querySelectorAll('input,textarea'),k=q.length-(c.one?1:c.f.length);if(q[k])q[k].focus()}}))}
@@ -632,13 +662,10 @@ function chipDraw(){
  const draw=(id,gr)=>{const box=$('#sg_'+id),cur=$('#'+id).value.split(/[,\n]/).map(q=>q.trim().toLowerCase());box.textContent='';
   gr.forEach(g=>{if(g[0])box.append(h('b',{textContent:L(g[0])}));g[1].forEach(it=>{const v=pv(it);box.append(h('button',{type:'button',className:'sgb'+(cur.includes(v.toLowerCase())?' on':''),textContent:v,onclick:()=>chipTog(id,v)}))})})};
  draw('cvsk',SK);draw('cvg',[['',LNG]])}
-function dlDraw(){
- const y=new Date().getFullYear(),per=[];[y+1,y,y-1,y-2,y-3].forEach(e=>{per.push(`${e-4} – ${e}`,`${e-2} – ${e}`)});per.push(`${y} – Present|${y} – বর্তমান`,`${y-1} – ${y}`);
- const D={...SG,org:SG.org.concat(SG.inst),per},box=$('#cvdl');box.textContent='';
- for(const k in D){const dl=h('datalist',{id:'dl_'+k});D[k].forEach(t=>dl.append(h('option',{value:pv(t)})));box.append(dl)}}
-function cvUI(){dlDraw();Object.keys(RP).forEach(id=>{RP[id].rows=pRows($('#'+id).value,RP[id].n);rpDraw(id)});chipDraw()}
+function cvUI(){Object.keys(RP).forEach(id=>{RP[id].rows=pRows($('#'+id).value,RP[id].n);rpDraw(id)});chipDraw()}
 ['cvsk','cvg'].forEach(i=>$('#'+i).addEventListener('input',chipDraw));
 $('#cvl').addEventListener('change',cvUI);
+attachSug($('#cvj'),()=>SG.job.map(pv));
 cvUI();
 
 /* ===== ৮. সায়েন্টিফিক ক্যালকুলেটর ===== */
