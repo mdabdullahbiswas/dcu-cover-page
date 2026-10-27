@@ -2,163 +2,320 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DCU Student Tools</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>টুলস | Dhaka Central University (Unofficial)</title>
+<meta name="theme-color" content="#0a2240">
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 <style>
-*{box-sizing:border-box;margin:0}
-body{font-family:'Hind Siliguri',sans-serif;background:#eef1f5;color:#1c2733;line-height:1.55}
-button,input,select{font-family:inherit;font-size:14px}
-header{background:#0a2240;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
-header h1{font-size:19px;color:#e5a83b}header a{color:#fff;font-size:14px;text-decoration:none}
-nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid #cfd7e0;position:sticky;top:0;z-index:5}
-nav button{flex:none;border:1.5px solid #cfd7e0;background:#fff;border-radius:20px;padding:7px 14px;font-weight:600;cursor:pointer}
-nav button.on{background:#0a2240;color:#e5a83b;border-color:#0a2240}
-main{max-width:1000px;margin:0 auto;padding:16px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri','Montserrat',sans-serif;line-height:1.6}
+.tw{max-width:1100px;margin:0 auto;padding:16px 14px 4px}
+h2{margin:0 0 6px;font-size:20px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:14px 0;padding-bottom:4px;scrollbar-width:thin}
+.tabs button{flex:none;border:1.5px solid var(--ln);background:var(--cd);color:var(--ink);border-radius:22px;padding:8px 16px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer}
+.tabs button.on{background:#0a2240;color:#e5a83b;border-color:#0a2240}
 section{display:none}section.on{display:block}
-.box{background:#fff;border:1px solid #cfd7e0;border-radius:10px;padding:16px;margin-bottom:14px}
-.cols{display:flex;flex-wrap:wrap;gap:16px}.cols>*{flex:1;min-width:290px}
-label{display:block;font-size:13px;font-weight:600;margin-top:10px}
-input,select{width:100%;padding:8px 10px;border:1.5px solid #cfd7e0;border-radius:6px;margin-top:4px;background:#fff}
-.p{background:#0a2240;color:#e5a83b;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;margin:12px 6px 0 0}
-.s{background:#fff;color:#0a2240;border:1.5px solid #0a2240;border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
-:focus-visible{outline:3px solid #e5a83b}
-.r{display:grid;gap:6px;align-items:end;margin-top:8px}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid #cfd7e0;padding:6px 8px;vertical-align:top}th{background:#0a2240;color:#fff;width:64px}
-.big{font-size:26px;font-weight:700;color:#0a2240}
-.hint{font-size:13px;color:#5d6b7a;margin-top:6px}
-canvas{max-width:100%;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(10,34,64,.25)}
-@media print{header,nav,.np{display:none!important}body{background:#fff}}
+.bx{background:var(--cd);border:1px solid var(--ln);border-radius:12px;padding:16px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+@media(max-width:760px){.g2{grid-template-columns:1fr}}
+label{display:block;font-size:13.5px;font-weight:600;margin-top:10px}
+input,select,textarea{width:100%;padding:9px 11px;border:1.5px solid var(--ln);border-radius:8px;background:var(--cd);color:var(--ink);font:inherit;margin-top:4px}
+input[type=range]{padding:0;accent-color:#0a2240}input[type=checkbox]{width:auto;margin:0 6px 0 0}
+textarea{min-height:80px;resize:vertical}
+.bt{background:#0a2240;color:#e5a83b;border:0;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin:12px 8px 0 0}
+.bs{background:transparent;color:var(--ink);border:1.5px solid var(--ln);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer}
+.ic{background:transparent;border:1.5px solid var(--ln);color:var(--ink);border-radius:6px;padding:4px 9px;cursor:pointer;font:inherit}
+:focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
+.hint{font-size:13px;color:var(--mu);margin-top:6px}
+.hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}.hd b{font-size:16px}.hd .gp{margin-left:auto;font-weight:700;color:#0a2240}
+body.dark .hd .gp{color:#e5a83b}
+.big{font-size:34px;font-weight:800;color:#0a2240;line-height:1.2}body.dark .big{color:#e5a83b}
+.cvw{text-align:center}canvas{max-width:100%;height:auto;border-radius:10px;box-shadow:0 8px 28px rgba(10,34,64,.28)}
+.sc{overflow-x:auto}.sc canvas{width:100%;min-width:760px;box-shadow:none;border:1px solid var(--ln);border-radius:8px}
+.dy{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.dy label{margin:0;font-weight:500;border:1.5px solid var(--ln);border-radius:20px;padding:3px 12px;cursor:pointer;display:flex;align-items:center}
+.rw{display:grid;grid-template-columns:2fr .8fr 1fr auto;gap:6px;align-items:center;margin-top:6px}.rw input,.rw select{margin:0}
+.chart{display:flex;gap:8px;align-items:flex-end;height:130px;margin-top:10px;overflow-x:auto}
+.cb{flex:1;min-width:46px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:12px}
+.cb i{display:block;width:70%;background:linear-gradient(#e5a83b,#0a2240);border-radius:6px 6px 0 0;min-height:2px}
+.pb{height:8px;background:var(--ln);border-radius:5px;overflow:hidden;margin:6px 0}.pb i{display:block;height:100%;background:#2e9e5b}
+.ck{display:flex;align-items:center;margin:3px 0;font-weight:400;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px solid var(--ln);padding:6px;text-align:center}th{background:#0a2240;color:#fff}
+.fi{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--ln);border-radius:8px;padding:6px 10px;margin-top:6px;font-size:14px}.fi>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tmd{font:800 54px 'Montserrat',sans-serif;text-align:center;color:#0a2240}body.dark .tmd{color:#e5a83b}
+#pm{font-weight:600}
+@media print{.np,.tabs{display:none!important}body{background:#fff}.bx{border:0}}
 </style>
 </head>
-<body>
-<header><h1>DCU Student Tools</h1><a href="./">← কভার পেজ</a></header>
-<nav>
-<button data-t="card">শেয়ার কার্ড</button><button data-t="rt">ক্লাস রুটিন</button><button data-t="cg">CGPA</button><button data-t="ex">পরীক্ষা প্ল্যানার</button><button data-t="pdf">PDF টুল</button>
-</nav>
-<main>
-
-<section id="card"><div class="cols">
-<div class="box">
-<label>নাম</label><input id="cn" placeholder="আপনার নাম">
-<label>ডিপার্টমেন্ট</label><input id="cd" placeholder="Computer Science">
-<label>সেশন</label><input id="cs" placeholder="Session 2025-26">
-<label>আরও এক লাইন (রোল, ব্যাচ বা বার্তা)</label><input id="ce" placeholder="Class of 2026">
-<label>ছবি (ঐচ্ছিক, কোথাও আপলোড হয় না)</label><input id="cf" type="file" accept="image/*">
-<label>থিম</label><select id="cth"><option value="navy">নেভি ও সোনালি</option><option value="gold">সোনালি</option><option value="mint">সবুজ</option></select>
-<label>মাপ</label><select id="csz"><option value="1080,1080">পোস্ট (১:১)</option><option value="1080,1920">স্টোরি (৯:১৬)</option></select>
-<button class="p" id="cdl">ছবি ডাউনলোড</button><button class="p" id="csh">শেয়ার করুন</button>
+<body data-page="tools">
+<div id="hdr"></div>
+<main class="tw">
+<div class="pv np">🔒 <b class="t">আপনার তথ্য শুধু আপনার ডিভাইসে থাকে।|Your data stays only on your device.</b> <span class="t">এখানে দেওয়া সব তথ্য, ছবি ও ফাইল আপনার ব্রাউজারেই প্রসেস ও সংরক্ষিত হয়; কোনো সার্ভারে পাঠানো হয় না, তাই কেউ চাইলেও তা দেখতে পারে না।|Everything you enter, including photos and files, is processed and saved in your browser only. Nothing is sent to a server, so nobody else can see it.</span></div>
+<div class="tabs" role="tablist">
+<button data-t="card" class="t">শেয়ার কার্ড|Share Card</button><button data-t="routine" class="t">ক্লাস রুটিন|Class Routine</button><button data-t="cgpa" class="t">CGPA ক্যালকুলেটর|CGPA Calculator</button><button data-t="exam" class="t">পরীক্ষা প্ল্যানার|Exam Planner</button><button data-t="pdf" class="t">PDF টুলকিট|PDF Toolkit</button>
 </div>
-<div style="text-align:center"><canvas id="cv" width="1080" height="1080"></canvas></div>
+
+<!-- ============ শেয়ার কার্ড ============ -->
+<section id="card"><div class="g2">
+<div class="bx"><h2 class="t">শেয়ার কার্ড তৈরি করুন|Create Your Share Card</h2>
+<p class="hint t">নিজের পরিচয়ের একটি সুন্দর কার্ড বানিয়ে ফেসবুক, ইনস্টাগ্রাম বা হোয়াটসঅ্যাপে শেয়ার করুন।|Make a polished card and share it on Facebook, Instagram or WhatsApp.</p>
+<label class="t">নাম|Name</label><input id="cn" data-p="আপনার নাম|Your name" maxlength="60">
+<label class="t">ডিপার্টমেন্ট|Department</label><input id="cd" data-p="যেমন: Computer Science|e.g. Computer Science" maxlength="70">
+<div class="g3"><div><label class="t">সেশন|Session</label><input id="cs" data-p="2025-26|2025-26" maxlength="20"></div>
+<div><label class="t">ব্যাজ|Badge</label><select id="cb"><option value="0" class="t">গর্বিত শিক্ষার্থী|Proud Student</option><option value="1" class="t">ক্লাস অব ২০২৬|Class of 2026</option><option value="2" class="t">নবীন শিক্ষার্থী|New Student</option><option value="3" class="t">গ্র্যাজুয়েট|Graduate</option></select></div></div>
+<label class="t">বার্তা (ঐচ্ছিক)|Message (optional)</label><input id="ce" data-p="একটি ছোট বার্তা বা উক্তি|A short message or quote" maxlength="80">
+<label class="t">ছবি (ঐচ্ছিক)|Photo (optional)</label><input id="cf" type="file" accept="image/*">
+<div class="g3"><div><label class="t">জুম|Zoom</label><input id="pz" type="range" min="1" max="3" step=".05" value="1"></div><div><label class="t">ডানে-বামে|Left / Right</label><input id="px" type="range" min="-1" max="1" step=".02" value="0"></div><div><label class="t">উপরে-নিচে|Up / Down</label><input id="py" type="range" min="-1" max="1" step=".02" value="0"></div></div>
+<div class="g3"><div><label class="t">থিম|Theme</label><select id="cth"><option value="navy" class="t">নেভি ও সোনালি|Navy & Gold</option><option value="ivory" class="t">আইভরি|Ivory</option><option value="emerald" class="t">এমারেল্ড|Emerald</option><option value="wine" class="t">রয়্যাল|Royal</option></select></div>
+<div><label class="t">মাপ|Size</label><select id="csz"><option value="1080,1080" class="t">পোস্ট ১:১|Post 1:1</option><option value="1080,1350" class="t">পোর্ট্রেট ৪:৫|Portrait 4:5</option><option value="1080,1920" class="t">স্টোরি ৯:১৬|Story 9:16</option></select></div></div>
+<button class="bt t" id="cdl">PNG ডাউনলোড|Download PNG</button><button class="bt t" id="csh">শেয়ার করুন|Share</button>
+</div>
+<div class="cvw"><canvas id="cv" width="1080" height="1080"></canvas></div>
 </div></section>
 
-<section id="rt">
-<div class="box np"><div class="cols">
-<div><label>কোর্স</label><input id="rc" placeholder="CSE-101"></div>
-<div><label>দিন</label><select id="rd"><option value="0">শনি</option><option value="1">রবি</option><option value="2">সোম</option><option value="3">মঙ্গল</option><option value="4">বুধ</option><option value="5">বৃহস্পতি</option></select></div>
-<div><label>শুরু</label><input id="rs" type="time"></div>
-<div><label>শেষ</label><input id="re" type="time"></div>
-<div><label>রুম</label><input id="rr" placeholder="রুম ২০১"></div>
-</div><button class="p" id="rta">ক্লাস যোগ করুন</button><button class="p" onclick="print()">প্রিন্ট / PDF সেভ</button></div>
-<div class="box"><table><tbody id="rtb"></tbody></table></div>
+<!-- ============ ক্লাস রুটিন ============ -->
+<section id="routine">
+<div class="bx" id="rtoday"></div>
+<div class="bx np"><h2 class="t">ক্লাস যোগ করুন|Add a Class</h2>
+<div class="g3"><div><label class="t">কোর্স|Course</label><input id="rc" data-p="যেমন: CSE-101|e.g. CSE-101" maxlength="40"></div><div><label class="t">শিক্ষক (ঐচ্ছিক)|Teacher (optional)</label><input id="rt" maxlength="40"></div><div><label class="t">রুম (ঐচ্ছিক)|Room (optional)</label><input id="rr" maxlength="20"></div>
+<div><label class="t">শুরু|Start</label><input id="rs" type="time"></div><div><label class="t">শেষ|End</label><input id="re" type="time"></div></div>
+<label class="t">কোন কোন দিন|Days</label><div class="dy" id="rdy"></div>
+<button class="bt t" id="rta">ক্লাস যোগ করুন|Add Class</button><span id="rw" class="hint" aria-live="polite"></span></div>
+<div class="bx"><div class="sc"><canvas id="rcv" width="1130" height="800"></canvas></div>
+<div class="np"><button class="bt t" id="rpn">PNG ডাউনলোড|Download PNG</button><button class="bt t" onclick="print()">প্রিন্ট / PDF সেভ|Print / Save PDF</button><button class="bs t" id="rcl">সব মুছুন|Clear All</button></div>
+<div id="rls" class="np"></div></div>
 </section>
 
-<section id="cg">
-<div class="box"><div class="hint">সব সেমিস্টার মিলিয়ে CGPA</div><div class="big" id="cgv">—</div><div class="hint">মোট ক্রেডিট: <span id="cgc">0</span> · গ্রেড স্কেল ৪.০০ (আপনার ডিপার্টমেন্টের স্কেলের সাথে মিলিয়ে নিন)</div></div>
-<div id="cgl"></div>
-<button class="p" onclick="G.push([{n:'',c:3,g:4}]);cg()">+ সেমিস্টার যোগ করুন</button>
-<div class="box" style="margin-top:14px"><b>লক্ষ্য CGPA হিসাব</b>
-<div class="cols"><div><label>বাকি ক্রেডিট</label><input id="tr" type="number" min="1" oninput="tg()"></div><div><label>লক্ষ্য CGPA</label><input id="tt" type="number" min="0" max="4" step=".01" oninput="tg()"></div></div>
-<div class="big" id="tv" style="font-size:20px;margin-top:10px"></div></div>
+<!-- ============ CGPA ============ -->
+<section id="cgpa">
+<div class="g2"><div class="bx"><div class="hint t">মোট CGPA|Cumulative CGPA</div><div class="big" id="cgv">—</div><div class="hint"><span class="t">মোট ক্রেডিট|Total credits</span>: <b id="cgc">0</b> · <span class="t">সেরা সেমিস্টার|Best semester</span>: <b id="cgb">—</b></div>
+<div class="chart" id="cgch" aria-label="GPA chart"></div>
+<label class="t">গ্রেড স্কেল|Grade scale</label><select id="cgs"><option value="ugc" class="t">UGC স্কেল (A+ = ৪.০০)|UGC scale (A+ = 4.00)</option><option value="alt" class="t">বিকল্প ৪.০০ স্কেল (A = ৪.০০)|Alternative 4.00 scale (A = 4.00)</option></select>
+<label class="ck"><input type="checkbox" id="cgr"><span class="t">রিটেক: একই নামের কোর্সের সেরা গ্রেড গণনা করুন|Retakes: count the best grade for courses with the same name</span></label>
+<button class="bs t" id="cgy" style="margin-top:10px">ফলাফল কপি করুন|Copy Result</button> <button class="bs t" id="cgx">সব মুছুন|Clear All</button>
+<p class="hint t">কোর্সের নাম ঐচ্ছিক। শুধু ক্রেডিট ঠিক করে গ্রেড বাছুন, বাকি হিসাব নিজে থেকেই হবে। স্কেল আপনার ডিপার্টমেন্টের নিয়মের সাথে মিলিয়ে নিন।|Course names are optional. Set the credit, pick the grade, and the rest is calculated automatically. Check the scale against your department's rules.</p></div>
+<div class="bx"><h2 class="t">লক্ষ্য CGPA হিসাব|CGPA Goal Planner</h2>
+<div class="g3"><div><label class="t">বাকি ক্রেডিট|Remaining credits</label><input id="tr" type="number" min="1"></div><div><label class="t">লক্ষ্য CGPA|Target CGPA</label><input id="tt" type="number" min="0" max="4" step=".01"></div></div>
+<div id="tv" style="margin-top:12px;font-weight:600"></div></div></div>
+<div id="cgl"></div><button class="bt t" id="cga">+ সেমিস্টার যোগ করুন|+ Add Semester</button>
 </section>
 
-<section id="ex">
-<div class="box"><div class="cols">
-<div><label>কোর্স</label><input id="xc" placeholder="CSE-101 মিডটার্ম"></div>
-<div><label>তারিখ</label><input id="xd" type="date"></div>
-<div><label>প্রতিদিন পড়ার সময় (ঘণ্টা)</label><input id="xh" type="number" min="1" max="16" value="4" oninput="ex()"></div>
-</div><button class="p" id="xa">পরীক্ষা যোগ করুন</button><div class="hint">যে পরীক্ষা যত কাছে, তাকে তত বেশি সময় দেওয়া হয়।</div></div>
-<div id="xl"></div>
+<!-- ============ পরীক্ষা প্ল্যানার ============ -->
+<section id="exam">
+<div class="g2"><div class="bx np"><h2 class="t">পরীক্ষা যোগ করুন|Add an Exam</h2>
+<label class="t">কোর্স / পরীক্ষার নাম|Course / exam name</label><input id="xc" data-p="যেমন: CSE-101 মিডটার্ম|e.g. CSE-101 Midterm" maxlength="50">
+<div class="g3"><div><label class="t">তারিখ|Date</label><input id="xd" type="date"></div><div><label class="t">সময় (ঐচ্ছিক)|Time (optional)</label><input id="xt" type="time"></div><div><label class="t">কাঠিন্য|Difficulty</label><select id="xf"><option value="1" class="t">সহজ|Easy</option><option value="2" selected class="t">মধ্যম|Medium</option><option value="3" class="t">কঠিন|Hard</option></select></div></div>
+<label class="t">সিলেবাসের টপিক (প্রতি লাইনে একটি, ঐচ্ছিক)|Syllabus topics (one per line, optional)</label><textarea id="xp"></textarea>
+<button class="bt t" id="xa">পরীক্ষা যোগ করুন|Add Exam</button></div>
+<div class="bx"><h2 class="t">ফোকাস টাইমার|Focus Timer</h2><div class="tmd" id="tmd">25:00</div>
+<div style="text-align:center"><button class="bt t" id="tgo">শুরু|Start</button><button class="bs t" id="trs">রিসেট|Reset</button></div>
+<div style="text-align:center;margin-top:10px"><button class="bs t" data-m="25">ফোকাস ২৫|Focus 25</button> <button class="bs t" data-m="5">বিরতি ৫|Break 5</button> <button class="bs t" data-m="15">দীর্ঘ বিরতি ১৫|Long break 15</button></div>
+<label class="t">প্রতিদিন পড়ার মোট সময় (ঘণ্টা)|Daily study hours</label><input id="xh" type="number" min="1" max="16" value="4"></div></div>
+<div id="xl"></div><div class="bx" id="xpl"></div>
 </section>
 
-<section id="pdf"><div class="cols">
-<div class="box"><b>ছবি থেকে PDF</b><label>এক বা একাধিক ছবি (নামের ক্রমে সাজানো হবে)</label><input id="pif" type="file" accept="image/*" multiple><button class="p" id="pi">PDF বানান</button></div>
-<div class="box"><b>PDF জোড়া লাগান</b><label>দুই বা বেশি PDF (নামের ক্রমে জোড়া হবে, যেমন 1-cover.pdf, 2-assignment.pdf)</label><input id="pmf" type="file" accept="application/pdf" multiple><button class="p" id="pm2">জোড়া লাগান</button></div>
-</div><p class="hint" id="pm" aria-live="polite"></p><p class="hint">ফাইল আপনার ডিভাইসেই প্রসেস হয়। শুধু প্রথমবার PDF লাইব্রেরি লোড করতে ইন্টারনেট লাগে।</p></section>
-
+<!-- ============ PDF ============ -->
+<section id="pdf"><p class="hint" id="pm" aria-live="polite"></p>
+<div class="g2">
+<div class="bx"><h2 class="t">ছবি থেকে PDF|Images to PDF</h2><label class="t">ছবি যোগ করুন (একাধিক)|Add images (multiple)</label><input id="pif" type="file" accept="image/*" multiple><div id="imgl"></div>
+<div class="g3"><div><label class="t">পেজ সাইজ|Page size</label><select id="psz"><option value="a4">A4</option><option value="let">Letter</option><option value="fit" class="t">ছবির মাপ|Fit to image</option></select></div><div><label class="t">মার্জিন|Margin</label><select id="pmg"><option value="0" class="t">নেই|None</option><option value="20" selected class="t">ছোট|Small</option><option value="40" class="t">বড়|Large</option></select></div><div><label class="t">মান|Quality</label><select id="pq"><option value="60" class="t">ছোট ফাইল|Small file</option><option value="80" selected class="t">সুষম|Balanced</option><option value="92" class="t">সেরা মান|Best quality</option></select></div></div>
+<button class="bt t" id="pi">PDF বানান|Create PDF</button></div>
+<div class="bx"><h2 class="t">PDF জোড়া লাগান|Merge PDFs</h2><label class="t">PDF যোগ করুন (কভার পেজসহ)|Add PDFs (including your cover page)</label><input id="pmf" type="file" accept="application/pdf" multiple><div id="mrgl"></div>
+<button class="bt t" id="pm2">জোড়া লাগান|Merge</button></div>
+<div class="bx"><h2 class="t">নির্দিষ্ট পেজ আলাদা করুন|Extract Pages</h2><label class="t">PDF ফাইল|PDF file</label><input id="sf" type="file" accept="application/pdf"><div class="hint" id="sn"></div>
+<label class="t">পেজ নম্বর (যেমন: 1-3, 5, 8-)|Pages (e.g. 1-3, 5, 8-)</label><input id="sr" placeholder="1-3, 5">
+<button class="bt t" id="sb">পেজ আলাদা করুন|Extract</button></div>
+<div class="bx"><h2 class="t">পেজ নম্বর যোগ করুন|Add Page Numbers</h2><label class="t">PDF ফাইল|PDF file</label><input id="nf" type="file" accept="application/pdf">
+<div class="g3"><div><label class="t">অবস্থান|Position</label><select id="npos"><option value="c" class="t">নিচে মাঝখানে|Bottom center</option><option value="r" class="t">নিচে ডানে|Bottom right</option><option value="l" class="t">নিচে বামে|Bottom left</option></select></div><div><label class="t">ধরন|Style</label><select id="nsty"><option value="0">1</option><option value="1">1 / N</option><option value="2">Page 1 of N</option></select></div></div>
+<label class="ck"><input type="checkbox" id="n1" checked><span class="t">প্রথম পেজ (কভার) বাদ দিন; দ্বিতীয় পেজ থেকে ১ শুরু|Skip the first page (cover); start counting from page 2</span></label>
+<button class="bt t" id="nb">নম্বর যোগ করুন|Add Numbers</button></div>
+</div>
+<p class="hint t">ফাইলগুলো আপনার ডিভাইসেই প্রসেস হয়। শুধু প্রথমবার PDF লাইব্রেরি লোড করতে ইন্টারনেট লাগে।|Files are processed on your device. Internet is needed only to load the PDF library the first time.</p>
+</section>
 </main>
+<div id="ftr"></div>
+<script src="site.js"></script>
 <script>
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],L=$L;
 const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-const esc=s=>String(s).replace(/[&<>"']/g,m=>'&#'+m.charCodeAt(0)+';');
-const T=['card','rt','cg','ex','pdf'];
-function go(h){h=T.includes(h)?h:'card';$$('section').forEach(s=>s.classList.toggle('on',s.id==h));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==h))}
-$$('nav button').forEach(b=>b.onclick=()=>{location.hash=b.dataset.t});
-addEventListener('hashchange',()=>go(location.hash.slice(1)));go(location.hash.slice(1));
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>'&#'+m.charCodeAt(0)+';');
+const dl=(href,n)=>{const a=document.createElement('a');a.href=href;a.download=n;a.click()};
+const TB=['card','routine','cgpa','exam','pdf'];
+function go(){let h=location.hash.slice(1);if(!TB.includes(h))h='card';$$('main section').forEach(s=>s.classList.toggle('on',s.id==h));$$('.tabs button').forEach(b=>{const o=b.dataset.t==h;b.classList.toggle('on',o);b.setAttribute('aria-selected',o)})}
+$$('.tabs button').forEach(b=>b.onclick=()=>{location.hash=b.dataset.t});addEventListener('hashchange',go);go();
 
-/* 1. Share card */
-let ph=null;
-const TH={navy:{bg:['#07192f','#0a2240'],fg:'#ffffff',ac:'#e5a83b'},gold:{bg:['#fbeecb','#e5a83b'],fg:'#07192f',ac:'#07192f'},mint:{bg:['#0f766e','#0b4f4a'],fg:'#ffffff',ac:'#fde68a'}};
+/* ===== ১. শেয়ার কার্ড ===== */
+let photo=null;const LG=new Image();LG.onload=()=>card();LG.src='logo.png';
+const BG=['গর্বিত শিক্ষার্থী|Proud Student','ক্লাস অব ২০২৬|Class of 2026','নবীন শিক্ষার্থী|New Student','গ্র্যাজুয়েট|Graduate'];
+const TH={navy:{a:'#06162b',b:'#0f3566',fg:'#ffffff',ac:'#e5a83b',ac2:'#f3d08a',pf:'#06162b'},
+ ivory:{a:'#fffaf0',b:'#f1e2bd',fg:'#0a2240',ac:'#a8741a',ac2:'#0a2240',pf:'#ffffff'},
+ emerald:{a:'#032b26',b:'#0c6b5e',fg:'#ffffff',ac:'#f2d27a',ac2:'#ffe9a8',pf:'#032b26'},
+ wine:{a:'#2a0d4f',b:'#6a2fb0',fg:'#ffffff',ac:'#f5c451',ac2:'#ffe3a1',pf:'#2a0d4f'}};
 async function card(){
- try{await document.fonts.load('700 40px "Hind Siliguri"')}catch(e){}
+ try{await Promise.all([document.fonts.load('700 40px "Hind Siliguri"'),document.fonts.load('800 40px Cinzel'),document.fonts.load('600 28px Montserrat')])}catch(e){}
  const[W,H]=$('#csz').value.split(',').map(Number),c=$('#cv'),x=c.getContext('2d'),t=TH[$('#cth').value];
- c.width=W;c.height=H;x.textAlign='center';
- const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,t.bg[0]);g.addColorStop(1,t.bg[1]);x.fillStyle=g;x.fillRect(0,0,W,H);
- x.strokeStyle=t.ac;x.lineWidth=6;x.strokeRect(40,40,W-80,H-80);
- const tall=H>W,u=W/1080,m=tall?1.2:1,r=(tall?230:170)*u,hy=108*u+(tall?(H-W)*.3:0),cx=W/2,cy=hy+50*u+r;
- x.fillStyle=t.ac;x.font=`700 ${34*u*m}px "Hind Siliguri"`;x.fillText('ঢাকা সেন্ট্রাল ইউনিভার্সিটি',cx,hy);
+ c.width=W;c.height=H;x.textAlign='center';x.textBaseline='alphabetic';
+ const u=W/1080,k=H/W,U=u*(k>1.5?1.55:k>1.2?1.25:1),cx=W/2;
+ const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,t.a);g.addColorStop(1,t.b);x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.fillStyle=t.ac;x.globalAlpha=.07;[[.92,.07,300],[.04,.95,380],[.88,.92,170],[.1,.3,120]].forEach(([a,b,r])=>{x.beginPath();x.arc(W*a,H*b,r*u,0,7);x.fill()});x.globalAlpha=1;
+ x.strokeStyle=t.ac;x.lineWidth=5*u;x.beginPath();x.roundRect(34*u,34*u,W-68*u,H-68*u,30*u);x.stroke();
+ x.globalAlpha=.4;x.lineWidth=2*u;x.beginPath();x.roundRect(54*u,54*u,W-108*u,H-108*u,22*u);x.stroke();x.globalAlpha=1;
+ let y=128*U;const lr=46*u;
+ x.save();x.beginPath();x.arc(cx,y,lr,0,7);x.fillStyle='#fff';x.fill();x.clip();if(LG.complete&&LG.naturalWidth)x.drawImage(LG,cx-lr,y-lr,2*lr,2*lr);x.restore();
+ y+=lr+58*u;x.fillStyle=t.ac;x.font=`800 ${42*u}px Cinzel,serif`;x.fillText('DHAKA CENTRAL UNIVERSITY',cx,y);
+ y+=40*u;x.fillStyle=t.fg;x.globalAlpha=.85;x.font=`500 ${29*u}px "Hind Siliguri"`;x.fillText(L(BG[+$('#cb').value]),cx,y);x.globalAlpha=1;
+ const r=(k>1.2?215:182)*u;y+=44*U+r;const cy=y;
+ x.strokeStyle=t.ac;x.lineWidth=3*u;x.globalAlpha=.45;x.beginPath();x.arc(cx,cy,r+36*u,0,7);x.stroke();x.globalAlpha=1;
  x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
- if(ph){const s=Math.max(2*r/ph.width,2*r/ph.height);x.drawImage(ph,cx-ph.width*s/2,cy-ph.height*s/2,ph.width*s,ph.height*s)}
- else{x.fillStyle=t.ac;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=t.bg[0];x.font=`700 ${r}px "Hind Siliguri"`;x.textBaseline='middle';x.fillText([...($('#cn').value||'D')][0],cx,cy)}
+ if(photo){const b=Math.max(2*r/photo.width,2*r/photo.height)*+$('#pz').value,w=photo.width*b,h=photo.height*b,mx=(w-2*r)/2,my=(h-2*r)/2;x.drawImage(photo,cx-w/2+(+$('#px').value)*mx,cy-h/2+(+$('#py').value)*my,w,h)}
+ else{const g2=x.createLinearGradient(cx-r,cy-r,cx+r,cy+r);g2.addColorStop(0,t.ac);g2.addColorStop(1,t.ac2);x.fillStyle=g2;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=t.pf;x.font=`800 ${r*1.05}px "Hind Siliguri"`;x.textBaseline='middle';x.fillText([...($('#cn').value.trim()||'D')][0],cx,cy+r*.04)}
  x.restore();x.textBaseline='alphabetic';
- x.strokeStyle=t.ac;x.lineWidth=8*u;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();
- let y=cy+r+(tall?150:100)*u;
- const L=(s,sz,w,col)=>{if(!s)return;let f=sz*u*m;x.font=`${w} ${f}px "Hind Siliguri"`;while(x.measureText(s).width>W-160&&f>20){f-=2;x.font=`${w} ${f}px "Hind Siliguri"`}x.fillStyle=col;x.fillText(s,cx,y);y+=f*1.45};
- L($('#cn').value||'আপনার নাম',84,700,t.fg);L($('#cd').value,44,600,t.ac);L($('#cs').value,40,400,t.fg);L($('#ce').value,40,400,t.fg);
- x.fillStyle=t.ac;x.font=`600 ${30*u}px "Hind Siliguri"`;x.fillText(location.host||'DCU',cx,H-80*u);
+ x.strokeStyle=t.ac;x.lineWidth=10*u;x.beginPath();x.arc(cx,cy,r+8*u,0,7);x.stroke();
+ y=cy+r+96*U;
+ const T=(s,sz,w,col,fam='"Hind Siliguri"',it='')=>{if(!s)return;let f=sz*u;const set=()=>x.font=`${it} ${w} ${f}px ${fam}`;set();while(x.measureText(s).width>W-190*u&&f>18){f-=2;set()}x.fillStyle=col;x.fillText(s,cx,y);y+=f*1.4};
+ T($('#cn').value.trim()||L('আপনার নাম|Your Name'),80,700,t.fg);
+ y+=2*U;x.strokeStyle=t.ac;x.lineWidth=3*u;x.beginPath();x.moveTo(cx-180*u,y);x.lineTo(cx-20*u,y);x.moveTo(cx+20*u,y);x.lineTo(cx+180*u,y);x.stroke();
+ x.fillStyle=t.ac;x.beginPath();x.moveTo(cx,y-11*u);x.lineTo(cx+11*u,y);x.lineTo(cx,y+11*u);x.lineTo(cx-11*u,y);x.fill();y+=60*U;
+ T($('#cd').value.trim(),42,600,t.ac2);
+ const ses=$('#cs').value.trim();
+ if(ses){y+=14*U;x.font=`700 ${32*u}px "Hind Siliguri"`;const w=x.measureText(ses).width+70*u,h=60*u;x.fillStyle=t.ac;x.beginPath();x.roundRect(cx-w/2,y-h*.72,w,h,h/2);x.fill();x.fillStyle=t.pf;x.fillText(ses,cx,y);y+=h*.9}
+ y+=18*U;T($('#ce').value.trim(),36,500,t.fg,'"Hind Siliguri"','italic');
+ x.fillStyle=t.ac;x.font=`600 ${27*u}px Montserrat`;x.fillText(location.host||'dcu',cx,H-104*u);
+ x.globalAlpha=.7;x.fillStyle=t.fg;x.font=`400 ${21*u}px "Hind Siliguri"`;x.fillText(L('অনানুষ্ঠানিক শিক্ষার্থী-উদ্যোগ|Unofficial student initiative'),cx,H-72*u);x.globalAlpha=1;
 }
-['cn','cd','cs','ce','cth','csz'].forEach(i=>$('#'+i).oninput=card);
-$('#cf').onchange=async e=>{const f=e.target.files[0];if(f){try{ph=await createImageBitmap(f);card()}catch(err){}}};
-const cdl=()=>{const a=document.createElement('a');a.href=$('#cv').toDataURL('image/png');a.download='dcu-card.png';a.click()};
-$('#cdl').onclick=cdl;
-$('#csh').onclick=()=>$('#cv').toBlob(async b=>{const f=new File([b],'dcu-card.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:'আমার DCU কার্ড '+location.href});else cdl()}catch(e){}});
+['cn','cd','cs','ce','cb','cth','csz','pz','px','py'].forEach(i=>$('#'+i).addEventListener('input',card));
+$('#cf').onchange=async e=>{const f=e.target.files[0];if(f){try{photo=await createImageBitmap(f);card()}catch(err){}}};
+const cdl=()=>dl($('#cv').toDataURL('image/png'),'dcu-card.png');$('#cdl').onclick=cdl;
+$('#csh').onclick=()=>$('#cv').toBlob(async b=>{const f=new File([b],'dcu-card.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:location.origin+'/'});else cdl()}catch(e){}});
 
-/* 2. Routine */
-let R=ld('rt',[]);const D=['শনি','রবি','সোম','মঙ্গল','বুধ','বৃহস্পতি'];
-function rt(){sv('rt',R);$('#rtb').innerHTML=D.map((d,i)=>{const L=R.map((r,j)=>({...r,j})).filter(r=>r.d==i).sort((a,b)=>a.s.localeCompare(b.s));return `<tr><th>${d}</th><td>${L.map(r=>`${r.s}–${r.e} · <b>${esc(r.c)}</b> ${esc(r.r)} <button class="s np" onclick="R.splice(${r.j},1);rt()">✕</button>`).join('<br>')||'—'}</td></tr>`}).join('')}
-$('#rta').onclick=()=>{const c=$('#rc').value.trim();if(!c||!$('#rs').value||!$('#re').value)return;R.push({c,d:+$('#rd').value,s:$('#rs').value,e:$('#re').value,r:$('#rr').value.trim()});$('#rc').value='';rt()};
+/* ===== ২. ক্লাস রুটিন ===== */
+const DN=['শনিবার|Saturday','রবিবার|Sunday','সোমবার|Monday','মঙ্গলবার|Tuesday','বুধবার|Wednesday','বৃহস্পতিবার|Thursday'];
+let R=ld('dcuRt',[]);const tm=s=>+s.slice(0,2)*60+ +s.slice(3);
+const hm=m=>{const h=Math.floor(m/60),n=m%60;return((h+11)%12+1)+(n?':'+String(n).padStart(2,'0'):'')+(h<12?' AM':' PM')};
+const hue=c=>{let h=0;for(const ch of c)h=(h*31+ch.charCodeAt(0))%360;return h};
+function rtK(){$('#rdy').innerHTML=DN.map((d,i)=>`<label><input type="checkbox" value="${i}">${L(d)}</label>`).join('')}
+function rtC(){
+ const c=$('#rcv'),x=c.getContext('2d');let mn=480,mx=1020;R.forEach(r=>{mn=Math.min(mn,tm(r.s));mx=Math.max(mx,tm(r.e))});mn=Math.floor(mn/60)*60;mx=Math.ceil(mx/60)*60;
+ const lw=96,cw=172,hh=64,rh=104,W=lw+cw*6,H=hh+(mx-mn)/60*rh+8;c.width=W;c.height=H;
+ x.fillStyle='#fff';x.fillRect(0,0,W,H);x.textBaseline='middle';
+ for(let m=mn;m<=mx;m+=60){const yy=hh+(m-mn)/60*rh;x.strokeStyle='#dde3ea';x.lineWidth=1;x.beginPath();x.moveTo(lw,yy);x.lineTo(W,yy);x.stroke();x.fillStyle='#5d6b7a';x.font='600 20px "Hind Siliguri"';x.textAlign='center';if(m<mx)x.fillText(hm(m),lw/2,yy+16)}
+ DN.forEach((d,i)=>{x.fillStyle='#0a2240';x.fillRect(lw+i*cw,0,cw,hh);x.fillStyle='#e5a83b';x.font='700 24px "Hind Siliguri"';x.textAlign='center';x.fillText(L(d),lw+i*cw+cw/2,hh/2);x.strokeStyle='#dde3ea';x.beginPath();x.moveTo(lw+i*cw,hh);x.lineTo(lw+i*cw,H);x.stroke()});
+ R.forEach(r=>r.d.forEach(d=>{const bx=lw+d*cw+6,by=hh+(tm(r.s)-mn)/60*rh+3,bw=cw-12,bh=(tm(r.e)-tm(r.s))/60*rh-6;
+  x.fillStyle=`hsl(${hue(r.c)},58%,40%)`;x.beginPath();x.roundRect(bx,by,bw,bh,10);x.fill();x.fillStyle='#fff';x.textAlign='left';
+  x.font='700 22px "Hind Siliguri"';x.fillText(r.c,bx+10,by+22,bw-20);x.font='500 17px "Hind Siliguri"';
+  let ty=by+46;[hm(tm(r.s))+' – '+hm(tm(r.e)),r.r,r.t].forEach(s=>{if(s&&ty<by+bh-6){x.fillText(s,bx+10,ty,bw-20);ty+=22}})}));
+}
+function rtR(){sv('dcuRt',R);rtK();rtC();
+ const gd=(new Date().getDay()+1)%7,now=new Date().getHours()*60+new Date().getMinutes();
+ const td=gd<6?R.filter(r=>r.d.includes(gd)).sort((a,b)=>tm(a.s)-tm(b.s)):[],nx=td.find(r=>tm(r.s)>now);
+ $('#rtoday').innerHTML=`<h2>${L('আজকের ক্লাস|Today\'s Classes')}</h2>`+(td.length?td.map(r=>`<div>${hm(tm(r.s))} – ${hm(tm(r.e))} · <b>${esc(r.c)}</b> ${esc(r.r)}</div>`).join('')+(nx?`<div class="hint">${L('পরবর্তী ক্লাস|Next class')}: <b>${esc(nx.c)}</b> — ${tm(nx.s)-now} ${L('মিনিট পর|min from now')}</div>`:''):`<p class="hint">${L('আজ কোনো ক্লাস নেই।|No classes today.')}</p>`);
+ $('#rls').innerHTML=R.map((r,i)=>`<div class="fi"><span><b>${esc(r.c)}</b> · ${r.d.map(d=>L(DN[d]).slice(0,3)).join(', ')} · ${hm(tm(r.s))}–${hm(tm(r.e))}</span><button class="ic" data-i="${i}" aria-label="Delete">✕</button></div>`).join('')}
+$('#rls').onclick=e=>{const b=e.target.closest('.ic');if(b){R.splice(+b.dataset.i,1);rtR()}};
+$('#rta').onclick=()=>{const c=$('#rc').value.trim(),d=$$('#rdy input:checked').map(i=>+i.value),s=$('#rs').value,e=$('#re').value,w=$('#rw');
+ if(!c||!d.length||!s||!e)return w.textContent=L('কোর্স, দিন, শুরু ও শেষের সময় দিন।|Enter course, days, start and end time.');
+ if(tm(e)<=tm(s))return w.textContent=L('শেষের সময় শুরুর পরে হতে হবে।|End time must be after start time.');
+ const ov=R.some(r=>r.d.some(z=>d.includes(z))&&tm(r.s)<tm(e)&&tm(s)<tm(r.e));
+ R.push({c,t:$('#rt').value.trim(),r:$('#rr').value.trim(),d,s,e});$('#rc').value=$('#rt').value=$('#rr').value='';
+ w.textContent=ov?L('⚠️ সময় অন্য ক্লাসের সাথে মিলে গেছে।|⚠️ This overlaps another class.'):'';rtR()};
+$('#rpn').onclick=()=>dl($('#rcv').toDataURL('image/png'),'class-routine.png');
+$('#rcl').onclick=()=>{if(confirm(L('সব ক্লাস মুছে ফেলবেন?|Delete all classes?'))){R=[];rtR()}};
 
-/* 3. CGPA */
-const GR=[['A+',4],['A',3.75],['A-',3.5],['B+',3.25],['B',3],['B-',2.75],['C+',2.5],['C',2.25],['D',2],['F',0]];
-let G=ld('cg',[[{n:'',c:3,g:4}]]),TC=0,TP=0;
-function cg(){$('#cgl').innerHTML=G.map((s,i)=>`<div class="box"><b>সেমিস্টার ${i+1}</b> <span id="sg${i}" class="big" style="font-size:18px"></span> <button class="s" onclick="G.splice(${i},1);cg()">মুছুন</button>${s.map((c,j)=>`<div class="r" style="grid-template-columns:2fr 1fr 1fr auto"><input placeholder="কোর্স" value="${esc(c.n)}" oninput="G[${i}][${j}].n=this.value;gc()"><input type="number" min="0" step=".5" value="${c.c}" oninput="G[${i}][${j}].c=+this.value;gc()"><select onchange="G[${i}][${j}].g=+this.value;gc()">${GR.map(([n,v])=>`<option value="${v}"${v==c.g?' selected':''}>${n}</option>`).join('')}</select><button class="s" onclick="G[${i}].splice(${j},1);cg()">✕</button></div>`).join('')}<button class="s" style="margin-top:8px" onclick="G[${i}].push({n:'',c:3,g:4});cg()">+ কোর্স</button></div>`).join('');gc()}
-function gc(){TC=0;TP=0;G.forEach((s,i)=>{const c=s.reduce((a,x)=>a+x.c,0),p=s.reduce((a,x)=>a+x.c*x.g,0);TC+=c;TP+=p;const e=$('#sg'+i);if(e)e.textContent='GPA '+(c?(p/c).toFixed(2):'—')});$('#cgv').textContent=TC?(TP/TC).toFixed(2):'—';$('#cgc').textContent=TC;sv('cg',G);tg()}
-function tg(){const rem=+$('#tr').value,t=+$('#tt').value;if(!rem||!t){$('#tv').textContent='';return}const n=(t*(TC+rem)-TP)/rem;$('#tv').textContent=n>4?'এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়':n<=0?'লক্ষ্য আগেই অর্জিত':'বাকি সেমিস্টারে গড় GPA লাগবে: '+n.toFixed(2)}
+/* ===== ৩. CGPA ===== */
+const GS={ugc:[['A+',4],['A',3.75],['A-',3.5],['B+',3.25],['B',3],['B-',2.75],['C+',2.5],['C',2.25],['D',2],['F',0]],
+ alt:[['A',4],['A-',3.7],['B+',3.3],['B',3],['B-',2.7],['C+',2.3],['C',2],['C-',1.7],['D+',1.3],['D',1],['F',0]]};
+const blank=()=>[0,0,0,0,0].map(()=>({n:'',c:3,g:''}));
+let C=ld('dcuCg',null);if(!C||!C.s)C={sc:'ugc',rt:0,s:[blank()]};
+const gp=g=>{const r=GS[C.sc].find(a=>a[0]==g);return r?r[1]:null};
+let SUM='';
+function cgR(){$('#cgs').value=C.sc;$('#cgr').checked=!!C.rt;
+ $('#cgl').innerHTML=C.s.map((s,i)=>`<div class="bx"><div class="hd"><b>${L('সেমিস্টার|Semester')} ${i+1}</b><span class="gp" id="sg${i}"></span><button class="bs" data-act="ds" data-s="${i}">${L('মুছুন|Delete')}</button></div>`+
+  s.map((r,j)=>`<div class="rw"><input data-s="${i}" data-i="${j}" data-k="n" value="${esc(r.n)}" placeholder="${L('কোর্সের নাম (ঐচ্ছিক)|Course name (optional)')}"><input data-s="${i}" data-i="${j}" data-k="c" type="number" min="0.5" step="0.5" value="${r.c}" aria-label="${L('ক্রেডিট|Credit')}"><select data-s="${i}" data-i="${j}" data-k="g" aria-label="${L('গ্রেড|Grade')}"><option value="">${L('গ্রেড|Grade')}</option>${GS[C.sc].map(a=>`<option${a[0]==r.g?' selected':''}>${a[0]}</option>`).join('')}</select><button class="ic" data-act="dr" data-s="${i}" data-i="${j}" aria-label="Delete">✕</button></div>`).join('')+
+  `<button class="bs" style="margin-top:10px" data-act="ar" data-s="${i}">+ ${L('কোর্স|Course')}</button></div>`).join('');cgC()}
+function cgC(){
+ const best={};if(C.rt)C.s.forEach((s,i)=>s.forEach((r,j)=>{const p=gp(r.g),k=r.n.trim().toLowerCase();if(p===null||!k)return;if(!best[k]||p>best[k].p)best[k]={p,i,j}}));
+ let TC=0,TP=0;const sg=[];
+ C.s.forEach((s,i)=>{let c=0,p=0;s.forEach((r,j)=>{const q=gp(r.g),k=r.n.trim().toLowerCase();if(q===null||!(r.c>0))return;if(C.rt&&k&&(best[k].i!=i||best[k].j!=j))return;c+=r.c;p+=r.c*q});TC+=c;TP+=p;sg.push(c?p/c:null);const e=$('#sg'+i);if(e)e.textContent=c?'GPA '+(p/c).toFixed(2):'—'});
+ const cg=TC?TP/TC:null;$('#cgv').textContent=cg===null?'—':cg.toFixed(2);$('#cgc').textContent=TC;
+ const bi=sg.reduce((a,v,i)=>v!==null&&(a<0||v>sg[a])?i:a,-1);$('#cgb').textContent=bi<0?'—':`${L('সেমিস্টার|Semester')} ${bi+1} (${sg[bi].toFixed(2)})`;
+ $('#cgch').innerHTML=sg.map((v,i)=>`<div class="cb"><span>${v===null?'—':v.toFixed(2)}</span><i style="height:${v?v/4*80:0}%"></i><small>S${i+1}</small></div>`).join('');
+ const rem=+$('#tr').value,tg=+$('#tt').value;let h='';
+ if(rem>0){const mxc=(TP+4*rem)/(TC+rem),mnc=TP/(TC+rem);h=`${L('সর্বোচ্চ সম্ভব CGPA|Highest possible CGPA')}: <b>${mxc.toFixed(2)}</b><br>${L('সর্বনিম্ন CGPA (সব F)|Lowest CGPA (all F)')}: <b>${mnc.toFixed(2)}</b>`;
+  if(tg>0){const n=(tg*(TC+rem)-TP)/rem;h+='<br>'+(n>4?'⚠️ '+L('এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়।|This target is not reachable on a 4.00 scale.'):n<=0?'✅ '+L('লক্ষ্য আগেই অর্জিত।|Target already achieved.'):L('বাকি সেমিস্টারে গড় GPA লাগবে|Required average GPA for the rest')+`: <b>${n.toFixed(2)}</b>`)}}
+ $('#tv').innerHTML=h;SUM=cg===null?'':`CGPA ${cg.toFixed(2)} (${TC} ${L('ক্রেডিট|credits')})`;sv('dcuCg',C)}
+$('#cgl').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,i=+b.dataset.s,j=+b.dataset.i;
+ if(a=='ar')C.s[i].push({n:'',c:3,g:''});if(a=='dr')C.s[i].splice(j,1);if(a=='ds'){if(!confirm(L('এই সেমিস্টার মুছে ফেলবেন?|Delete this semester?')))return;C.s.splice(i,1)}cgR()});
+$('#cgl').addEventListener('input',e=>{const d=e.target.dataset;if(d.k===undefined)return;const r=C.s[+d.s][+d.i];r[d.k]=d.k=='c'?+e.target.value:e.target.value;cgC()});
+$('#cga').onclick=()=>{C.s.push(blank());cgR()};
+$('#cgs').onchange=e=>{C.sc=e.target.value;C.s.forEach(s=>s.forEach(r=>{if(gp(r.g)===null)r.g=''}));cgR()};
+$('#cgr').onchange=e=>{C.rt=e.target.checked?1:0;cgC()};
+['tr','tt'].forEach(i=>$('#'+i).oninput=cgC);
+$('#cgy').onclick=async()=>{try{await navigator.clipboard.writeText(SUM||'—')}catch(e){}};
+$('#cgx').onclick=()=>{if(confirm(L('সব তথ্য মুছে ফেলবেন?|Clear all data?'))){C={sc:C.sc,rt:C.rt,s:[blank()]};cgR()}};
 
-/* 4. Exams */
-let X=ld('ex',[]);
-function ex(){sv('ex',X);const h=+$('#xh').value||4,now=new Date();now.setHours(0,0,0,0);
- const L=X.map((e,j)=>({...e,j,n:Math.round((new Date(e.d+'T00:00')-now)/864e5)})).filter(e=>e.n>=0).sort((a,b)=>a.n-b.n);
- const w=L.map(e=>1/(e.n+1)),sum=w.reduce((a,b)=>a+b,0);
- $('#xl').innerHTML=L.map((e,i)=>`<div class="box"><b>${esc(e.c)}</b> · ${e.d}<div class="big">${e.n?e.n+' দিন বাকি':'আজ পরীক্ষা!'}</div><div class="hint">আজকের পড়া: ${(h*w[i]/sum).toFixed(1)} ঘণ্টা</div><button class="s" onclick="X.splice(${e.j},1);ex()">মুছুন</button></div>`).join('')||'<p class="hint">পরীক্ষার কোর্স ও তারিখ যোগ করুন।</p>'}
-$('#xa').onclick=()=>{const c=$('#xc').value.trim();if(!c||!$('#xd').value)return;X.push({c,d:$('#xd').value});$('#xc').value='';ex()};
+/* ===== ৪. পরীক্ষা প্ল্যানার ===== */
+let E=ld('dcuEx',[]);const DAY=864e5,t0=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const nd=e=>Math.round((new Date(e.d+'T00:00')-t0())/DAY),pg=e=>e.tp.length?e.tp.filter(t=>t.x).length/e.tp.length:0,wt=(e,n)=>(+e.f||2)*(1-.6*pg(e))/(n+1);
+function exR(){sv('dcuEx',E);const H=+$('#xh').value||4,A=E.map((e,j)=>({e,j,n:nd(e)})).filter(a=>a.n>=0).sort((a,b)=>a.n-b.n),S=A.reduce((s,a)=>s+(a.n>0?wt(a.e,a.n):0),0);
+ $('#xl').innerHTML=A.map(({e,j,n})=>{const p=Math.round(pg(e)*100),h=n>0&&S?H*wt(e,n)/S:0;let hl='';if(e.t){const ms=new Date(e.d+'T'+e.t)-new Date();if(ms>0&&n<=1)hl=` · ${Math.floor(ms/36e5)}${L('ঘণ্টা|h')} ${Math.floor(ms%36e5/6e4)}${L('মিনিট|m')}`}
+  return `<div class="bx"><div class="hd"><b>${esc(e.c)}</b><span class="gp">${n?n+' '+L('দিন বাকি|days left'):L('আজ পরীক্ষা|Exam today')}${hl}</span></div><div class="hint">${e.d}${e.t?' · '+hm(tm(e.t)):''} · ${L(['','সহজ|Easy','মধ্যম|Medium','কঠিন|Hard'][e.f])}</div>`+
+  (e.tp.length?`<div class="pb"><i style="width:${p}%"></i></div><div class="hint">${L('প্রস্তুতি|Progress')}: ${p}%</div>`+e.tp.map((t,k)=>`<label class="ck"><input type="checkbox" data-j="${j}" data-k="${k}"${t.x?' checked':''}>${esc(t.n)}</label>`).join(''):'')+
+  (h?`<div class="hint">${L('আজকের জন্য প্রস্তাবিত পড়া|Suggested study today')}: <b>${h.toFixed(1)} ${L('ঘণ্টা|hours')}</b></div>`:'')+`<button class="bs np" data-del="${j}" style="margin-top:8px">${L('মুছুন|Delete')}</button></div>`}).join('')||`<div class="bx hint">${L('পরীক্ষা যোগ করলে এখানে কাউন্টডাউন ও প্ল্যান দেখাবে।|Add an exam to see countdowns and a plan here.')}</div>`;
+ const days=[...Array(7).keys()],loc=$lang()=='en'?'en-GB':'bn-BD';
+ $('#xpl').innerHTML=A.length?`<h2>${L('আগামী ৭ দিনের পড়ার পরিকল্পনা (ঘণ্টা)|7-Day Study Plan (hours)')}</h2><div class="sc"><table><tr><th>${L('পরীক্ষা|Exam')}</th>${days.map(d=>`<th>${new Date(+t0()+d*DAY).toLocaleDateString(loc,{weekday:'short',day:'numeric'})}</th>`).join('')}</tr>`+
+  A.map(({e,n})=>`<tr><td style="text-align:left">${esc(e.c)}</td>${days.map(d=>{const m=n-d;if(m<0)return'<td></td>';if(m==0)return'<td>📝</td>';const Sd=A.reduce((s,a)=>s+(a.n-d>0?wt(a.e,a.n-d):0),0);return`<td>${(H*wt(e,m)/Sd).toFixed(1)}</td>`}).join('')}</tr>`).join('')+`</table></div><p class="hint">${L('যে পরীক্ষা যত কাছে, কঠিন ও কম প্রস্তুত, তাকে তত বেশি সময় দেওয়া হয়েছে।|Exams that are closer, harder and less prepared get more time.')}</p>`:'';}
+$('#xl').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(b&&confirm(L('এই পরীক্ষা মুছে ফেলবেন?|Delete this exam?'))){E.splice(+b.dataset.del,1);exR()}});
+$('#xl').addEventListener('change',e=>{const d=e.target.dataset;if(d.k!==undefined){E[+d.j].tp[+d.k].x=e.target.checked;exR()}});
+$('#xh').oninput=exR;
+$('#xa').onclick=()=>{const c=$('#xc').value.trim(),d=$('#xd').value;if(!c||!d)return;E.push({c,d,t:$('#xt').value,f:+$('#xf').value,tp:$('#xp').value.split('\n').map(s=>s.trim()).filter(Boolean).map(n=>({n,x:0}))});$('#xc').value=$('#xp').value='';exR()};
+setInterval(exR,60000);
+/* ফোকাস টাইমার */
+let TM={t:1500,m:25,end:0,iv:0};
+const tdraw=()=>{$('#tmd').textContent=String(Math.floor(TM.t/60)).padStart(2,'0')+':'+String(TM.t%60).padStart(2,'0')};
+const tstop=()=>{clearInterval(TM.iv);TM.iv=0;$('#tgo').textContent=L('শুরু|Start')};
+$('#tgo').onclick=()=>{if(TM.iv)return tstop();TM.end=Date.now()+TM.t*1000;$('#tgo').textContent=L('বিরতি|Pause');
+ TM.iv=setInterval(()=>{TM.t=Math.max(0,Math.round((TM.end-Date.now())/1000));tdraw();if(!TM.t){tstop();try{const a=new AudioContext(),o=a.createOscillator();o.connect(a.destination);o.start();setTimeout(()=>o.stop(),700)}catch(e){}navigator.vibrate&&navigator.vibrate(400)}},500)};
+$('#trs').onclick=()=>{tstop();TM.t=TM.m*60;tdraw()};
+$$('[data-m]').forEach(b=>b.onclick=()=>{tstop();TM.m=+b.dataset.m;TM.t=TM.m*60;tdraw()});
 
-/* 5. PDF toolkit */
+/* ===== ৫. PDF টুলকিট ===== */
 let PL;const lp=()=>PL||(PL=new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';s.onload=()=>ok(window.PDFLib);s.onerror=()=>{PL=null;no()};document.head.appendChild(s)}));
-const sp=m=>$('#pm').textContent=m,by=id=>[...$(id).files].sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
-const jb=c=>new Promise(r=>c.toBlob(async b=>r(await b.arrayBuffer()),'image/jpeg',.9));
-const save=(b,n)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([b],{type:'application/pdf'}));a.download=n;a.click()};
-$('#pi').onclick=async()=>{const fs=by('#pif');if(!fs.length)return sp('আগে ছবি বাছুন।');
- try{sp('PDF তৈরি হচ্ছে...');const{PDFDocument}=await lp(),d=await PDFDocument.create(),W=595,H=842;
-  for(const f of fs){const bm=await createImageBitmap(f),c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0);
-   const im=await d.embedJpg(await jb(c)),s=Math.min((W-40)/im.width,(H-40)/im.height),w=im.width*s,h=im.height*s;d.addPage([W,H]).drawImage(im,{x:(W-w)/2,y:(H-h)/2,width:w,height:h})}
-  save(await d.save(),'images.pdf');sp('PDF তৈরি হয়েছে।')}catch(e){sp('PDF বানানো যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।')}};
-$('#pm2').onclick=async()=>{const fs=by('#pmf');if(fs.length<2)return sp('কমপক্ষে ২টি PDF বাছুন।');
- try{sp('জোড়া লাগানো হচ্ছে...');const{PDFDocument}=await lp(),o=await PDFDocument.create();
-  for(const f of fs){const s=await PDFDocument.load(await f.arrayBuffer());(await o.copyPages(s,s.getPageIndices())).forEach(p=>o.addPage(p))}
-  save(await o.save(),'merged.pdf');sp('PDF জোড়া হয়েছে।')}catch(e){sp('জোড়া লাগানো যায়নি। PDF পাসওয়ার্ড-সুরক্ষিত বা নষ্ট হতে পারে।')}};
+const pst=m=>$('#pm').textContent=m,pdl=(b,n)=>{const u=URL.createObjectURL(new Blob([b],{type:'application/pdf'}));dl(u,n);setTimeout(()=>URL.revokeObjectURL(u),9e3)};
+const jb=(c,q)=>new Promise(r=>c.toBlob(async b=>r(await b.arrayBuffer()),'image/jpeg',q));
+const FS={img:[],mrg:[]};
+function fl(k){$('#'+k+'l').innerHTML=FS[k].map((f,i)=>`<div class="fi"><span>${i+1}. ${esc(f.name)}</span><span><button class="ic" data-k="${k}" data-i="${i}" data-a="u" aria-label="Up">↑</button> <button class="ic" data-k="${k}" data-i="${i}" data-a="d" aria-label="Down">↓</button> <button class="ic" data-k="${k}" data-i="${i}" data-a="x" aria-label="Remove">✕</button></span></div>`).join('')||`<p class="hint">${L('কোনো ফাইল যোগ করা হয়নি।|No files added yet.')}</p>`}
+document.addEventListener('click',e=>{const b=e.target.closest('.ic[data-k]');if(!b)return;const{k,a}=b.dataset,i=+b.dataset.i,A=FS[k];
+ if(a=='x')A.splice(i,1);else{const m=a=='u'?i-1:i+1;if(m<0||m>=A.length)return;[A[i],A[m]]=[A[m],A[i]]}fl(k)});
+$('#pif').onchange=e=>{FS.img.push(...e.target.files);e.target.value='';fl('img')};
+$('#pmf').onchange=e=>{FS.mrg.push(...e.target.files);e.target.value='';fl('mrg')};
+$('#pi').onclick=async()=>{if(!FS.img.length)return pst(L('আগে ছবি যোগ করুন।|Add images first.'));
+ const sz=$('#psz').value,mg=+$('#pmg').value,q=+$('#pq').value/100;
+ try{pst(L('PDF তৈরি হচ্ছে...|Creating PDF...'));const{PDFDocument}=await lp(),d=await PDFDocument.create();
+  for(const f of FS.img){const bm=await createImageBitmap(f),sc=Math.min(1,2200/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*sc);c.height=Math.round(bm.height*sc);
+   const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);
+   const im=await d.embedJpg(await jb(c,q));let W,H;if(sz=='fit'){W=im.width;H=im.height}else{[W,H]=sz=='a4'?[595.28,841.89]:[612,792];if(im.width>im.height)[W,H]=[H,W]}
+   const s=Math.min((W-2*mg)/im.width,(H-2*mg)/im.height),w=im.width*s,h=im.height*s;d.addPage([W,H]).drawImage(im,{x:(W-w)/2,y:(H-h)/2,width:w,height:h})}
+  pdl(await d.save(),'images.pdf');pst(L('✅ PDF তৈরি হয়েছে।|✅ PDF created.'))}catch(e){pst(L('PDF বানানো যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।|Could not create the PDF. Check your connection and try again.'))}};
+$('#pm2').onclick=async()=>{if(FS.mrg.length<2)return pst(L('কমপক্ষে ২টি PDF যোগ করুন।|Add at least 2 PDFs.'));
+ try{pst(L('জোড়া লাগানো হচ্ছে...|Merging...'));const{PDFDocument}=await lp(),o=await PDFDocument.create();
+  for(const f of FS.mrg){const s=await PDFDocument.load(await f.arrayBuffer());(await o.copyPages(s,s.getPageIndices())).forEach(p=>o.addPage(p))}
+  pdl(await o.save(),'merged.pdf');pst(L('✅ PDF জোড়া হয়েছে।|✅ PDFs merged.'))}catch(e){pst(L('জোড়া লাগানো যায়নি। PDF পাসওয়ার্ড-সুরক্ষিত বা নষ্ট হতে পারে।|Could not merge. A PDF may be password-protected or damaged.'))}};
+$('#sf').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const{PDFDocument}=await lp(),d=await PDFDocument.load(await f.arrayBuffer());$('#sn').textContent=`${L('মোট পেজ|Total pages')}: ${d.getPageCount()}`}catch(x){$('#sn').textContent=''}};
+const rg=(s,n)=>{const o=[];s.split(',').forEach(p=>{p=p.trim();if(!p)return;let[a,b]=p.split('-');a=+a;b=p.includes('-')?(b.trim()===''?n:+b):a;if(!(a>=1&&b<=n&&a<=b))throw 0;for(let i=a;i<=b;i++)o.push(i-1)});if(!o.length)throw 0;return o};
+$('#sb').onclick=async()=>{const f=$('#sf').files[0];if(!f)return pst(L('আগে PDF বাছুন।|Choose a PDF first.'));
+ try{const{PDFDocument}=await lp(),s=await PDFDocument.load(await f.arrayBuffer()),o=await PDFDocument.create();
+  (await o.copyPages(s,rg($('#sr').value,s.getPageCount()))).forEach(p=>o.addPage(p));pdl(await o.save(),'extracted.pdf');pst(L('✅ পেজ আলাদা করা হয়েছে।|✅ Pages extracted.'))}
+ catch(e){pst(L('পেজ নম্বর ঠিক নেই। উদাহরণ: 1-3, 5|Invalid page range. Example: 1-3, 5'))}};
+$('#nb').onclick=async()=>{const f=$('#nf').files[0];if(!f)return pst(L('আগে PDF বাছুন।|Choose a PDF first.'));
+ try{const P=await lp(),d=await P.PDFDocument.load(await f.arrayBuffer()),ft=await d.embedFont(P.StandardFonts.Helvetica),pgs=d.getPages(),sk=$('#n1').checked?1:0,tot=pgs.length-sk,pos=$('#npos').value,st=$('#nsty').value;
+  pgs.forEach((p,i)=>{if(i<sk)return;const n=i-sk+1,t=st=='0'?''+n:st=='1'?`${n} / ${tot}`:`Page ${n} of ${tot}`,w=p.getSize().width,tw=ft.widthOfTextAtSize(t,10);
+   p.drawText(t,{x:pos=='c'?(w-tw)/2:pos=='r'?w-40-tw:40,y:22,size:10,font:ft,color:P.rgb(.25,.25,.25)})});
+  pdl(await d.save(),'numbered.pdf');pst(L('✅ পেজ নম্বর যোগ হয়েছে।|✅ Page numbers added.'))}catch(e){pst(L('নম্বর যোগ করা যায়নি।|Could not add page numbers.'))}};
 
-card();rt();cg();ex();
+/* ===== শুরু ===== */
+window.onLang=()=>{card();rtR();cgR();exR();fl('img');fl('mrg');tstop()};
+window.onLang();tdraw();
 </script>
 </body>
 </html>
