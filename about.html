@@ -89,12 +89,13 @@ function render(){
 function msg(){const t=['পরামর্শ|Suggestion','সমস্যা|Problem','ফিচারের অনুরোধ|Feature request','প্রশ্ন|Question'][$('#ft').value];
  return `[${L(t)}] ${$('#fm').value.trim()}`+($('#fc').value.trim()?`\n— ${$('#fc').value.trim()}`:'')}
 function buttons(){
- const b=[];if(D.email)b.push(['em',L('ইমেইলে পাঠান|Send by Email')]);if(D.whatsapp)b.push(['wa',L('WhatsApp-এ পাঠান|Send on WhatsApp')]);
+ const b=[];if(D.email)b.push(['gm',L('Gmail-এ পাঠান|Send via Gmail')],['em',L('ইমেইল অ্যাপে পাঠান|Send via Email App')]);if(D.whatsapp)b.push(['wa',L('WhatsApp-এ পাঠান|Send on WhatsApp')]);
  b.push(['gh',L('GitHub-এ জানান|Report on GitHub')],['cp',L('বার্তা কপি করুন|Copy message')]);
- $('#fb2').innerHTML=b.map(([k,t],i)=>`<button type="button" class="bt${i>1?' o':''}" data-k="${k}">${t}</button>`).join('');
+ $('#fb2').innerHTML=b.map(([k,t],i)=>`<button type="button" class="bt${i>0?' o':''}" data-k="${k}">${t}</button>`).join('');
 }
 $('#fb2').onclick=async e=>{const k=e.target.dataset.k;if(!k)return;const m=msg(),s=$('#fs');
  if(!$('#fm').value.trim()){s.textContent=L('আগে আপনার বার্তা লিখুন।|Please write your message first.');$('#fm').focus();return}
+ if(k=='gm')window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(D.email)}&su=${encodeURIComponent('DCU Site Feedback')}&body=${encodeURIComponent(m)}`,'_blank','noopener');
  if(k=='em')location.href=`mailto:${D.email}?subject=${encodeURIComponent('DCU Site Feedback')}&body=${encodeURIComponent(m)}`;
  if(k=='wa')window.open(`https://wa.me/${D.whatsapp}?text=${encodeURIComponent(m)}`,'_blank','noopener');
  if(k=='gh')window.open(`${D.repo}/issues/new?title=${encodeURIComponent('Feedback')}&body=${encodeURIComponent(m)}`,'_blank','noopener');

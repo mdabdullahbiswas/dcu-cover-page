@@ -20,8 +20,8 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
 /* ===================================================================== */
 (function () {
   window.$DEV = DEV;
-  var P = document.body.dataset.page || '', SL = 'bn';
-  try { SL = localStorage.getItem('dcuSL') || 'bn'; } catch (e) {}
+  var P = document.body.dataset.page || '', SL = 'en';
+  try { SL = localStorage.getItem('dcuSL') || 'en'; } catch (e) {}
   var $L = function (s) { var p = String(s).split('|'); return SL === 'en' && p[1] ? p[1] : p[0]; };
   window.$L = $L; window.$lang = function () { return SL; };
 
@@ -75,7 +75,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   }
   function opts(a) { return a.map(function (v) { return '<option value="' + v + '">'; }).join(''); }
   dlist('deptList', opts(DEPTS.map(function (d) { return 'DEPARTMENT OF ' + d[0].toUpperCase(); }).concat(DEPTS.map(function (d) { return d[1] + ' বিভাগ'; }))));
-  dlist('campusList', opts(COLS.map(function (c) { return c[0].toUpperCase(); }).concat(COLS.map(function (c) { return c[1]; }))));
+  dlist('campusList', opts(COLS.map(function (c) { return c[0].toUpperCase() + ' CAMPUS'; }).concat(COLS.map(function (c) { return c[1] + ' ক্যাম্পাস'; }))));
   dlist('deptPlain', opts(DEPTS.map(function (d) { return d[0]; }).concat(DEPTS.map(function (d) { return d[1]; }))));
   window.$DEPTS = DEPTS; window.$COLS = COLS; window.$RESULT = RESULT_URL;
   var h = document.getElementById('hdr'), f = document.getElementById('ftr');

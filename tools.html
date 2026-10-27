@@ -115,7 +115,7 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 
 <!-- ============ CGPA ============ -->
 <section id="cgpa">
-<div class="g2"><div class="bx"><div class="hint t">মোট CGPA|Cumulative CGPA</div><div class="big" id="cgv">—</div><div class="hint"><span class="t">মোট ক্রেডিট|Total credits</span>: <b id="cgc">0</b> · <span class="t">সেরা সেমিস্টার|Best semester</span>: <b id="cgb">—</b></div>
+<div class="g2"><div class="bx"><div class="hint t">মোট CGPA|Cumulative CGPA</div><div class="big" id="cgv">—</div><div class="hint"><span class="t">মোট ক্রেডিট|Total credits</span>: <b id="cgc">0</b> · <span class="t">সেরা ইয়ার|Best year</span>: <b id="cgb">—</b></div>
 <div class="chart" id="cgch" aria-label="GPA chart"></div>
 <label class="t">গ্রেড স্কেল|Grade scale</label><select id="cgs"><option value="ugc" class="t">UGC স্কেল (A+ = ৪.০০)|UGC scale (A+ = 4.00)</option><option value="alt" class="t">বিকল্প ৪.০০ স্কেল (A = ৪.০০)|Alternative 4.00 scale (A = 4.00)</option></select>
 <label class="ck"><input type="checkbox" id="cgr"><span class="t">রিটেক: একই নামের কোর্সের সেরা গ্রেড গণনা করুন|Retakes: count the best grade for courses with the same name</span></label>
@@ -124,7 +124,7 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 <div class="bx"><h2 class="t">লক্ষ্য CGPA হিসাব|CGPA Goal Planner</h2>
 <div class="g3"><div><label class="t">বাকি ক্রেডিট|Remaining credits</label><input id="tr" type="number" min="1"></div><div><label class="t">লক্ষ্য CGPA|Target CGPA</label><input id="tt" type="number" min="0" max="4" step=".01"></div></div>
 <div id="tv" style="margin-top:12px;font-weight:600"></div></div></div>
-<div id="cgl"></div><button class="bt t" id="cga">+ সেমিস্টার যোগ করুন|+ Add Semester</button>
+<div id="cgl"></div><button class="bt t" id="cga">+ ইয়ার যোগ করুন|+ Add Year</button>
 </section>
 
 <!-- ============ পরীক্ষা প্ল্যানার ============ -->
@@ -222,8 +222,8 @@ const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){retu
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>'&#'+m.charCodeAt(0)+';');
 const dl=(href,n)=>{const a=document.createElement('a');a.href=href;a.download=n;a.click()};
 const TB=['card','frame','cv','routine','cgpa','exam','pdf','calc','result'];
-function go(){let h=location.hash.slice(1);if(!TB.includes(h))h='card';$$('main section').forEach(s=>s.classList.toggle('on',s.id==h));$$('.tabs button').forEach(b=>{const o=b.dataset.t==h;b.classList.toggle('on',o);b.setAttribute('aria-selected',o)});if(typeof cvFit=='function')cvFit()}
-$$('.tabs button').forEach(b=>b.onclick=()=>{location.hash=b.dataset.t});addEventListener('hashchange',go);go();
+function go(){let h=location.hash.slice(1);if(!TB.includes(h))h='card';$$('main section').forEach(s=>s.classList.toggle('on',s.id==h));$$('.tabs button').forEach(b=>{const o=b.dataset.t==h;b.classList.toggle('on',o);b.setAttribute('aria-selected',o)});if(typeof cvFit=='function')cvFit();scrollTo(0,0);requestAnimationFrame(()=>scrollTo(0,0))}
+$$('.tabs button').forEach(b=>b.onclick=()=>{if(location.hash.slice(1)==b.dataset.t)go();else location.hash=b.dataset.t});addEventListener('hashchange',go);go();
 
 /* ===== ১. শেয়ার কার্ড ===== */
 let photo=null;const LG=new Image();LG.onload=()=>card();LG.src='logo.png';
@@ -309,7 +309,7 @@ let C=ld('dcuCg',null);if(!C||!C.s)C={sc:'ugc',rt:0,s:[blank()]};
 const gp=g=>{const r=GS[C.sc].find(a=>a[0]==g);return r?r[1]:null};
 let SUM='';
 function cgR(){$('#cgs').value=C.sc;$('#cgr').checked=!!C.rt;
- $('#cgl').innerHTML=C.s.map((s,i)=>`<div class="bx"><div class="hd"><b>${L('সেমিস্টার|Semester')} ${i+1}</b><span class="gp" id="sg${i}"></span><button class="bs" data-act="ds" data-s="${i}">${L('মুছুন|Delete')}</button></div>`+
+ $('#cgl').innerHTML=C.s.map((s,i)=>`<div class="bx"><div class="hd"><b>${L('ইয়ার|Year')} ${i+1}</b><span class="gp" id="sg${i}"></span><button class="bs" data-act="ds" data-s="${i}">${L('মুছুন|Delete')}</button></div>`+
   s.map((r,j)=>`<div class="rw"><input data-s="${i}" data-i="${j}" data-k="n" value="${esc(r.n)}" placeholder="${L('কোর্সের নাম (ঐচ্ছিক)|Course name (optional)')}"><input data-s="${i}" data-i="${j}" data-k="c" type="number" min="0.5" step="0.5" value="${r.c}" aria-label="${L('ক্রেডিট|Credit')}"><select data-s="${i}" data-i="${j}" data-k="g" aria-label="${L('গ্রেড|Grade')}"><option value="">${L('গ্রেড|Grade')}</option>${GS[C.sc].map(a=>`<option${a[0]==r.g?' selected':''}>${a[0]}</option>`).join('')}</select><button class="ic" data-act="dr" data-s="${i}" data-i="${j}" aria-label="Delete">✕</button></div>`).join('')+
   `<button class="bs" style="margin-top:10px" data-act="ar" data-s="${i}">+ ${L('কোর্স|Course')}</button></div>`).join('');cgC()}
 function cgC(){
@@ -317,14 +317,14 @@ function cgC(){
  let TC=0,TP=0;const sg=[];
  C.s.forEach((s,i)=>{let c=0,p=0;s.forEach((r,j)=>{const q=gp(r.g),k=r.n.trim().toLowerCase();if(q===null||!(r.c>0))return;if(C.rt&&k&&(best[k].i!=i||best[k].j!=j))return;c+=r.c;p+=r.c*q});TC+=c;TP+=p;sg.push(c?p/c:null);const e=$('#sg'+i);if(e)e.textContent=c?'GPA '+(p/c).toFixed(2):'—'});
  const cg=TC?TP/TC:null;$('#cgv').textContent=cg===null?'—':cg.toFixed(2);$('#cgc').textContent=TC;
- const bi=sg.reduce((a,v,i)=>v!==null&&(a<0||v>sg[a])?i:a,-1);$('#cgb').textContent=bi<0?'—':`${L('সেমিস্টার|Semester')} ${bi+1} (${sg[bi].toFixed(2)})`;
+ const bi=sg.reduce((a,v,i)=>v!==null&&(a<0||v>sg[a])?i:a,-1);$('#cgb').textContent=bi<0?'—':`${L('ইয়ার|Year')} ${bi+1} (${sg[bi].toFixed(2)})`;
  $('#cgch').innerHTML=sg.map((v,i)=>`<div class="cb"><span>${v===null?'—':v.toFixed(2)}</span><i style="height:${v?v/4*80:0}%"></i><small>S${i+1}</small></div>`).join('');
  const rem=+$('#tr').value,tg=+$('#tt').value;let h='';
  if(rem>0){const mxc=(TP+4*rem)/(TC+rem),mnc=TP/(TC+rem);h=`${L('সর্বোচ্চ সম্ভব CGPA|Highest possible CGPA')}: <b>${mxc.toFixed(2)}</b><br>${L('সর্বনিম্ন CGPA (সব F)|Lowest CGPA (all F)')}: <b>${mnc.toFixed(2)}</b>`;
-  if(tg>0){const n=(tg*(TC+rem)-TP)/rem;h+='<br>'+(n>4?'⚠️ '+L('এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়।|This target is not reachable on a 4.00 scale.'):n<=0?'✅ '+L('লক্ষ্য আগেই অর্জিত।|Target already achieved.'):L('বাকি সেমিস্টারে গড় GPA লাগবে|Required average GPA for the rest')+`: <b>${n.toFixed(2)}</b>`)}}
+  if(tg>0){const n=(tg*(TC+rem)-TP)/rem;h+='<br>'+(n>4?'⚠️ '+L('এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়।|This target is not reachable on a 4.00 scale.'):n<=0?'✅ '+L('লক্ষ্য আগেই অর্জিত।|Target already achieved.'):L('বাকি ইয়ারে গড় GPA লাগবে|Required average GPA for the rest')+`: <b>${n.toFixed(2)}</b>`)}}
  $('#tv').innerHTML=h;SUM=cg===null?'':`CGPA ${cg.toFixed(2)} (${TC} ${L('ক্রেডিট|credits')})`;sv('dcuCg',C)}
 $('#cgl').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,i=+b.dataset.s,j=+b.dataset.i;
- if(a=='ar')C.s[i].push({n:'',c:3,g:''});if(a=='dr')C.s[i].splice(j,1);if(a=='ds'){if(!confirm(L('এই সেমিস্টার মুছে ফেলবেন?|Delete this semester?')))return;C.s.splice(i,1)}cgR()});
+ if(a=='ar')C.s[i].push({n:'',c:3,g:''});if(a=='dr')C.s[i].splice(j,1);if(a=='ds'){if(!confirm(L('এই ইয়ার মুছে ফেলবেন?|Delete this year?')))return;C.s.splice(i,1)}cgR()});
 $('#cgl').addEventListener('input',e=>{const d=e.target.dataset;if(d.k===undefined)return;const r=C.s[+d.s][+d.i];r[d.k]=d.k=='c'?+e.target.value:e.target.value;cgC()});
 $('#cga').onclick=()=>{C.s.push(blank());cgR()};
 $('#cgs').onchange=e=>{C.sc=e.target.value;C.s.forEach(s=>s.forEach(r=>{if(gp(r.g)===null)r.g=''}));cgR()};

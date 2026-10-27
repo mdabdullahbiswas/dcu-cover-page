@@ -510,7 +510,7 @@ function downloadDoc(){
 }
 
 const FEEDBACK_URL = '';  // এখানে আপনার Google Form / WhatsApp / Messenger লিংক বসান
-let SL = 'bn', ti = -1;
+let SL = 'en', ti = -1;
 const UI = Object.fromEntries([
 ['তথ্য প্রদান করুন','Enter Information'],['📁 সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):','📁 Saved Profiles (by course / teacher):'],
 ['কভার পেজ টেমপ্লেট নির্বাচন করুন:','Select Cover Page Template:'],['🎨 থিমের রং:','🎨 Theme Colour:'],['← কাস্টম রং','← Custom colour'],
@@ -616,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
     r.readAsDataURL(f);
   });
   try { const lg = localStorage.getItem('dcuLogo'); if (lg) setLogo(lg); if (localStorage.getItem('dcuDark')) toggleDark(); } catch(e){}
-  try { SL = localStorage.getItem('dcuSL') || 'bn'; } catch(e){}
+  try { SL = localStorage.getItem('dcuSL') || 'en'; } catch(e){}
   $('teacherInfo').addEventListener('blur', tsave); tchips();
   if (FEEDBACK_URL) { $('fbk').href = FEEDBACK_URL; $('fbk').style.display = 'inline'; }
   setSite(SL);
