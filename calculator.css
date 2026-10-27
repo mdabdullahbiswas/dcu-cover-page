@@ -47,3 +47,7 @@
 @media(max-width:340px){.kl{font-size:6.5px;gap:3px}.kb{font-size:10.5px}.kb.nm{font-size:13px}}
 .kb{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform .06s,filter .06s}
 @media(hover:hover){.kb:hover{filter:brightness(1.12)}}
+/* বাটনের লেখা সবসময় মাঝে: চওড়া ফন্টে লেখা উপচে পড়লেও দুই দিকে সমান থাকে */
+.kb{display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;overflow:visible}
+.kb.sh,.kb.al{font-size:11.5px;letter-spacing:-.2px}
+@media(max-width:360px){.kb.sh,.kb.al{font-size:10px;letter-spacing:-.3px}}
