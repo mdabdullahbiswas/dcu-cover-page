@@ -203,6 +203,27 @@
         .result-warn { margin-top: 14px; background: rgba(229,168,59,.15); border: 1px dashed var(--accent); color: #7a5a10; padding: 9px 12px; border-radius: 8px; font-size: 12.5px; text-align: left; }
         .result-close { margin-top: 12px; width: 100%; background: #e6e9ee; color: #333; border: 0; border-radius: 10px; padding: 11px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 15px; }
     
+        /* ===== লিডারবোর্ড: কার্ড-লিস্ট (মোবাইল + ডেস্কটপ) ===== */
+        .lb-list { display: flex; flex-direction: column; gap: 10px; }
+        .lb-item { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 12px 14px; border: 1px solid var(--ln); border-radius: 12px; background: #fafbfc; }
+        .lb-item.lb-top { background: #fff8e6; border-color: #f1d98a; }
+        .lb-rank { text-align: center; font-size: 24px; line-height: 1; font-weight: 700; color: var(--primary); }
+        .lb-rank.num { font-size: 15px; width: 30px; height: 30px; line-height: 30px; margin: 0 auto; border-radius: 50%; background: #e9eef4; }
+        .lb-info { min-width: 0; }
+        .lb-name { font-weight: 600; font-size: 16px; line-height: 1.35; overflow-wrap: anywhere; }
+        .lb-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 4px; font-size: 13px; color: #666; }
+        .lb-meta .lb-area { overflow-wrap: anywhere; min-width: 0; }
+        .lb-cnt { text-align: center; white-space: nowrap; background: rgba(217,83,79,.1); color: var(--danger); border-radius: 10px; padding: 6px 10px; line-height: 1.2; }
+        .lb-cnt b { display: block; font-size: 20px; font-family: 'Montserrat', 'Hind Siliguri', sans-serif; }
+        .lb-cnt span { font-size: 12px; font-weight: 600; }
+        @media (max-width: 600px) {
+            #leaderboardSection .card { padding: 16px 12px; }
+            .lb-item { grid-template-columns: 36px minmax(0, 1fr) auto; column-gap: 10px; padding: 10px; }
+            .lb-rank { font-size: 22px; }
+            .lb-name { font-size: 15px; }
+            .lb-cnt { padding: 5px 9px; }
+            .lb-cnt b { font-size: 18px; }
+        }
         /* ===== গতি: অফস্ক্রিনের কার্ড রেন্ডার হবে না, মোবাইলে ভারী ইফেক্ট কম ===== */
         .donor-card, .rcard { content-visibility: auto; contain-intrinsic-size: auto 110px; }
         .donor-info img { background: #eef1f5; }
@@ -1574,27 +1595,22 @@
                 return;
             }
 
-            let html = `<table>
-                <tr>
-                    <th>অবস্থান</th>
-                    <th>নাম</th>
-                    <th>গ্রুপ</th>
-                    <th>এলাকা</th>
-                    <th>মোট রক্তদান</th>
-                </tr>`;
+            let html = `<div class="lb-list">`;
 
             donors.forEach((d, index) => {
-                let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1);
-                html += `<tr>
-                    <td><b>${medal}</b></td>
-                    <td>${esc(d.name)}${vtick(d)}</td>
-                    <td><span class="badge">${esc(d.group)}</span></td>
-                    <td>${esc(d.address)}</td>
-                    <td><b style="color:var(--danger);">${d.donationCount || 1} বার</b></td>
-                </tr>`;
+                const top = index < 3;
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1);
+                html += `<div class="lb-item ${top ? "lb-top" : ""}">
+                    <div class="lb-rank ${top ? "" : "num"}">${medal}</div>
+                    <div class="lb-info">
+                        <div class="lb-name">${esc(d.name)}${vtick(d)}</div>
+                        <div class="lb-meta"><span class="badge">${esc(d.group)}</span><span class="lb-area">${esc(d.address)}</span></div>
+                    </div>
+                    <div class="lb-cnt"><b>${d.donationCount || 1}</b><span>বার রক্তদান</span></div>
+                </div>`;
             });
 
-            html += `</table>`;
+            html += `</div>`;
             lbDiv.innerHTML = html;
         } catch (error) {
             lbDiv.innerHTML = "লিডারবোর্ড লোড করতে সমস্যা হয়েছে।";
