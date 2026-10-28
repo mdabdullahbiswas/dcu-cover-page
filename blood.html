@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="site.css">
     <style>
         :root { --bg: #f4f7f6; --cd: #ffffff; --ink: #1c2733; --ln: #d0d7de; --primary: #0a2240; --accent: #e5a83b; --danger: #d9534f; --success: #28a745; }
-        body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'Montserrat', 'Nirmala UI', 'Vrinda', 'Shonar Bangla', sans-serif; line-height: 1.6; padding: 0; }
+        @font-face { font-family: 'BnDigits'; unicode-range: U+09E6-09EF;
+            src: local('Nirmala UI'), local('Nirmala UI Regular'), local('Vrinda'), local('Shonar Bangla'), local('Noto Sans Bengali'), local('Kohinoor Bangla'), local('Bangla Sangam MN'), local('Lohit Bengali'); }
+        body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'BnDigits', 'Hind Siliguri', 'Noto Sans Bengali', 'Montserrat', 'Nirmala UI', 'Vrinda', 'Shonar Bangla', sans-serif; line-height: 1.6; padding: 0; }
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
         .card { background: var(--cd); border: 1px solid var(--ln); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         h2 { color: var(--primary); margin-top: 0; }
@@ -860,7 +862,9 @@ if(window.ResizeObserver)new ResizeObserver(s).observe(h);})();
     const validISO = (s) => /^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(s || "");
     // বাংলা অঙ্ক: ICU/toLocaleString-এর উপর নির্ভর না করে সরাসরি U+09E6–U+09EF ব্যবহার
     const BN_D = ["\u09E6","\u09E7","\u09E8","\u09E9","\u09EA","\u09EB","\u09EC","\u09ED","\u09EE","\u09EF"];
-    const toBnDigits = (s) => String(s).replace(/\d/g, (d) => BN_D[+d]);
+    const bnDigitsOK = () => { try { const c = document.createElement("canvas").getContext("2d"); c.font = "20px " + getComputedStyle(document.body).fontFamily;
+        const bad = c.measureText("\u0984").width; return [1, 2, 5, 8].every((n) => Math.abs(c.measureText(BN_D[n]).width - bad) > 0.01); } catch (e) { return true; } };
+    const toBnDigits = (s) => bnDigitsOK() ? String(s).replace(/\d/g, (d) => BN_D[+d]) : String(s);
     const BN_MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
     const bnDate = (s) => { if (!validISO(s)) return ""; const d = parseISO(s); return toBnDigits(d.getDate()) + " " + BN_MONTHS[d.getMonth()] + ", " + toBnDigits(d.getFullYear()); };
     const bnNum = (n) => toBnDigits(Number(n).toLocaleString("en-US"));
