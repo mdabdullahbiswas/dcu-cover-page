@@ -39,10 +39,14 @@
         /* ফোন নম্বর রেজাল্ট কার্ড */
         .result-modal { text-align: center; max-width: 380px; padding: 0; overflow: hidden; animation: popIn .25s ease-out; }
         @keyframes popIn { from { transform: scale(.9) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
-        .result-head { background: linear-gradient(135deg, var(--primary), #1b4a82); padding: 26px 20px 46px; color: #fff; position: relative; }
+        .result-head { background: linear-gradient(135deg, var(--primary), #1b4a82); padding: 26px 20px 56px; color: #fff; position: relative; }
         .result-head h3 { margin: 0; font-size: 18px; }
         .result-head .rg { display: inline-block; margin-top: 6px; background: var(--danger); padding: 2px 12px; border-radius: 20px; font-weight: 700; font-size: 14px; }
         .result-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 30px; margin: -32px auto 0; position: relative; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+        .result-icon.has-photo { background: #fff; padding: 0; overflow: hidden; }
+        .result-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .result-icon, .result-icon.has-photo { width: 84px; height: 84px; margin-top: -42px; }
+        .result-icon { font-size: 36px; }
         .result-body { padding: 14px 22px 22px; }
         .result-label { font-size: 13px; color: #777; margin: 6px 0 2px; }
         .result-phone { font-family: 'Montserrat', 'Hind Siliguri', sans-serif; font-size: 30px; font-weight: 700; color: var(--primary); letter-spacing: 1px; margin: 0 0 14px; direction: ltr; }
@@ -184,7 +188,7 @@
             <h3 id="resName">—</h3>
             <span class="rg" id="resGroup"></span>
         </div>
-        <div class="result-icon">📞</div>
+        <div class="result-icon" id="resIcon">📞</div>
         <div class="result-body">
             <div class="result-label">মোবাইল নম্বর</div>
             <div class="result-phone" id="resPhone">—</div>
@@ -217,6 +221,8 @@
 
     let currentSeeker = null;
     let selectedDonor = null;
+    const donorMap = {};
+    const rawPhoto = (p) => (typeof p === "string" && (p.startsWith("data:image/") || p.startsWith("https://firebasestorage.googleapis.com/"))) ? p : null;
     const esc = (t) => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     const AV = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" rx="30" fill="#eee"/><circle cx="30" cy="23" r="10" fill="#bbb"/><path d="M10 54c3-14 37-14 40 0z" fill="#bbb"/></svg>');
     const photoSrc = (p) => (typeof p === "string" && (p.startsWith("data:image/") || p.startsWith("https://firebasestorage.googleapis.com/"))) ? esc(p) : AV;
@@ -338,6 +344,7 @@
                 if(selectedAddress && !d.address.toLowerCase().includes(selectedAddress)) return;
 
                 count++;
+                donorMap[docSnap.id] = d;
                 html += `
                     <div class="donor-card">
                         <div class="donor-info" style="display:flex; align-items:center;">
@@ -347,7 +354,7 @@
                                 <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${esc(d.address)} | 🩸 ${esc(d.donationCount || 1)} বার দান</p>
                             </div>
                         </div>
-                        <button class="btn contact-btn" style="width:auto; padding:8px 14px; margin:0;" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}" data-group="${esc(d.group)}">নম্বর দেখুন</button>
+                        <button class="btn contact-btn" style="width:auto; padding:8px 14px; margin:0;" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}" data-group="${esc(d.group)}" data-id="${esc(docSnap.id)}">নম্বর দেখুন</button>
                     </div>
                 `;
             });
@@ -359,8 +366,8 @@
     }
     window.loadDonors = loadDonors;
 
-    window.handleContactClick = function(phone, name, group) {
-        selectedDonor = { phone, name, group };
+    window.handleContactClick = function(phone, name, group, id) {
+        selectedDonor = { phone, name, group, photo: rawPhoto((donorMap[id] || {}).photo) };
         if (!currentSeeker) {
             document.getElementById('securityModal').style.display = 'flex';
         } else {
@@ -409,6 +416,17 @@
         document.getElementById('resGroup').textContent = selectedDonor.group ? selectedDonor.group : '';
         document.getElementById('resGroup').style.display = selectedDonor.group ? 'inline-block' : 'none';
         document.getElementById('resPhone').textContent = selectedDonor.phone;
+        const ic = document.getElementById('resIcon');
+        if (selectedDonor.photo) {
+            ic.classList.add('has-photo');
+            ic.innerHTML = '<img alt="">';
+            const im = ic.querySelector('img');
+            im.onerror = () => { ic.classList.remove('has-photo'); ic.textContent = '📞'; };
+            im.src = selectedDonor.photo;
+        } else {
+            ic.classList.remove('has-photo');
+            ic.textContent = '📞';
+        }
         document.getElementById('resCall').href = 'tel:' + selectedDonor.phone.replace(/[^\d+]/g, '');
         document.querySelector('.result-warn').style.display = logged ? 'block' : 'none';
         const cb = document.getElementById('resCopy');
@@ -478,7 +496,7 @@
 
     document.getElementById("donorList").addEventListener("click", (e) => {
         const b = e.target.closest(".contact-btn");
-        if (b) handleContactClick(b.dataset.phone, b.dataset.name, b.dataset.group);
+        if (b) handleContactClick(b.dataset.phone, b.dataset.name, b.dataset.group, b.dataset.id);
     });
     loadDonors();
 </script>
