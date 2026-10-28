@@ -341,7 +341,6 @@
                     <input type="text" id="rqFilterArea" list="areaList" autocomplete="off" placeholder="যেমন: মিরপুর">
                 </div>
             </div>
-            <label style="font-weight:normal; cursor:pointer;"><input type="checkbox" id="rqMineOnly" style="width:auto; margin-right:6px;" disabled> শুধু আমার রক্তের গ্রুপ দিতে পারে এমন অনুরোধ (ডোনার হিসেবে নিবন্ধিতদের জন্য)</label>
             <div id="rqList" style="margin-top:6px;">লোড হচ্ছে...</div>
         </div>
     </div>
@@ -1189,8 +1188,8 @@
     }
 
     function renderRequests() {
-        const box = $("rqList"), g = $("rqFilterGroup").value, a = $("rqFilterArea").value.trim().toLowerCase(), onlyMe = $("rqMineOnly").checked;
-        const L = requests.filter(r => (!g || r.group === g) && (!a || String(r.area).toLowerCase().includes(a)) && (!onlyMe || canHelp(r)))
+        const box = $("rqList"), g = $("rqFilterGroup").value, a = $("rqFilterArea").value.trim().toLowerCase();
+        const L = requests.filter(r => (!g || r.group === g) && (!a || String(r.area).toLowerCase().includes(a)))
             .sort((x, y) => ((canHelp(y) && sameArea(y)) - (canHelp(x) && sameArea(x))) || (tsMs(y.createdAt) - tsMs(x.createdAt)));
         box.innerHTML = L.length ? L.map(reqCard).join("") : "<p style='text-align:center; color:#777;'>এই মুহূর্তে কোনো জরুরি অনুরোধ নেই।</p>";
         const dsm = ubDismissed().filter(id => requests.some(r => r.id === id));
@@ -1201,12 +1200,10 @@
     async function loadUrgent() {
         const box = $("rqList");
         await Promise.all([authReady, persistReady]);
-        $("rqMineOnly").disabled = !myDonor;
         box.textContent = "লোড হচ্ছে...";
         try {
             await fetchRequests();
-            $("rqMineOnly").disabled = !myDonor;
-            renderRequests();
+                renderRequests();
             const newest = Math.max(0, ...requests.map(r => tsMs(r.createdAt)));
             try { localStorage.setItem(reqSeenKey(auth.currentUser.uid), String(newest)); } catch (e) {}
             updateUrgentBadge();
@@ -1495,7 +1492,6 @@
 
     $("rqFilterGroup").onchange = renderRequests;
     $("rqFilterArea").oninput = renderRequests;
-    $("rqMineOnly").onchange = renderRequests;
     $("rqList").addEventListener("click", async (e) => {
         const b = e.target.closest("button[data-q]"); if (!b) return;
         if (b.dataset.q === "undismiss") { setUbDismissed([]); ubIdx = 0; renderBanner(); renderRequests(); return; }
