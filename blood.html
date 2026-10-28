@@ -40,6 +40,13 @@
         .signin-note { background: #eaf3ff; border: 1px solid #b9d4f5; color: #1b4a82; padding: 9px 12px; border-radius: 8px; font-size: 13px; margin-top: 14px; text-align: center; }
         .auth-bar { display: none; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; background: #fff; border: 1px solid var(--ln); border-radius: 10px; padding: 8px 12px; margin-bottom: 14px; font-size: 13px; }
         .auth-bar button { background: none; border: 1px solid var(--ln); border-radius: 6px; padding: 4px 10px; cursor: pointer; font-family: inherit; font-size: 12.5px; }
+        .nbadge { display: inline-block; min-width: 20px; padding: 0 6px; margin-left: 4px; background: var(--danger); color: #fff; border-radius: 10px; font-size: 12px; line-height: 20px; }
+        .nitem { border: 1px solid var(--ln); border-radius: 10px; padding: 12px 14px; margin-top: 10px; background: #fafbfc; }
+        .nitem.new { border-color: var(--danger); background: #fff5f4; }
+        .nitem .nt { font-size: 12.5px; color: #777; margin-bottom: 4px; }
+        .nitem .nn { font-weight: 700; color: var(--primary); }
+        .nitem a { color: var(--success); font-weight: 700; text-decoration: none; }
+        .nnew { background: var(--danger); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; }
         /* ফোন নম্বর রেজাল্ট কার্ড */
         .result-modal { text-align: center; max-width: 380px; padding: 0; overflow: hidden; animation: popIn .25s ease-out; }
         @keyframes popIn { from { transform: scale(.9) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
@@ -71,6 +78,7 @@
     <div class="tabs">
         <button class="active" onclick="switchTab('find')">রক্ত খুঁজুন</button>
         <button onclick="switchTab('register')">ডোনার হোন</button>
+        <button onclick="switchTab('notify')">🔔 নোটিফিকেশন <span id="nBadge" class="nbadge" style="display:none">0</span></button>
         <button onclick="switchTab('leaderboard')">🏆 লিডারবোর্ড</button>
     </div>
 
@@ -161,6 +169,14 @@
     </div>
 
     <!-- ৩. লিডারবোর্ড সেকশন -->
+    <div id="notifySection" class="section">
+        <div class="card">
+            <h2>🔔 কে আপনার নম্বর দেখেছে</h2>
+            <p style="margin:0 0 6px; font-size:13.5px; color:#555;">যারা আপনার মোবাইল নম্বর দেখেছেন, তাদের পরিচয় এখানে দেখা যাবে। শুধু আপনি নিজে এটি দেখতে পারবেন।</p>
+            <div id="notifyList" style="margin-top:12px;">লোড হচ্ছে...</div>
+        </div>
+    </div>
+
     <div id="leaderboardSection" class="section">
         <div class="card">
             <h2>🏆 শীর্ষ রক্তদাতা লিডারবোর্ড</h2>
@@ -254,6 +270,7 @@
         $("regNote").style.display = u ? "none" : "block";
         $("seekNote").style.display = u ? "none" : "block";
         $("seekerSubmit").textContent = u ? "নম্বর দেখুন" : "🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন";
+        if (u) { fetchNotify().catch(() => {}); } else { notifyLogs = []; updateBadge(); }
         if (u) {
             const sv = loadSeeker(u.uid);
             if (sv) {
@@ -288,6 +305,9 @@
             loadDonors();
         } else if(tab === 'register') {
             document.getElementById('registerSection').classList.add('active');
+        } else if(tab === 'notify') {
+            document.getElementById('notifySection').classList.add('active');
+            loadNotify();
         } else if(tab === 'leaderboard') {
             document.getElementById('leaderboardSection').classList.add('active');
             loadLeaderboard();
@@ -551,6 +571,58 @@
         }
         cb.textContent = '✅ কপি হয়েছে'; cb.classList.add('done');
     });
+
+    // ===== নোটিফিকেশন: কে আমার নম্বর দেখেছে =====
+    let notifyLogs = [];
+    const tsMs = (t) => t && t.toMillis ? t.toMillis() : (t instanceof Date ? t.getTime() : 0);
+    const SEEN = (uid) => "dcu_seen_" + uid;
+    function getSeen(uid) { try { return Number(localStorage.getItem(SEEN(uid))) || 0; } catch (e) { return 0; } }
+    function setSeen(uid, v) { try { localStorage.setItem(SEEN(uid), String(v)); } catch (e) {} }
+
+    function updateBadge() {
+        const u = auth.currentUser, b = document.getElementById('nBadge');
+        const n = u ? notifyLogs.filter(l => tsMs(l.timestamp) > getSeen(u.uid)).length : 0;
+        b.textContent = n > 99 ? '99+' : n;
+        b.style.display = n > 0 ? 'inline-block' : 'none';
+    }
+
+    async function fetchNotify() {
+        const u = auth.currentUser;
+        if (!u) return [];
+        const snap = await getDocs(query(collection(db, "activity_logs"), where("donorUid", "==", u.uid)));
+        notifyLogs = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => tsMs(b.timestamp) - tsMs(a.timestamp));
+        updateBadge();
+        return notifyLogs;
+    }
+
+    async function loadNotify() {
+        const box = document.getElementById('notifyList');
+        await Promise.all([authReady, persistReady]);
+        if (!auth.currentUser) {
+            box.innerHTML = '<div class="signin-note" style="margin-top:0">🛡️ আপনার নম্বর কে দেখেছে জানতে, নিবন্ধনের সময় ব্যবহৃত Google অ্যাকাউন্টে সাইন ইন করুন।</div><button class="btn" id="nSignIn">🔐 Google দিয়ে সাইন ইন করুন</button>';
+            document.getElementById('nSignIn').onclick = async () => { try { await ensureUser(); loadNotify(); } catch (e) {} };
+            return;
+        }
+        box.textContent = "লোড হচ্ছে...";
+        try {
+            const logs = await fetchNotify();
+            const u = auth.currentUser, seen = getSeen(u.uid);
+            if (!logs.length) { box.innerHTML = "<p style='text-align:center; color:#777;'>এখনো কেউ আপনার নম্বর দেখেনি।</p>"; return; }
+            box.innerHTML = `<div style="font-size:14px; margin-bottom:4px;">মোট <b>${logs.length}</b> বার আপনার নম্বর দেখা হয়েছে।</div>` + logs.map(l => {
+                const isNew = tsMs(l.timestamp) > seen, ph = String(l.seekerPhone || "");
+                return `<div class="nitem ${isNew ? 'new' : ''}">
+                    <div class="nt">🕒 ${tsMs(l.timestamp) ? new Date(tsMs(l.timestamp)).toLocaleString('bn-BD') : '-'}${isNew ? '<span class="nnew">নতুন</span>' : ''}</div>
+                    <div><span class="nn">${esc(l.seekerName)}</span> আপনার নম্বর দেখেছেন</div>
+                    <div style="font-size:14px; color:#444;">📍 ${esc(l.seekerAddress)} &nbsp;|&nbsp; 📞 <a href="tel:${esc(ph.replace(/[^\d+]/g, ''))}">${esc(ph)}</a></div>
+                </div>`;
+            }).join("");
+            // এই পেজ দেখা হলো: সবকিছু "দেখা" হিসেবে চিহ্নিত
+            setSeen(u.uid, Math.max(seen, ...logs.map(l => tsMs(l.timestamp))));
+            updateBadge();
+        } catch (e) {
+            box.innerHTML = "<p style='text-align:center; color:var(--danger);'>নোটিফিকেশন লোড হয়নি (" + esc(e.code || e.message) + ")</p>";
+        }
+    }
 
     async function loadLeaderboard() {
         const lbDiv = document.getElementById('leaderboardList');
