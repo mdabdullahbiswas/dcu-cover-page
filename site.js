@@ -25,7 +25,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var $L = function (s) { var p = String(s).split('|'); return SL === 'en' && p[1] ? p[1] : p[0]; };
   window.$L = $L; window.$lang = function () { return SL; };
 
-  // টুলস ড্রপডাউন তালিকা (রেজাল্টসহ)
+  // টুলস ড্রপডাউন তালিকা
   var TL = [
     ['card', 'শেয়ার কার্ড|Share Card'],
     ['frame', 'প্রোফাইল ফ্রেম|Profile Frame'],
@@ -40,7 +40,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var tl = TL.map(function (a) { return '<a class="t" href="tools.html#' + a[0] + '">' + a[1] + '</a>'; }).join('');
   var isI = P === 'index';
 
-  // হেডার: লোগো ও বিশ্ববিদ্যালয়ের নামের নিচে "আন-অফিশিয়াল" সাবটাইটেল (ক্লিকেবল)
+  // হেডার
   var hd = '<div class="sh" role="banner"><div class="sh-in">' +
     '<a class="brand" href="./" title="Home"><img src="logo.png" alt="" onerror="this.remove()">' +
     '<div class="brand-text"><span>Dhaka Central University</span><small class="t brand-sub">আন-অফিশিয়াল|Unofficial</small></div></a>' +
@@ -75,39 +75,49 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
 
   var st = document.createElement('style');
   st.textContent =
-    'a.si{--c:#0a2240;display:inline-flex!important;align-items:center;justify-content:center;width:44px!important;height:44px!important;padding:0!important;margin:0;border-radius:50%!important;' +
-      'background:#fff!important;color:var(--c)!important;border:1px solid #dbe3ec!important;box-shadow:0 1px 3px rgba(10,34,64,.18),0 4px 12px rgba(10,34,64,.10);text-decoration:none!important;line-height:0;font-size:0;' +
-      'transition:transform .22s ease,box-shadow .22s ease,background .22s ease,color .22s ease,border-color .22s ease}' +
-    'a.si svg{width:21px;height:21px;display:block}' +
-    'a.si:hover,a.si:focus-visible{background:var(--c)!important;color:#fff!important;border-color:var(--c)!important;transform:translateY(-3px);box-shadow:0 8px 18px rgba(10,34,64,.28)}' +
-    'a.si:active{transform:translateY(-1px)}' +
+    'a.si{--c:#0a2240;display:inline-flex!important;align-items:center;justify-content:center;width:34px!important;height:34px!important;padding:0!important;margin:0;border-radius:50%!important;' +
+      'background:#fff!important;color:var(--c)!important;border:1px solid #dbe3ec!important;box-shadow:0 1px 3px rgba(10,34,64,.15);text-decoration:none!important;line-height:0;' +
+      'transition:transform .2s ease,background .2s ease,color .2s ease}' +
+    'a.si svg{width:17px;height:17px;display:block}' +
+    'a.si:hover,a.si:focus-visible{background:var(--c)!important;color:#fff!important;border-color:var(--c)!important;transform:translateY(-2px)}' +
     'a.si-github{--c:#181717}a.si-facebook{--c:#1877f2}a.si-linkedin{--c:#0a66c2}a.si-instagram{--c:#e4405f}a.si-email{--c:#ea4335}a.si-code{--c:#0a2240}a.si-link{--c:#5d6b7a}' +
-    'a.si-instagram:hover,a.si-instagram:focus-visible{background:linear-gradient(45deg,#f9a03f,#e1306c 55%,#833ab4)!important;border-color:transparent!important}' +
+    'a.si-instagram:hover{background:linear-gradient(45deg,#f9a03f,#e1306c 55%,#833ab4)!important;border-color:transparent!important}' +
     'body.dark a.si-code{--c:#243349}' +
-    '.sf .soc{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 8px}' +
-    '.sf .soc a.si{width:40px!important;height:40px!important}.sf .soc a.si svg{width:19px;height:19px}' +
-    '.sf .soc a.si:hover,.sf .soc a.si:focus-visible{color:#fff!important}' +
-    '.ln{gap:10px!important}' +
     '#hdr{position:sticky;top:0;z-index:50}' +
     'html{scroll-padding-top:76px}' +
     /* লোগো ও ব্র্যান্ড টেক্সটের স্টাইল */
     '.brand-text{display:flex;flex-direction:column;line-height:1.15;text-align:left}' +
-    '.brand-sub{font-size:11px;font-weight:600;color:#e8c179;letter-spacing:.6px;text-transform:uppercase;margin-top:2px}' +
-    '.sf .b{text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin-bottom:8px}' +
+    '.brand-sub{font-size:10.5px;font-weight:600;color:#e8c179;letter-spacing:.6px;text-transform:uppercase;margin-top:2px}' +
+    /* স্লিম ফুটার স্টাইল */
+    '.sf{background:#07192f;color:#b9c7d8;margin-top:28px;font-size:13px;line-height:1.5}' +
+    '.sf-in{max-width:1160px;margin:0 auto;padding:22px 18px 12px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:20px}' +
+    '.sf h4{color:#e5a83b;font-size:14px;margin-bottom:6px;font-weight:700}' +
+    '.sf a{display:block;color:#d5e0ee;text-decoration:none;padding:2px 0;font-size:13px;transition:color .15s}' +
+    '.sf a:hover{color:#e5a83b}' +
+    '.sf p{margin:0 0 6px;font-size:12.5px;color:#9fb0c3}' +
+    '.sf .b{text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin-bottom:6px}' +
+    '.sf .b img{width:32px;height:32px}' +
     '.sf .b:hover span{color:#fff}' +
-    '.sf a.dev-link{color:inherit;text-decoration:none;transition:color .2s}' +
+    '.sf a.dev-link{color:inherit;text-decoration:none}' +
     '.sf a.dev-link:hover{color:#e5a83b}' +
+    '.sf .soc{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 6px}' +
+    '.sf .soc a.si{width:32px!important;height:32px!important}' +
+    '.sf .soc a.si svg{width:15px;height:15px}' +
+    '.sf-note{max-width:1160px;margin:0 auto;padding:10px 18px 14px;border-top:1px solid rgba(255,255,255,.12);text-align:center;font-size:11.5px;color:#8596a8}' +
+    '.sf-note p{margin:2px 0}' +
+    '@media(max-width:768px){.sf-in{grid-template-columns:1fr 1fr;gap:16px}}' +
+    '@media(max-width:480px){.sf-in{grid-template-columns:1fr}}' +
     /* গাইড বক্স স্টাইল */
-    '.dcu-tour-box{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:min(92vw,430px);background:var(--cd,#fff);color:var(--ink,#1c2733);border:1.5px solid var(--ln,#d5dde6);border-radius:14px;padding:18px 20px;box-shadow:0 12px 36px rgba(0,0,0,.28);z-index:99999;font-family:inherit;animation:dcuTourIn .2s ease-out}' +
+    '.dcu-tour-box{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:min(92vw,420px);background:var(--cd,#fff);color:var(--ink,#1c2733);border:1.5px solid var(--ln,#d5dde6);border-radius:14px;padding:16px 18px;box-shadow:0 12px 36px rgba(0,0,0,.28);z-index:99999;font-family:inherit;animation:dcuTourIn .2s ease-out}' +
     '@keyframes dcuTourIn{from{transform:translateX(-50%) translateY(14px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}' +
-    '.dcu-tour-hl{outline:3.5px solid #e5a83b!important;outline-offset:4px!important;border-radius:8px!important;transition:outline .2s!important}' +
-    '.dcu-tour-step{font-size:12px;font-weight:700;color:#e5a83b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}' +
-    '.dcu-tour-title{font-size:17px;font-weight:800;color:var(--n,#0a2240);margin-bottom:6px}' +
+    '.dcu-tour-hl{outline:3.5px solid #e5a83b!important;outline-offset:4px!important;border-radius:8px!important}' +
+    '.dcu-tour-step{font-size:11.5px;font-weight:700;color:#e5a83b;text-transform:uppercase;margin-bottom:2px}' +
+    '.dcu-tour-title{font-size:16px;font-weight:800;color:var(--n,#0a2240);margin-bottom:4px}' +
     'body.dark .dcu-tour-title{color:#e5a83b}' +
-    '.dcu-tour-txt{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--mu,#5d6b7a)}' +
+    '.dcu-tour-txt{font-size:13.5px;line-height:1.5;margin-bottom:12px;color:var(--mu,#5d6b7a)}' +
     'body.dark .dcu-tour-txt{color:#cfd8e6}' +
     '.dcu-tour-acts{display:flex;justify-content:space-between;align-items:center;gap:8px}' +
-    '.dcu-tour-btn{border:0;border-radius:8px;padding:8px 15px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}' +
+    '.dcu-tour-btn{border:0;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}' +
     '.dcu-tour-btn.next{background:#0a2240;color:#e5a83b}' +
     'body.dark .dcu-tour-btn.next{background:#e5a83b;color:#0a2240}' +
     '.dcu-tour-btn.skip{background:transparent;color:var(--mu,#6c7a89);border:1px solid var(--ln,#d5dde6)}';
@@ -116,18 +126,22 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var soc = '<div class="soc">' + DEV.links.filter(function (l) { return l[1]; }).map(function (l) { return $SOC(l[0], l[1]); }).join('') +
     (DEV.email ? $SOC('email', 'mailto:' + DEV.email, 'Email', false) : '') + '</div>';
 
-  // ফুটার: লোগো ও বিশ্ববিদ্যালয়ের নাম ক্লিকেবল (হোমে যাবে) এবং ডেভেলপারের নামে ক্লিক করলে প্রোফাইল পেজে (about.html) যাবে
+  // স্লিম এবং পরিচ্ছন্ন ফুটার স্ট্রাকচার
   var ft = '<div class="sf" role="contentinfo"><div class="sf-in">' +
     '<div><a class="b" href="./" title="Home"><img src="logo.png" alt="" onerror="this.remove()">' +
     '<div class="brand-text"><span>Dhaka Central University</span><small class="t brand-sub">আন-অফিশিয়াল|Unofficial</small></div></a>' +
-    '<p class="t">শিক্ষার্থীদের জন্য বিনামূল্যের অ্যাসাইনমেন্ট কভার পেজ ও পড়াশোনার টুল।|Free assignment cover pages and study tools for students.</p><p id="cnt"></p>' +
-    '<span class="t">বন্ধুদের সাথে শেয়ার করুন|Share with friends</span><a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a></div>' +
-    '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4><a class="t" href="./">অ্যাসাইনমেন্ট কভার পেজ|Assignment Cover Page</a>' + tl + '<a class="t" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a></div>' +
-    '<div><h4 class="t">গোপনীয়তা|Privacy</h4><p class="t">আপনার সব তথ্য ও ফাইল শুধু আপনার ডিভাইসের ব্রাউজারেই থাকে। এগুলো কোনো সার্ভারে পাঠানো হয় না, তাই কেউ চাইলেও দেখতে পারে না।|Your data and files stay in your own browser. Nothing is sent to a server, so nobody else can see it.</p><a class="t" href="about.html#privacy">বিস্তারিত|Learn more</a></div>' +
-    '<div><h4 class="t">ডেভেলপার|Developer</h4><a class="dev-link" href="about.html" title="View Profile"><b>' + DEV.name + '</b></a><span class="t" style="display:block">' + DEV.role + '</span>' + soc +
-    '<a class="t" href="feedback.html">মতামত জানান|Send Feedback</a><a id="fbk" style="display:none"></a></div></div>' +
-    '<div class="sf-note"><p class="t">⚠️ এটি একটি আন-অফিশিয়াল (অনানুষ্ঠানিক) ওয়েবসাইট। Dhaka Central University কর্তৃপক্ষের সাথে এর কোনো সরকারি সম্পর্ক বা অনুমোদন নেই। অফিশিয়াল তথ্যের জন্য বিশ্ববিদ্যালয়ের নিজস্ব নোটিশ ও ওয়েবসাইট দেখুন।|⚠️ This is an unofficial website. It has no official affiliation with, or endorsement from, Dhaka Central University. For official information, please refer to the university\'s own notices and website.</p>' +
-    '<p>© ' + new Date().getFullYear() + ' · <span class="t">তৈরি করেছেন|Developed by</span> <a class="dev-link" href="about.html" title="View Profile" style="color:var(--g,#e5a83b);font-weight:700;"><b>' + DEV.name + '</b></a></p></div></div>';
+    '<p class="t">শিক্ষার্থীদের জন্য বিনামূল্যের অ্যাসাইনমেন্ট কভার পেজ ও শিক্ষা টুল।|Free cover page generator & study tools for students.</p>' +
+    '<p><span class="t">শেয়ার: |Share: </span><a id="wa" target="_blank" rel="noopener" style="display:inline;color:#25d366;font-weight:600;">WhatsApp</a> · <a id="fb" target="_blank" rel="noopener" style="display:inline;color:#1877f2;font-weight:600;">Facebook</a></p></div>' +
+    '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4>' +
+    '<a class="t" href="./">কভার পেজ|Cover Page</a>' +
+    '<a class="t" href="tools.html">সকল শিক্ষা টুলস|All Study Tools</a>' +
+    '<a class="t" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a>' +
+    '<a class="t" href="tools.html#result">রেজাল্ট পোর্টাল|Results</a>' +
+    '<a class="t" href="feedback.html">মতামত জানান|Feedback</a></div>' +
+    '<div><h4 class="t">গোপনীয়তা|Privacy</h4><p class="t">আপনার তথ্য শুধু আপনার ডিভাইসের ব্রাউজারেই থাকে; কোনো সার্ভারে পাঠানো হয় না।|Your data stays only in your browser; never sent to any server.</p><a class="t" href="about.html#privacy">বিস্তারিত নীতি|Privacy Policy</a></div>' +
+    '<div><h4 class="t">ডেভেলপার|Developer</h4><a class="dev-link" href="about.html" title="Profile"><b>' + DEV.name + '</b></a><p style="margin:1px 0 4px;" class="t">' + DEV.role + '</p>' + soc + '</div></div>' +
+    '<div class="sf-note"><p class="t">⚠️ এটি একটি আন-অফিশিয়াল ওয়েবসাইট। বিশ্ববিদ্যালয়ের সাথে কোনো প্রাতিষ্ঠানিক সম্পর্ক নেই।|⚠️ Unofficial student initiative; not officially affiliated with the university.</p>' +
+    '<p>© ' + new Date().getFullYear() + ' · <span class="t">তৈরি করেছেন|Developed by</span> <a class="dev-link" href="about.html" style="color:var(--g,#e5a83b);font-weight:700;"><b>' + DEV.name + '</b></a></p></div></div>';
 
   function applyL(l) {
     if (l) SL = l;
@@ -178,7 +192,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     applyL();
   };
 
-  /* ================== প্রতিটি পেজের স্মার্ট গাইড সিস্টেম ================== */
+  /* ================== প্রতিটি পেজের গাইড সিস্টেম ================== */
   var TOURS = {
     index: [
       ['.gal, #templateSelector', 'টেমপ্লেট নির্বাচন|Choose Template', 'আপনার পছন্দের কভার পেজ ডিজাইন (Classic, Minimal, Executive ইত্যাদি) বেছে নিন।|Select your preferred cover page design (Classic, Minimal, Executive, etc.).'],
