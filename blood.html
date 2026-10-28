@@ -55,32 +55,52 @@
         .report-link { background: none; border: 0; color: #a94442; font-size: 13px; text-decoration: underline; cursor: pointer; margin-top: 10px; font-family: inherit; }
         .report-box { margin-top: 8px; text-align: left; }
         .report-box select { margin-bottom: 8px; }
-        /* ===== জরুরি রক্ত ব্যানার (স্লাইডার) ===== */
-        #urgentBanner { display: none; margin: 0 0 14px; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, #8f1d1a 0%, #d9534f 100%); color: #fff; box-shadow: 0 8px 24px rgba(185,40,36,.28); }
+        /* ===== জরুরি নোটিশ বার (সবার উপরে স্ক্রল করা লেখা) ===== */
+        #urgentTicker { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 44px; background: linear-gradient(90deg, #7f1613, #c62d28 50%, #7f1613); color: #fff; box-shadow: 0 3px 14px rgba(127,22,19,.45); cursor: pointer; overflow: hidden; align-items: stretch; }
+        body.has-ticker { margin-top: 44px; }
+        #urgentTicker .tk-label { flex: none; display: flex; align-items: center; gap: 8px; padding: 0 14px; font-weight: 800; font-size: 14px; background: #fff; color: #b3261e; position: relative; z-index: 2; box-shadow: 4px 0 10px rgba(0,0,0,.25); animation: tkBlink 1.2s infinite; }
+        @keyframes tkBlink { 0%, 100% { background: #fff; } 50% { background: #ffe3e1; } }
+        #urgentTicker .tk-dot { width: 10px; height: 10px; border-radius: 50%; background: #d9261c; animation: ubPulse 1.2s infinite; }
+        #urgentTicker .tk-view { flex: 1; overflow: hidden; display: flex; align-items: center; }
+        #urgentTicker .tk-run { display: inline-flex; white-space: nowrap; animation: tkRun 40s linear infinite; will-change: transform; }
+        #urgentTicker:hover .tk-run { animation-play-state: paused; }
+        @keyframes tkRun { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        #urgentTicker .tk-item { font-size: 14.5px; font-weight: 600; padding: 0 6px; }
+        #urgentTicker .tk-item b { background: #fff; color: #b3261e; border-radius: 6px; padding: 0 7px; margin-right: 4px; }
+        #urgentTicker .tk-sep { padding: 0 18px; opacity: .65; }
+        /* ===== জরুরি ফটো-কার্ড ব্যানার ===== */
+        #urgentBanner { display: none; margin: 0 0 16px; border-radius: 20px; overflow: hidden; position: relative; background: radial-gradient(circle at 92% 8%, rgba(255,255,255,.16) 0, transparent 38%), radial-gradient(circle at 4% 100%, rgba(255,255,255,.10) 0, transparent 42%), linear-gradient(135deg, #7f1613 0%, #c62d28 55%, #e2514c 100%); color: #fff; animation: ubGlow 2.2s ease-in-out infinite; }
+        @keyframes ubGlow { 0%, 100% { box-shadow: 0 8px 22px rgba(185,40,36,.30), 0 0 0 0 rgba(217,83,79,.45); } 50% { box-shadow: 0 10px 30px rgba(185,40,36,.5), 0 0 0 7px rgba(217,83,79,0); } }
         body.tab-urgent #urgentBanner { display: none !important; }
-        #urgentBanner .ub-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px 0; font-size: 13px; font-weight: 700; letter-spacing: .2px; }
-        #urgentBanner .ub-live { display: inline-flex; align-items: center; gap: 7px; }
-        #urgentBanner .ub-dot { width: 9px; height: 9px; border-radius: 50%; background: #fff; animation: ubPulse 1.3s infinite; }
-        @keyframes ubPulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.7); } 70% { box-shadow: 0 0 0 9px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
-        #urgentBanner .ub-count { background: rgba(255,255,255,.18); padding: 2px 10px; border-radius: 12px; font-size: 12px; }
-        #urgentBanner .ub-body { display: flex; align-items: center; gap: 12px; padding: 12px 14px 8px; animation: ubIn .35s ease; }
-        @keyframes ubIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
-        #urgentBanner .ub-group { flex: none; width: 74px; height: 74px; border-radius: 16px; background: #fff; color: #b3261e; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 3px rgba(179,38,30,.15); }
+        #urgentBanner .ub-ribbon { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 16px; background: rgba(0,0,0,.18); font-size: 14px; font-weight: 800; letter-spacing: .2px; }
+        #urgentBanner .ub-live { display: inline-flex; align-items: center; gap: 8px; }
+        #urgentBanner .ub-dot { width: 10px; height: 10px; border-radius: 50%; background: #fff; animation: ubPulse 1.3s infinite; }
+        @keyframes ubPulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.75); } 70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+        #urgentBanner .ub-count { background: rgba(255,255,255,.2); padding: 2px 11px; border-radius: 12px; font-size: 12px; }
+        #urgentBanner .ub-main { display: flex; align-items: center; gap: 18px; padding: 18px 18px 10px; animation: ubIn .4s ease; }
+        @keyframes ubIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+        #urgentBanner .ub-drop { flex: none; position: relative; width: 92px; height: 112px; filter: drop-shadow(0 6px 10px rgba(0,0,0,.3)); animation: ubBeat 1.6s ease-in-out infinite; }
+        @keyframes ubBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+        #urgentBanner .ub-drop svg { width: 100%; height: 100%; display: block; }
+        #urgentBanner .ub-drop b { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); text-align: center; color: #b3261e; font-size: 30px; font-weight: 800; line-height: 1; }
         #urgentBanner .ub-info { flex: 1; min-width: 0; }
-        #urgentBanner .ub-title { font-size: 17px; font-weight: 800; line-height: 1.3; }
-        #urgentBanner .ub-line { font-size: 13.5px; margin-top: 3px; opacity: .96; overflow: hidden; text-overflow: ellipsis; }
-        #urgentBanner .ub-when { display: inline-block; background: #fff; color: #b3261e; font-weight: 800; font-size: 12px; padding: 1px 9px; border-radius: 10px; margin-left: 6px; }
-        #urgentBanner .ub-note { font-size: 12.5px; margin-top: 5px; background: rgba(0,0,0,.16); padding: 5px 9px; border-radius: 8px; }
-        #urgentBanner .ub-act { display: flex; gap: 8px; padding: 4px 14px 12px; flex-wrap: wrap; }
-        #urgentBanner .ub-act a, #urgentBanner .ub-act button { flex: 1; min-width: 130px; border: 0; border-radius: 10px; padding: 10px 8px; font-size: 14px; font-weight: 800; text-align: center; text-decoration: none; cursor: pointer; font-family: inherit; margin: 0; width: auto; }
-        #urgentBanner .ub-call { background: #fff; color: #b3261e; }
-        #urgentBanner .ub-all { background: rgba(255,255,255,.18); color: #fff; border: 1.5px solid rgba(255,255,255,.55) !important; }
-        #urgentBanner .ub-nav { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 14px 12px; }
-        #urgentBanner .ub-nav button { width: 30px; height: 30px; min-width: 0; padding: 0; margin: 0; border-radius: 50%; border: 0; background: rgba(255,255,255,.2); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
+        #urgentBanner .ub-title { font-size: 22px; font-weight: 800; line-height: 1.25; }
+        #urgentBanner .ub-when { display: inline-block; background: #fff; color: #b3261e; font-weight: 800; font-size: 13px; padding: 2px 11px; border-radius: 12px; margin-left: 8px; vertical-align: middle; }
+        #urgentBanner .ub-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+        #urgentBanner .ub-chips span { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28); border-radius: 10px; padding: 4px 11px; font-size: 14px; font-weight: 600; }
+        #urgentBanner .ub-note { font-size: 13.5px; margin-top: 10px; background: rgba(0,0,0,.2); padding: 7px 11px; border-radius: 10px; }
+        #urgentBanner .ub-act { display: flex; gap: 8px; padding: 8px 18px 14px; flex-wrap: wrap; }
+        #urgentBanner .ub-act a, #urgentBanner .ub-act button { flex: 1; min-width: 118px; border: 0; border-radius: 11px; padding: 11px 8px; font-size: 14.5px; font-weight: 800; text-align: center; text-decoration: none; cursor: pointer; font-family: inherit; margin: 0; width: auto; }
+        #urgentBanner .ub-call { background: #fff; color: #b3261e; flex: 2 !important; }
+        #urgentBanner .ub-sec { background: rgba(255,255,255,.18); color: #fff; border: 1.5px solid rgba(255,255,255,.5) !important; }
+        #urgentBanner .ub-nav { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 16px 14px; }
+        #urgentBanner .ub-nav button { width: 32px; height: 32px; min-width: 0; padding: 0; margin: 0; border-radius: 50%; border: 0; background: rgba(255,255,255,.22); color: #fff; font-size: 17px; font-weight: 800; cursor: pointer; }
         #urgentBanner .ub-dots { display: flex; gap: 6px; }
         #urgentBanner .ub-dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.4); cursor: pointer; }
         #urgentBanner .ub-dots i.on { background: #fff; width: 22px; border-radius: 6px; }
-        @media (max-width: 520px) { #urgentBanner .ub-group { width: 60px; height: 60px; font-size: 23px; } #urgentBanner .ub-title { font-size: 15.5px; } }
+        .rcard.today { animation: rToday 2s ease-in-out infinite; }
+        @keyframes rToday { 0%, 100% { box-shadow: 0 0 0 0 rgba(217,83,79,.45); } 50% { box-shadow: 0 0 0 6px rgba(217,83,79,0); } }
+        @media (max-width: 560px) { #urgentBanner .ub-main { gap: 12px; padding: 14px 14px 8px; } #urgentBanner .ub-drop { width: 68px; height: 84px; } #urgentBanner .ub-drop b { font-size: 22px; } #urgentBanner .ub-title { font-size: 17.5px; } #urgentBanner .ub-chips span { font-size: 13px; } #urgentTicker .tk-label span:last-child { display: none; } }
         .vtick { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; margin-left: 4px; border-radius: 50%; background: #1d9bf0; color: #fff; font-size: 11px; font-weight: 700; vertical-align: middle; }
         .rcard { border: 1.5px solid #f0b4b0; border-left: 6px solid var(--danger); border-radius: 12px; padding: 14px 16px; margin-top: 12px; background: #fffdfd; }
         .rcard.old { opacity: .6; border-color: var(--ln); border-left-color: #999; }
@@ -146,6 +166,7 @@
     </style>
 </head>
 <body>
+<div id="urgentTicker" role="button" aria-label="জরুরি রক্তের অনুরোধ দেখুন"></div>
 
 <div class="container">
     <h2>🩸 DCU ব্লাড ডোনার ডিরেক্টরি</h2>
@@ -1154,7 +1175,7 @@
         const days = diffDays(todayISO(), r.neededDate);
         const when = expired ? bnDate(r.neededDate) : days === 0 ? "আজই" : days === 1 ? "আগামীকাল" : bnDate(r.neededDate);
         const tel = esc(String(r.contactPhone || "").replace(/[^\d+]/g, ""));
-        return `<div class="rcard ${expired ? "old" : ""}">
+        return `<div class="rcard ${expired ? "old" : ""} ${days === 0 ? "today" : ""}">
             <div class="rhead"><span class="rgroup">${esc(r.group)}</span>
                 <div><b>${bnNum(r.bags)} ব্যাগ রক্ত লাগবে</b><div style="font-size:12.5px; color:#777;">🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""}${mine ? " · আপনার অনুরোধ" : ""}</div></div></div>
             <div class="rline">🏥 <b>${esc(r.hospital)}</b> &nbsp;·&nbsp; 📍 ${esc(r.area)}</div>
@@ -1165,6 +1186,7 @@
             <div class="ractions">
                 ${r.contactPhone ? `<a class="btn-call" href="tel:${tel}">📲 কল করুন</a>` : `<button type="button" class="btn-call" data-q="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}
                 <button type="button" class="btn-ghost-s" data-q="find" data-id="${esc(r.id)}">🔎 ডোনার খুঁজুন</button>
+                <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি কার্ড</button>
                 ${mine ? `<button type="button" class="btn-ghost-s" data-q="done" data-id="${esc(r.id)}">✅ রক্ত পাওয়া গেছে</button><button type="button" class="btn-del-s" data-q="del" data-id="${esc(r.id)}">🗑️ মুছুন</button>` : ""}
             </div></div>`;
     }
@@ -1200,29 +1222,87 @@
         return requests.filter(r => r.status === "open" && r.neededDate >= t)
             .sort((a, b) => (a.neededDate < b.neededDate ? -1 : a.neededDate > b.neededDate ? 1 : 0) || (tsMs(b.createdAt) - tsMs(a.createdAt)));
     }
+    var tkSig = "";
+    const reqWhen = (r) => { const d = diffDays(todayISO(), r.neededDate); return d === 0 ? "আজই" : d === 1 ? "আগামীকাল" : bnDate(r.neededDate); };
+    function renderTicker() {
+        const el = $("urgentTicker"); if (!el) return;
+        const sig = ubList.map(r => r.id + r.neededDate).join(",");
+        if (sig === tkSig) return; tkSig = sig;
+        if (!ubList.length) { el.style.display = "none"; el.innerHTML = ""; document.body.classList.remove("has-ticker"); return; }
+        const one = ubList.map(r => `<span class="tk-item"><b>${esc(r.group)}</b> রক্ত লাগবে · ${bnNum(r.bags)} ব্যাগ · 🏥 ${esc(r.hospital)}, ${esc(r.area)} · 📅 ${esc(reqWhen(r))}</span>`).join('<span class="tk-sep">◆</span>') + '<span class="tk-sep">◆</span>';
+        const dur = Math.max(22, Math.round(ubList.reduce((n, r) => n + String(r.hospital).length + String(r.area).length + 40, 0) * 0.32));
+        el.innerHTML = `<div class="tk-label"><span class="tk-dot"></span><span>🚨 জরুরি রক্ত</span></div><div class="tk-view"><div class="tk-run" style="animation-duration:${dur}s">${one}${one}</div></div>`;
+        el.style.display = "flex"; document.body.classList.add("has-ticker");
+    }
+    $("urgentTicker").addEventListener("click", () => { window.switchTab("urgent"); window.scrollTo({ top: 0, behavior: "smooth" }); });
+
     function renderBanner() {
         const box = $("urgentBanner"); if (!box) return;
         ubList = bannerList();
+        renderTicker();
         clearInterval(ubTimer);
         if (!ubList.length) { box.style.display = "none"; box.innerHTML = ""; return; }
         if (ubIdx >= ubList.length) ubIdx = 0;
         const r = ubList[ubIdx], n = ubList.length;
-        const days = diffDays(todayISO(), r.neededDate);
-        const when = days === 0 ? "আজই" : days === 1 ? "আগামীকাল" : bnDate(r.neededDate);
         const tel = esc(String(r.contactPhone || "").replace(/[^\d+]/g, ""));
-        box.style.display = "";
-        box.innerHTML = `<div class="ub-top"><span class="ub-live"><span class="ub-dot"></span>জরুরি রক্ত প্রয়োজন</span><span class="ub-count">${bnNum(ubIdx + 1)} / ${bnNum(n)}</span></div>
-            <div class="ub-body"><div class="ub-group">${esc(r.group)}</div><div class="ub-info">
-                <div class="ub-title">${bnNum(r.bags)} ব্যাগ রক্ত লাগবে<span class="ub-when">${esc(when)}</span></div>
-                <div class="ub-line">🏥 ${esc(r.hospital)} · 📍 ${esc(r.area)}</div>
-                <div class="ub-line">🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""} · 👤 ${esc(r.contactName)}</div>
-                ${r.note ? `<div class="ub-note">${esc(r.note)}</div>` : ""}</div></div>
-            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-all" data-ub="all">সব অনুরোধ দেখুন</button></div>
+        box.style.display = "block";
+        box.innerHTML = `<div class="ub-ribbon"><span class="ub-live"><span class="ub-dot"></span>🚨 জরুরি রক্ত প্রয়োজন</span><span class="ub-count">${bnNum(ubIdx + 1)} / ${bnNum(n)}</span></div>
+            <div class="ub-main"><div class="ub-drop"><svg viewBox="0 0 64 80" aria-hidden="true"><path d="M32 2C32 2 6 32 6 52a26 26 0 0 0 52 0C58 32 32 2 32 2z" fill="#fff"/></svg><b>${esc(r.group)}</b></div>
+                <div class="ub-info"><div class="ub-title">${bnNum(r.bags)} ব্যাগ রক্ত লাগবে<span class="ub-when">${esc(reqWhen(r))}</span></div>
+                <div class="ub-chips"><span>🏥 ${esc(r.hospital)}</span><span>📍 ${esc(r.area)}</span><span>📅 ${esc(bnDate(r.neededDate))}</span><span>🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""}</span><span>👤 ${esc(r.contactName)}</span></div>
+                ${r.note ? `<div class="ub-note">📝 ${esc(r.note)}</div>` : ""}</div></div>
+            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-sec" data-ub="share">📤 শেয়ার</button><button type="button" class="ub-sec" data-ub="photo">🖼️ ছবি কার্ড</button><button type="button" class="ub-sec" data-ub="all">সব দেখুন</button></div>
             ${n > 1 ? `<div class="ub-nav"><button type="button" data-ub="prev" aria-label="আগের">‹</button><div class="ub-dots">${ubList.map((_, i) => `<i data-ub-i="${i}" class="${i === ubIdx ? "on" : ""}"></i>`).join("")}</div><button type="button" data-ub="next" aria-label="পরের">›</button></div>` : ""}`;
         ubStart();
     }
+
+    // ---- শেয়ার ও ছবি-কার্ড (নম্বর শুধু নিজের অনুরোধে বসে) ----
+    function shareReq(r) {
+        const u = auth.currentUser, mine = u && r.requesterUid === u.uid;
+        const link = location.origin + location.pathname;
+        const text = `🚨 জরুরি রক্ত প্রয়োজন!\n🩸 ${r.group} রক্ত · ${bnNum(r.bags)} ব্যাগ\n🏥 ${r.hospital}\n📍 ${r.area}\n📅 ${reqWhen(r)}` + (mine && r.contactPhone ? `\n📞 ${r.contactName}: ${r.contactPhone}` : "") + `\n\nবিস্তারিত ও যোগাযোগ: ${link}`;
+        if (navigator.share) { navigator.share({ text }).catch(() => {}); } else { window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank", "noopener"); }
+    }
+    async function makePoster(r) {
+        try { await document.fonts.ready; } catch (e) {}
+        const W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H;
+        const x = c.getContext("2d"), ff = getComputedStyle(document.body).fontFamily || "sans-serif";
+        const u = auth.currentUser, mine = u && r.requesterUid === u.uid;
+        const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, "#7f1613"); g.addColorStop(0.6, "#c62d28"); g.addColorStop(1, "#e2514c");
+        x.fillStyle = g; x.fillRect(0, 0, W, H);
+        x.fillStyle = "rgba(255,255,255,.07)"; x.beginPath(); x.arc(W - 40, 110, 280, 0, 7); x.fill(); x.beginPath(); x.arc(20, H - 60, 340, 0, 7); x.fill();
+        x.textAlign = "center"; x.fillStyle = "#fff"; x.font = `800 66px ${ff}`; x.fillText("🚨 জরুরি রক্ত প্রয়োজন", W / 2, 130);
+        x.font = `600 30px ${ff}`; x.fillStyle = "rgba(255,255,255,.9)"; x.fillText("DCU ব্লাড ডোনার ডিরেক্টরি", W / 2, 184);
+        x.save(); x.translate(W / 2 - 160, 225); x.scale(5, 5); x.shadowColor = "rgba(0,0,0,.3)"; x.shadowBlur = 8; x.fillStyle = "#fff"; x.fill(new Path2D("M32 2C32 2 6 32 6 52a26 26 0 0 0 52 0C58 32 32 2 32 2z")); x.restore();
+        x.fillStyle = "#b3261e"; x.font = `800 118px ${ff}`; x.fillText(r.group, W / 2, 225 + 250);
+        x.fillStyle = "#fff"; x.font = `800 66px ${ff}`; x.fillText(`${bnNum(r.bags)} ব্যাগ রক্ত লাগবে`, W / 2, 705);
+        const lines = [], wrap = (txt, font, color, max) => {
+            x.font = font; let line = "";
+            for (const w of String(txt).split(" ")) { const t = line ? line + " " + w : w; if (x.measureText(t).width > 840 && line) { lines.push({ t: line, font, color }); line = w; } else line = t; }
+            if (line) lines.push({ t: line, font, color });
+        };
+        wrap("🏥 " + r.hospital, `700 40px ${ff}`, "#1c2733"); wrap("📍 " + r.area, `600 38px ${ff}`, "#1c2733");
+        wrap("📅 প্রয়োজন: " + reqWhen(r) + " (" + bnDate(r.neededDate) + ")", `700 38px ${ff}`, "#b3261e");
+        if (r.note) wrap("📝 " + r.note, `500 32px ${ff}`, "#555");
+        wrap("👤 " + r.contactName + (mine && r.contactPhone ? " · 📞 " + r.contactPhone : ""), `600 36px ${ff}`, "#1c2733");
+        const L = lines.slice(0, 8), ch = L.length * 56 + 56, top = 745;
+        x.fillStyle = "#fff"; x.beginPath(); x.roundRect ? x.roundRect(70, top, 940, ch, 34) : x.rect(70, top, 940, ch); x.fill();
+        x.textAlign = "left"; L.forEach((l, i) => { x.font = l.font; x.fillStyle = l.color; x.fillText(l.t, 110, top + 62 + i * 56); });
+        x.textAlign = "center"; x.fillStyle = "rgba(255,255,255,.95)"; x.font = `700 32px ${ff}`;
+        x.fillText("রক্ত দিতে পারলে এখনই যোগাযোগ করুন", W / 2, Math.max(top + ch + 70, 1230));
+        x.font = `600 28px ${ff}`; x.fillStyle = "rgba(255,255,255,.85)"; x.fillText(location.origin.replace(/^https?:\/\//, "") + location.pathname, W / 2, Math.max(top + ch + 118, 1280));
+        c.toBlob(async (blob) => {
+            if (!blob) return;
+            const file = new File([blob], "জরুরি-রক্ত-" + r.group + ".png", { type: "image/png" });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+            const a = document.createElement("a"); a.download = "blood-request-" + r.group.replace("+", "pos").replace("-", "neg") + ".png"; a.href = URL.createObjectURL(blob); a.click();
+        }, "image/png");
+    }
+
     $("urgentBanner").addEventListener("click", (e) => {
         const b = e.target.closest("[data-ub],[data-ub-i]"); if (!b) return;
+        if (b.dataset.ub === "share") { shareReq(ubList[ubIdx]); return; }
+        if (b.dataset.ub === "photo") { makePoster(ubList[ubIdx]); return; }
         if (b.dataset.ub === "all") { window.switchTab("urgent"); return; }
         if (b.dataset.ub === "signin") { ensureUser().then(() => refreshMyProfile().catch(() => {})).then(() => fetchRequests()).then(() => renderRequests()).catch(() => {}); return; }
         if (b.dataset.ub === "next") ubIdx = (ubIdx + 1) % ubList.length;
@@ -1305,6 +1385,8 @@
         const b = e.target.closest("button[data-q]"); if (!b) return;
         if (b.dataset.q === "signin") { try { await ensureUser(); await refreshMyProfile().catch(() => {}); await fetchRequests(); renderRequests(); } catch (err) {} return; }
         const r = requests.find(x => x.id === b.dataset.id); if (!r) return;
+        if (b.dataset.q === "share") { shareReq(r); return; }
+        if (b.dataset.q === "photo") { makePoster(r); return; }
         try {
             if (b.dataset.q === "find") {
                 $("searchGroup").value = r.group; $("searchAddress").value = r.area;
