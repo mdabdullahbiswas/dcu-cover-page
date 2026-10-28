@@ -47,6 +47,20 @@
         .nitem .nn { font-weight: 700; color: var(--primary); }
         .nitem a { color: var(--success); font-weight: 700; text-decoration: none; }
         .nnew { background: var(--danger); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; }
+        .my-row { font-size: 14px; color: #555; margin-top: 2px; }
+        .my-actions { display: flex; gap: 10px; margin-top: 14px; }
+        .my-actions .btn { margin-top: 0; }
+        .my-hint { font-size: 12.5px; color: #777; margin: 10px 0 0; }
+        .my-card.edit { text-align: left; }
+        .btn-ghost { background: #eef2f7; color: var(--primary); border: 1.5px solid var(--ln); }
+        .avail { padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 700; }
+        .avail.ok { background: rgba(40,167,69,.15); color: #1b7a33; }
+        .avail.wait { background: rgba(229,168,59,.2); color: #7a5a10; }
+        .remind { border: 2px solid var(--accent); background: #fffaf0; }
+        .remind.ok { border-color: var(--success); background: #f1fbf4; }
+        .remind-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .remind-actions .btn { flex: 1; min-width: 160px; margin-top: 0; }
+        @media (max-width: 480px) { .my-actions { flex-direction: column; } }
         .my-card { border: 1px solid var(--ln); border-radius: 12px; padding: 16px; background: #fafbfc; text-align: center; }
         .my-card img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); }
         .my-card .st { display: inline-block; margin-top: 8px; padding: 3px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; }
@@ -156,6 +170,10 @@
                 <label>মোট কতবার রক্ত দিয়েছেন?</label>
                 <input type="number" id="dDonationCount" min="0" value="1" required>
 
+                <label>সর্বশেষ কবে রক্ত দিয়েছেন? (ঐচ্ছিক)</label>
+                <input type="date" id="dLastDonation">
+                <div style="font-size:12.5px; color:#666; margin-top:4px;">তারিখ দিলে ৩ মাস পর থেকে প্রতি ১৫ দিন অন্তর আপনাকে রক্তদানের রিমাইন্ডার দেওয়া হবে।</div>
+
                 <label>প্রোফাইল ছবি (ঐচ্ছিক)</label>
                 <input type="file" id="dPhoto" accept="image/*">
 
@@ -177,6 +195,7 @@
 
     <!-- ৩. লিডারবোর্ড সেকশন -->
     <div id="notifySection" class="section">
+        <div id="reminderBox"></div>
         <div class="card">
             <h2>🔔 কে আপনার নম্বর দেখেছে</h2>
             <p style="margin:0 0 6px; font-size:13.5px; color:#555;">যারা আপনার মোবাইল নম্বর দেখেছেন, তাদের পরিচয় এখানে দেখা যাবে। শুধু আপনি নিজে এটি দেখতে পারবেন।</p>
@@ -238,7 +257,7 @@
 <!-- Firebase SDK ও মূল স্ক্রিপ্ট -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, updateDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -296,6 +315,7 @@
         return (await signInWithPopup(auth, new GoogleAuthProvider())).user;
     }
     let currentSeeker = null;
+    let myDonor = null;
     let selectedDonor = null;
     const donorMap = {};
     const rawPhoto = (p) => (typeof p === "string" && (p.startsWith("data:image/") || p.startsWith("https://firebasestorage.googleapis.com/"))) ? p : null;
@@ -380,6 +400,13 @@
             submitBtn.disabled = false;
             return;
         }
+        const lastVal = document.getElementById('dLastDonation').value;
+        if (lastVal && (!validISO(lastVal) || lastVal > todayISO())) {
+            msg.style.color = "var(--danger)";
+            msg.textContent = "❌ সর্বশেষ রক্তদানের তারিখ ভবিষ্যতের হতে পারবে না।";
+            submitBtn.disabled = false;
+            return;
+        }
         let user;
         try { user = await ensureUser(); }
         catch (err) {
@@ -429,6 +456,7 @@
                 address: finalAddress,
                 phone: phoneVal,
                 donationCount: Math.max(0, parseInt(document.getElementById('dDonationCount').value) || 1),
+                lastDonation: lastVal || "",
                 photo: photoUrl,
                 status: "pending", // প্রথমে পেন্ডিং থাকবে, এডমিন এপ্রুভ করলে তবেই দেখাবে
                 createdAt: new Date(),
@@ -479,6 +507,7 @@
                             <div class="donor-details" style="margin-left:15px;">
                                 <h3 style="margin:0;">${esc(d.name)} <span class="badge">${esc(d.group)}</span></h3>
                                 <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${esc(d.address)} | 🩸 ${esc(d.donationCount || 1)} বার দান</p>
+                                ${availabilityHTML(d)}
                             </div>
                         </div>
                         <button class="btn contact-btn" style="width:auto; padding:8px 14px; margin:0;" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}" data-group="${esc(d.group)}" data-id="${esc(docSnap.id)}">নম্বর দেখুন</button>
@@ -582,27 +611,68 @@
         cb.textContent = '✅ কপি হয়েছে'; cb.classList.add('done');
     });
 
-    // ===== আমার প্রোফাইল: নিজের নিবন্ধন দেখা ও ডিলেট করা =====
+    // ===== তারিখ সহায়ক ফাংশন =====
+    const pad = (n) => String(n).padStart(2, "0");
+    const iso = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+    const todayISO = () => iso(new Date());
+    const parseISO = (s) => new Date(s + "T00:00:00");
+    const addMonthsISO = (s, n) => { const d = parseISO(s); d.setMonth(d.getMonth() + n); return iso(d); };
+    const addDaysISO = (s, n) => { const d = parseISO(s); d.setDate(d.getDate() + n); return iso(d); };
+    const diffDays = (a, b) => Math.round((parseISO(b) - parseISO(a)) / 864e5);
+    const validISO = (s) => /^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(s || "");
+    const bnDate = (s) => validISO(s) ? parseISO(s).toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }) : "";
+    const bnNum = (n) => Number(n).toLocaleString("bn-BD");
+    const REMIND_MONTHS = 3, REMIND_EVERY = 15;
+    $("dLastDonation").max = todayISO();
+
+    // রিমাইন্ডার: সর্বশেষ রক্তদানের ৩ মাস পর থেকে প্রতি ১৫ দিন অন্তর
+    function reminderState(d) {
+        if (!d || !validISO(d.lastDonation)) return null;
+        const due = addMonthsISO(d.lastDonation, REMIND_MONTHS), today = todayISO();
+        const start = validISO(d.snoozeUntil) && d.snoozeUntil > due ? d.snoozeUntil : due;
+        return { due, start, active: today >= start, daysSince: diffDays(d.lastDonation, today) };
+    }
+    // ডিরেক্টরির কার্ডে দেখানোর জন্য প্রস্তুতির অবস্থা
+    function availabilityHTML(d) {
+        if (!validISO(d.lastDonation)) return "";
+        const left = diffDays(todayISO(), addMonthsISO(d.lastDonation, REMIND_MONTHS));
+        return `<p style="margin:2px 0; font-size:13px; color:#555;">🗓️ সর্বশেষ রক্তদান: ${bnDate(d.lastDonation)} · ` +
+            (left <= 0 ? '<span class="avail ok">✅ রক্তদানে প্রস্তুত</span>' : `<span class="avail wait">⏳ আরও ${bnNum(left)} দিন পর প্রস্তুত</span>`) + "</p>";
+    }
+    const AREAS = ["মিরপুর", "ধানমন্ডি", "উত্তরা", "ফার্মগেট", "গুলশান", "বনানী", "মোহাম্মদপুর", "সাভার", "টঙ্গী"];
+    const GROUPS = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
+
+    // ===== আমার প্রোফাইল: দেখা, সম্পাদনা ও ডিলেট =====
     async function refreshMyProfile() {
-        const box = document.getElementById('myProfile'), form = document.getElementById('donorForm');
-        const u = auth.currentUser;
-        let d = null;
-        if (u) { try { const snap = await getDoc(doc(db, "donors", u.uid)); if (snap.exists()) d = snap.data(); } catch (_) {} }
-        if (!d) { box.style.display = 'none'; box.innerHTML = ''; form.style.display = 'block'; return; }
-        form.style.display = 'none';
-        box.style.display = 'block';
-        const ok = d.status === 'approved';
+        const box = $("myProfile"), form = $("donorForm"), u = auth.currentUser;
+        myDonor = null;
+        if (u) { try { const snap = await getDoc(doc(db, "donors", u.uid)); if (snap.exists()) myDonor = snap.data(); } catch (_) {} }
+        updateBadge(); renderReminder();
+        if (!myDonor) { box.style.display = "none"; box.innerHTML = ""; form.style.display = "block"; return; }
+        form.style.display = "none"; box.style.display = "block";
+        renderProfileView();
+    }
+
+    function renderProfileView() {
+        const box = $("myProfile"), d = myDonor, u = auth.currentUser, ok = d.status === "approved";
+        const r = reminderState(d);
         box.innerHTML = `<div class="my-card">
             <img src="${photoSrc(d.photo)}" alt="">
             <h3 style="margin:8px 0 2px;">${esc(d.name)} <span class="badge">${esc(d.group)}</span></h3>
-            <div style="font-size:14px; color:#555;">📍 ${esc(d.address)} &nbsp;|&nbsp; 📞 ${esc(d.phone)} &nbsp;|&nbsp; 🩸 ${esc(d.donationCount)} বার দান</div>
-            <span class="st ${ok ? 'ok' : 'wait'}">${ok ? '✅ অনুমোদিত, ডিরেক্টরিতে দেখা যাচ্ছে' : '⏳ এডমিনের অনুমোদনের অপেক্ষায়'}</span>
-            <p style="font-size:13px; color:#666; margin:12px 0 0;">আপনি চাইলে যেকোনো সময় আপনার তথ্য ডিরেক্টরি থেকে মুছে ফেলতে পারেন। পরে ইচ্ছা হলে আবার ডোনার হিসেবে যুক্ত হতে পারবেন।</p>
-            <button type="button" class="btn btn-del" id="delMe">🗑️ আমার তথ্য ডিরেক্টরি থেকে মুছে ফেলুন</button>
+            <div class="my-row">📍 ${esc(d.address)} &nbsp;|&nbsp; 📞 ${esc(d.phone)}</div>
+            <div class="my-row">🩸 ${esc(d.donationCount)} বার রক্তদান &nbsp;|&nbsp; 🗓️ সর্বশেষ: ${validISO(d.lastDonation) ? bnDate(d.lastDonation) : "দেওয়া হয়নি"}</div>
+            <span class="st ${ok ? "ok" : "wait"}">${ok ? "✅ অনুমোদিত, ডিরেক্টরিতে দেখা যাচ্ছে" : "⏳ এডমিনের অনুমোদনের অপেক্ষায়"}</span>
+            ${r && !r.active ? `<div class="my-row" style="margin-top:8px;">পরবর্তী রক্তদানের রিমাইন্ডার: ${bnDate(r.start)}</div>` : ""}
+            <div class="my-actions">
+                <button type="button" class="btn" id="editMe">✏️ তথ্য সম্পাদনা করুন</button>
+                <button type="button" class="btn btn-del" id="delMe">🗑️ তথ্য মুছে ফেলুন</button>
+            </div>
+            <p class="my-hint">যেকোনো সময় তথ্য মুছে ফেললে পরে আবার ডোনার হিসেবে নিবন্ধন করতে পারবেন।</p>
         </div>`;
-        document.getElementById('delMe').onclick = async () => {
+        $("editMe").onclick = renderProfileEdit;
+        $("delMe").onclick = async () => {
             if (!confirm("আপনি কি নিশ্চিত যে আপনার ডোনার তথ্য স্থায়ীভাবে মুছে ফেলতে চান?\n\nপরে চাইলে আবার নতুন করে নিবন্ধন করতে পারবেন।")) return;
-            const msg = document.getElementById('regMsg'), btn = document.getElementById('delMe');
+            const msg = $("regMsg"), btn = $("delMe");
             btn.disabled = true;
             try {
                 const b = writeBatch(db);
@@ -620,7 +690,55 @@
         };
     }
 
-    // ===== নোটিফিকেশন: কে আমার নম্বর দেখেছে =====
+    function renderProfileEdit() {
+        const box = $("myProfile"), d = myDonor;
+        const inList = AREAS.includes(d.address);
+        box.innerHTML = `<div class="my-card edit">
+            <h3 style="margin:0 0 4px;">✏️ তথ্য সম্পাদনা</h3>
+            <label>পূর্ণ নাম</label><input id="eName" maxlength="80" value="${esc(d.name)}">
+            <label>রক্তের গ্রুপ</label><select id="eGroup">${GROUPS.map(g => `<option value="${g}" ${g === d.group ? "selected" : ""}>${g}</option>`).join("")}</select>
+            <label>বর্তমান এলাকা</label><input id="eAddr" maxlength="100" list="areaList" value="${esc(d.address)}"><datalist id="areaList">${AREAS.map(a => `<option value="${a}">`).join("")}</datalist>
+            <label>মোবাইল নম্বর</label><input value="${esc(d.phone)}" disabled>
+            <div class="my-hint" style="text-align:left; margin:2px 0 0;">নিরাপত্তার কারণে নম্বর পরিবর্তন করা যায় না। নম্বর বদলাতে চাইলে তথ্য মুছে নতুন নম্বরে আবার নিবন্ধন করুন।</div>
+            <label>মোট কতবার রক্ত দিয়েছেন</label><input type="number" id="eCount" min="0" max="500" value="${esc(d.donationCount)}">
+            <label>সর্বশেষ কবে রক্ত দিয়েছেন</label><input type="date" id="eLast" max="${todayISO()}" value="${validISO(d.lastDonation) ? d.lastDonation : ""}">
+            <label>প্রোফাইল ছবি পরিবর্তন (ঐচ্ছিক)</label><input type="file" id="ePhoto" accept="image/*">
+            <div class="my-actions">
+                <button type="button" class="btn" id="eSave">💾 সংরক্ষণ করুন</button>
+                <button type="button" class="btn btn-ghost" id="eCancel">বাতিল</button>
+            </div>
+            <p id="editMsg" style="margin:10px 0 0; font-weight:600; text-align:center;"></p>
+        </div>`;
+        $("eCancel").onclick = renderProfileView;
+        $("eSave").onclick = async () => {
+            const msg = $("editMsg"), btn = $("eSave"), u = auth.currentUser;
+            const err = (t) => { msg.style.color = "var(--danger)"; msg.textContent = "❌ " + t; btn.disabled = false; };
+            const name = $("eName").value.trim(), addr = $("eAddr").value.trim(), grp = $("eGroup").value;
+            const cnt = parseInt($("eCount").value, 10), last = $("eLast").value;
+            if (!name || name.length > 80) return err("নাম সঠিকভাবে লিখুন (সর্বোচ্চ ৮০ অক্ষর)।");
+            if (!addr || addr.length > 100) return err("এলাকা সঠিকভাবে লিখুন।");
+            if (!Number.isInteger(cnt) || cnt < 0 || cnt > 500) return err("রক্তদানের সংখ্যা ০ থেকে ৫০০ এর মধ্যে হতে হবে।");
+            if (last && (!validISO(last) || last > todayISO())) return err("সর্বশেষ রক্তদানের তারিখ ভবিষ্যতের হতে পারবে না।");
+            btn.disabled = true; msg.style.color = "var(--primary)"; msg.textContent = "সংরক্ষণ হচ্ছে...";
+            const upd = { name, group: grp, address: addr, donationCount: cnt, lastDonation: last || "" };
+            if ((last || "") !== (d.lastDonation || "")) upd.snoozeUntil = "";
+            const f = $("ePhoto").files[0];
+            if (f) {
+                let ph = ""; try { ph = await compressImage(f); } catch (_) {}
+                if (!ph) return err("ছবিটি প্রসেস করা যায়নি। অন্য ছবি দিন।");
+                if (ph.length > 150000) return err("ছবির সাইজ অনেক বড়। ছোট সাইজের ছবি দিন।");
+                upd.photo = ph;
+            }
+            try {
+                await updateDoc(doc(db, "donors", u.uid), upd);
+                myDonor = { ...myDonor, ...upd };
+                updateBadge(); renderReminder(); renderProfileView();
+                const m = $("regMsg"); m.style.color = "var(--success)"; m.textContent = "✅ আপনার তথ্য সফলভাবে হালনাগাদ হয়েছে।";
+            } catch (e) { err("সংরক্ষণ হয়নি (" + (e.code || e.message) + ")। Firestore Rules হালনাগাদ করা আছে কিনা দেখুন।"); }
+        };
+    }
+
+    // ===== নোটিফিকেশন =====
     let notifyLogs = [];
     const tsMs = (t) => t && t.toMillis ? t.toMillis() : (t instanceof Date ? t.getTime() : 0);
     const SEEN = (uid) => "dcu_seen_" + uid;
@@ -628,10 +746,12 @@
     function setSeen(uid, v) { try { localStorage.setItem(SEEN(uid), String(v)); } catch (e) {} }
 
     function updateBadge() {
-        const u = auth.currentUser, b = document.getElementById('nBadge');
-        const n = u ? notifyLogs.filter(l => tsMs(l.timestamp) > getSeen(u.uid)).length : 0;
-        b.textContent = n > 99 ? '99+' : n;
-        b.style.display = n > 0 ? 'inline-block' : 'none';
+        const u = auth.currentUser, b = $("nBadge");
+        const views = u ? notifyLogs.filter(l => tsMs(l.timestamp) > getSeen(u.uid)).length : 0;
+        const rem = (u && reminderState(myDonor) && reminderState(myDonor).active) ? 1 : 0;
+        const n = views + rem;
+        b.textContent = n > 99 ? "99+" : n;
+        b.style.display = n > 0 ? "inline-block" : "none";
     }
 
     async function fetchNotify() {
@@ -643,28 +763,76 @@
         return notifyLogs;
     }
 
+    // রক্তদান রিমাইন্ডার কার্ড
+    function renderReminder() {
+        const box = $("reminderBox");
+        if (!box) return;
+        const r = reminderState(myDonor);
+        if (!r || !r.active) { box.innerHTML = ""; return; }
+        const u = auth.currentUser, d = myDonor;
+        box.innerHTML = `<div class="card remind">
+            <h2 style="margin-bottom:6px;">🩸 রক্তদান রিমাইন্ডার</h2>
+            <p style="margin:0 0 10px; font-size:14.5px;">আপনার সর্বশেষ রক্তদানের তারিখ <b>${bnDate(d.lastDonation)}</b>। এরপর <b>${bnNum(r.daysSince)} দিন</b> পার হয়েছে। আপনি কি এর মধ্যে আবার রক্ত দিয়েছেন?</p>
+            <div class="remind-actions">
+                <button type="button" class="btn" id="rYes">✅ হ্যাঁ, আবার রক্ত দিয়েছি</button>
+                <button type="button" class="btn btn-ghost" id="rNo">না, এখনো দিইনি</button>
+            </div>
+            <div id="rForm" style="display:none; margin-top:12px;">
+                <label>কবে রক্ত দিয়েছেন?</label>
+                <input type="date" id="rDate" min="${addDaysISO(d.lastDonation, 1)}" max="${todayISO()}" value="${todayISO()}">
+                <button type="button" class="btn btn-success" id="rSave">💾 তারিখ সংরক্ষণ করুন</button>
+            </div>
+            <p id="rMsg" style="margin:10px 0 0; font-weight:600; text-align:center;"></p>
+            <p class="my-hint" style="text-align:left; margin-top:8px;">"না" বললে ${bnNum(REMIND_EVERY)} দিন পর আবার মনে করিয়ে দেওয়া হবে।</p>
+        </div>`;
+        $("rYes").onclick = () => { $("rForm").style.display = "block"; };
+        $("rNo").onclick = async () => {
+            const msg = $("rMsg");
+            try {
+                const until = addDaysISO(todayISO(), REMIND_EVERY);
+                await updateDoc(doc(db, "donors", u.uid), { snoozeUntil: until });
+                myDonor = { ...myDonor, snoozeUntil: until };
+                updateBadge();
+                box.innerHTML = `<div class="card remind ok"><p style="margin:0; font-weight:600;">👍 ঠিক আছে। ${bnDate(until)} তারিখে আপনাকে আবার মনে করিয়ে দেওয়া হবে।</p></div>`;
+            } catch (e) { msg.style.color = "var(--danger)"; msg.textContent = "❌ সংরক্ষণ হয়নি (" + (e.code || e.message) + ")"; }
+        };
+        $("rSave").onclick = async () => {
+            const msg = $("rMsg"), dt = $("rDate").value;
+            if (!validISO(dt) || dt > todayISO() || dt <= d.lastDonation) { msg.style.color = "var(--danger)"; msg.textContent = "❌ সঠিক তারিখ দিন (আগের রক্তদানের পরে এবং আজকের মধ্যে)।"; return; }
+            $("rSave").disabled = true;
+            try {
+                const upd = { lastDonation: dt, donationCount: Math.min(500, (parseInt(d.donationCount, 10) || 0) + 1), snoozeUntil: "" };
+                await updateDoc(doc(db, "donors", u.uid), upd);
+                myDonor = { ...myDonor, ...upd };
+                updateBadge();
+                box.innerHTML = `<div class="card remind ok"><p style="margin:0; font-weight:600;">🎉 ধন্যবাদ! আপনার রক্তদানের তারিখ (${bnDate(dt)}) সংরক্ষিত হয়েছে। আপনার মোট রক্তদান এখন ${bnNum(upd.donationCount)} বার।</p></div>`;
+            } catch (e) { $("rSave").disabled = false; msg.style.color = "var(--danger)"; msg.textContent = "❌ সংরক্ষণ হয়নি (" + (e.code || e.message) + ")"; }
+        };
+    }
+
     async function loadNotify() {
-        const box = document.getElementById('notifyList');
+        const box = $("notifyList");
         await Promise.all([authReady, persistReady]);
         if (!auth.currentUser) {
-            box.innerHTML = '<div class="signin-note" style="margin-top:0">🛡️ আপনার নম্বর কে দেখেছে জানতে, নিবন্ধনের সময় ব্যবহৃত Google অ্যাকাউন্টে সাইন ইন করুন।</div><button class="btn" id="nSignIn">🔐 Google দিয়ে সাইন ইন করুন</button>';
-            document.getElementById('nSignIn').onclick = async () => { try { await ensureUser(); loadNotify(); } catch (e) {} };
+            $("reminderBox").innerHTML = "";
+            box.innerHTML = '<div class="signin-note" style="margin-top:0">🛡️ আপনার নম্বর কে দেখেছে জানতে এবং রক্তদানের রিমাইন্ডার পেতে, নিবন্ধনের সময় ব্যবহৃত Google অ্যাকাউন্টে সাইন ইন করুন।</div><button class="btn" id="nSignIn">🔐 Google দিয়ে সাইন ইন করুন</button>';
+            $("nSignIn").onclick = async () => { try { await ensureUser(); loadNotify(); } catch (e) {} };
             return;
         }
         box.textContent = "লোড হচ্ছে...";
         try {
+            await refreshMyProfile();
             const logs = await fetchNotify();
             const u = auth.currentUser, seen = getSeen(u.uid);
             if (!logs.length) { box.innerHTML = "<p style='text-align:center; color:#777;'>এখনো কেউ আপনার নম্বর দেখেনি।</p>"; return; }
             box.innerHTML = `<div style="font-size:14px; margin-bottom:4px;">মোট <b>${logs.length}</b> বার আপনার নম্বর দেখা হয়েছে।</div>` + logs.map(l => {
                 const isNew = tsMs(l.timestamp) > seen, ph = String(l.seekerPhone || "");
-                return `<div class="nitem ${isNew ? 'new' : ''}">
-                    <div class="nt">🕒 ${tsMs(l.timestamp) ? new Date(tsMs(l.timestamp)).toLocaleString('bn-BD') : '-'}${isNew ? '<span class="nnew">নতুন</span>' : ''}</div>
+                return `<div class="nitem ${isNew ? "new" : ""}">
+                    <div class="nt">🕒 ${tsMs(l.timestamp) ? new Date(tsMs(l.timestamp)).toLocaleString("bn-BD") : "-"}${isNew ? '<span class="nnew">নতুন</span>' : ""}</div>
                     <div><span class="nn">${esc(l.seekerName)}</span> আপনার নম্বর দেখেছেন</div>
-                    <div style="font-size:14px; color:#444;">📍 ${esc(l.seekerAddress)} &nbsp;|&nbsp; 📞 <a href="tel:${esc(ph.replace(/[^\d+]/g, ''))}">${esc(ph)}</a></div>
+                    <div style="font-size:14px; color:#444;">📍 ${esc(l.seekerAddress)} &nbsp;|&nbsp; 📞 <a href="tel:${esc(ph.replace(/[^\d+]/g, ""))}">${esc(ph)}</a></div>
                 </div>`;
             }).join("");
-            // এই পেজ দেখা হলো: সবকিছু "দেখা" হিসেবে চিহ্নিত
             setSeen(u.uid, Math.max(seen, ...logs.map(l => tsMs(l.timestamp))));
             updateBadge();
         } catch (e) {
