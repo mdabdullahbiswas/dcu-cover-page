@@ -125,7 +125,7 @@
                 </div>
                 <div>
                     <label>এলাকা নির্বাচন বা সার্চ করুন</label>
-                    <input type="text" id="searchAddress" placeholder="যেমন: মিরপুর, গুলশান..." oninput="loadDonors()">
+                    <input type="text" id="searchAddress" list="areaList" autocomplete="off" placeholder="যেমন: মিরপুর, গুলশান..." oninput="loadDonors()">
                 </div>
             </div>
             <div id="donorList" style="margin-top: 20px;">লোড হচ্ছে...</div>
@@ -151,25 +151,10 @@
                     <option value="AB+">AB+</option><option value="AB-">AB-</option>
                 </select>
 
-                <label>বর্তমান এলাকা নির্বাচন করুন <span class="req">*</span></label>
-                <select id="dAreaSelect" onchange="checkCustomArea(this.value)" required>
-                    <option value="">এলাকা সিলেক্ট করুন</option>
-                    <option value="মিরপুর">মিরপুর</option>
-                    <option value="ধানমন্ডি">ধানমন্ডি</option>
-                    <option value="উত্তরা">উত্তরা</option>
-                    <option value="ফার্মগেট">ফার্মগেট</option>
-                    <option value="গুলশান">গুলশান</option>
-                    <option value="বনানী">বনানী</option>
-                    <option value="মোহাম্মদপুর">মোহাম্মদপুর</option>
-                    <option value="সাভার">সাভার</option>
-                    <option value="টঙ্গী">টঙ্গী</option>
-                    <option value="অন্যান্য">অন্যান্য (নিজের এলাকা লিখুন)</option>
-                </select>
+                <label>বর্তমান এলাকা <span class="req">*</span></label>
+                <input type="text" id="dAreaSelect" list="areaList" maxlength="100" required placeholder="এলাকার নাম লিখুন, সাজেশন থেকে বেছে নিন" autocomplete="off">
 
-                <div id="customAreaDiv" style="display:none; margin-top:8px;">
-                    <label>আপনার এলাকার নাম লিখুন <span class="req">*</span></label>
-                    <input type="text" id="dCustomAddress" placeholder="যেমন: বাড্ডা, মালিবাগ...">
-                </div>
+                
 
                 <label>মোবাইল নম্বর <span class="req">*</span></label>
                 <input type="tel" id="dPhone" required placeholder="01XXXXXXXXX">
@@ -231,7 +216,7 @@
             <label>আপনার মোবাইল নম্বর <span style="color:red">*</span></label>
             <input type="tel" id="seekerPhone" required placeholder="01XXXXXXXXX">
             <label>আপনার বর্তমান ঠিকানা <span style="color:red">*</span></label>
-            <input type="text" id="seekerAddress" required placeholder="যেমন: ধানমন্ডি, ঢাকা">
+            <input type="text" id="seekerAddress" list="areaList" autocomplete="off" required placeholder="যেমন: ধানমন্ডি, ঢাকা">
             <div class="signin-note" id="seekNote">🛡️ আপনার ও আমাদের রক্তদাতাদের নিরাপত্তার জন্য ১-ক্লিকে গুগল সাইন-ইন করুন।</div>
 
             <button type="submit" class="btn" id="seekerSubmit">🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন</button>
@@ -260,6 +245,8 @@
         </div>
     </div>
 </div>
+
+<datalist id="areaList"></datalist>
 
 <!-- Firebase SDK ও মূল স্ক্রিপ্ট -->
 <script type="module">
@@ -350,17 +337,6 @@
         }
     }
 
-    window.checkCustomArea = function(val) {
-        const customDiv = document.getElementById('customAreaDiv');
-        if (val === 'অন্যান্য') {
-            customDiv.style.display = 'block';
-            document.getElementById('dCustomAddress').required = true;
-        } else {
-            customDiv.style.display = 'none';
-            document.getElementById('dCustomAddress').required = false;
-        }
-    }
-
     function compressImage(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
@@ -423,8 +399,7 @@
             return;
         }
 
-        const areaVal = document.getElementById('dAreaSelect').value;
-        const finalAddress = areaVal === 'অন্যান্য' ? document.getElementById('dCustomAddress').value.trim() : areaVal;
+        const finalAddress = document.getElementById('dAreaSelect').value.trim();
 
         try {
             let photoUrl = "";
@@ -476,7 +451,6 @@
             msg.style.color = "var(--success)";
             msg.textContent = "✅ আপনার নিবন্ধন সফল হয়েছে! এডমিন যাচাই করার পর এটি ডিরেক্টরিতে যুক্ত হবে।";
             document.getElementById('donorForm').reset();
-            document.getElementById('customAreaDiv').style.display = 'none';
             refreshMyProfile().catch(() => {});
         } catch (error) {
             msg.style.color = "var(--danger)";
@@ -666,7 +640,9 @@
         return `<p style="margin:2px 0; font-size:13px; color:#555;">🗓️ সর্বশেষ রক্তদান: ${bnDate(d.lastDonation)} · ` +
             (left <= 0 ? '<span class="avail ok">✅ রক্তদানে প্রস্তুত</span>' : `<span class="avail wait">⏳ আরও ${bnNum(left)} দিন পর প্রস্তুত</span>`) + "</p>";
     }
-    const AREAS = ["মিরপুর", "ধানমন্ডি", "উত্তরা", "ফার্মগেট", "গুলশান", "বনানী", "মোহাম্মদপুর", "সাভার", "টঙ্গী"];
+    // ঢাকা ও আশপাশের এলাকার নাম (বর্ণানুক্রমে সাজানো); তালিকার বাইরের এলাকাও লেখা যাবে
+    const AREAS = ["আগারগাঁও", "আজিমপুর", "আদাবর", "আরামবাগ", "আশুলিয়া", "ইব্রাহিমপুর", "ইস্কাটন", "উত্তর বাড্ডা", "উত্তরখান", "উত্তরা", "এয়ারপোর্ট", "কচুক্ষেত", "কদমতলী", "কমলাপুর", "কলাবাগান", "কল্যাণপুর", "কাওরান বাজার", "কাফরুল", "কামরাঙ্গীরচর", "কালশী", "কুড়িল", "কুর্মিটোলা", "কেরানীগঞ্জ", "খিলক্ষেত", "খিলগাঁও", "গাজীপুর", "গাবতলী", "গুলশান", "গুলিস্তান", "গেন্ডারিয়া", "চকবাজার", "জয়দেবপুর", "জিগাতলা", "জুরাইন", "টঙ্গী", "টিকাটুলী", "ঢাকা ক্যান্টনমেন্ট", "তেজগাঁও", "তুরাগ", "দক্ষিণখান", "দনিয়া", "ডেমরা", "ধামরাই", "ধানমন্ডি", "নবাবগঞ্জ", "নয়াবাজার", "নাখালপাড়া", "নারায়ণগঞ্জ", "নিউ মার্কেট", "নিকুঞ্জ", "পরীবাগ", "পল্টন", "পল্লবী", "পুরান ঢাকা", "পোস্তগোলা", "ফকিরাপুল", "ফার্মগেট", "বকশীবাজার", "বংশাল", "বনশ্রী", "বনানী", "বসুন্ধরা", "বাড্ডা", "বাবুবাজার", "বাসাবো", "বারিধারা", "বিজয়নগর", "বেগুনবাড়ী", "ভাটারা", "মগবাজার", "মদনপুর", "মধ্যবাড্ডা", "মহাখালী", "মান্ডা", "মাতুয়াইল", "মালিবাগ", "মিটফোর্ড", "মিরপুর", "মিরহাজীরবাগ", "মুগদা", "মোহাম্মদপুর", "মোহাম্মদী হাউজিং", "যাত্রাবাড়ী", "রমনা", "রামপুরা", "রায়েরবাজার", "রূপনগর", "লালবাগ", "লালমাটিয়া", "শনির আখড়া", "শান্তিনগর", "শাহজাহানপুর", "শাহবাগ", "শুক্রাবাদ", "শেওড়াপাড়া", "শেরেবাংলা নগর", "শ্যামপুর", "শ্যামলী", "সদরঘাট", "সবুজবাগ", "সাভার", "সায়েদাবাদ", "সূত্রাপুর", "সেগুনবাগিচা", "হাজারীবাগ", "হাতিরঝিল", "হাতিরপুল"].sort((a, b) => a.localeCompare(b, "bn"));
+    $("areaList").innerHTML = AREAS.map(a => `<option value="${a}">`).join("");
     const GROUPS = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
     // ===== আমার প্রোফাইল: দেখা, সম্পাদনা ও ডিলেট =====
@@ -719,12 +695,11 @@
 
     function renderProfileEdit() {
         const box = $("myProfile"), d = myDonor;
-        const inList = AREAS.includes(d.address);
         box.innerHTML = `<div class="my-card edit">
             <h3 style="margin:0 0 4px;">✏️ তথ্য সম্পাদনা</h3>
             <label>পূর্ণ নাম <span class="req">*</span></label><input id="eName" maxlength="80" value="${esc(d.name)}">
             <label>রক্তের গ্রুপ <span class="req">*</span></label><select id="eGroup">${GROUPS.map(g => `<option value="${g}" ${g === d.group ? "selected" : ""}>${g}</option>`).join("")}</select>
-            <label>বর্তমান এলাকা <span class="req">*</span></label><input id="eAddr" maxlength="100" list="areaList" value="${esc(d.address)}"><datalist id="areaList">${AREAS.map(a => `<option value="${a}">`).join("")}</datalist>
+            <label>বর্তমান এলাকা <span class="req">*</span></label><input id="eAddr" maxlength="100" list="areaList" value="${esc(d.address)}">
             <label>মোবাইল নম্বর</label><input value="${esc(d.phone)}" disabled>
             <div class="my-hint" style="text-align:left; margin:2px 0 0;">নিরাপত্তার কারণে নম্বর পরিবর্তন করা যায় না। নম্বর বদলাতে চাইলে তথ্য মুছে নতুন নম্বরে আবার নিবন্ধন করুন।</div>
             <label>মোট কতবার রক্ত দিয়েছেন <span class="req">*</span></label><input type="number" id="eCount" min="0" max="500" value="${esc(d.donationCount)}">
