@@ -55,19 +55,27 @@
         .report-link { background: none; border: 0; color: #a94442; font-size: 13px; text-decoration: underline; cursor: pointer; margin-top: 10px; font-family: inherit; }
         .report-box { margin-top: 8px; text-align: left; }
         .report-box select { margin-bottom: 8px; }
-        /* ===== জরুরি নোটিশ বার (সবার উপরে স্ক্রল করা লেখা) ===== */
-        #urgentTicker { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 44px; background: linear-gradient(90deg, #7f1613, #c62d28 50%, #7f1613); color: #fff; box-shadow: 0 3px 14px rgba(127,22,19,.45); cursor: pointer; overflow: hidden; align-items: stretch; }
-        body.has-ticker { margin-top: 44px; }
-        #urgentTicker .tk-label { flex: none; display: flex; align-items: center; gap: 8px; padding: 0 14px; font-weight: 800; font-size: 14px; background: #fff; color: #b3261e; position: relative; z-index: 2; box-shadow: 4px 0 10px rgba(0,0,0,.25); animation: tkBlink 1.2s infinite; }
-        @keyframes tkBlink { 0%, 100% { background: #fff; } 50% { background: #ffe3e1; } }
-        #urgentTicker .tk-dot { width: 10px; height: 10px; border-radius: 50%; background: #d9261c; animation: ubPulse 1.2s infinite; }
-        #urgentTicker .tk-view { flex: 1; overflow: hidden; display: flex; align-items: center; }
+        /* ===== জরুরি নোটিশ বার (সবার উপরে) ===== */
+        #urgentTicker { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 46px; background: linear-gradient(90deg, #5a0e0c, #a71f1b 32%, #b3261e 50%, #a71f1b 68%, #5a0e0c); color: #fff; box-shadow: 0 4px 16px rgba(90,14,12,.45); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; overflow: hidden; align-items: stretch; }
+        #urgentTicker::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.15) 50%, transparent 65%); transform: translateX(-100%); animation: tkSheen 5.5s ease-in-out infinite; pointer-events: none; }
+        @keyframes tkSheen { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+        body.has-ticker { margin-top: 46px; }
+        #urgentTicker .tk-label { flex: none; display: flex; align-items: center; gap: 8px; padding: 0 28px 0 14px; background: #fff; color: #b3261e; font-weight: 800; font-size: 14.5px; position: relative; z-index: 2; clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%); }
+        #urgentTicker .tk-ico { display: inline-block; animation: tkWob 1.1s ease-in-out infinite; transform-origin: 50% 85%; }
+        @keyframes tkWob { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+        #urgentTicker .tk-n { background: #b3261e; color: #fff; border-radius: 11px; min-width: 22px; height: 22px; line-height: 22px; text-align: center; font-size: 12.5px; padding: 0 6px; }
+        #urgentTicker .tk-view { flex: 1; overflow: hidden; display: flex; align-items: center; -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
         #urgentTicker .tk-run { display: inline-flex; white-space: nowrap; animation: tkRun 40s linear infinite; will-change: transform; }
         #urgentTicker:hover .tk-run { animation-play-state: paused; }
         @keyframes tkRun { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        #urgentTicker .tk-item { font-size: 14.5px; font-weight: 600; padding: 0 6px; }
-        #urgentTicker .tk-item b { background: #fff; color: #b3261e; border-radius: 6px; padding: 0 7px; margin-right: 4px; }
-        #urgentTicker .tk-sep { padding: 0 18px; opacity: .65; }
+        #urgentTicker .tk-item { display: inline-flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 600; }
+        #urgentTicker .tk-grp { background: #fff; color: #b3261e; font-weight: 800; border-radius: 8px; padding: 1px 9px; font-size: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+        #urgentTicker .tk-w { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4); border-radius: 10px; padding: 0 10px; font-size: 12.5px; font-weight: 700; }
+        #urgentTicker .tk-w.now { background: #ffd54a; color: #7a1a00; border-color: #ffd54a; animation: tkNow 1.2s ease-in-out infinite; }
+        @keyframes tkNow { 50% { filter: brightness(1.18); } }
+        #urgentTicker .tk-sep { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.65); margin: 0 24px; align-self: center; }
+        #urgentTicker .tk-more { flex: none; display: flex; align-items: center; gap: 5px; margin: 8px 10px 8px 4px; padding: 0 14px; font-size: 13px; font-weight: 700; border: 1.5px solid rgba(255,255,255,.75); border-radius: 20px; background: rgba(0,0,0,.2); position: relative; z-index: 2; }
+        @media (max-width: 560px) { #urgentTicker .tk-txt1, #urgentTicker .tk-more span { display: none; } #urgentTicker .tk-label { padding-right: 24px; } #urgentTicker .tk-more { padding: 0 11px; margin-right: 6px; } }
         /* ===== জরুরি ফটো-কার্ড ব্যানার ===== */
         #urgentBanner { display: none; margin: 0 0 16px; border-radius: 20px; overflow: hidden; position: relative; background: radial-gradient(circle at 92% 8%, rgba(255,255,255,.16) 0, transparent 38%), radial-gradient(circle at 4% 100%, rgba(255,255,255,.10) 0, transparent 42%), linear-gradient(135deg, #7f1613 0%, #c62d28 55%, #e2514c 100%); color: #fff; animation: ubGlow 2.2s ease-in-out infinite; }
         @keyframes ubGlow { 0%, 100% { box-shadow: 0 8px 22px rgba(185,40,36,.30), 0 0 0 0 rgba(217,83,79,.45); } 50% { box-shadow: 0 10px 30px rgba(185,40,36,.5), 0 0 0 7px rgba(217,83,79,0); } }
@@ -76,6 +84,9 @@
         #urgentBanner .ub-live { display: inline-flex; align-items: center; gap: 8px; }
         #urgentBanner .ub-dot { width: 10px; height: 10px; border-radius: 50%; background: #fff; animation: ubPulse 1.3s infinite; }
         @keyframes ubPulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.75); } 70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+        #urgentBanner .ub-rt { display: flex; align-items: center; gap: 8px; }
+        #urgentBanner .ub-x { width: 28px; height: 28px; padding: 0; margin: 0; min-width: 0; border-radius: 50%; border: 0; background: rgba(255,255,255,.2); color: #fff; font-size: 14px; font-weight: 800; cursor: pointer; line-height: 1; }
+        #urgentBanner .ub-x:hover { background: rgba(255,255,255,.35); }
         #urgentBanner .ub-count { background: rgba(255,255,255,.2); padding: 2px 11px; border-radius: 12px; font-size: 12px; }
         #urgentBanner .ub-main { display: flex; align-items: center; gap: 18px; padding: 18px 18px 10px; animation: ubIn .4s ease; }
         @keyframes ubIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
@@ -100,7 +111,7 @@
         #urgentBanner .ub-dots i.on { background: #fff; width: 22px; border-radius: 6px; }
         .rcard.today { animation: rToday 2s ease-in-out infinite; }
         @keyframes rToday { 0%, 100% { box-shadow: 0 0 0 0 rgba(217,83,79,.45); } 50% { box-shadow: 0 0 0 6px rgba(217,83,79,0); } }
-        @media (max-width: 560px) { #urgentBanner .ub-main { gap: 12px; padding: 14px 14px 8px; } #urgentBanner .ub-drop { width: 68px; height: 84px; } #urgentBanner .ub-drop b { font-size: 22px; } #urgentBanner .ub-title { font-size: 17.5px; } #urgentBanner .ub-chips span { font-size: 13px; } #urgentTicker .tk-label span:last-child { display: none; } }
+        @media (max-width: 560px) { #urgentBanner .ub-main { gap: 12px; padding: 14px 14px 8px; } #urgentBanner .ub-drop { width: 68px; height: 84px; } #urgentBanner .ub-drop b { font-size: 22px; } #urgentBanner .ub-title { font-size: 17.5px; } #urgentBanner .ub-chips span { font-size: 13px; } }
         .vtick { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; margin-left: 4px; border-radius: 50%; background: #1d9bf0; color: #fff; font-size: 11px; font-weight: 700; vertical-align: middle; }
         .rcard { border: 1.5px solid #f0b4b0; border-left: 6px solid var(--danger); border-radius: 12px; padding: 14px 16px; margin-top: 12px; background: #fffdfd; }
         .rcard.old { opacity: .6; border-color: var(--ln); border-left-color: #999; }
@@ -1186,7 +1197,7 @@
             <div class="ractions">
                 ${r.contactPhone ? `<a class="btn-call" href="tel:${tel}">📲 কল করুন</a>` : `<button type="button" class="btn-call" data-q="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}
                 <button type="button" class="btn-ghost-s" data-q="find" data-id="${esc(r.id)}">🔎 ডোনার খুঁজুন</button>
-                <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি কার্ড</button>
+                <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি শেয়ার</button>
                 ${mine ? `<button type="button" class="btn-ghost-s" data-q="done" data-id="${esc(r.id)}">✅ রক্ত পাওয়া গেছে</button><button type="button" class="btn-del-s" data-q="del" data-id="${esc(r.id)}">🗑️ মুছুন</button>` : ""}
             </div></div>`;
     }
@@ -1196,6 +1207,8 @@
         const L = requests.filter(r => (!g || r.group === g) && (!a || String(r.area).toLowerCase().includes(a)) && (!onlyMe || canHelp(r)))
             .sort((x, y) => ((canHelp(y) && sameArea(y)) - (canHelp(x) && sameArea(x))) || (tsMs(y.createdAt) - tsMs(x.createdAt)));
         box.innerHTML = L.length ? L.map(reqCard).join("") : "<p style='text-align:center; color:#777;'>এই মুহূর্তে কোনো জরুরি অনুরোধ নেই।</p>";
+        const dsm = ubDismissed().filter(id => requests.some(r => r.id === id));
+        if (dsm.length) box.insertAdjacentHTML("afterbegin", `<div class="signin-note" style="margin-top:0">🙈 ${bnNum(dsm.length)}টি ব্যানার কার্ড আপনি বন্ধ করেছেন। <button type="button" class="btn-ghost-s" data-q="undismiss" style="padding:3px 12px;border-radius:8px;margin-left:6px;cursor:pointer;">আবার দেখান</button></div>`);
         if (!auth.currentUser) box.insertAdjacentHTML("afterbegin", '<div class="signin-note" style="margin-top:0">🔐 জরুরি অনুরোধ সবাই দেখতে পারেন। যোগাযোগের নম্বর দেখতে ও নতুন অনুরোধ দিতে Google দিয়ে সাইন ইন করুন।</div>');
     }
 
@@ -1224,34 +1237,37 @@
     }
     var tkSig = "";
     const reqWhen = (r) => { const d = diffDays(todayISO(), r.neededDate); return d === 0 ? "আজই" : d === 1 ? "আগামীকাল" : bnDate(r.neededDate); };
-    function renderTicker() {
+    function ubDismissed() { try { return JSON.parse(localStorage.getItem("dcu_ub_dismissed") || "[]"); } catch (e) { return []; } }
+    function setUbDismissed(a) { try { localStorage.setItem("dcu_ub_dismissed", JSON.stringify(a.slice(-100))); } catch (e) {} }
+    function renderTicker(list) {
         const el = $("urgentTicker"); if (!el) return;
-        const sig = ubList.map(r => r.id + r.neededDate).join(",");
+        const sig = list.map(r => r.id + r.neededDate).join(",");
         if (sig === tkSig) return; tkSig = sig;
-        if (!ubList.length) { el.style.display = "none"; el.innerHTML = ""; document.body.classList.remove("has-ticker"); return; }
-        const one = ubList.map(r => `<span class="tk-item"><b>${esc(r.group)}</b> রক্ত লাগবে · ${bnNum(r.bags)} ব্যাগ · 🏥 ${esc(r.hospital)}, ${esc(r.area)} · 📅 ${esc(reqWhen(r))}</span>`).join('<span class="tk-sep">◆</span>') + '<span class="tk-sep">◆</span>';
-        const dur = Math.max(22, Math.round(ubList.reduce((n, r) => n + String(r.hospital).length + String(r.area).length + 40, 0) * 0.32));
-        el.innerHTML = `<div class="tk-label"><span class="tk-dot"></span><span>🚨 জরুরি রক্ত</span></div><div class="tk-view"><div class="tk-run" style="animation-duration:${dur}s">${one}${one}</div></div>`;
+        if (!list.length) { el.style.display = "none"; el.innerHTML = ""; document.body.classList.remove("has-ticker"); return; }
+        const one = list.map(r => `<span class="tk-item"><span class="tk-grp">${esc(r.group)}</span><span><b>${bnNum(r.bags)} ব্যাগ রক্ত লাগবে</b> · ${esc(r.hospital)}, ${esc(r.area)}</span><span class="tk-w ${diffDays(todayISO(), r.neededDate) === 0 ? "now" : ""}">${esc(reqWhen(r))}</span></span><span class="tk-sep"></span>`).join("");
+        const dur = Math.max(22, Math.round(list.reduce((n, r) => n + String(r.hospital).length + String(r.area).length + 40, 0) * 0.32));
+        el.innerHTML = `<div class="tk-label"><span class="tk-ico">🚨</span><span class="tk-txt1">জরুরি রক্ত</span><span class="tk-n">${bnNum(list.length)}</span></div><div class="tk-view"><div class="tk-run" style="animation-duration:${dur}s">${one}${one}</div></div><div class="tk-more"><span>বিস্তারিত</span>›</div>`;
         el.style.display = "flex"; document.body.classList.add("has-ticker");
     }
     $("urgentTicker").addEventListener("click", () => { window.switchTab("urgent"); window.scrollTo({ top: 0, behavior: "smooth" }); });
 
     function renderBanner() {
         const box = $("urgentBanner"); if (!box) return;
-        ubList = bannerList();
-        renderTicker();
+        const all = bannerList(), dis = ubDismissed();
+        ubList = all.filter(r => !dis.includes(r.id));
+        renderTicker(all);
         clearInterval(ubTimer);
         if (!ubList.length) { box.style.display = "none"; box.innerHTML = ""; return; }
         if (ubIdx >= ubList.length) ubIdx = 0;
         const r = ubList[ubIdx], n = ubList.length;
         const tel = esc(String(r.contactPhone || "").replace(/[^\d+]/g, ""));
         box.style.display = "block";
-        box.innerHTML = `<div class="ub-ribbon"><span class="ub-live"><span class="ub-dot"></span>🚨 জরুরি রক্ত প্রয়োজন</span><span class="ub-count">${bnNum(ubIdx + 1)} / ${bnNum(n)}</span></div>
+        box.innerHTML = `<div class="ub-ribbon"><span class="ub-live"><span class="ub-dot"></span>🚨 জরুরি রক্ত প্রয়োজন</span><span class="ub-rt"><span class="ub-count">${bnNum(ubIdx + 1)} / ${bnNum(n)}</span><button type="button" class="ub-x" data-ub="close" title="কার্ডটি বন্ধ করুন" aria-label="কার্ডটি বন্ধ করুন">✕</button></span></div>
             <div class="ub-main"><div class="ub-drop"><svg viewBox="0 0 64 80" aria-hidden="true"><path d="M32 2C32 2 6 32 6 52a26 26 0 0 0 52 0C58 32 32 2 32 2z" fill="#fff"/></svg><b>${esc(r.group)}</b></div>
                 <div class="ub-info"><div class="ub-title">${bnNum(r.bags)} ব্যাগ রক্ত লাগবে<span class="ub-when">${esc(reqWhen(r))}</span></div>
                 <div class="ub-chips"><span>🏥 ${esc(r.hospital)}</span><span>📍 ${esc(r.area)}</span><span>📅 ${esc(bnDate(r.neededDate))}</span><span>🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""}</span><span>👤 ${esc(r.contactName)}</span></div>
                 ${r.note ? `<div class="ub-note">📝 ${esc(r.note)}</div>` : ""}</div></div>
-            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-sec" data-ub="share">📤 শেয়ার</button><button type="button" class="ub-sec" data-ub="photo">🖼️ ছবি কার্ড</button><button type="button" class="ub-sec" data-ub="all">সব দেখুন</button></div>
+            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-sec" data-ub="share">📤 শেয়ার</button><button type="button" class="ub-sec" data-ub="photo">🖼️ ছবি শেয়ার</button><button type="button" class="ub-sec" data-ub="all">সব দেখুন</button></div>
             ${n > 1 ? `<div class="ub-nav"><button type="button" data-ub="prev" aria-label="আগের">‹</button><div class="ub-dots">${ubList.map((_, i) => `<i data-ub-i="${i}" class="${i === ubIdx ? "on" : ""}"></i>`).join("")}</div><button type="button" data-ub="next" aria-label="পরের">›</button></div>` : ""}`;
         ubStart();
     }
@@ -1301,6 +1317,7 @@
 
     $("urgentBanner").addEventListener("click", (e) => {
         const b = e.target.closest("[data-ub],[data-ub-i]"); if (!b) return;
+        if (b.dataset.ub === "close") { const r = ubList[ubIdx]; if (r) { setUbDismissed(ubDismissed().concat(r.id)); renderBanner(); } return; }
         if (b.dataset.ub === "share") { shareReq(ubList[ubIdx]); return; }
         if (b.dataset.ub === "photo") { makePoster(ubList[ubIdx]); return; }
         if (b.dataset.ub === "all") { window.switchTab("urgent"); return; }
@@ -1383,6 +1400,7 @@
     $("rqMineOnly").onchange = renderRequests;
     $("rqList").addEventListener("click", async (e) => {
         const b = e.target.closest("button[data-q]"); if (!b) return;
+        if (b.dataset.q === "undismiss") { setUbDismissed([]); ubIdx = 0; renderBanner(); renderRequests(); return; }
         if (b.dataset.q === "signin") { try { await ensureUser(); await refreshMyProfile().catch(() => {}); await fetchRequests(); renderRequests(); } catch (err) {} return; }
         const r = requests.find(x => x.id === b.dataset.id); if (!r) return;
         if (b.dataset.q === "share") { shareReq(r); return; }
