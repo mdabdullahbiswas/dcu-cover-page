@@ -45,7 +45,6 @@
         <button class="active" onclick="switchTab('find')">রক্ত খুঁজুন</button>
         <button onclick="switchTab('register')">ডোনার হোন</button>
         <button onclick="switchTab('leaderboard')">🏆 লিডারবোর্ড</button>
-        <button onclick="switchTab('admin')">⚙️ এডমিন প্যানেল</button>
     </div>
 
     <!-- ১. রক্ত খুঁজুন সেকশন -->
@@ -139,17 +138,8 @@
         </div>
     </div>
 
-    <!-- ৪. এডমিন প্যানেল সেকশন -->
-    <div id="adminSection" class="section">
-        <div class="card">
-            <h2>⚙️ এডমিন প্যানেল (ডোনার অনুমোদন)</h2>
-            <p class="hint" style="font-size:13px; color:#555;">নতুন নিবন্ধিত ডোনারদের তালিকা যারা অনুমোদনের অপেক্ষায় আছেন:</p>
-            <div id="adminDonorList" style="margin-top: 15px;">লোড হচ্ছে...</div>
-        </div>
     </div>
-</div>
-
-<!-- সিকিউরিটি পপ-আপ -->
+<!-- security popup -->
 <div id="securityModal" class="modal-overlay">
     <div class="modal-content">
         <h3 style="margin-top:0; color:var(--primary);">⚠️ জরুরি নিরাপত্তা সতর্কতা</h3>
@@ -172,8 +162,7 @@
 <!-- Firebase SDK ও মূল স্ক্রিপ্ট -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0",
@@ -186,10 +175,12 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     let currentSeeker = null;
     let selectedDonor = null;
+    const esc = (t) => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const AV = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" rx="30" fill="#eee"/><circle cx="30" cy="23" r="10" fill="#bbb"/><path d="M10 54c3-14 37-14 40 0z" fill="#bbb"/></svg>');
+    const photoSrc = (p) => (typeof p === "string" && (p.startsWith("data:image/") || p.startsWith("https://firebasestorage.googleapis.com/"))) ? esc(p) : AV;
 
     window.switchTab = function(tab) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -204,9 +195,6 @@
         } else if(tab === 'leaderboard') {
             document.getElementById('leaderboardSection').classList.add('active');
             loadLeaderboard();
-        } else if(tab === 'admin') {
-            document.getElementById('adminSection').classList.add('active');
-            loadAdminDonors();
         }
     }
 
@@ -224,9 +212,11 @@
     function compressImage(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
+            reader.onerror = () => resolve("");
             reader.readAsDataURL(file);
             reader.onload = (event) => {
                 const img = new Image();
+                img.onerror = () => resolve("");
                 img.src = event.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
@@ -243,7 +233,7 @@
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-                    canvas.toBlob((blob) => { resolve(blob); }, 'image/jpeg', 0.7);
+                    resolve(canvas.toDataURL('image/jpeg', 0.7));
                 }
             }
         });
@@ -264,13 +254,7 @@
         try {
             let photoUrl = "";
             const fileInput = document.getElementById('dPhoto').files[0];
-            
-            if (fileInput) {
-                const compressedBlob = await compressImage(fileInput);
-                const storageRef = ref(storage, 'donor_photos/' + Date.now() + '.jpg');
-                await uploadBytes(storageRef, compressedBlob);
-                photoUrl = await getDownloadURL(storageRef);
-            }
+            if (fileInput) { try { photoUrl = await compressImage(fileInput); } catch (e) { photoUrl = ""; } }
 
             await addDoc(collection(db, "donors"), {
                 name: document.getElementById('dName').value.trim(),
@@ -289,7 +273,8 @@
             document.getElementById('customAreaDiv').style.display = 'none';
         } catch (error) {
             msg.style.color = "var(--danger)";
-            msg.textContent = "❌ ত্রুটি হয়েছে: " + error.message;
+            console.error(error);
+            msg.textContent = error.code === "permission-denied" ? "❌ সার্ভার তথ্য গ্রহণ করছে না (Firestore Rules পাবলিশ করা নেই)। এডমিনকে জানান।" : "❌ ত্রুটি হয়েছে: " + (error.code || error.message);
         } finally {
             submitBtn.disabled = false;
         }
@@ -303,7 +288,7 @@
         listDiv.innerHTML = "খোঁজা হচ্ছে...";
 
         try {
-            const querySnapshot = await getDocs(collection(db, "donors"));
+            const querySnapshot = await getDocs(query(collection(db, "donors"), where("status", "==", "approved")));
             let html = "";
             let count = 0;
 
@@ -317,13 +302,13 @@
                 html += `
                     <div class="donor-card">
                         <div class="donor-info" style="display:flex; align-items:center;">
-                            <img src="${d.photo || 'https://via.placeholder.com/60'}" alt="User">
+                            <img src="${photoSrc(d.photo)}" alt="User">
                             <div class="donor-details" style="margin-left:15px;">
-                                <h3 style="margin:0;">${d.name} <span class="badge">${d.group}</span></h3>
-                                <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${d.address} | 🩸 ${d.donationCount || 1} বার দান</p>
+                                <h3 style="margin:0;">${esc(d.name)} <span class="badge">${esc(d.group)}</span></h3>
+                                <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${esc(d.address)} | 🩸 ${esc(d.donationCount || 1)} বার দান</p>
                             </div>
                         </div>
-                        <button class="btn" style="width:auto; padding:8px 14px; margin:0;" onclick="handleContactClick('${d.phone}', '${d.name}')">নম্বর দেখুন</button>
+                        <button class="btn contact-btn" style="width:auto; padding:8px 14px; margin:0;" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}">নম্বর দেখুন</button>
                     </div>
                 `;
             });
@@ -334,53 +319,6 @@
         }
     }
     window.loadDonors = loadDonors;
-
-    // এডমিন প্যানেলে পেন্ডিং ডোনার লোড করা
-    async function loadAdminDonors() {
-        const adminDiv = document.getElementById('adminDonorList');
-        adminDiv.innerHTML = "লোড হচ্ছে...";
-
-        try {
-            const querySnapshot = await getDocs(collection(db, "donors"));
-            let html = "";
-            let count = 0;
-
-            querySnapshot.forEach((docSnap) => {
-                const d = docSnap.data();
-                if(d.status === "approved") return; // শুধু পেন্ডিং গুলো দেখাবে
-
-                count++;
-                html += `
-                    <div class="donor-card" style="background:#fffbe6;">
-                        <div class="donor-info" style="display:flex; align-items:center;">
-                            <img src="${d.photo || 'https://via.placeholder.com/60'}" alt="User">
-                            <div class="donor-details" style="margin-left:15px;">
-                                <h3 style="margin:0;">${d.name} <span class="badge" style="background:var(--accent); color:#000;">${d.group}</span></h3>
-                                <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${d.address} | 📞 ${d.phone} | 🩸 ${d.donationCount || 1} বার</p>
-                            </div>
-                        </div>
-                        <button class="btn btn-success" style="width:auto; padding:8px 14px; margin:0;" onclick="approveDonor('${docSnap.id}')">এপ্রুভ করুন</button>
-                    </div>
-                `;
-            });
-
-            adminDiv.innerHTML = count > 0 ? html : "<p style='text-align:center; color:#777;'>অনুমোদনের জন্য কোনো নতুন ডোনার নেই।</p>";
-        } catch (error) {
-            adminDiv.innerHTML = "এডমিন ডেটা লোড করতে সমস্যা হয়েছে।";
-        }
-    }
-
-    // ডোনার এপ্রুভ করার ফাংশন
-    window.approveDonor = async function(docId) {
-        try {
-            const donorRef = doc(db, "donors", docId);
-            await updateDoc(donorRef, { status: "approved" });
-            alert("✅ সফলভাবে ডোনার এপ্রুভ করা হয়েছে!");
-            loadAdminDonors();
-        } catch (error) {
-            alert("এপ্রুভ করতে সমস্যা হয়েছে: " + error.message);
-        }
-    }
 
     window.handleContactClick = function(phone, name) {
         selectedDonor = { phone, name };
@@ -432,7 +370,7 @@
         lbDiv.innerHTML = "লিডারবোর্ড তৈরি হচ্ছে...";
 
         try {
-            const querySnapshot = await getDocs(collection(db, "donors"));
+            const querySnapshot = await getDocs(query(collection(db, "donors"), where("status", "==", "approved")));
             let donors = [];
             querySnapshot.forEach((docSnap) => {
                 const d = docSnap.data();
@@ -459,9 +397,9 @@
                 let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1);
                 html += `<tr>
                     <td><b>${medal}</b></td>
-                    <td>${d.name}</td>
-                    <td><span class="badge">${d.group}</span></td>
-                    <td>${d.address}</td>
+                    <td>${esc(d.name)}</td>
+                    <td><span class="badge">${esc(d.group)}</span></td>
+                    <td>${esc(d.address)}</td>
                     <td><b style="color:var(--danger);">${d.donationCount || 1} বার</b></td>
                 </tr>`;
             });
@@ -473,6 +411,10 @@
         }
     }
 
+    document.getElementById("donorList").addEventListener("click", (e) => {
+        const b = e.target.closest(".contact-btn");
+        if (b) handleContactClick(b.dataset.phone, b.dataset.name);
+    });
     loadDonors();
 </script>
 
