@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DCU Blood Donor Directory</title>
+    <title>DCU Blood Donor Directory & Leaderboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #f4f7f6; --cd: #ffffff; --ink: #1c2733; --ln: #d0d7de; --primary: #0a2240; --accent: #e5a83b; --danger: #d9534f; }
+        :root { --bg: #f4f7f6; --cd: #ffffff; --ink: #1c2733; --ln: #d0d7de; --primary: #0a2240; --accent: #e5a83b; --danger: #d9534f; --success: #28a745; }
         body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Hind Siliguri', 'Montserrat', sans-serif; line-height: 1.6; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; }
         .card { background: var(--cd); border: 1px solid var(--ln); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         h2 { color: var(--primary); margin-top: 0; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tabs button { flex: 1; padding: 12px; border: none; background: var(--ln); color: var(--ink); font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tabs button { flex: 1; padding: 12px; border: none; background: var(--ln); color: var(--ink); font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 15px; min-width: 120px; }
         .tabs button.active { background: var(--primary); color: var(--accent); }
         .section { display: none; }
         .section.active { display: block; }
@@ -24,31 +24,38 @@
         .donor-card { border: 1px solid var(--ln); border-radius: 8px; padding: 15px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; background: #fafbfc; }
         .donor-info img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
         .donor-details { flex-grow: 1; margin-left: 15px; }
-        .badge { background: var(--danger); color: white; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 14px; }
+        .badge { background: var(--danger); color: white; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 13px; }
+        .badge-success { background: var(--success); }
         .alert-box { background: rgba(217, 83, 79, 0.1); border: 1px dashed var(--danger); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13.5px; color: #a94442; }
         
-        /* ব্যাকড্রপ পপআপ স্টাইল */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        /* লিডারবোর্ড টেবিল স্টাইল */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { border: 1px solid var(--ln); padding: 10px; text-align: center; }
+        th { background: var(--primary); color: #fff; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        /* পপআপ স্টাইল */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 9999; }
         .modal-content { background: #fff; width: 90%; max-width: 440px; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>🩸 DCU ব্লাড ডোনার ডিরেক্টরি</h2>
+    <h2>🩸 DCU ব্লাড ডোনার ডিরেক্টরি ও লিডারবোর্ড</h2>
     <div class="tabs">
-        <button class="active" onclick="switchTab('find')">রক্ত খুঁজুন (Find Blood)</button>
-        <button onclick="switchTab('register')">ডোনার হোন (Become a Donor)</button>
+        <button class="active" onclick="switchTab('find')">রক্ত খুঁজুন</button>
+        <button onclick="switchTab('register')">ডোনার হোন</button>
+        <button onclick="switchTab('leaderboard')">🏆 লিডারবোর্ড</button>
     </div>
 
-    <!-- ব্লাড সার্চ সেকশন -->
+    <!-- ১. রক্ত খুঁজুন সেকশন -->
     <div id="findSection" class="section active">
         <div class="card">
             <h2>রক্তদাতা খুঁজুন</h2>
-            
             <div class="filter-grid">
                 <div>
-                    <label>১. রক্তের গ্রুপ নির্বাচন করুন</label>
+                    <label>রক্তের গ্রুপ</label>
                     <select id="searchGroup" onchange="loadDonors()">
                         <option value="">সকল গ্রুপ</option>
                         <option value="A+">A+</option><option value="A-">A-</option>
@@ -58,16 +65,15 @@
                     </select>
                 </div>
                 <div>
-                    <label>২. এলাকা নির্বাচন/টাইপ করুন</label>
-                    <input type="text" id="searchAddress" placeholder="যেমন: মিরপুর, আজিমপুর..." oninput="loadDonors()">
+                    <label>এলাকা</label>
+                    <input type="text" id="searchAddress" placeholder="যেমন: মিরপুর, ফার্মগেট..." oninput="loadDonors()">
                 </div>
             </div>
-
             <div id="donorList" style="margin-top: 20px;"></div>
         </div>
     </div>
 
-    <!-- ডোনার রেজিস্ট্রেশন সেকশন -->
+    <!-- ২. ডোনার রেজিস্ট্রেশন সেকশন -->
     <div id="registerSection" class="section">
         <div class="card">
             <h2>ডোনার হিসেবে নিবন্ধন করুন</h2>
@@ -90,6 +96,9 @@
                 <label>মোবাইল নম্বর</label>
                 <input type="tel" id="dPhone" required placeholder="01XXXXXXXXX">
 
+                <label>মোট কতবার রক্ত দিয়েছেন? (লিডারবোর্ডের জন্য)</label>
+                <input type="number" id="dDonationCount" min="0" value="1" required>
+
                 <label>প্রোফাইল ছবি (ঐচ্ছিক)</label>
                 <input type="file" id="dPhoto" accept="image/*">
 
@@ -98,14 +107,23 @@
             <p id="regMsg" style="margin-top: 10px; font-weight: 600; text-align: center;"></p>
         </div>
     </div>
+
+    <!-- ৩. লিডারবোর্ড সেকশন -->
+    <div id="leaderboardSection" class="section">
+        <div class="card">
+            <h2>🏆 শীর্ষ রক্তদাতা লিডারবোর্ড</h2>
+            <p class="hint" style="font-size:13px; color:#555;">আমাদের ক্যাম্পাসের সবচেয়ে বেশি রক্তদানকারী বীর যোদ্ধাদের তালিকা:</p>
+            <div id="leaderboardList" style="margin-top: 15px;">লোড হচ্ছে...</div>
+        </div>
+    </div>
 </div>
 
-<!-- বাধ্যবাধকতামূলক সিকিউরিটি ও আইডেন্টিটি পপ-আপ -->
-<div id="securityModal" class="modal-overlay" style="display: flex;">
+<!-- নম্বর দেখার আগের বাধ্যবাধকতামূলক সিকিউরিটি পপ-আপ -->
+<div id="securityModal" class="modal-overlay">
     <div class="modal-content">
         <h3 style="margin-top:0; color:var(--primary);">⚠️ জরুরি নিরাপত্তা সতর্কতা</h3>
         <div class="alert-box">
-            অনাকাঙ্ক্ষিত ব্যবহার এবং প্রতারণা এড়াতে রক্তগ্রহীতার পরিচয় প্রদান বাধ্যতামূলক। আপনার প্রদত্ত তথ্য ও ফোন নম্বর আপনি যে রক্তদাতার প্রোফাইল চেক করবেন তার কাছে নোটিফিকেশন হিসেবে সংরক্ষিত হবে।
+            রক্তদাতার মোবাইল নম্বর দেখতে হলে আপনার পরিচয় প্রদান বাধ্যতামূলক। আপনার এই তথ্য ও ফোন নম্বর নিরাপত্তাজনিত কারণে সংশ্লিষ্ট রক্তদাতার নোটিফিকেশন ট্র্যাকে সংরক্ষিত হবে।
         </div>
         <form id="seekerForm">
             <label>আপনার পূর্ণ নাম <span style="color:red">*</span></label>
@@ -114,10 +132,11 @@
             <label>আপনার মোবাইল নম্বর <span style="color:red">*</span></label>
             <input type="tel" id="seekerPhone" required placeholder="01XXXXXXXXX">
 
-            <label>আপনার বর্তমান ঠিকানা/এলাকা <span style="color:red">*</span></label>
+            <label>আপনার বর্তমান ঠিকানা <span style="color:red">*</span></label>
             <input type="text" id="seekerAddress" required placeholder="যেমন: ধানমন্ডি, ঢাকা">
 
-            <button type="submit" class="btn">তথ্য জমা দিন ও রক্ত খুঁজুন</button>
+            <button type="submit" class="btn">তথ্য দিয়ে নম্বর দেখুন</button>
+            <button type="button" class="btn" style="background:#ccc; color:#333; margin-top:8px;" onclick="closeModal()">বাতিল</button>
         </form>
     </div>
 </div>
@@ -142,39 +161,25 @@
     const storage = getStorage(app);
 
     let currentSeeker = null;
-
-    // পপ-আপ ইনফো সেভ করার সাবমিশন
-    document.getElementById('seekerForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('seekerName').value.trim();
-        const phone = document.getElementById('seekerPhone').value.trim();
-        const address = document.getElementById('seekerAddress').value.trim();
-
-        if (name && phone && address) {
-            currentSeeker = { name, phone, address };
-            document.getElementById('securityModal').style.display = 'none';
-            loadDonors();
-        }
-    });
+    let selectedDonor = null;
 
     window.switchTab = function(tab) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+        
+        event.target.classList.add('active');
         if(tab === 'find') {
             document.getElementById('findSection').classList.add('active');
-            event.target.classList.add('active');
-            if(!currentSeeker) {
-                document.getElementById('securityModal').style.display = 'flex';
-            } else {
-                loadDonors();
-            }
-        } else {
+            loadDonors();
+        } else if(tab === 'register') {
             document.getElementById('registerSection').classList.add('active');
-            event.target.classList.add('active');
+        } else if(tab === 'leaderboard') {
+            document.getElementById('leaderboardSection').classList.add('active');
+            loadLeaderboard();
         }
     }
 
-    // ছবি ছোট বা কম্প্রেস করার ফাংশন
+    // ছবি কম্প্রেশন ফাংশন
     function compressImage(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
@@ -197,9 +202,7 @@
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-                    canvas.toBlob((blob) => {
-                        resolve(blob);
-                    }, 'image/jpeg', 0.7);
+                    canvas.toBlob((blob) => { resolve(blob); }, 'image/jpeg', 0.7);
                 }
             }
         });
@@ -209,7 +212,7 @@
     document.getElementById('donorForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const msg = document.getElementById('regMsg');
-        msg.textContent = "তথ্য আপলোড হচ্ছে, অপেক্ষা করুন...";
+        msg.textContent = "তথ্য আপলোড হচ্ছে...";
 
         try {
             let photoUrl = "";
@@ -227,22 +230,21 @@
                 group: document.getElementById('dGroup').value,
                 address: document.getElementById('dAddress').value,
                 phone: document.getElementById('dPhone').value,
+                donationCount: parseInt(document.getElementById('dDonationCount').value) || 1,
                 photo: photoUrl,
                 status: "approved",
                 createdAt: new Date()
             });
 
-            msg.textContent = "✅ সফলভাবে নিবন্ধন সম্পন্ন হয়েছে!";
+            msg.textContent = "✅ সফলভাবে ডোনার হিসেবে নিবন্ধিত হয়েছেন!";
             document.getElementById('donorForm').reset();
         } catch (error) {
-            msg.textContent = "❌ ত্রুটি হয়েছে: " + error.message;
+            msg.textContent = "❌ ত্রুটি: " + error.message;
         }
     });
 
-    // ফিল্টার অনুযায়ী ডোনার লিস্ট লোড করা
+    // ডোনার লিস্ট লোড করা
     async function loadDonors() {
-        if(!currentSeeker) return;
-
         const listDiv = document.getElementById('donorList');
         const selectedGroup = document.getElementById('searchGroup').value;
         const selectedAddress = document.getElementById('searchAddress').value.toLowerCase().trim();
@@ -255,11 +257,7 @@
 
             querySnapshot.forEach((doc) => {
                 const d = doc.data();
-                
-                // রক্তের গ্রুপ ফিল্টার
                 if(selectedGroup && d.group !== selectedGroup) return;
-                
-                // এলাকা ফিল্টার
                 if(selectedAddress && !d.address.toLowerCase().includes(selectedAddress)) return;
 
                 count++;
@@ -269,10 +267,10 @@
                             <img src="${d.photo || 'https://via.placeholder.com/60'}" alt="User">
                             <div class="donor-details" style="margin-left:15px;">
                                 <h3 style="margin:0;">${d.name} <span class="badge">${d.group}</span></h3>
-                                <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${d.address}</p>
+                                <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${d.address} | 🩸 ${d.donationCount || 1} বার দান</p>
                             </div>
                         </div>
-                        <button class="btn" style="width:auto; padding:8px 14px; margin:0;" onclick="revealNumber('${d.phone}', '${d.name}')">নম্বর দেখুন</button>
+                        <button class="btn" style="width:auto; padding:8px 14px; margin:0;" onclick="handleContactClick('${d.phone}', '${d.name}')">নম্বর দেখুন</button>
                     </div>
                 `;
             });
@@ -284,30 +282,103 @@
     }
     window.loadDonors = loadDonors;
 
-    // নম্বর দেখার সময় ফায়ারবেসে ট্র্যাকিং লগ সেভ
-    window.revealNumber = async function(donorPhone, donorName) {
+    // "নম্বর দেখুন" এ ক্লিক করলে পপআপ দেখানো অথবা ডিরেক্ট নম্বর রিভিল করা
+    window.handleContactClick = function(phone, name) {
+        selectedDonor = { phone, name };
         if (!currentSeeker) {
-            alert("অনুগ্রহ করে প্রথমে আপনার তথ্য প্রদান করুন।");
             document.getElementById('securityModal').style.display = 'flex';
-            return;
+        } else {
+            revealNumber();
         }
+    }
+
+    window.closeModal = function() {
+        document.getElementById('securityModal').style.display = 'none';
+    }
+
+    // পপআপ ফর্ম সাবমিট হলে ইনফো সেভ করা এবং নম্বর দেখানো
+    document.getElementById('seekerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('seekerName').value.trim();
+        const phone = document.getElementById('seekerPhone').value.trim();
+        const address = document.getElementById('seekerAddress').value.trim();
+
+        if (name && phone && address) {
+            currentSeeker = { name, phone, address };
+            document.getElementById('securityModal').style.display = 'none';
+            revealNumber();
+        }
+    });
+
+    // ফায়ারবেসে লগ সেভ করে নম্বর স্ক্রিনে ফাস করা
+    async function revealNumber() {
+        if (!selectedDonor || !currentSeeker) return;
 
         try {
-            // অ্যাক্টিভিটি নোটিফিকেশন ট্র্যাকিং
             await addDoc(collection(db, "activity_logs"), {
-                donorName: donorName,
-                donorPhone: donorPhone,
+                donorName: selectedDonor.name,
+                donorPhone: selectedDonor.phone,
                 seekerName: currentSeeker.name,
                 seekerPhone: currentSeeker.phone,
                 seekerAddress: currentSeeker.address,
                 timestamp: new Date()
             });
 
-            alert(`📞 ${donorName}-এর মোবাইল নম্বর: ${donorPhone}\n\n(আপনার যোগাযোগের রেকর্ড ও পরিচয় নিরাপত্তাজনিত কারণে ডোনারের ট্র্যাকিং লগে সংরক্ষিত হলো।)` );
+            alert(`📞 ${selectedDonor.name}-এর মোবাইল নম্বর: ${selectedDonor.phone}\n\n(সতর্কতা: আপনার পরিচয় ডোনারের ট্র্যাকিং লগে সংরক্ষিত হয়েছে।)`);
         } catch (error) {
-            alert("নম্বরটি প্রদর্শন করা হচ্ছে: " + donorPhone);
+            alert(`মোবাইল নম্বর: ${selectedDonor.phone}`);
         }
     }
+
+    // লিডারবোর্ড লোড করার ফাংশন
+    async function loadLeaderboard() {
+        const lbDiv = document.getElementById('leaderboardList');
+        lbDiv.innerHTML = "লিডারবোর্ড তৈরি হচ্ছে...";
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "donors"));
+            let donors = [];
+            querySnapshot.forEach((doc) => {
+                donors.push(doc.data());
+            });
+
+            // রক্তদানের সংখ্যার উপর ভিত্তি করে বড় থেকে ছোট সাজানো (Descending Sort)
+            donors.sort((a, b) => (b.donationCount || 1) - (a.donationCount || 1));
+
+            if(donors.length === 0) {
+                lbDiv.innerHTML = "<p style='text-align:center;'>এখনো কোনো ডোনারের তথ্য নেই।</p>";
+                return;
+            }
+
+            let html = `<table>
+                <tr>
+                    <th>অবস্থান</th>
+                    <th>নাম</th>
+                    <th>গ্রুপ</th>
+                    <th>এলাকা</th>
+                    <th>মোট রক্তদান</th>
+                </tr>`;
+
+            donors.forEach((d, index) => {
+                let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1);
+                html += `<tr>
+                    <td><b>${medal}</b></td>
+                    <td>${d.name}</td>
+                    <td><span class="badge">${d.group}</span></td>
+                    <td>${d.address}</td>
+                    <td><b style="color:var(--danger);">${d.donationCount || 1} বার</b></td>
+                </tr>`;
+            });
+
+            html += `</table>`;
+            lbDiv.innerHTML = html;
+        } catch (error) {
+            lbDiv.innerHTML = "লিডারবোর্ড লোড করতে সমস্যা হয়েছে।";
+        }
+    }
+
+    // প্রথমবার পেজ ওপেন হলে ডোনার লিস্ট লোড করবে
+    loadDonors();
 </script>
 
 </body>
