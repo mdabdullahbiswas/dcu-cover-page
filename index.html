@@ -48,6 +48,8 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,34,64,.35)
 .preview-section{flex:1.3;min-width:360px;display:flex;flex-direction:column;align-items:center}
 .preview-section>h2{margin-bottom:15px;color:#0a2240;font-size:20px}
 .a4-page{width:210mm;height:297mm;background:#fff;position:relative;box-shadow:0 10px 35px rgba(0,0,0,.18);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transform:scale(.72);transform-origin:top center;margin-bottom:-78mm;transition:all .3s}
+/* বাইন্ডিং মার্জিন: পেজ ডানে সরে আসে, বাম পাশে ধূসর বাইন্ডিং এলাকা */
+.a4-page{width:calc(210mm - var(--gut,0mm));margin-left:var(--gut,0mm);box-shadow:calc(-1*var(--gut,0mm)) 0 0 #d9e1ea,0 10px 35px rgba(0,0,0,.18)}
 /* Royal Classic */
 .theme-classic{padding:16mm 18mm 14mm}
 .theme-classic .top-accent-bar{position:absolute;top:0;left:0;width:100%;height:5mm;background:var(--pri)}
@@ -173,7 +175,7 @@ html,body{background:#fff;margin:0;padding:0}
 header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 .container{padding:0;margin:0;max-width:none;display:block}
 .preview-section{width:100%;margin:0;padding:0;display:block}
-.a4-page{transform:none!important;margin:0!important;box-shadow:none!important;width:210mm!important;height:296mm!important;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.a4-page{transform:none!important;margin:0 0 0 var(--gut,0mm)!important;box-shadow:none!important;width:calc(210mm - var(--gut,0mm))!important;height:296mm!important;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body data-page="index">
@@ -207,6 +209,8 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 
 <div class="row2"><div><label>💧 ওয়াটারমার্ক:</label><select id="wm"><option value="auto">টেমপ্লেট অনুযায়ী</option><option value="on">চালু</option><option value="off">বন্ধ</option></select></div>
 <div><label>✍️ স্বাক্ষরের স্থান:</label><select id="sign"><option value="off">বন্ধ</option><option value="on">চালু</option></select></div></div>
+<label>📎 বাইন্ডিং মার্জিন (বাম পাশে):</label><select id="gut"><option value="0">বন্ধ</option><option value="5">৫ মিমি — হালকা স্ট্যাপল</option><option value="10">১০ মিমি — স্ট্যাপল / ক্লিপ</option><option value="15">১৫ মিমি — স্পাইরাল</option><option value="20">২০ মিমি — হার্ড বাইন্ডিং</option></select>
+<p class="hint">বাইন্ডিংয়ে বাম পাশ ঢাকা পড়ে; এটি দিলে লেখা ও বর্ডার ডানে সরে আসবে। প্রিভিউতে ধূসর অংশটিই বাইন্ডিং এলাকা।</p>
 <label>ক্যাম্পাসের নাম:</label>
 <input type="text" id="campus" list="campusList" placeholder="e.g. MAIN CAMPUS">
 <label>ডিপার্টমেন্ট:</label>
@@ -361,6 +365,7 @@ function render(){
   const grp = $('mode').value === 'group';
   cover.className = 'a4-page ' + $('templateSelector').value + ' bs-' + $('bs').value + ($('lang').value === 'bn' ? ' bn-lang' : '') + ' wm-' + $('wm').value;
   $('prev-sign').style.display = $('sign').value === 'on' ? 'flex' : 'none';
+  document.documentElement.style.setProperty('--gut', (+$('gut').value || 0) + 'mm');
   cover.style.setProperty('--font', "'" + $('font').value + "'");
   document.querySelectorAll('.tpl').forEach(b => b.classList.toggle('on', b.dataset.v === $('templateSelector').value));
   document.body.classList.toggle('grp', grp);
@@ -407,7 +412,7 @@ async function downloadPNG(){
   try {
     const c = await html2canvas($('cover-template'), {
       scale: 3, useCORS: true, backgroundColor: '#ffffff',
-      onclone: d => { const e = d.getElementById('cover-template'); e.style.transform = 'none'; e.style.margin = '0'; }
+      onclone: d => { const e = d.getElementById('cover-template'); e.style.transform = 'none'; e.style.margin = '0'; e.style.width = '210mm'; }
     });
     const a = document.createElement('a');
     a.download = 'cover-page-' + (val('studentName').replace(/\s+/g, '-') || 'dcu') + '.png';
@@ -431,7 +436,7 @@ function resetAll(){
 }
 
 
-const EXTRA = ['docType','lang','digits','font','bs','dateFmt','wm','sign'];
+const EXTRA = ['docType','lang','digits','font','bs','dateFmt','wm','sign','gut'];
 const CHK = ['pgDecl','pgAppr','pgAck','pgToc'];
 const LG = {
   en:{uni:'DHAKA CENTRAL UNIVERSITY',by:'SUBMITTED BY',byg:'SUBMITTED BY (GROUP)',to:'SUBMITTED TO',roll:'Class Roll:',cls:'Class/Degree:',ses:'Session:',mob:'Mobile No:',dt:'Submission Date:',course:'COURSE: ',r:'Roll: ',col:'Dhaka Central University',sg1:"Student's Signature",sg2:"Teacher's Signature"},
@@ -496,7 +501,7 @@ function downloadDoc(){
   const to = kids('prev-teachers').map(x => esc(x.textContent)).concat([t('prev-tdept'), t('prev-tcampus')]);
   const li = arr => arr.map(x => '<p style="margin:4pt 0;font-size:12pt">' + x + '</p>').join('');
   const course = $('prev-course').style.display === 'none' ? '' : '<p style="font-size:12pt;color:' + a + '"><b>' + t('prev-course') + '</b></p>';
-  const h = '<html><head><meta charset="utf-8"><style>@page{size:21cm 29.7cm;margin:2cm}body{font-family:Calibri,Arial,sans-serif;color:#111}</style></head><body>' +
+  const h = '<html><head><meta charset="utf-8"><style>@page{size:21cm 29.7cm;margin:2cm 2cm 2cm '+(2 + (+$('gut').value || 0) / 10)+'cm}body{font-family:Calibri,Arial,sans-serif;color:#111}</style></head><body>' +
     '<h1 align="center" style="color:' + p + ';font-size:26pt;margin:30pt 0 4pt">' + t('prev-uni') + '</h1>' +
     '<p align="center" style="color:' + a + ';font-size:13pt"><b>' + t('prev-campus') + '</b></p>' +
     '<p align="center" style="font-size:14pt;margin:18pt 0"><b>' + t('prev-dept') + '</b></p><hr style="color:' + p + '">' +
@@ -533,6 +538,8 @@ const UI = Object.fromEntries([
 ['ছবি প্রস্তুত করা হচ্ছে...','Preparing image...'],['ডাউনলোড শুরু হয়েছে','Download started'],['ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন','Could not create the image; please use PDF'],['লিংক কপি করা হয়েছে','Link copied'],['প্রোফাইল সংরক্ষিত হয়েছে','Profile saved'],['প্রোফাইল লোড হয়েছে','Profile loaded'],['ছবির আকার বড়, সংরক্ষণ করা যায়নি','Image too large to save'],['Word ফাইল ডাউনলোড হয়েছে','Word file downloaded'],
 ['লিংকটি কপি করুন:','Copy this link:'],['আপনি কি সব তথ্য মুছে ফেলতে চান?','Clear all data?'],['প্রোফাইলের নাম লিখুন (উদাহরণ: CSE-101 – রহমান স্যার):','Profile name (e.g. CSE-101 – Prof. Rahman):'],['এই প্রোফাইলটি মুছে ফেলতে চান?','Delete this profile?'],
 ['১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।','1/4 — Start by choosing a template.'],['২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।','2/4 — Pick a theme colour you like.'],['৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।','3/4 — Fill in department, course and your details; the preview updates live.'],['৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।','4/4 — Finally, download as PDF, PNG or Word.']
+['📎 বাইন্ডিং মার্জিন (বাম পাশে):','📎 Binding Margin (left side):'],['৫ মিমি — হালকা স্ট্যাপল','5 mm — light staple'],['১০ মিমি — স্ট্যাপল / ক্লিপ','10 mm — staple / clip'],['১৫ মিমি — স্পাইরাল','15 mm — spiral'],['২০ মিমি — হার্ড বাইন্ডিং','20 mm — hard binding'],
+['বাইন্ডিংয়ে বাম পাশ ঢাকা পড়ে; এটি দিলে লেখা ও বর্ডার ডানে সরে আসবে। প্রিভিউতে ধূসর অংশটিই বাইন্ডিং এলাকা।','Binding hides part of the left edge. This shifts text and borders to the right; the grey strip in the preview is the binding area.']
 ]);
 const T = b => SL === 'en' ? (UI[b] || b) : b;
 function applyUI(){
