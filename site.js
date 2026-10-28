@@ -11,10 +11,10 @@ var DEV = {
     ['LinkedIn', 'https://www.linkedin.com/in/md-abdullah-biswas/'],
     ['Instagram', 'https://www.instagram.com/mdabdullah84_biswas/']
   ],
-  skills: [],                                        // যেমন: ['HTML','CSS','JavaScript']
+  skills: [],
   repo: 'https://github.com/mdabdullahbiswas/dcu-cover-page'
 };
-var RESULT_URL = 'https://result.7college.du.ac.bd/';   // রেজাল্ট পেজের লিংক
+var RESULT_URL = 'https://result.7college.du.ac.bd/';
 var COLS = [['Dhaka College','ঢাকা কলেজ'],['Eden Mohila College','ইডেন মহিলা কলেজ'],['Government Titumir College','সরকারি তিতুমীর কলেজ'],['Government Bangla College','সরকারি বাঙলা কলেজ'],['Begum Badrunnessa Government Mohila College','বেগম বদরুন্নেসা সরকারি মহিলা কলেজ'],['Government Shaheed Suhrawardy College','সরকারি শহীদ সোহরাওয়ার্দী কলেজ'],['Kabi Nazrul Government College','কবি নজরুল সরকারি কলেজ']];
 var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Arabic','আরবি'],['History','ইতিহাস'],['Islamic History & Culture','ইসলামের ইতিহাস ও সংস্কৃতি'],['Philosophy','দর্শন'],['Islamic Studies','ইসলামিক স্টাডিজ'],['Political Science','রাষ্ট্রবিজ্ঞান'],['Sociology','সমাজবিজ্ঞান'],['Social Work','সমাজকর্ম'],['Economics','অর্থনীতি'],['Marketing','মার্কেটিং'],['Finance & Banking','ফিন্যান্স এন্ড ব্যাংকিং'],['Accounting','হিসাববিজ্ঞান'],['Management','ব্যবস্থাপনা'],['Physics','পদার্থবিজ্ঞান'],['Chemistry','রসায়ন'],['Botany','উদ্ভিদবিজ্ঞান'],['Zoology','প্রাণিবিদ্যা'],['Mathematics','গণিত'],['Geography & Environment','ভূগোল ও পরিবেশ'],['Soil Science','মৃত্তিকাবিজ্ঞান'],['Psychology','মনোবিজ্ঞান'],['Home Economics','গার্হস্থ্য অর্থনীতি'],['Statistics','পরিসংখ্যান']];
 /* ===================================================================== */
@@ -25,7 +25,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var $L = function (s) { var p = String(s).split('|'); return SL === 'en' && p[1] ? p[1] : p[0]; };
   window.$L = $L; window.$lang = function () { return SL; };
 
-  // রেজাল্ট টুলস ড্রপডাউনের ভেতরে যুক্ত করা হয়েছে
+  // টুলস ড্রপডাউন তালিকা (রেজাল্টসহ)
   var TL = [
     ['card', 'শেয়ার কার্ড|Share Card'],
     ['frame', 'প্রোফাইল ফ্রেম|Profile Frame'],
@@ -40,7 +40,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var tl = TL.map(function (a) { return '<a class="t" href="tools.html#' + a[0] + '">' + a[1] + '</a>'; }).join('');
   var isI = P === 'index';
 
-  // মূল মেনুবার থেকে রেজাল্ট অপশনটি বাদ দিয়ে টুলস ড্রপডাউনে নেওয়া হয়েছে
+  // হেডার: গাইড বাটন (❓) এখন প্রতিটি পেজেই সবসময় থাকবে
   var hd = '<div class="sh" role="banner"><div class="sh-in">' +
     '<a class="brand" href="./"><img src="logo.png" alt="" onerror="this.remove()"><span>Dhaka Central University</span></a>' +
     '<nav class="mn" id="mn" aria-label="Main">' +
@@ -49,12 +49,13 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '<a class="t' + (P === 'blood' ? ' on' : '') + '" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a>' +
     '<a class="t' + (P === 'about' ? ' on' : '') + '" href="about.html">সম্পর্কে|About</a>' +
     '<a class="t' + (P === 'feedback' ? ' on' : '') + '" href="feedback.html">মতামত|Feedback</a></nav>' +
-    '<div class="ut">' + (isI ? '<button type="button" id="helpBtn" onclick="tour(0)" title="Guide">❓</button>' : '') +
-    '<button type="button" id="langBtn"' + (isI ? ' onclick="setSite(SL===\'bn\'?\'en\':\'bn\')"' : '') + ' title="Language">' + (SL === 'bn' ? 'EN' : 'বাং') + '</button>' +
+    '<div class="ut">' +
+    '<button type="button" id="helpBtn" title="গাইড / Guide">❓</button>' +
+    '<button type="button" id="langBtn" title="Language">' + (SL === 'bn' ? 'EN' : 'বাং') + '</button>' +
     '<button type="button" id="darkBtn" onclick="toggleDark()" title="Theme">🌙</button>' +
     '<button type="button" id="mt" aria-label="Menu" aria-expanded="false">☰</button></div></div></div>';
 
-  /* ---------- সোশ্যাল আইকন (ইনলাইন SVG: কোনো বাইরের ফাইল/ইন্টারনেট লাগে না) ---------- */
+  /* ---------- সোশ্যাল আইকন ---------- */
   var IC = {
     github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',
     facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
@@ -87,7 +88,21 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.sf .soc a.si:hover,.sf .soc a.si:focus-visible{color:#fff!important}' +
     '.ln{gap:10px!important}' +
     '#hdr{position:sticky;top:0;z-index:50}' +
-    'html{scroll-padding-top:76px}';
+    'html{scroll-padding-top:76px}' +
+    /* ইউনিভার্সাল গাইড বক্স স্টাইল */
+    '.dcu-tour-box{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:min(92vw,430px);background:var(--cd,#fff);color:var(--ink,#1c2733);border:1.5px solid var(--ln,#d5dde6);border-radius:14px;padding:18px 20px;box-shadow:0 12px 36px rgba(0,0,0,.28);z-index:99999;font-family:inherit;animation:dcuTourIn .2s ease-out}' +
+    '@keyframes dcuTourIn{from{transform:translateX(-50%) translateY(14px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}' +
+    '.dcu-tour-hl{outline:3.5px solid #e5a83b!important;outline-offset:4px!important;border-radius:8px!important;transition:outline .2s!important}' +
+    '.dcu-tour-step{font-size:12px;font-weight:700;color:#e5a83b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}' +
+    '.dcu-tour-title{font-size:17px;font-weight:800;color:var(--n,#0a2240);margin-bottom:6px}' +
+    'body.dark .dcu-tour-title{color:#e5a83b}' +
+    '.dcu-tour-txt{font-size:14px;line-height:1.6;margin-bottom:14px;color:var(--mu,#5d6b7a)}' +
+    'body.dark .dcu-tour-txt{color:#cfd8e6}' +
+    '.dcu-tour-acts{display:flex;justify-content:space-between;align-items:center;gap:8px}' +
+    '.dcu-tour-btn{border:0;border-radius:8px;padding:8px 15px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}' +
+    '.dcu-tour-btn.next{background:#0a2240;color:#e5a83b}' +
+    'body.dark .dcu-tour-btn.next{background:#e5a83b;color:#0a2240}' +
+    '.dcu-tour-btn.skip{background:transparent;color:var(--mu,#6c7a89);border:1px solid var(--ln,#d5dde6)}';
   document.head.appendChild(st);
 
   var soc = '<div class="soc">' + DEV.links.filter(function (l) { return l[1]; }).map(function (l) { return $SOC(l[0], l[1]); }).join('') +
@@ -140,19 +155,108 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   document.getElementById('wa').href = 'https://wa.me/?text=' + u;
   document.getElementById('fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + u;
 
-  if (!isI) {
-    window.toggleDark = function () {
-      var d = document.body.classList.toggle('dark');
-      document.getElementById('darkBtn').textContent = d ? '☀️' : '🌙';
-      try { localStorage.setItem('dcuDark', d ? '1' : ''); } catch (e) {}
-    };
-    try { if (localStorage.getItem('dcuDark')) window.toggleDark(); } catch (e) {}
-    document.getElementById('langBtn').onclick = function () {
-      SL = SL === 'bn' ? 'en' : 'bn';
-      try { localStorage.setItem('dcuSL', SL); } catch (e) {}
-      applyL();
+  window.toggleDark = function () {
+    var d = document.body.classList.toggle('dark');
+    document.getElementById('darkBtn').textContent = d ? '☀️' : '🌙';
+    try { localStorage.setItem('dcuDark', d ? '1' : ''); } catch (e) {}
+  };
+  try { if (localStorage.getItem('dcuDark')) window.toggleDark(); } catch (e) {}
+  document.getElementById('langBtn').onclick = function () {
+    SL = SL === 'bn' ? 'en' : 'bn';
+    try { localStorage.setItem('dcuSL', SL); } catch (e) {}
+    applyL();
+  };
+
+  /* ================== প্রতিটি পেজের স্মার্ট গাইড সিস্টেম ================== */
+  var TOURS = {
+    index: [
+      ['.gal, #templateSelector', 'টেমপ্লেট নির্বাচন|Choose Template', 'আপনার পছন্দের কভার পেজ ডিজাইন (Classic, Minimal, Executive ইত্যাদি) বেছে নিন।|Select your preferred cover page design (Classic, Minimal, Executive, etc.).'],
+      ['.themes', 'থিমের রং|Theme Colour', 'পছন্দের রঙের কম্বিনেশন বেছে নিন অথবা কাস্টম কালার পিকার দিয়ে রং দিন।|Pick a university color combination or set custom theme colors.'],
+      ['#dept, #topic, #studentName', 'তথ্য পূরণ|Enter Details', 'ডিপার্টমেন্ট, কোর্সের নাম, রোল ও শিক্ষকের তথ্য দিন; ডানপাশে সরাসরি লাইভ প্রিভিউ দেখতে পাবেন।|Enter department, course, roll and teacher details; preview updates live.'],
+      ['.btns', 'ডাউনলোড ও প্রিন্ট|Download & Print', 'সবশেষে PDF, PNG বা ওয়ার্ড (Word) ফাইল আকারে কভার পেজটি ডাউনলোড করুন।|Finally, download your ready cover page as PDF, PNG or editable Word file.']
+    ],
+    blood: [
+      ['#findSection .filter-grid, .tabs', 'রক্ত খুঁজুন|Find Blood', 'রক্তের গ্রুপ ও এলাকা দিয়ে সার্চ করে সহজে নিকটস্থ রক্তদাতাদের খুঁজুন।|Search by blood group and area to find donors quickly.'],
+      ['#urgentSection, #urgentTicker, #urgentBanner', 'জরুরি রক্তের অনুরোধ|Urgent Requests', 'জরুরি মুহূর্তে রোগীর জন্য রক্তের প্রয়োজন হলে সরাসরি অনুরোধ পোস্ট করুন।|Post an urgent blood request if blood is required for a patient.'],
+      ['#registerSection', 'ডোনার নিবন্ধন|Become a Donor', 'নিজে রক্তদাতা হিসেবে যুক্ত হতে এই ফর্মটি পূরণ করে গুগল দিয়ে সাইন ইন করুন।|Fill out this form and sign in with Google to register as a blood donor.'],
+      ['#notifySection', 'নিরাপত্তা ও নোটিফিকেশন|Safety & Notifications', 'আপনার মোবাইল নম্বর কে কে দেখেছে তা নোটিফিকেশন লগে সুরক্ষিত থাকবে।|See who viewed your phone number in secure tracking notifications.']
+    ],
+    tools: [
+      ['.tabs', 'টুলস নির্বাচন|Select Tool', 'শেয়ার কার্ড, সিভি বিল্ডার, ক্লাস রুটিন, CGPA ক্যালকুলেটরসহ যেকোনো টুলে ক্লিক করে কাজ শুরু করুন।|Switch between Share Card, CV Builder, Class Routine, CGPA Calculator, and more.'],
+      ['main section.on, .bx', 'টুলের ব্যবহার|Using the Tool', 'প্রয়োজনীয় তথ্য দিলে স্ক্রিনে সঙ্গে সঙ্গে ফলাফল, রুটিন বা প্রিভিউ তৈরি হয়ে যাবে।|Fill in the fields to generate instant results, charts, or printable previews.'],
+      ['.pv', '১০০% নিরাপদ ও গোপনীয়|100% Private & Safe', 'আপনার কোনো তথ্য সার্ভারে যায় না; সবকিছু সম্পূর্ণ আপনার ডিভাইসের ব্রাউজারেই প্রসেস হয়।|All data stays only on your device browser; nothing is sent to any server.']
+    ],
+    about: [
+      ['.hero', 'পরিচিতি|About Developer', 'সরকারি বাঙলা কলেজের শিক্ষার্থী কর্তৃক উন্মুক্ত শিক্ষা উদ্যোগ হিসেবে সাইটটি নির্মিত।|Developed by a student of Govt. Bangla College as an open student initiative.'],
+      ['.bx:nth-of-type(2)', 'প্রজেক্ট সম্পর্কে|About Project', 'শিক্ষার্থীদের প্রতিদিনের কাজ ও কভার পেজ তৈরির প্রক্রিয়া সহজ করাই এর লক্ষ্য।|The mission is to make daily study tools and cover page creation free and easy.'],
+      ['#privacy', 'গোপনীয়তা নীতি|Privacy First', 'আপনার কোনো ফাইল বা তথ্য সার্ভারে জমা হয় না, ব্রাউজারের ভেতর নিরাপদ থাকে।|Your files and data remain strictly inside your device browser.']
+    ],
+    feedback: [
+      ['#ft', 'বার্তার ধরন|Feedback Type', 'পরামর্শ, বাগ রিপোর্ট বা প্রশ্ন—সঠিক ধরনটি বেছে নিন।|Choose whether you have a suggestion, bug report, or question.'],
+      ['#fm', 'আপনার বার্তা|Your Message', 'আপনার মতামত, সমস্যা বা ধারণার কথা বিস্তারিত লিখুন।|Write your thoughts, ideas, or problems you encountered here.'],
+      ['#fb2, #ct', 'বার্তা পাঠান|Send Message', 'Gmail, WhatsApp বা GitHub-এর মাধ্যমে সরাসরি ডেভেলপারের কাছে বার্তা পাঠান।|Send your message directly via Gmail, WhatsApp, or GitHub.']
+    ],
+    photo: [
+      ['#file, #size', 'ছবি ও মাপ|Upload & Size', 'ছবি আপলোড করুন এবং পাসপোর্ট বা স্ট্যাম্প মাপ নির্বাচন করুন।|Upload any portrait photo and select Passport or Stamp photo size.'],
+      ['#rm, #bg', 'ব্যাকগ্রাউন্ড পরিবর্তন|Background Change', 'AI দিয়ে ব্যাকগ্রাউন্ড মুছে সাদা, নীল বা যেকোনো ব্যাকগ্রাউন্ড সেট করুন।|Remove background using AI and pick official white, blue, or custom color.'],
+      ['#z, #af', 'ফ্রেমিং ও টাচ-আপ|Framing & Touchup', 'মুখ স্বয়ংক্রিয়ভাবে ফ্রেমে সাজান এবং ব্রাশ দিয়ে কিনারা নিখুঁত করুন।|Auto-fit the face and use the touchup brush to perfect beard and hair edges.'],
+      ['#d1, #d2, #pr', 'ডাউনলোড ও প্রিন্ট|Download & Print', 'একটি ছবি ডাউনলোড করুন অথবা পুরো A4 শিটে সাজিয়ে প্রিন্ট করুন।|Download a single photo or arrange multiple copies on an A4 sheet for instant printing.']
+    ]
+  };
+
+  var curStep = 0, activeSteps = [];
+  function closeTour() {
+    document.querySelectorAll('.dcu-tour-hl').forEach(function(e) { e.classList.remove('dcu-tour-hl'); });
+    var b = document.getElementById('dcuTourBox'); if (b) b.remove();
+  }
+
+  function showTourStep(idx) {
+    closeTour();
+    if (idx >= activeSteps.length) return;
+    curStep = idx;
+    var s = activeSteps[idx];
+    var el = document.querySelector(s[0]);
+    if (el) {
+      el.classList.add('dcu-tour-hl');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    var box = document.createElement('div');
+    box.id = 'dcuTourBox';
+    box.className = 'dcu-tour-box';
+    var isLast = idx === activeSteps.length - 1;
+    box.innerHTML = '<div class="dcu-tour-step">' + $L('ধাপ|Step') + ' ' + (idx + 1) + ' / ' + activeSteps.length + '</div>' +
+      '<div class="dcu-tour-title">' + $L(s[1]) + '</div>' +
+      '<div class="dcu-tour-txt">' + $L(s[2]) + '</div>' +
+      '<div class="dcu-tour-acts">' +
+      '<button type="button" class="dcu-tour-btn skip" id="dcuTourSkip">' + $L('এড়িয়ে যান|Skip') + '</button>' +
+      '<button type="button" class="dcu-tour-btn next" id="dcuTourNext">' + $L(isLast ? 'সমাপ্ত|Finish' : 'পরবর্তী|Next') + '</button>' +
+      '</div>';
+    document.body.appendChild(box);
+    document.getElementById('dcuTourSkip').onclick = closeTour;
+    document.getElementById('dcuTourNext').onclick = function () {
+      if (isLast) closeTour();
+      else showTourStep(idx + 1);
     };
   }
+
+  window.startPageTour = function () {
+    var pg = document.body.dataset.page || '';
+    if (!pg) {
+      var path = location.pathname;
+      if (path.indexOf('blood') > -1) pg = 'blood';
+      else if (path.indexOf('tools') > -1) pg = 'tools';
+      else if (path.indexOf('about') > -1) pg = 'about';
+      else if (path.indexOf('feedback') > -1) pg = 'feedback';
+      else if (path.indexOf('photo') > -1) pg = 'photo';
+      else pg = 'index';
+    }
+    activeSteps = TOURS[pg] || TOURS.index;
+    showTourStep(0);
+  };
+  window.tour = window.startPageTour;
+
+  document.getElementById('helpBtn').onclick = window.startPageTour;
+
   applyL();
 })();
 
@@ -161,42 +265,40 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     if (document.body.dataset.page === 'blood') return;
 
     fetch("https://firestore.googleapis.com/v1/projects/dcu-blood-bank/databases/(default)/documents/blood_requests")
-        .then(res => res.json())
-        .then(data => {
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
             if (!data.documents || !data.documents.length) return;
-            const today = new Date().toISOString().slice(0, 10);
-            const openRequests = data.documents
-                .map(d => {
-                    const f = d.fields || {};
+            var today = new Date().toISOString().slice(0, 10);
+            var openRequests = data.documents
+                .map(function(d) {
+                    var f = d.fields || {};
                     return {
-                        group: f.group?.stringValue || '',
-                        hospital: f.hospital?.stringValue || '',
-                        area: f.area?.stringValue || '',
-                        status: f.status?.stringValue || '',
-                        neededDate: f.neededDate?.stringValue || ''
+                        group: (f.group && f.group.stringValue) || '',
+                        hospital: (f.hospital && f.hospital.stringValue) || '',
+                        area: (f.area && f.area.stringValue) || '',
+                        status: (f.status && f.status.stringValue) || '',
+                        neededDate: (f.neededDate && f.neededDate.stringValue) || ''
                     };
                 })
-                .filter(r => r.status === 'open' && r.neededDate >= today);
+                .filter(function(r) { return r.status === 'open' && r.neededDate >= today; });
 
             if (!openRequests.length) return;
-            const r = openRequests[0];
-            const isBn = (localStorage.getItem('dcuSL') || 'bn') === 'bn';
+            var r = openRequests[0];
+            var isBn = (localStorage.getItem('dcuSL') || 'bn') === 'bn';
 
-            const bar = document.createElement('a');
+            var bar = document.createElement('a');
             bar.href = 'blood.html';
             bar.className = 'global-blood-ticker';
             bar.style.display = 'flex';
-            bar.innerHTML = `
-                <div class="gbt-left">
-                    <span class="gbt-badge">${r.group}</span>
-                    <span>🚨 ${isBn ? 'জরুরি রক্ত প্রয়োজন:' : 'Urgent blood needed:'} <b>${r.hospital}</b> (${r.area})</span>
-                </div>
-                <div class="gbt-btn">${isBn ? 'বিস্তারিত দেখুন ›' : 'Details ›'}</div>
-            `;
+            bar.innerHTML = '<div class="gbt-left">' +
+                '<span class="gbt-badge">' + r.group + '</span>' +
+                '<span>🚨 ' + (isBn ? 'জরুরি রক্ত প্রয়োজন:' : 'Urgent blood needed:') + ' <b>' + r.hospital + '</b> (' + r.area + ')</span>' +
+                '</div>' +
+                '<div class="gbt-btn">' + (isBn ? 'বিস্তারিত দেখুন ›' : 'Details ›') + '</div>';
 
-            const hdr = document.getElementById('hdr');
+            var hdr = document.getElementById('hdr');
             if (hdr) hdr.insertAdjacentElement('afterend', bar);
             else document.body.insertAdjacentElement('afterbegin', bar);
         })
-        .catch(() => {});
+        .catch(function() {});
 })();
