@@ -21,7 +21,7 @@ body.dark .ddm{background:#182231}body.dark .ddm a{color:#e6edf5}body.dark .ddm 
 .sh .ut button:hover{background:#ffffff3a;transform:none;box-shadow:none}
 #mt{display:none}
 .sh :focus-visible,.sf :focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
-@media(max-width:860px){
+@media(max-width:1100px){
 .sh-in{flex-wrap:wrap;padding:8px 12px}
 .sh .brand{font-size:15px;flex:1;min-width:0}.brand img{width:30px;height:30px}
 #mt{display:inline-block}
