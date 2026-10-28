@@ -21,7 +21,7 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a2240">
 
-<!-- স্টাইলশিট লিংক -->
+<!-- স্টাইলশিট -->
 <link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="cover.css">
 </head>
@@ -29,7 +29,7 @@
 <div id="hdr"></div>
 
 <main class="container">
-<!-- ১. ইনপুট ফর্ম সেকশন -->
+<!-- ১. ইনপুট ফর্ম -->
 <section class="form-section">
 <h2>তথ্য প্রদান করুন</h2>
 <form id="coverForm" onsubmit="return false">
@@ -193,18 +193,45 @@
   <button type="button" class="mini alt2" onclick="tclear()">তালিকা মুছুন</button>
 </div>
 
+<!-- অতিরিক্ত পেজ সেকশন -->
 <hr>
 <h3>অতিরিক্ত পেজ (থিসিস / প্রজেক্ট)</h3>
-<label class="cb"><input type="checkbox" id="pgDecl"><span>ঘোষণাপত্র (Declaration)</span></label>
-<label class="cb"><input type="checkbox" id="pgAppr"><span>অনুমোদনপত্র (Approval Certificate)</span></label>
-<label class="cb"><input type="checkbox" id="pgAck"><span>কৃতজ্ঞতা স্বীকার (Acknowledgement)</span></label>
-<div id="ackBox" style="display:none">
-  <textarea id="ackText" rows="4" placeholder="Leave empty to use a default text"></textarea>
+
+<!-- ১. ঘোষণাপত্র -->
+<label class="cb">
+  <input type="checkbox" id="pgDecl">
+  <span>ঘোষণাপত্র (Declaration)</span>
+</label>
+<div id="declBox" style="display:none; margin-top:6px;">
+  <textarea id="declText" rows="3" placeholder="ডিফল্ট ঘোষণা রাখতে এটি ফাঁকা রাখুন অথবা নিজের মতো করে লিখুন"></textarea>
 </div>
-<label class="cb"><input type="checkbox" id="pgToc"><span>সূচিপত্র (Table of Contents)</span></label>
-<div id="tocBox" style="display:none">
-  <textarea id="tocText" rows="5" placeholder="Introduction | 1&#10;Methodology | 12"></textarea>
-  <p class="hint">প্রতি লাইনে: অধ্যায়ের নাম | পৃষ্ঠা নম্বর</p>
+
+<!-- ২. অনুমোদনপত্র -->
+<label class="cb">
+  <input type="checkbox" id="pgAppr">
+  <span>অনুমোদনপত্র (Approval Certificate)</span>
+</label>
+<div id="apprBox" style="display:none; margin-top:6px;">
+  <textarea id="apprText" rows="3" placeholder="ডিফল্ট অনুমোদন টেক্সট রাখতে এটি ফাঁকা রাখুন অথবা নিজের মতো করে লিখুন"></textarea>
+</div>
+
+<!-- ৩. কৃতজ্ঞতা স্বীকার -->
+<label class="cb">
+  <input type="checkbox" id="pgAck">
+  <span>কৃতজ্ঞতা স্বীকার (Acknowledgement)</span>
+</label>
+<div id="ackBox" style="display:none; margin-top:6px;">
+  <textarea id="ackText" rows="3" placeholder="ডিফল্ট কৃতজ্ঞতা স্বীকারোক্তি রাখতে এটি ফাঁকা রাখুন"></textarea>
+</div>
+
+<!-- ৪. সূচিপত্র -->
+<label class="cb">
+  <input type="checkbox" id="pgToc">
+  <span>সূচিপত্র (Table of Contents)</span>
+</label>
+<div id="tocBox" style="display:none; margin-top:6px;">
+  <textarea id="tocText" rows="5" placeholder="Introduction | 1&#10;Literature Review | 5&#10;Methodology | 12"></textarea>
+  <p class="hint">প্রতি লাইনে লিখুন: অধ্যায়ের নাম | পৃষ্ঠা নম্বর</p>
 </div>
 
 <p class="hint warn" id="ovWarn"></p>
@@ -219,9 +246,9 @@
 </form>
 </section>
 
-<!-- ২. লাইভ প্রিভিউ সেকশন -->
+<!-- ২. লাইভ প্রিভিউ -->
 <section class="preview-section">
-<h2>লাইভ প্রিভিউ</h2>
+<h2>লাইভ প্রিভিউ <span id="pageCountBadge" style="font-size:14px; color:var(--acc); font-weight:700;"></span></h2>
 <div id="cover-template" class="a4-page theme-classic">
   <div class="top-accent-bar"></div>
   <div class="inner-border"></div>
@@ -285,7 +312,7 @@
 <div id="tourBox"><p id="tourTxt"></p><div class="tb"><button type="button" class="mini alt2" onclick="tour(99)">এড়িয়ে যান</button><button type="button" class="mini" id="tourNext" onclick="tour(ti+1)">পরবর্তী</button></div></div>
 <div class="toast" id="toast"></div>
 
-<!-- স্ক্রিপ্ট ফাইল -->
+<!-- স্ক্রিপ্ট -->
 <script src="site.js"></script>
 <script src="cover.js"></script>
 </body>
