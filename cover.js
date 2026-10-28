@@ -180,9 +180,6 @@ const UI = Object.fromEntries([
   ['ছবির আকার বড়, সংরক্ষণ করা যায়নি','Image too large to save'],
   ['Word ফাইল ডাউনলোড হয়েছে','Word file downloaded'],
   ['লিংকটি কপি করুন:','Copy this link:'],
-  ['আপনি কি সব তথ্য মুছে ফেলতে চান?','Clear all data?'],
-  ['প্রোফাইলের নাম লিখুন (উদাহরণ: CSE-101 – রহমান স্যার):','Profile name (e.g. CSE-101 – Prof. Rahman):'],
-  ['এই প্রোফাইলটি মুছে ফেলতে চান?','Delete this profile?'],
   ['১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।','1/4 — Start by choosing a template.'],
   ['২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।','2/4 — Pick a theme colour you like.'],
   ['৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।','3/4 — Fill in department, course and your details; the preview updates live.'],
@@ -213,6 +210,84 @@ function toast(msg) {
   t.textContent = T(msg);
   t.classList.add('on');
   setTimeout(() => t.classList.remove('on'), 2200);
+}
+
+/* ========================================================
+   ✨ আধুনিক কাস্টম পপআপ মোডাল সিস্টেম (Browser Prompt Replacement)
+   ======================================================== */
+function showModal({ icon = '💾', title, text, input = false, value = '', placeholder = '', confirmText = 'ঠিক আছে', cancelText = 'বাতিল', isDanger = false, onConfirm }) {
+  const old = document.getElementById('customModalOverlay');
+  if (old) old.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'customModalOverlay';
+  overlay.className = 'c-modal-overlay';
+
+  overlay.innerHTML = `
+    <div class="c-modal-box">
+      <div class="c-modal-head">
+        <span class="c-modal-icon">${icon}</span>
+        <h3>${esc(title)}</h3>
+      </div>
+      ${text ? `<p class="c-modal-desc">${esc(text)}</p>` : ''}
+      ${input ? `<input type="text" id="cModalInput" class="c-modal-input" value="${esc(value)}" placeholder="${esc(placeholder)}" autocomplete="off" maxlength="60">` : ''}
+      <div class="c-modal-actions">
+        <button type="button" class="c-modal-btn cancel" id="cModalCancel">${esc(cancelText)}</button>
+        <button type="button" class="c-modal-btn confirm ${isDanger ? 'danger' : ''}" id="cModalConfirm">${esc(confirmText)}</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  requestAnimationFrame(() => overlay.classList.add('active'));
+
+  const inp = document.getElementById('cModalInput');
+  const confirmBtn = document.getElementById('cModalConfirm');
+  const cancelBtn = document.getElementById('cModalCancel');
+
+  if (inp) {
+    inp.focus();
+    inp.select();
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        confirmBtn.click();
+      }
+    });
+  } else {
+    confirmBtn.focus();
+  }
+
+  const close = () => {
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.remove(), 250);
+    document.removeEventListener('keydown', onKey);
+  };
+
+  const onKey = e => {
+    if (e.key === 'Escape') close();
+  };
+  document.addEventListener('keydown', onKey);
+
+  cancelBtn.onclick = close;
+  overlay.onclick = e => {
+    if (e.target === overlay) close();
+  };
+
+  confirmBtn.onclick = () => {
+    const enteredVal = inp ? inp.value.trim() : true;
+    if (input && !enteredVal) {
+      if (inp) {
+        inp.classList.add('shake');
+        inp.focus();
+        setTimeout(() => inp.classList.remove('shake'), 400);
+      }
+      return;
+    }
+    close();
+    if (typeof onConfirm === 'function') onConfirm(enteredVal);
+  };
 }
 
 function setTheme(p, a) {
@@ -488,7 +563,6 @@ function setSite(l, fromExternal = false) {
     try { localStorage.setItem('dcuSL', l); } catch(e){}
     if ($('langBtn')) $('langBtn').textContent = l === 'bn' ? 'EN' : 'বাং';
     applyUI();
-    // site.js থেকে এলে আবার $applyL কল হবে না (লুপ বন্ধ)
     if (!fromExternal && typeof window.$applyL === 'function') {
       window.$applyL(l);
     }
@@ -545,14 +619,25 @@ function profList(sel) {
   if (sel) s.value = sel;
 }
 
+// ✨ নতুন স্টাইলিশ মোডাল দিয়ে প্রোফাইল সেভ
 function profSave() {
-  const n = prompt(T('প্রোফাইলের নাম লিখুন (উদাহরণ: CSE-101 – রহমান স্যার):'));
-  if (!n) return;
-  const p = profs();
-  p[n] = get();
-  localStorage.setItem(PK, JSON.stringify(p));
-  profList(n);
-  toast('প্রোফাইল সংরক্ষিত হয়েছে');
+  const bn = SL === 'bn';
+  showModal({
+    icon: '💾',
+    title: bn ? 'প্রোফাইল সংরক্ষণ করুন' : 'Save Profile',
+    text: bn ? 'কোর্সের নাম বা শিক্ষকের তথ্য পরবর্তীতে দ্রুত ব্যবহারের জন্য একটি নাম দিয়ে সংরক্ষণ করুন:' : 'Save your course & teacher details to quickly load them anytime:',
+    input: true,
+    placeholder: bn ? 'যেমন: CSE-101 – রহমান স্যার' : 'e.g. CSE-101 – Prof. Rahman',
+    confirmText: bn ? 'সংরক্ষণ করুন' : 'Save',
+    cancelText: bn ? 'বাতিল' : 'Cancel',
+    onConfirm: (n) => {
+      const p = profs();
+      p[n] = get();
+      localStorage.setItem(PK, JSON.stringify(p));
+      profList(n);
+      toast('প্রোফাইল সংরক্ষিত হয়েছে');
+    }
+  });
 }
 
 function profLoad() {
@@ -560,13 +645,29 @@ function profLoad() {
   if (s) { apply(s); toast('প্রোফাইল লোড হয়েছে'); }
 }
 
+// ✨ নতুন স্টাইলিশ মোডাল দিয়ে প্রোফাইল ডিলিট
 function profDel() {
   const n = $('profSel').value;
-  if (!n || !confirm('"' + n + '" — ' + T('এই প্রোফাইলটি মুছে ফেলতে চান?'))) return;
-  const p = profs();
-  delete p[n];
-  localStorage.setItem(PK, JSON.stringify(p));
-  profList();
+  const bn = SL === 'bn';
+  if (!n) {
+    toast(bn ? 'আগে একটি প্রোফাইল নির্বাচন করুন' : 'Please select a profile first');
+    return;
+  }
+  showModal({
+    icon: '🗑️',
+    title: bn ? 'প্রোফাইল মুছে ফেলবেন?' : 'Delete Profile?',
+    text: `"${n}" — ` + (bn ? 'এই প্রোফাইলটি আপনি কি স্থায়ীভাবে মুছে ফেলতে চান?' : 'Are you sure you want to permanently delete this profile?'),
+    confirmText: bn ? 'মুছে ফেলুন' : 'Delete',
+    cancelText: bn ? 'বাতিল' : 'Cancel',
+    isDanger: true,
+    onConfirm: () => {
+      const p = profs();
+      delete p[n];
+      localStorage.setItem(PK, JSON.stringify(p));
+      profList();
+      toast(bn ? 'প্রোফাইল মুছে ফেলা হয়েছে' : 'Profile deleted');
+    }
+  });
 }
 
 function setLogo(src) {
@@ -706,14 +807,26 @@ function share() {
     .catch(() => prompt(T('লিংকটি কপি করুন:'), u));
 }
 
+// ✨ নতুন স্টাইলিশ মোডাল দিয়ে রিসেট
 function resetAll() {
-  if (!confirm(T('আপনি কি সব তথ্য মুছে ফেলতে চান?'))) return;
-  try { localStorage.removeItem(KEY); } catch(e){}
-  history.replaceState(null, '', location.pathname);
-  apply({});
+  const bn = SL === 'bn';
+  showModal({
+    icon: '⚠️',
+    title: bn ? 'সব তথ্য মুছে ফেলবেন?' : 'Reset All Information?',
+    text: bn ? 'আপনার কভার পেজের সমস্ত লেখা রিসেট হয়ে যাবে। আপনি কি নিশ্চিত?' : 'All the details entered will be reset. Are you sure?',
+    confirmText: bn ? 'হ্যাঁ, সব মুছুন' : 'Yes, Clear All',
+    cancelText: bn ? 'বাতিল' : 'Cancel',
+    isDanger: true,
+    onConfirm: () => {
+      try { localStorage.removeItem(KEY); } catch(e){}
+      history.replaceState(null, '', location.pathname);
+      apply({});
+      toast(bn ? 'সব তথ্য মুছে ফেলা হয়েছে' : 'All data cleared');
+    }
+  });
 }
 
-// ন্যাভবার ভাষা পরিবর্তন হ্যান্ডলার (রিকার্শন বন্ধ সহ)
+// ন্যাভবার ভাষা পরিবর্তন হ্যান্ডলার
 window.onLang = function(l) {
   const targetLang = l || (typeof window.$lang === 'function' ? window.$lang() : localStorage.getItem('dcuSL')) || 'bn';
   setSite(targetLang, true);
