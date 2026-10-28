@@ -445,6 +445,19 @@ function cgC(){
  const bi=sg.reduce((a,v,i)=>v!==null&&(a<0||v>sg[a])?i:a,-1);$('#cgb').textContent=bi<0?'—':`${yl(bi+1)} (${sg[bi].toFixed(2)})`;
  $('#cgch').innerHTML=sg.map((v,i)=>`<div class="cb"><span>${v===null?'—':v.toFixed(2)}</span><i style="height:${v?v/4*80:0}%"></i><small>${yl(i+1)}</small></div>`).join('');
  const rem=+$('#tr').value,tg=+$('#tt').value;let h='';
+ const firstClassGpa = TC > 0 ? ((3.00 * (TC + (rem || 30)) - TP) / (rem || 30)) : 3.00;
+ if (!(rem > 0) && !(tg > 0)) {
+  h = `<div style="font-size:13.5px;color:var(--mu);">${L('বাকি ক্রেডিট ও লক্ষ্য CGPA লিখুন অথবা ওপরের বাটনে ক্লিক করুন।|Enter remaining credits & target or pick a preset button above.')}</div>`;
+  if (cg !== null) {
+   if (cg >= 3.00) h += `<div style="margin-top:6px;color:#1b7a33;">🎉 <b>${L('অভিনন্দন! আপনি বর্তমানে ১ম শ্রেণি (First Class) ক্যাটাগরিতে আছেন।|Congrats! You are currently in First Class standing.')}</b></div>`;
+   else h += `<div style="margin-top:6px;color:#a8741a;">🎯 ${L(`১ম শ্রেণি (৩.০০) নিশ্চিত করতে আগামী ৩০ ক্রেডিটে গড়ে <b>${Math.min(4.00, Math.max(0, firstClassGpa)).toFixed(2)}</b> GPA প্রয়োজন।|To secure First Class (3.00), you need an average of <b>${Math.min(4.00, Math.max(0, firstClassGpa)).toFixed(2)}</b> GPA in remaining 30 credits.`)}</div>`;
+  }
+ } else if (rem > 0 && tg > 0) {
+  const n = (tg * (TC + rem) - TP) / rem, mxc = (TP + 4 * rem) / (TC + rem);
+  h = n > 4 ? `⚠️ ${L(`এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়। বাকি সব বিষয়ে ৪.০০ পেলেও সর্বোচ্চ CGPA হবে|Impossible on a 4.00 scale. Max achievable CGPA is`)} <b>${mxc.toFixed(2)}</b>` : n <= 0 ? `✅ ${L('আপনার লক্ষ্য ইতিমধ্যে অর্জিত হয়ে গেছে!|Target already achieved!')}` : `🎯 ${L(`বাকি ${rem} ক্রেডিটের বিষয়গুলোতে গড়ে ন্যূনতম|In remaining ${rem} credits, you need an average of at least`)} <b>${n.toFixed(2)}</b> ${L('GPA পেতে হবে।|GPA.')} ` + (tg === 3.00 ? `(১ম শ্রেণি / First Class)` : '');
+ }
+ $('#tv').innerHTML = h;
+ updateRoast(cg);
  if(!(rem>0)||!(tg>0))h='<span class="hint">'+L('বাকি ক্রেডিট ও লক্ষ্য CGPA লিখলে এখানে প্রয়োজনীয় GPA দেখাবে।|Enter the remaining credits and target CGPA to see the required GPA here.')+'</span>';
  else{const n=(tg*(TC+rem)-TP)/rem,mxc=(TP+4*rem)/(TC+rem);
   h=n>4?'⚠️ '+L('এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়। সব বিষয়ে ৪.০০ পেলেও সর্বোচ্চ CGPA হবে|This target is not reachable on a 4.00 scale. Even with straight 4.00s, the highest CGPA is')+` <b>${mxc.toFixed(2)}</b>`:n<=0?'✅ '+L('লক্ষ্য আগেই অর্জিত।|Target already achieved.'):'🎯 '+L(`আপনার লক্ষ্য অর্জনে বাকি ${rem} ক্রেডিটের বিষয়গুলোতে গড়ে ন্যূনতম|To reach your goal, you need an average of at least`)+` <b>${n.toFixed(2)}</b> `+L(`GPA পেতে হবে।|GPA in the remaining ${rem} credits.`)}
@@ -460,6 +473,121 @@ function cgX(cg,TC,sg,cnt){CGD={cg,TC,sg,cnt};
  rtC();if($('#cgcw').style.display!='none')cgK()}
 function cgT(S){let c=0,p=0;const b={};if(C.rt)S.forEach((s,i)=>s.forEach((r,j)=>{const q=gp(r.g),k=r.n.trim().toLowerCase();if(q===null||!k)return;if(!b[k]||q>b[k].p)b[k]={p:q,i,j}}));
  S.forEach((s,i)=>s.forEach((r,j)=>{const q=gp(r.g),k=r.n.trim().toLowerCase();if(q===null||!(r.c>0))return;if(C.rt&&k&&(b[k].i!=i||b[k].j!=j))return;c+=r.c;p+=r.c*q}));return c?p/c:null}
+  /* লক্ষ্য প্রিসেট সেট করা */
+window.setGoal = function(target) {
+  $('#tt').value = target.toFixed(2);
+  if (!$('#tr').value) $('#tr').value = 30;
+  cgC();
+};
+
+/* ফানি CGPA রোস্টার ও ভবিষ্যৎবাণী ডাটা */
+const ROASTS = [
+  { min: 3.80, title: "পড়ালেখার জাহাজ (নাসার বিজ্ঞানী)", emoji: "🚀", 
+    roast: "মুখে সবসময় বলবেন 'কিছুই পড়া হয়নি দোস্ত', কিন্তু পরীক্ষার হলে অতিরিক্ত ৪টা লুজ শিট সবার আগে আপনারই লাগবে!", 
+    fortune: "শ্বশুরবাড়ির আত্মীয়দের কাছে আপনার কদর তুঙ্গে থাকবে, কিন্তু বন্ধুমহলে আপনাকে গোপনে আনফ্রেন্ড করে রাখা হয়েছে।" },
+  { min: 3.50, title: "ডিনস অনার যোদ্ধা", emoji: "👑", 
+    roast: "না ক্লাসের আড্ডায় পুরো মন দেন, না পড়ার টেবিলে বিরতি নেন। সারাক্ষণ রেজাল্টের চিন্তায় চুল পড়ে যাওয়ার উপক্রম!", 
+    fortune: "বিসিএস প্রিলি এক চান্সে পাশ করার সম্ভাবনা ৮৯%, তবে বন্ধুদের ট্রিট না দেওয়ার রেকর্ড অক্ষত থাকবে।" },
+  { min: 3.00, title: "ফার্স্ট ক্লাস কিংবদন্তি (স্মার্ট সারভাইভার)", emoji: "🏆", 
+    roast: "সারা বছর আড্ডা মেরে পরীক্ষার ঠিক আগের রাতে অলৌকিক ক্ষমতায় ৩.০০+ ফার্স্ট ক্লাস তুলে নেওয়া আপনার জন্মগত অধিকার!", 
+    fortune: "লাইফে যাই হোক, অন্তত বাসায় আত্মীয়দের প্রশ্নের মুখে মাথা উঁচু করে 'ফার্স্ট ক্লাস পেয়েছি' বলে মিষ্টি গিলতে পারবেন।" },
+  { min: 2.50, title: "ক্যাফেটেরিয়ার অনারারি মেম্বার", emoji: "☕", 
+    roast: "'সিজিপিএ দিয়ে লাইফে কিছুই হয় না, আসল হলো অভিজ্ঞতা'—এই ডায়লগ দিনে কমপক্ষে ৩ বার বন্ধুদের শোনান!", 
+    fortune: "চাকরির ইন্টারভিউতে সিজিপিএ নিয়ে প্রশ্ন শুনলে হঠাৎ 'নেটওয়ার্ক সমস্যা'র ভান করার সম্ভাবনা ৯৪%।" },
+  { min: 0.00, title: "ঝুঁকিপূর্ণ জাদুকর (মিস্ট্রি ম্যান)", emoji: "🎩", 
+    roast: "আপনি এখনো কীভাবে প্রতি সেমিস্টার পার করে এগিয়ে যাচ্ছেন, এটা ডিপার্টমেন্টের শিক্ষকদের কাছে এখনো অমীমাংসিত রহস্য!", 
+    fortune: "বিসিএসের স্বপ্ন দ্রুত ত্যাগ করে অবিলম্বে মোড়ের মাথায় প্রিমিয়াম চায়ের দোকান দেওয়ার শুভ যোগ রয়েছে।" }
+];
+
+function updateRoast(cg) {
+  const box = $('#roastText');
+  if (cg === null) {
+    box.innerHTML = `<span style="color:#777;">${L('👈 বামপাশে আপনার কয়েকটি গ্রেড সিলেক্ট করুন, সাথে সাথে রোস্টিং ও ভবিষ্যৎবাণী ফুটে উঠবে!|Select a few course grades to see your funny roast and fortune!')}</span>`;
+    return;
+  }
+  const r = ROASTS.find(x => cg >= x.min) || ROASTS[ROASTS.length - 1];
+  box.innerHTML = `<div><b>${r.emoji} ক্যাটাগরি:</b> <span style="color:#b3261e;font-weight:700;">${r.title}</span></div>
+    <div style="margin-top:6px;"><b>🔥 রোস্ট:</b> ${r.roast}</div>
+    <div style="margin-top:6px;color:#7a5a10;"><b>🔮 ভবিষ্যৎবাণী:</b> ${r.fortune}</div>`;
+}
+
+/* ভাইরাল ফটো-কার্ড জেনারেটর (১০৮০x১৩৫০ ইনস্টাগ্রাম/ফেসবুক স্টোরি সাইজ) */
+$('#btnRoastCard').onclick = function() {
+  const cg = CGD.cg;
+  if (cg === null) return alert('আগে কিছু গ্রেড ইনপুট দিন!');
+  const r = ROASTS.find(x => cg >= x.min) || ROASTS[ROASTS.length - 1];
+  const cv = $('#roastCanvas'), x = cv.getContext('2d'), W = 1080, H = 1350;
+  $('#roastCardBox').style.display = 'block';
+
+  // ব্যাকগ্রাউন্ড
+  const g = x.createLinearGradient(0, 0, W, H);
+  g.addColorStop(0, '#0a2240'); g.addColorStop(0.7, '#143560'); g.addColorStop(1, '#07192f');
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+
+  // সোনালী ফ্রেম
+  x.strokeStyle = '#e5a83b'; x.lineWidth = 6;
+  x.strokeRect(40, 40, W - 80, H - 80);
+
+  // হেডার
+  x.textAlign = 'center'; x.fillStyle = '#e5a83b';
+  x.font = '800 48px "Hind Siliguri", sans-serif';
+  x.fillText('🔮 DCU অফিশিয়াল CGPA ভবিষ্যৎবাণী 🔮', W / 2, 130);
+
+  // সিজিপিএ ব্যাজ
+  x.fillStyle = 'rgba(255,255,255,.08)';
+  x.beginPath(); x.arc(W / 2, 330, 150, 0, 7); x.fill();
+  x.fillStyle = '#e5a83b'; x.font = '800 130px Montserrat, sans-serif';
+  x.fillText(cg.toFixed(2), W / 2, 360);
+  x.fillStyle = '#cfd8e6'; x.font = '600 32px "Hind Siliguri", sans-serif';
+  x.fillText('বর্তমান CGPA', W / 2, 430);
+
+  // উপাধি বক্স
+  x.fillStyle = '#b3261e';
+  x.beginPath(); x.roundRect(140, 490, W - 280, 80, 20); x.fill();
+  x.fillStyle = '#fff'; x.font = '800 38px "Hind Siliguri", sans-serif';
+  x.fillText(`${r.emoji} ${r.title}`, W / 2, 545);
+
+  // রোস্ট ও ভবিষ্যৎবাণী টেক্সট
+  const wrap = (txt, font, color, y0) => {
+    x.font = font; x.fillStyle = color; let line = ''; const lines = [];
+    for (const w of txt.split(' ')) {
+      const t = line ? line + ' ' + w : w;
+      if (x.measureText(t).width > 860 && line) { lines.push(line); line = w; } else line = t;
+    }
+    if (line) lines.push(line);
+    lines.forEach((l, i) => x.fillText(l, W / 2, y0 + i * 50));
+    return y0 + lines.length * 50;
+  };
+
+  x.fillStyle = 'rgba(255,255,255,.06)';
+  x.beginPath(); x.roundRect(90, 620, W - 180, 560, 24); x.fill();
+
+  let y = wrap(`🔥 রোস্ট: "${r.roast}"`, '600 36px "Hind Siliguri"', '#ffffff', 710);
+  wrap(`🔮 ভবিষ্যৎবাণী: ${r.fortune}`, '700 35px "Hind Siliguri"', '#ffd54a', y + 60);
+
+  // ফুটার ব্র্যান্ডিং
+  x.fillStyle = '#8fa3c2'; x.font = '500 28px Montserrat, sans-serif';
+  x.fillText('dcu-unofficial.vercel.app · Dhaka Central University', W / 2, 1260);
+
+  $('#roastCardBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+$('#btnDlRoast').onclick = function() {
+  const a = document.createElement('a'); a.download = 'dcu-cgpa-roast.png';
+  a.href = $('#roastCanvas').toDataURL('image/png'); a.click();
+};
+
+$('#btnShareRoast').onclick = async function() {
+  const cv = $('#roastCanvas');
+  cv.toBlob(async (b) => {
+    if (!b) return;
+    const f = new File([b], 'cgpa-roast.png', { type: 'image/png' });
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [f] })) {
+      try { await navigator.share({ files: [f], text: 'আমার CGPA ভবিষ্যৎবাণী দেখে নাও! 😂 #DCU' }); return; } catch(e){}
+    }
+    $('#btnDlRoast').click();
+  });
+};
 function rtC(){const v=$('#rtc').value,e=$('#rtv');
  if(!v){e.innerHTML='<span class="hint">'+L('আগে কিছু কোর্সের গ্রেড দিন, তারপর এখানে রিটেক ট্রায়াল করুন।|Enter some course grades first, then try a retake here.')+'</span>';return}
  const[i,j]=v.split('-').map(Number),S=JSON.parse(JSON.stringify(C.s)),o=cgT(C.s);S[i][j].g=$('#rtg').value;const n=cgT(S),d=n-o;
