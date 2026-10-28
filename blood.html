@@ -36,6 +36,10 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 9999; }
         .modal-content { background: #fff; width: 90%; max-width: 440px; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
 
+        /* সাইন-ইন নোটিশ ও স্ট্যাটাস */
+        .signin-note { background: #eaf3ff; border: 1px solid #b9d4f5; color: #1b4a82; padding: 9px 12px; border-radius: 8px; font-size: 13px; margin-top: 14px; text-align: center; }
+        .auth-bar { display: none; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; background: #fff; border: 1px solid var(--ln); border-radius: 10px; padding: 8px 12px; margin-bottom: 14px; font-size: 13px; }
+        .auth-bar button { background: none; border: 1px solid var(--ln); border-radius: 6px; padding: 4px 10px; cursor: pointer; font-family: inherit; font-size: 12.5px; }
         /* ফোন নম্বর রেজাল্ট কার্ড */
         .result-modal { text-align: center; max-width: 380px; padding: 0; overflow: hidden; animation: popIn .25s ease-out; }
         @keyframes popIn { from { transform: scale(.9) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
@@ -63,6 +67,7 @@
 
 <div class="container">
     <h2>🩸 DCU ব্লাড ডোনার ডিরেক্টরি</h2>
+    <div id="authBar" class="auth-bar"><span id="authWho"></span><button type="button" id="authOut">সাইন আউট</button></div>
     <div class="tabs">
         <button class="active" onclick="switchTab('find')">রক্ত খুঁজুন</button>
         <button onclick="switchTab('register')">ডোনার হোন</button>
@@ -146,6 +151,9 @@
                     </label>
                 </div>
 
+                <div class="signin-note" id="regNote">🛡️ আপনার ও আমাদের রক্তদাতাদের নিরাপত্তার জন্য ১-ক্লিকে গুগল সাইন-ইন করুন।</div>
+
+
                 <button type="submit" class="btn" id="submitBtn">নিবন্ধন সম্পন্ন করুন</button>
             </form>
             <p id="regMsg" style="margin-top: 15px; font-weight: 600; text-align: center;"></p>
@@ -175,7 +183,9 @@
             <input type="tel" id="seekerPhone" required placeholder="01XXXXXXXXX">
             <label>আপনার বর্তমান ঠিকানা <span style="color:red">*</span></label>
             <input type="text" id="seekerAddress" required placeholder="যেমন: ধানমন্ডি, ঢাকা">
-            <button type="submit" class="btn">🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন</button>
+            <div class="signin-note" id="seekNote">🛡️ আপনার ও আমাদের রক্তদাতাদের নিরাপত্তার জন্য ১-ক্লিকে গুগল সাইন-ইন করুন।</div>
+
+            <button type="submit" class="btn" id="seekerSubmit">🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন</button>
             <button type="button" class="btn" style="background:#ccc; color:#333; margin-top:8px;" onclick="closeModal()">বাতিল</button>
         </form>
     </div>
@@ -205,8 +215,8 @@
 <!-- Firebase SDK ও মূল স্ক্রিপ্ট -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0",
@@ -221,12 +231,45 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
     const okPhone = (p) => /^01[3-9][0-9]{8}$/.test(p);
+    const $ = (id) => document.getElementById(id);
+    const SK = (uid) => "dcu_seeker_" + uid;
+
+    // ব্রাউজারে সেশন সেভ থাকবে (Stay Logged In): একবার সাইন ইন করলে পরেরবার আর পপআপ আসবে না
+    const persistReady = setPersistence(auth, browserLocalPersistence).catch(() => {});
+    const authReady = new Promise((resolve) => {
+        const unsub = onAuthStateChanged(auth, () => { unsub(); resolve(); });
+    });
+
+    function loadSeeker(uid) {
+        try { return JSON.parse(localStorage.getItem(SK(uid)) || "null"); } catch (e) { return null; }
+    }
+    function saveSeeker(uid, v) {
+        try { localStorage.setItem(SK(uid), JSON.stringify(v)); } catch (e) {}
+    }
+
+    // সাইন ইন অবস্থা অনুযায়ী UI আপডেট
+    onAuthStateChanged(auth, (u) => {
+        $("authBar").style.display = u ? "flex" : "none";
+        if (u) $("authWho").textContent = "✅ সাইন ইন: " + (u.email || "");
+        $("regNote").style.display = u ? "none" : "block";
+        $("seekNote").style.display = u ? "none" : "block";
+        $("seekerSubmit").textContent = u ? "নম্বর দেখুন" : "🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন";
+        if (u) {
+            const sv = loadSeeker(u.uid);
+            if (sv) {
+                currentSeeker = sv;
+                $("seekerName").value = sv.name; $("seekerPhone").value = sv.phone; $("seekerAddress").value = sv.address;
+            }
+        } else { currentSeeker = null; }
+    });
+    $("authOut").onclick = () => signOut(auth);
+
     // সাইন ইন না থাকলে Google পপআপ খুলবে (অবশ্যই ক্লিক/সাবমিট থেকে সরাসরি ডাকতে হবে)
     async function ensureUser() {
+        await Promise.all([authReady, persistReady]);
         if (auth.currentUser) return auth.currentUser;
         return (await signInWithPopup(auth, new GoogleAuthProvider())).user;
     }
-
     let currentSeeker = null;
     let selectedDonor = null;
     const donorMap = {};
@@ -325,6 +368,31 @@
             const fileInput = document.getElementById('dPhoto').files[0];
             if (fileInput) { try { photoUrl = await compressImage(fileInput); } catch (e) { photoUrl = ""; } }
 
+            // ১) ছবির সাইজ (rules: সর্বোচ্চ ১৫০,০০০ অক্ষর)
+            if (photoUrl.length > 150000) {
+                msg.style.color = "var(--danger)";
+                msg.textContent = "❌ ছবির সাইজ অনেক বড়। ছোট সাইজের বা অন্য একটি ছবি দিন।";
+                submitBtn.disabled = false;
+                return;
+            }
+            // ২) এই Google অ্যাকাউন্টে আগেই নিবন্ধন আছে কিনা
+            let existing = null;
+            try { const snap = await getDoc(doc(db, "donors", user.uid)); if (snap.exists()) existing = snap.data(); } catch (_) {}
+            if (existing) {
+                msg.style.color = "var(--danger)";
+                msg.textContent = "❌ এই Google অ্যাকাউন্ট (" + user.email + ") দিয়ে আপনি আগেই নিবন্ধন করেছেন" + (existing.status === "approved" ? " এবং অনুমোদিত হয়েছেন।" : "। এডমিন অনুমোদনের অপেক্ষায় আছে।");
+                submitBtn.disabled = false;
+                return;
+            }
+            // ৩) এই মোবাইল নম্বর আগে ব্যবহার হয়েছে কিনা
+            let claimed = false;
+            try { const c = await getDoc(doc(db, "phone_claims", phoneVal)); claimed = c.exists() && c.data().uid !== user.uid; } catch (_) {}
+            if (claimed) {
+                msg.style.color = "var(--danger)";
+                msg.textContent = "❌ এই মোবাইল নম্বর (" + phoneVal + ") দিয়ে ইতিমধ্যে একজন নিবন্ধন করেছেন। অন্য নম্বর দিন।";
+                submitBtn.disabled = false;
+                return;
+            }
             const batch = writeBatch(db);
             batch.set(doc(db, "donors", user.uid), {
                 name: document.getElementById('dName').value.trim(),
@@ -348,7 +416,7 @@
         } catch (error) {
             msg.style.color = "var(--danger)";
             console.error(error);
-            msg.textContent = error.code === "permission-denied" ? "❌ নিবন্ধন হয়নি। এই Google অ্যাকাউন্টে আগেই নিবন্ধন করা আছে, অথবা এই নম্বর ইতিমধ্যে ব্যবহৃত, অথবা ছবি অনেক বড়।" : "❌ ত্রুটি হয়েছে: " + (error.code || error.message);
+            msg.textContent = error.code === "permission-denied" ? "❌ এই মোবাইল নম্বর দিয়ে ইতিমধ্যে একজন নিবন্ধন করেছেন। অন্য নম্বর দিন।" : "❌ ত্রুটি হয়েছে: " + (error.code || error.message);
         } finally {
             submitBtn.disabled = false;
         }
@@ -397,7 +465,7 @@
 
     window.handleContactClick = function(phone, name, group, id) {
         selectedDonor = { id, phone, name, group, photo: rawPhoto((donorMap[id] || {}).photo) };
-        if (!currentSeeker) {
+        if (!auth.currentUser || !currentSeeker) {
             document.getElementById('securityModal').style.display = 'flex';
         } else {
             revealNumber();
@@ -416,8 +484,10 @@
 
         if (!okPhone(phone)) { alert('সঠিক মোবাইল নম্বর দিন (যেমন: 01712345678)'); return; }
         if (name && phone && address) {
-            try { await ensureUser(); } catch (err) { alert('Google সাইন ইন সম্পন্ন হয়নি। আবার চেষ্টা করুন।'); return; }
+            let u;
+            try { u = await ensureUser(); } catch (err) { alert('Google সাইন ইন সম্পন্ন হয়নি। আবার চেষ্টা করুন।'); return; }
             currentSeeker = { name, phone, address };
+            saveSeeker(u.uid, currentSeeker);
             document.getElementById('securityModal').style.display = 'none';
             revealNumber();
         }
