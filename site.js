@@ -145,3 +145,47 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   }
   applyL();
 })();
+/* সব পাতায় জরুরি রক্ত নোটিশ বার দেখানো */
+(function() {
+    if (document.body.dataset.page === 'blood') return; // ব্লাড পেজে আলাদা আছে
+
+    fetch("https://firestore.googleapis.com/v1/projects/dcu-blood-bank/databases/(default)/documents/blood_requests")
+        .then(res => res.json())
+        .then(data => {
+            if (!data.documents || !data.documents.length) return;
+            const today = new Date().toISOString().slice(0, 10);
+            const openRequests = data.documents
+                .map(d => {
+                    const f = d.fields || {};
+                    return {
+                        group: f.group?.stringValue || '',
+                        hospital: f.hospital?.stringValue || '',
+                        area: f.area?.stringValue || '',
+                        status: f.status?.stringValue || '',
+                        neededDate: f.neededDate?.stringValue || ''
+                    };
+                })
+                .filter(r => r.status === 'open' && r.neededDate >= today);
+
+            if (!openRequests.length) return;
+            const r = openRequests[0];
+            const isBn = (localStorage.getItem('dcuSL') || 'bn') === 'bn';
+
+            const bar = document.createElement('a');
+            bar.href = 'blood.html';
+            bar.className = 'global-blood-ticker';
+            bar.style.display = 'flex';
+            bar.innerHTML = `
+                <div class="gbt-left">
+                    <span class="gbt-badge">${r.group}</span>
+                    <span>🚨 ${isBn ? 'জরুরি রক্ত প্রয়োজন:' : 'Urgent blood needed:'} <b>${r.hospital}</b> (${r.area})</span>
+                </div>
+                <div class="gbt-btn">${isBn ? 'বিস্তারিত দেখুন ›' : 'Details ›'}</div>
+            `;
+
+            const hdr = document.getElementById('hdr');
+            if (hdr) hdr.insertAdjacentElement('afterend', bar);
+            else document.body.insertAdjacentElement('afterbegin', bar);
+        })
+        .catch(() => {});
+})();
