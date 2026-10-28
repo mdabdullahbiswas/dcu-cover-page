@@ -25,9 +25,12 @@
         .donor-info img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
         .donor-details { flex-grow: 1; margin-left: 15px; }
         .badge { background: var(--danger); color: white; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 13px; }
-        .badge-success { background: var(--success); }
         .alert-box { background: rgba(217, 83, 79, 0.1); border: 1px dashed var(--danger); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13.5px; color: #a94442; }
         
+        /* টার্মস অ্যান্ড কন্ডিশন বক্স স্টাইল */
+        .terms-box { background: #f8f9fa; border: 1px solid var(--ln); padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 13px; color: #444; }
+        .terms-box input { width: auto; margin-right: 8px; }
+
         /* লিডারবোর্ড টেবিল স্টাইল */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
         th, td { border: 1px solid var(--ln); padding: 10px; text-align: center; }
@@ -65,7 +68,7 @@
                     </select>
                 </div>
                 <div>
-                    <label>এলাকা</label>
+                    <label>এলাকা নির্বাচন বা সার্চ করুন</label>
                     <input type="text" id="searchAddress" placeholder="যেমন: মিরপুর, ফার্মগেট..." oninput="loadDonors()">
                 </div>
             </div>
@@ -90,21 +93,47 @@
                     <option value="AB+">AB+</option><option value="AB-">AB-</option>
                 </select>
 
-                <label>বর্তমান ঠিকানা / এলাকা</label>
-                <input type="text" id="dAddress" required placeholder="যেমন: মিরপুর, ঢাকা">
+                <label>বর্তমান এলাকা নির্বাচন করুন</label>
+                <select id="dAreaSelect" onchange="checkCustomArea(this.value)" required>
+                    <option value="">এলাকা সিলেক্ট করুন</option>
+                    <option value="মিরপুর">মিরপুর</option>
+                    <option value="ধানমন্ডি">ধানমন্ডি</option>
+                    <option value="উত্তরা">উত্তরা</option>
+                    <option value="ফার্মগেট">ফার্মগেট</option>
+                    <option value="গুলশান">গুলশান</option>
+                    <option value="বনানী">বনানী</option>
+                    <option value="মোহাম্মদপুর">মোহাম্মদপুর</option>
+                    <option value="সাভার">সাভার</option>
+                    <option value="টঙ্গী">টঙ্গী</option>
+                    <option value="অন্যান্য">অন্যান্য (নিজের এলাকা লিখুন)</option>
+                </select>
+
+                <!-- কাস্টম এলাকা লেখার ইনপুট (শুরুতে লুকিয়ে থাকবে) -->
+                <div id="customAreaDiv" style="display:none; margin-top:8px;">
+                    <label>আপনার এলাকার নাম লিখুন</label>
+                    <input type="text" id="dCustomAddress" placeholder="যেমন: বাড্ডা, মালিবাগ...">
+                </div>
 
                 <label>মোবাইল নম্বর</label>
                 <input type="tel" id="dPhone" required placeholder="01XXXXXXXXX">
 
-                <label>মোট কতবার রক্ত দিয়েছেন? (লিডারবোর্ডের জন্য)</label>
+                <label>মোট কতবার রক্ত দিয়েছেন?</label>
                 <input type="number" id="dDonationCount" min="0" value="1" required>
 
                 <label>প্রোফাইল ছবি (ঐচ্ছিক)</label>
                 <input type="file" id="dPhoto" accept="image/*">
 
+                <!-- টার্মস অ্যান্ড কন্ডিশন চেক বক্স -->
+                <div class="terms-box">
+                    <label style="display:inline; font-weight:normal; cursor:pointer;">
+                        <input type="checkbox" id="termsCheck" required> 
+                        আমি সম্মত আছি যে, আমার এই তথ্য ডিরেক্টরিতে যে কেউ দেখতে পারবে। পাশাপাশি কেউ আমার মোবাইল নম্বর দেখতে চাইলে তার নাম, মোবাইল নম্বর ও ঠিকানা আমার ট্র্যাকিং নোটিফিকেশনে সংরক্ষিত হবে।
+                    </label>
+                </div>
+
                 <button type="submit" class="btn">নিবন্ধন সম্পন্ন করুন</button>
             </form>
-            <p id="regMsg" style="margin-top: 10px; font-weight: 600; text-align: center;"></p>
+            <p id="regMsg" style="margin-top: 15px; font-weight: 600; text-align: center;"></p>
         </div>
     </div>
 
@@ -179,6 +208,18 @@
         }
     }
 
+    // কাস্টম এলাকা হ্যান্ডেল করার ফাংশন
+    window.checkCustomArea = function(val) {
+        const customDiv = document.getElementById('customAreaDiv');
+        if (val === 'অন্যান্য') {
+            customDiv.style.display = 'block';
+            document.getElementById('dCustomAddress').required = true;
+        } else {
+            customDiv.style.display = 'none';
+            document.getElementById('dCustomAddress').required = false;
+        }
+    }
+
     // ছবি কম্প্রেশন ফাংশন
     function compressImage(file) {
         return new Promise((resolve) => {
@@ -208,11 +249,15 @@
         });
     }
 
-    // ডোনার রেজিস্ট্রেশন
+    // ডোনার রেজিস্ট্রেশন ফর্ম সাবমিট
     document.getElementById('donorForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const msg = document.getElementById('regMsg');
-        msg.textContent = "তথ্য আপলোড হচ্ছে...";
+        msg.style.color = "var(--primary)";
+        msg.textContent = "তথ্য আপলোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
+
+        const areaVal = document.getElementById('dAreaSelect').value;
+        const finalAddress = areaVal === 'অন্যান্য' ? document.getElementById('dCustomAddress').value.trim() : areaVal;
 
         try {
             let photoUrl = "";
@@ -226,20 +271,23 @@
             }
 
             await addDoc(collection(db, "donors"), {
-                name: document.getElementById('dName').value,
+                name: document.getElementById('dName').value.trim(),
                 group: document.getElementById('dGroup').value,
-                address: document.getElementById('dAddress').value,
-                phone: document.getElementById('dPhone').value,
+                address: finalAddress,
+                phone: document.getElementById('dPhone').value.trim(),
                 donationCount: parseInt(document.getElementById('dDonationCount').value) || 1,
                 photo: photoUrl,
                 status: "approved",
                 createdAt: new Date()
             });
 
-            msg.textContent = "✅ সফলভাবে ডোনার হিসেবে নিবন্ধিত হয়েছেন!";
+            msg.style.color = "var(--success)";
+            msg.textContent = "✅ আপনার নিবন্ধন সফল হয়েছে! ধন্যবাদ, আপনার রক্তদান মহৎ একটি কাজ।";
             document.getElementById('donorForm').reset();
+            document.getElementById('customAreaDiv').style.display = 'none';
         } catch (error) {
-            msg.textContent = "❌ ত্রুটি: " + error.message;
+            msg.style.color = "var(--danger)";
+            msg.textContent = "❌ ত্রুটি হয়েছে: " + error.message;
         }
     });
 
@@ -310,7 +358,7 @@
         }
     });
 
-    // ফায়ারবেসে লগ সেভ করে নম্বর স্ক্রিনে ফাস করা
+    // ফায়ারবেসে লগ সেভ করে নম্বর স্ক্রিনে প্রকাশ করা
     async function revealNumber() {
         if (!selectedDonor || !currentSeeker) return;
 
@@ -342,7 +390,7 @@
                 donors.push(doc.data());
             });
 
-            // রক্তদানের সংখ্যার উপর ভিত্তি করে বড় থেকে ছোট সাজানো (Descending Sort)
+            // রক্তদানের সংখ্যার উপর ভিত্তি করে বড় থেকে ছোট সাজানো
             donors.sort((a, b) => (b.donationCount || 1) - (a.donationCount || 1));
 
             if(donors.length === 0) {
