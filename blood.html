@@ -47,6 +47,14 @@
         .nitem .nn { font-weight: 700; color: var(--primary); }
         .nitem a { color: var(--success); font-weight: 700; text-decoration: none; }
         .nnew { background: var(--danger); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; }
+        .ferr { font-size: 12.5px; margin-top: 4px; min-height: 0; }
+        .ferr.bad { color: var(--danger); font-weight: 600; }
+        .ferr.hint { color: #6b7785; }
+        input.invalid, select.invalid, .dsel.invalid select { border-color: var(--danger) !important; background: #fff6f6; }
+        .terms-box.invalid { border-color: var(--danger); background: #fff6f6; }
+        .report-link { background: none; border: 0; color: #a94442; font-size: 13px; text-decoration: underline; cursor: pointer; margin-top: 10px; font-family: inherit; }
+        .report-box { margin-top: 8px; text-align: left; }
+        .report-box select { margin-bottom: 8px; }
         .req { color: var(--danger); font-weight: 700; }
         .req-note { font-size: 13px; color: #666; margin: 0 0 4px; }
         .dsel { display: flex; gap: 8px; margin-top: 4px; }
@@ -137,7 +145,7 @@
         <div class="card">
             <h2>ডোনার হিসেবে নিবন্ধন করুন</h2>
             <div id="myProfile" style="display:none"></div>
-            <form id="donorForm">
+            <form id="donorForm" novalidate>
                 <p class="req-note"><span class="req">*</span> চিহ্নিত ঘরগুলো পূরণ করা বাধ্যতামূলক।</p>
                 <label>পূর্ণ নাম <span class="req">*</span></label>
                 <input type="text" id="dName" required placeholder="আপনার নাম">
@@ -157,7 +165,10 @@
                 
 
                 <label>মোবাইল নম্বর <span class="req">*</span></label>
-                <input type="tel" id="dPhone" required placeholder="01XXXXXXXXX">
+                <input type="tel" id="dPhone" required placeholder="01XXXXXXXXX" inputmode="numeric" autocomplete="tel">
+
+                <label>মোবাইল নম্বর আবার লিখুন <span class="req">*</span></label>
+                <input type="tel" id="dPhone2" required placeholder="ভুল এড়াতে নম্বরটি আবার লিখুন" inputmode="numeric" autocomplete="off">
 
                 <label>মোট কতবার রক্ত দিয়েছেন? <span class="req">*</span></label>
                 <input type="number" id="dDonationCount" min="0" value="1" required>
@@ -210,11 +221,11 @@
         <div class="alert-box">
             রক্তদাতার মোবাইল নম্বর দেখতে হলে আপনার পরিচয় প্রদান বাধ্যতামূলক। আপনার এই তথ্য ও ফোন নম্বর নিরাপত্তাজনিত কারণে সংশ্লিষ্ট রক্তদাতার ট্র্যাকে সংরক্ষিত হবে।
         </div>
-        <form id="seekerForm">
+        <form id="seekerForm" novalidate>
             <label>আপনার পূর্ণ নাম <span style="color:red">*</span></label>
             <input type="text" id="seekerName" required placeholder="আপনার নাম">
             <label>আপনার মোবাইল নম্বর <span style="color:red">*</span></label>
-            <input type="tel" id="seekerPhone" required placeholder="01XXXXXXXXX">
+            <input type="tel" id="seekerPhone" required placeholder="01XXXXXXXXX" inputmode="numeric">
             <label>আপনার বর্তমান ঠিকানা <span style="color:red">*</span></label>
             <input type="text" id="seekerAddress" list="areaList" autocomplete="off" required placeholder="যেমন: ধানমন্ডি, ঢাকা">
             <div class="signin-note" id="seekNote">🛡️ আপনার ও আমাদের রক্তদাতাদের নিরাপত্তার জন্য ১-ক্লিকে গুগল সাইন-ইন করুন।</div>
@@ -241,6 +252,19 @@
                 <button type="button" id="resCopy" class="btn-copy">📋 কপি</button>
             </div>
             <div class="result-warn">⚠️ সতর্কতা: আপনার পরিচয় ডোনারের ট্র্যাকিং লগে সংরক্ষিত হলো।</div>
+            <button type="button" class="report-link" id="resReport">🚩 নম্বরটি ভুল বা বন্ধ? রিপোর্ট করুন</button>
+            <div class="report-box" id="resReportBox" style="display:none">
+                <select id="resReason">
+                    <option value="">কারণ বাছাই করুন</option>
+                    <option>নম্বরটি ভুল, অন্য কারো নম্বর</option>
+                    <option>নম্বরটি বন্ধ বা সংযোগ পাওয়া যায়নি</option>
+                    <option>ভুয়া বা সন্দেহজনক তথ্য</option>
+                    <option>ডোনার রক্ত দিতে অনিচ্ছুক</option>
+                    <option>অন্য কারণ</option>
+                </select>
+                <button type="button" class="btn" id="resSend" style="margin-top:0">রিপোর্ট পাঠান</button>
+                <div class="ferr" id="resRepMsg"></div>
+            </div>
             <button type="button" class="result-close" onclick="closeResult()">বন্ধ করুন</button>
         </div>
     </div>
@@ -376,20 +400,14 @@
         msg.style.color = "var(--primary)";
         msg.textContent = "তথ্য আপলোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
 
-        const phoneVal = document.getElementById('dPhone').value.trim();
-        if (!okPhone(phoneVal)) {
+        if (!validateAll([$("dName"), $("dGroup"), $("dAreaSelect"), $("dPhone"), $("dPhone2"), $("dDonationCount"), $("dLastDonation"), $("termsCheck")])) {
             msg.style.color = "var(--danger)";
-            msg.textContent = "❌ সঠিক মোবাইল নম্বর দিন (১১ ডিজিট, যেমন: 01712345678)";
+            msg.textContent = "❌ কিছু ঘরে ভুল আছে। লাল চিহ্নিত ঘরগুলো ঠিক করে আবার চেষ্টা করুন।";
             submitBtn.disabled = false;
             return;
         }
+        const phoneVal = normPhone($("dPhone").value);
         const lastVal = readDateSel('dLastDonation');
-        if (lastVal === null || (lastVal && (!validISO(lastVal) || lastVal > todayISO()))) {
-            msg.style.color = "var(--danger)";
-            msg.textContent = "❌ সর্বশেষ রক্তদানের তারিখ সঠিকভাবে দিন (দিন, মাস ও বছর), অথবা তিনটি ঘরই ফাঁকা রাখুন। ভবিষ্যতের তারিখ গ্রহণযোগ্য নয়।";
-            submitBtn.disabled = false;
-            return;
-        }
         let user;
         try { user = await ensureUser(); }
         catch (err) {
@@ -437,7 +455,7 @@
                 group: document.getElementById('dGroup').value,
                 address: finalAddress,
                 phone: phoneVal,
-                donationCount: Math.max(0, parseInt(document.getElementById('dDonationCount').value) || 1),
+                donationCount: parseInt(document.getElementById('dDonationCount').value, 10),
                 lastDonation: lastVal || "",
                 photo: photoUrl,
                 status: "pending", // প্রথমে পেন্ডিং থাকবে, এডমিন এপ্রুভ করলে তবেই দেখাবে
@@ -451,6 +469,7 @@
             msg.style.color = "var(--success)";
             msg.textContent = "✅ আপনার নিবন্ধন সফল হয়েছে! এডমিন যাচাই করার পর এটি ডিরেক্টরিতে যুক্ত হবে।";
             document.getElementById('donorForm').reset();
+            clearFieldErrors(document.getElementById('donorForm'));
             refreshMyProfile().catch(() => {});
         } catch (error) {
             msg.style.color = "var(--danger)";
@@ -519,10 +538,10 @@
     document.getElementById('seekerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('seekerName').value.trim();
-        const phone = document.getElementById('seekerPhone').value.trim();
+        const phone = normPhone(document.getElementById('seekerPhone').value);
         const address = document.getElementById('seekerAddress').value.trim();
 
-        if (!okPhone(phone)) { alert('সঠিক মোবাইল নম্বর দিন (যেমন: 01712345678)'); return; }
+        if (!validateAll([$("seekerName"), $("seekerPhone"), $("seekerAddress")])) return;
         if (name && phone && address) {
             let u;
             try { u = await ensureUser(); } catch (err) { alert('Google সাইন ইন সম্পন্ন হয়নি। আবার চেষ্টা করুন।'); return; }
@@ -575,6 +594,26 @@
         document.querySelector('.result-warn').style.display = logged ? 'block' : 'none';
         const cb = document.getElementById('resCopy');
         cb.textContent = '📋 কপি'; cb.classList.remove('done');
+        // ভুল নম্বর রিপোর্ট
+        const rb = $("resReportBox"), rl = $("resReport"), rm = $("resRepMsg");
+        const rkey = () => "dcu_rep_" + (auth.currentUser ? auth.currentUser.uid : "") + "_" + selectedDonor.id;
+        const reported = () => { try { return !!localStorage.getItem(rkey()); } catch (e) { return false; } };
+        rb.style.display = "none"; rm.textContent = ""; rm.className = "ferr"; $("resReason").value = ""; $("resSend").disabled = false;
+        rl.style.display = "inline"; rl.textContent = reported() ? "✅ আপনি এই নম্বরটি রিপোর্ট করেছেন" : "🚩 নম্বরটি ভুল বা বন্ধ? রিপোর্ট করুন";
+        rl.onclick = () => { if (!reported()) rb.style.display = rb.style.display === "none" ? "block" : "none"; };
+        $("resSend").onclick = async () => {
+            const reason = $("resReason").value;
+            if (!reason) { rm.className = "ferr bad"; rm.textContent = "কারণ বাছাই করুন"; return; }
+            $("resSend").disabled = true;
+            try {
+                const u = auth.currentUser;
+                await addDoc(collection(db, "reports"), { donorUid: selectedDonor.id, donorName: selectedDonor.name, reporterUid: u.uid, reporterEmail: u.email, reason, timestamp: new Date() });
+                try { localStorage.setItem(rkey(), "1"); } catch (e) {}
+                rm.className = "ferr hint"; rm.textContent = "✅ ধন্যবাদ! এডমিন বিষয়টি যাচাই করবেন।";
+                rl.textContent = "✅ আপনি এই নম্বরটি রিপোর্ট করেছেন";
+                setTimeout(() => { rb.style.display = "none"; }, 1800);
+            } catch (e) { $("resSend").disabled = false; rm.className = "ferr bad"; rm.textContent = "রিপোর্ট পাঠানো যায়নি (" + (e.code || e.message) + ")"; }
+        };
         document.getElementById('resultModal').style.display = 'flex';
     }
 
@@ -625,6 +664,122 @@
         return iso(t);
     }
     $("dLastDonation").outerHTML = dsel("dLastDonation", "");
+
+    // ===== ইনপুট যাচাই: ভুল হলে সঙ্গে সঙ্গে সংশ্লিষ্ট ঘরের নিচে দেখাবে =====
+    const BN2EN = { "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4", "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9" };
+    // বাংলা অঙ্ক, স্পেস, ড্যাশ, +880 / 880 কোড সরিয়ে স্বাভাবিক ০১XXXXXXXXX রূপে আনে
+    function normPhone(raw) {
+        let v = String(raw ?? "").replace(/[০-৯]/g, c => BN2EN[c]).replace(/[\s\-().]/g, "");
+        if (v.startsWith("+880")) v = "0" + v.slice(4); else if (v.startsWith("880")) v = "0" + v.slice(3);
+        return v;
+    }
+    // final=false: টাইপ করার সময় (অসম্পূর্ণ হলে শুধু ইঙ্গিত); final=true: ঘর ছাড়ার সময়/সাবমিটে
+    function phoneCheck(p, final) {
+        if (!p) return { err: final ? "মোবাইল নম্বর দিন" : "" };
+        if (!/^\d+$/.test(p)) return { err: "শুধু সংখ্যা (০–৯) ব্যবহার করুন; অক্ষর বা চিহ্ন দেওয়া যাবে না" };
+        if (p[0] !== "0" || (p.length > 1 && p[1] !== "1")) return { err: "নম্বর ০১ দিয়ে শুরু হতে হবে (যেমন: 01712345678)" };
+        if (p.length > 2 && !/[3-9]/.test(p[2])) return { err: "অপারেটর কোড ঠিক নয়: ০১৩ থেকে ০১৯ এর মধ্যে হতে হবে (010 বা 012 দিয়ে মোবাইল নম্বর হয় না)" };
+        if (p.length > 11) return { err: "নম্বর ১১ ডিজিটের বেশি হয়ে গেছে (এখন " + bnNum(p.length) + " ডিজিট)" };
+        if (p.length < 11) return final ? { err: "নম্বর ১১ ডিজিটের হতে হবে; আপনি দিয়েছেন " + bnNum(p.length) + " ডিজিট" } : { hint: "আরও " + bnNum(11 - p.length) + " ডিজিট বাকি" };
+        if (/(\d)\1{6,}/.test(p) || /12345678|87654321/.test(p)) return { err: "এই নম্বরটি সঠিক মনে হচ্ছে না; আপনার আসল নম্বর দিন" };
+        return { ok: true };
+    }
+    const vName = (v) => {
+        v = (v || "").trim();
+        if (!v) return "আপনার পূর্ণ নাম লিখুন";
+        if (/\d/.test(v)) return "নামে সংখ্যা থাকতে পারবে না";
+        if (!/^[\p{L}\p{M}\s.'-]+$/u.test(v)) return "নামে শুধু অক্ষর, স্পেস ও ডট (.) ব্যবহার করা যাবে";
+        if (v.length < 3) return "নামটি খুব ছোট; পূর্ণ নাম লিখুন (কমপক্ষে ৩ অক্ষর)";
+        if (v.length > 80) return "নাম সর্বোচ্চ ৮০ অক্ষরের হতে পারবে";
+        return "";
+    };
+    const vGroup = (v) => v ? "" : "রক্তের গ্রুপ বাছাই করুন";
+    const vArea = (v) => {
+        v = (v || "").trim();
+        if (!v) return "এলাকার নাম লিখুন (সাজেশন থেকে বাছতে পারেন)";
+        if (v.length < 2) return "এলাকার নামটি খুব ছোট";
+        if (v.length > 100) return "এলাকার নাম সর্বোচ্চ ১০০ অক্ষরের হতে পারবে";
+        if (/^[\d\s]+$/.test(v)) return "সঠিক এলাকার নাম লিখুন; শুধু সংখ্যা চলবে না";
+        if (!AREAS.includes(v)) return { hint: "নামটি সাজেশন তালিকায় নেই; সঠিক হলে এভাবেই সংরক্ষিত হবে" };
+        return "";
+    };
+    const vCount = (v) => {
+        v = String(v ?? "").trim();
+        if (v === "") return "রক্তদানের সংখ্যা লিখুন (কখনো না দিয়ে থাকলে ০)";
+        if (!/^\d+$/.test(v)) return "শুধু অঙ্ক লিখুন (দশমিক বা ঋণাত্মক সংখ্যা নয়)";
+        if (Number(v) > 500) return "সংখ্যা সর্বোচ্চ ৫০০ হতে পারবে";
+        return "";
+    };
+    const vDate = (id, countVal) => {
+        const r = readDateSel(id);
+        if (r === null) return "দিন, মাস ও বছর তিনটিই বাছাই করুন (অথবা তিনটিই ফাঁকা রাখুন)";
+        if (r && r > todayISO()) return "ভবিষ্যতের তারিখ গ্রহণযোগ্য নয়";
+        if (r && countVal !== undefined && !(Number(countVal) >= 1)) return "রক্তদানের সংখ্যা ০ হলে সর্বশেষ রক্তদানের তারিখ দেওয়া যায় না";
+        return "";
+    };
+
+    function showField(el, res, anchor) {
+        const o = typeof res === "string" ? { err: res } : (res || {});
+        const a = anchor || el;
+        let b = a.nextElementSibling;
+        if (!b || !b.classList.contains("ferr")) { b = document.createElement("div"); a.insertAdjacentElement("afterend", b); }
+        b.className = "ferr" + (o.err ? " bad" : o.hint ? " hint" : "");
+        b.textContent = o.err || o.hint || "";
+        el.classList.toggle("invalid", !!o.err);
+        return !o.err;
+    }
+    // el এর ইভেন্টে getRes(final) চালিয়ে ফলাফল সঙ্গে সঙ্গে দেখায়
+    function live(el, getRes, opts = {}) {
+        const run = (final) => showField(el, getRes(final), opts.anchor);
+        (opts.events || ["input", "blur"]).forEach(ev => el.addEventListener(ev, () => run(ev !== "input")));
+        (opts.also || []).forEach(x => x.addEventListener("input", () => { if (el.value || el.__touched) run(false); }));
+        el.addEventListener("blur", () => { el.__touched = true; });
+        el.__validate = () => run(true);
+        return el;
+    }
+    function validateAll(list) {
+        let first = null;
+        list.forEach(el => { if (!el.__validate() && !first) first = el; });
+        if (first) {
+            (first.closest(".terms-box") || first).scrollIntoView({ behavior: "smooth", block: "center" });
+            const f = first.classList.contains("dsel") ? first.querySelector("select") : first;
+            if (f && f.focus) f.focus({ preventScroll: true });
+        }
+        return !first;
+    }
+    function clearFieldErrors(root) {
+        root.querySelectorAll(".ferr").forEach(b => { b.textContent = ""; b.className = "ferr"; });
+        root.querySelectorAll(".invalid").forEach(x => x.classList.remove("invalid"));
+    }
+    function phoneField(el) {
+        el.addEventListener("blur", () => { el.value = normPhone(el.value); });
+        return live(el, (f) => { const r = phoneCheck(normPhone(el.value), f); return r.ok ? { hint: "✓ নম্বরের ফরম্যাট সঠিক" } : r; });
+    }
+
+    // নিবন্ধন ফর্ম
+    live($("dName"), () => vName($("dName").value));
+    live($("dGroup"), () => vGroup($("dGroup").value), { events: ["change", "blur"] });
+    live($("dAreaSelect"), () => vArea($("dAreaSelect").value));
+    phoneField($("dPhone"));
+    live($("dPhone2"), (f) => {
+        const a = normPhone($("dPhone").value), b = normPhone($("dPhone2").value);
+        if (!b) return { err: f ? "নম্বরটি আবার লিখে নিশ্চিত করুন" : "" };
+        if (a === b) return phoneCheck(a, true).ok ? { hint: "✓ দুটি নম্বর মিলেছে" } : "";
+        if (!f && a.startsWith(b)) return { hint: "আরও " + bnNum(a.length - b.length) + " ডিজিট বাকি" };
+        return { err: "দুটি নম্বর মিলছে না; আবার দেখুন" };
+    }, { also: [$("dPhone")] });
+    $("dPhone2").addEventListener("blur", () => { $("dPhone2").value = normPhone($("dPhone2").value); });
+    $("dPhone2").addEventListener("paste", (e) => e.preventDefault());  // নম্বর নিজে টাইপ করে নিশ্চিত করতে হবে
+    live($("dDonationCount"), () => vCount($("dDonationCount").value), { also: [] });
+    live($("dLastDonation"), () => vDate("dLastDonation", $("dDonationCount").value), { events: ["change"] });
+    $("dDonationCount").addEventListener("input", () => { if (readDateSel("dLastDonation")) $("dLastDonation").__validate(); });
+    live($("termsCheck"), () => $("termsCheck").checked ? "" : "চালিয়ে যেতে সম্মতি দিতে হবে", { events: ["change"], anchor: $("termsCheck").closest(".terms-box") });
+
+    // নম্বর দেখার ফর্ম
+    live($("seekerName"), () => vName($("seekerName").value));
+    phoneField($("seekerPhone"));
+    live($("seekerAddress"), () => vArea($("seekerAddress").value));
+
 
     // রিমাইন্ডার: সর্বশেষ রক্তদানের ৩ মাস পর থেকে প্রতি ১৫ দিন অন্তর
     function reminderState(d) {
@@ -712,9 +867,16 @@
             <p id="editMsg" style="margin:10px 0 0; font-weight:600; text-align:center;"></p>
         </div>`;
         $("eCancel").onclick = renderProfileView;
+        live($("eName"), () => vName($("eName").value));
+        live($("eGroup"), () => vGroup($("eGroup").value), { events: ["change", "blur"] });
+        live($("eAddr"), () => vArea($("eAddr").value));
+        live($("eCount"), () => vCount($("eCount").value));
+        live($("eLast"), () => vDate("eLast", $("eCount").value), { events: ["change"] });
+        $("eCount").addEventListener("input", () => { if (readDateSel("eLast")) $("eLast").__validate(); });
         $("eSave").onclick = async () => {
             const msg = $("editMsg"), btn = $("eSave"), u = auth.currentUser;
             const err = (t) => { msg.style.color = "var(--danger)"; msg.textContent = "❌ " + t; btn.disabled = false; };
+            if (!validateAll([$("eName"), $("eGroup"), $("eAddr"), $("eCount"), $("eLast")])) return err("কিছু ঘরে ভুল আছে। লাল চিহ্নিত ঘরগুলো ঠিক করুন।");
             const name = $("eName").value.trim(), addr = $("eAddr").value.trim(), grp = $("eGroup").value;
             const cnt = parseInt($("eCount").value, 10), last = readDateSel("eLast");
             if (!name || name.length > 80) return err("নাম সঠিকভাবে লিখুন (সর্বোচ্চ ৮০ অক্ষর)।");
