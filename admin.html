@@ -25,7 +25,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{border-bottom:1px
 <div id="app" style="display:none">
  <div class="card bar"><span>সাইন ইন: <b id="who"></b></span><span><button class="o" id="ref">🔄 রিফ্রেশ</button> <button class="o" id="csv">⬇️ CSV</button> <button class="d" id="out">সাইন আউট</button></span></div>
  <div class="st" id="stats"></div>
- <div class="tabs" id="tabs"><button data-t="pending" class="on">⏳ অনুমোদনের অপেক্ষায়</button><button data-t="approved">✅ অনুমোদিত</button><button data-t="logs">📞 নম্বর দেখার লগ</button><button data-t="requests">🚨 জরুরি অনুরোধ</button><button data-t="reports">🚩 ভুল নম্বর রিপোর্ট</button></div>
+ <div class="tabs" id="tabs"><button data-t="pending" class="on">⏳ অনুমোদনের অপেক্ষায়</button><button data-t="approved">✅ অনুমোদিত</button><button data-t="logs">📞 নম্বর দেখার লগ</button><button data-t="requests">🚨 জরুরি অনুরোধ</button><button data-t="rqreports">🚩 অনুরোধ রিপোর্ট</button><button data-t="reports">🚩 ভুল নম্বর রিপোর্ট</button></div>
  <input id="q" placeholder="নাম, নম্বর, এলাকা বা গ্রুপ দিয়ে খুঁজুন...">
  <div id="list"></div>
 </div></div>
@@ -39,7 +39,7 @@ const auth = getAuth(app), db = getFirestore(app), $ = id => document.getElement
 const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const AV = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"><rect width="56" height="56" rx="28" fill="#eee"/><circle cx="28" cy="21" r="9" fill="#bbb"/><path d="M9 50c3-13 35-13 38 0z" fill="#bbb"/></svg>');
 const ms = d => d && d.toMillis ? d.toMillis() : 0, fd = d => ms(d) ? new Date(ms(d)).toLocaleString("bn-BD") : "-";
-let D = [], LG = [], RP = [], BR = [], tab = "pending";
+let D = [], LG = [], RP = [], BR = [], RR = [], tab = "pending";
 
 const persistReady = setPersistence(auth, browserLocalPersistence).catch(() => {});
 $("login").onclick = () => persistReady.then(() => signInWithPopup(auth, new GoogleAuthProvider())).catch(e => $("gmsg").textContent = "সাইন ইন সম্ভব হয়নি: " + e.code);
@@ -56,6 +56,7 @@ async function load() {
     try { LG = (await getDocs(query(collection(db, "activity_logs"), orderBy("timestamp", "desc"), limit(300)))).docs.map(x => ({ id: x.id, ...x.data() })); } catch (e) { LG = []; }
     try { RP = (await getDocs(collection(db, "reports"))).docs.map(x => ({ id: x.id, ...x.data() })).sort((a, b) => ms(b.timestamp) - ms(a.timestamp)); } catch (e) { RP = []; }
     try { BR = (await getDocs(collection(db, "blood_requests"))).docs.map(x => ({ id: x.id, ...x.data() })).sort((a, b) => ms(b.createdAt) - ms(a.createdAt)); await Promise.all(BR.map(async r => { try { const p = await getDoc(doc(db, "blood_requests", r.id, "private", "contact")); if (p.exists()) { r.contactPhone = r.contactPhone || p.data().contactPhone; r.requesterEmail = r.requesterEmail || p.data().requesterEmail; } } catch (_) {} })); } catch (e) { BR = []; }
+    try { RR = (await getDocs(collection(db, "request_reports"))).docs.map(x => ({ id: x.id, ...x.data() })).sort((a, b) => ms(b.timestamp) - ms(a.timestamp)); } catch (e) { RR = []; }
     render();
   } catch (e) { $("list").textContent = "ডেটা লোড হয়নি: " + (e.code || e.message) + " (Firestore Rules ও এডমিন ইমেইল দেখুন)"; }
 }
@@ -65,6 +66,7 @@ function render() {
   document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.t === tab));
   const q = $("q").value.trim().toLowerCase(), has = o => Object.values(o).some(v => typeof v === "string" && v.length < 300 && v.toLowerCase().includes(q));
   const qt = document.querySelector('#tabs [data-t="requests"]'); if (qt) qt.textContent = "🚨 জরুরি অনুরোধ (" + BR.filter(r => r.status === "open").length + ")";
+  const xt = document.querySelector('#tabs [data-t="rqreports"]'); if (xt) xt.textContent = "🚩 অনুরোধ রিপোর্ট (" + RR.length + ")";
   const rt = document.querySelector('#tabs [data-t="reports"]'); if (rt) rt.textContent = "🚩 ভুল নম্বর রিপোর্ট (" + RP.length + ")";
   if (tab === "reports") {
     const R = RP.filter(has);
@@ -74,6 +76,11 @@ function render() {
   if (tab === "requests") {
     const R = BR.filter(has);
     $("list").innerHTML = R.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>গ্রুপ / ব্যাগ</th><th>হাসপাতাল / এলাকা</th><th>প্রয়োজন</th><th>যোগাযোগ</th><th>অবস্থা</th><th></th></tr>${R.map(r => `<tr><td>${fd(r.createdAt)}</td><td><b>${esc(r.group)}</b> · ${esc(r.bags)}</td><td>${esc(r.hospital)}<br><span class="m">${esc(r.area)}</span></td><td>${esc(r.neededDate)}</td><td>${esc(r.contactName)}<br><span class="m">${esc(r.contactPhone)}<br>${esc(r.requesterEmail)}</span></td><td>${r.status === "open" ? "চালু" : "পূরণ হয়েছে"}</td><td><button class="d" data-a="qdel" data-id="${esc(r.id)}">মুছুন</button></td></tr>`).join("")}</table></div>` : '<p class="m">কোনো অনুরোধ নেই।</p>';
+    return;
+  }
+  if (tab === "rqreports") {
+    const R = RR.filter(has), cnt = {}; RR.forEach(x => cnt[x.requestId] = (cnt[x.requestId] || 0) + 1);
+    $("list").innerHTML = R.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>অনুরোধ</th><th>কারণ</th><th>রিপোর্টকারী</th><th>মোট</th><th></th></tr>${R.map(x => { const q = BR.find(b => b.id === x.requestId); return `<tr><td>${fd(x.timestamp)}</td><td>${esc(x.requestInfo)}<br><span class="m">${q ? (q.contactPhone ? esc(q.contactPhone) + " · " : "") + (q.status === "open" ? "চালু" : "পূরণ হয়েছে") : "(মুছে ফেলা)"}</span></td><td>${esc(x.reason)}</td><td>${esc(x.reporterEmail)}</td><td><span class="badge">${cnt[x.requestId]}</span></td><td>${q ? `<button class="d" data-a="qdel" data-id="${esc(x.requestId)}">অনুরোধ মুছুন</button> ` : ""}<button class="o" data-a="rrdel" data-id="${esc(x.id)}">রিপোর্ট মুছুন</button></td></tr>`; }).join("")}</table></div>` : '<p class="m">কোনো রিপোর্ট নেই।</p>';
     return;
   }
   if (tab === "logs") {
@@ -89,6 +96,7 @@ $("q").oninput = render; $("ref").onclick = load;
 $("list").onclick = async e => {
   const b = e.target.closest("button[data-a]"); if (!b) return;
   if (b.dataset.a === "rdel") { try { await deleteDoc(doc(db, "reports", b.dataset.id)); RP = RP.filter(x => x.id !== b.dataset.id); render(); } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); } return; }
+  if (b.dataset.a === "rrdel") { try { await deleteDoc(doc(db, "request_reports", b.dataset.id)); RR = RR.filter(x => x.id !== b.dataset.id); render(); } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); } return; }
   if (b.dataset.a === "qdel") { if (!confirm("অনুরোধটি মুছে ফেলবেন?")) return; try { try { await deleteDoc(doc(db, "blood_requests", b.dataset.id, "private", "contact")); } catch (_) {} await deleteDoc(doc(db, "blood_requests", b.dataset.id)); BR = BR.filter(x => x.id !== b.dataset.id); render(); } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); } return; }
   const id = b.dataset.id, d = D.find(x => x.id === id); if (!d) return;
   try {
