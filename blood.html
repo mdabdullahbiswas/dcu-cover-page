@@ -55,6 +55,21 @@
         .report-link { background: none; border: 0; color: #a94442; font-size: 13px; text-decoration: underline; cursor: pointer; margin-top: 10px; font-family: inherit; }
         .report-box { margin-top: 8px; text-align: left; }
         .report-box select { margin-bottom: 8px; }
+        .vtick { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; margin-left: 4px; border-radius: 50%; background: #1d9bf0; color: #fff; font-size: 11px; font-weight: 700; vertical-align: middle; }
+        .rcard { border: 1.5px solid #f0b4b0; border-left: 6px solid var(--danger); border-radius: 12px; padding: 14px 16px; margin-top: 12px; background: #fffdfd; }
+        .rcard.old { opacity: .6; border-color: var(--ln); border-left-color: #999; }
+        .rhead { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+        .rgroup { background: var(--danger); color: #fff; font-weight: 700; font-size: 20px; min-width: 54px; text-align: center; padding: 8px 6px; border-radius: 10px; }
+        .rline { font-size: 14.5px; margin-top: 3px; color: #333; }
+        .rnote { background: #f6f7f9; border-radius: 8px; padding: 8px 10px; margin: 8px 0; font-size: 13.5px; color: #444; }
+        .rtag { display: inline-block; margin: 6px 6px 0 0; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; background: #eee; color: #555; }
+        .rtag.ok { background: rgba(40,167,69,.15); color: #1b7a33; }
+        .rtag.area { background: rgba(29,155,240,.15); color: #115a96; }
+        .ractions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .ractions a, .ractions button { flex: 1; min-width: 120px; padding: 9px 8px; border-radius: 9px; font-size: 14px; font-weight: 700; text-decoration: none; text-align: center; cursor: pointer; font-family: inherit; border: 0; }
+        .ractions .btn-call { background: var(--success); color: #fff; }
+        .btn-ghost-s { background: #eef2f7; color: var(--primary); border: 1.5px solid var(--ln) !important; }
+        .btn-del-s { background: #fff; color: var(--danger); border: 1.5px solid var(--danger) !important; }
         .req { color: var(--danger); font-weight: 700; }
         .req-note { font-size: 13px; color: #666; margin: 0 0 4px; }
         .dsel { display: flex; gap: 8px; margin-top: 4px; }
@@ -111,6 +126,7 @@
     <div id="authBar" class="auth-bar"><span id="authWho"></span><button type="button" id="authOut">সাইন আউট</button></div>
     <div class="tabs">
         <button class="active" onclick="switchTab('find')">রক্ত খুঁজুন</button>
+        <button onclick="switchTab('urgent')">🚨 জরুরি রক্ত <span id="uBadge" class="nbadge" style="display:none">0</span></button>
         <button onclick="switchTab('register')">ডোনার হোন</button>
         <button onclick="switchTab('notify')">🔔 নোটিফিকেশন <span id="nBadge" class="nbadge" style="display:none">0</span></button>
         <button onclick="switchTab('leaderboard')">🏆 লিডারবোর্ড</button>
@@ -136,6 +152,7 @@
                     <input type="text" id="searchAddress" list="areaList" autocomplete="off" placeholder="যেমন: মিরপুর, গুলশান..." oninput="loadDonors()">
                 </div>
             </div>
+            <label style="font-weight:normal; cursor:pointer;"><input type="checkbox" id="onlyVerified" style="width:auto; margin-right:6px;" onchange="loadDonors()"> শুধু <span class="vtick">✔</span> ভেরিফাইড ডোনার দেখান</label>
             <div id="donorList" style="margin-top: 20px;">লোড হচ্ছে...</div>
         </div>
     </div>
@@ -197,6 +214,57 @@
     </div>
 
     <!-- ৩. লিডারবোর্ড সেকশন -->
+    <div id="urgentSection" class="section">
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                <h2 style="margin:0;">🚨 জরুরি রক্তের অনুরোধ</h2>
+                <button type="button" class="btn" id="rqToggle" style="width:auto; margin:0; padding:9px 16px;">➕ নতুন অনুরোধ</button>
+            </div>
+            <p style="font-size:13px; color:#666; margin:8px 0 0;">রোগীর জন্য জরুরি রক্ত লাগলে এখানে অনুরোধ দিন। একই গ্রুপ ও এলাকার ডোনাররা এটি দেখতে পাবেন।</p>
+            <form id="rqForm" novalidate style="display:none; margin-top:14px;">
+                <p class="req-note"><span class="req">*</span> চিহ্নিত ঘরগুলো পূরণ করা বাধ্যতামূলক।</p>
+                <div class="filter-grid">
+                    <div>
+                        <label>প্রয়োজনীয় রক্তের গ্রুপ <span class="req">*</span></label>
+                        <select id="rqGroup"><option value="">গ্রুপ সিলেক্ট করুন</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select>
+                    </div>
+                    <div>
+                        <label>কত ব্যাগ লাগবে <span class="req">*</span></label>
+                        <input type="number" id="rqBags" min="1" max="10" value="1" inputmode="numeric">
+                    </div>
+                </div>
+                <label>হাসপাতালের নাম <span class="req">*</span></label>
+                <input type="text" id="rqHospital" maxlength="100" placeholder="যেমন: মিটফোর্ড হাসপাতাল">
+                <label>এলাকা <span class="req">*</span></label>
+                <input type="text" id="rqArea" list="areaList" maxlength="100" autocomplete="off" placeholder="হাসপাতালের এলাকা">
+                <label>কবে রক্ত লাগবে <span class="req">*</span></label>
+                <div id="rqDate"></div>
+                <label>যোগাযোগকারীর নাম <span class="req">*</span></label>
+                <input type="text" id="rqName" maxlength="80" placeholder="রোগীর আত্মীয় বা যোগাযোগকারীর নাম">
+                <label>যোগাযোগের মোবাইল নম্বর <span class="req">*</span></label>
+                <input type="tel" id="rqPhone" inputmode="numeric" placeholder="01XXXXXXXXX">
+                <label>অতিরিক্ত তথ্য (ঐচ্ছিক)</label>
+                <textarea id="rqNote" rows="2" maxlength="220" placeholder="যেমন: আজ রাতেই লাগবে, ওয়ার্ড ৫"></textarea>
+                <button type="submit" class="btn" id="rqSubmit" style="background:var(--danger); color:#fff;">🚨 অনুরোধ প্রকাশ করুন</button>
+            </form>
+            <p id="rqMsg" style="margin-top:12px; font-weight:600; text-align:center;"></p>
+        </div>
+        <div class="card">
+            <div class="filter-grid">
+                <div>
+                    <label>রক্তের গ্রুপ</label>
+                    <select id="rqFilterGroup"><option value="">সকল গ্রুপ</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select>
+                </div>
+                <div>
+                    <label>এলাকা</label>
+                    <input type="text" id="rqFilterArea" list="areaList" autocomplete="off" placeholder="যেমন: মিরপুর">
+                </div>
+            </div>
+            <label style="font-weight:normal; cursor:pointer;"><input type="checkbox" id="rqMineOnly" style="width:auto; margin-right:6px;" disabled> শুধু আমার রক্তের গ্রুপ দিতে পারে এমন অনুরোধ (ডোনার হিসেবে নিবন্ধিতদের জন্য)</label>
+            <div id="rqList" style="margin-top:6px;">লোড হচ্ছে...</div>
+        </div>
+    </div>
+
     <div id="notifySection" class="section">
         <div id="reminderBox"></div>
         <div class="card">
@@ -275,7 +343,7 @@
 <!-- Firebase SDK ও মূল স্ক্রিপ্ট -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, updateDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -314,7 +382,7 @@
         $("regNote").style.display = u ? "none" : "block";
         $("seekNote").style.display = u ? "none" : "block";
         $("seekerSubmit").textContent = u ? "নম্বর দেখুন" : "🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন";
-        refreshMyProfile().catch(() => {});
+        refreshMyProfile().then(() => (u ? fetchRequests() : (requests = [], updateUrgentBadge()))).catch(() => {});
         if (u) { fetchNotify().catch(() => {}); } else { notifyLogs = []; updateBadge(); }
         if (u) {
             const sv = loadSeeker(u.uid);
@@ -342,13 +410,16 @@
     const photoSrc = (p) => (typeof p === "string" && (p.startsWith("data:image/") || p.startsWith("https://firebasestorage.googleapis.com/"))) ? esc(p) : AV;
 
     window.switchTab = function(tab) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
         document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-        
-        event.target.classList.add('active');
+        const btn = document.querySelector('.tabs button[onclick*="\'' + tab + '\'"]');
+        if (btn) btn.classList.add('active');
         if(tab === 'find') {
             document.getElementById('findSection').classList.add('active');
             loadDonors();
+        } else if(tab === 'urgent') {
+            document.getElementById('urgentSection').classList.add('active');
+            loadUrgent();
         } else if(tab === 'register') {
             document.getElementById('registerSection').classList.add('active');
             refreshMyProfile().catch(() => {});
@@ -496,6 +567,7 @@
                 const d = docSnap.data();
                 if(d.status !== "approved") return; // পেন্ডিং বা অন্য স্ট্যাটাস হাইড থাকবে
                 if(selectedGroup && d.group !== selectedGroup) return;
+                if(document.getElementById('onlyVerified').checked && d.verified !== true) return;
                 if(selectedAddress && !d.address.toLowerCase().includes(selectedAddress)) return;
 
                 count++;
@@ -505,7 +577,7 @@
                         <div class="donor-info" style="display:flex; align-items:center;">
                             <img src="${photoSrc(d.photo)}" alt="User">
                             <div class="donor-details" style="margin-left:15px;">
-                                <h3 style="margin:0;">${esc(d.name)} <span class="badge">${esc(d.group)}</span></h3>
+                                <h3 style="margin:0;">${esc(d.name)}${vtick(d)} <span class="badge">${esc(d.group)}</span></h3>
                                 <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${esc(d.address)} | 🩸 ${esc(d.donationCount || 1)} বার দান</p>
                                 ${availabilityHTML(d)}
                             </div>
@@ -523,7 +595,7 @@
     window.loadDonors = loadDonors;
 
     window.handleContactClick = function(phone, name, group, id) {
-        selectedDonor = { id, phone, name, group, photo: rawPhoto((donorMap[id] || {}).photo) };
+        selectedDonor = { id, phone, name, group, photo: rawPhoto((donorMap[id] || {}).photo), verified: (donorMap[id] || {}).verified === true };
         if (!auth.currentUser || !currentSeeker) {
             document.getElementById('securityModal').style.display = 'flex';
         } else {
@@ -575,7 +647,7 @@
     }
 
     function showResult(logged) {
-        document.getElementById('resName').textContent = selectedDonor.name;
+        document.getElementById('resName').innerHTML = esc(selectedDonor.name) + (selectedDonor.verified ? '<span class="vtick" title="ভেরিফাইড ডোনার">✔</span>' : '');
         document.getElementById('resGroup').textContent = selectedDonor.group ? selectedDonor.group : '';
         document.getElementById('resGroup').style.display = selectedDonor.group ? 'inline-block' : 'none';
         document.getElementById('resPhone').textContent = selectedDonor.phone;
@@ -646,12 +718,12 @@
     // দিন-মাস-বছর নির্বাচক
     const MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
     const bnPlain = (n) => Number(n).toLocaleString("bn-BD", { useGrouping: false });
-    function dsel(id, value) {
+    function dsel(id, value, future) {
         const v = validISO(value) ? value.split("-").map(Number) : [0, 0, 0], y0 = new Date().getFullYear();
         let dd = '<option value="">দিন</option>', mm = '<option value="">মাস</option>', yy = '<option value="">বছর</option>';
         for (let i = 1; i <= 31; i++) dd += `<option value="${i}" ${v[2] === i ? "selected" : ""}>${bnPlain(i)}</option>`;
         MONTHS.forEach((m, i) => { mm += `<option value="${i + 1}" ${v[1] === i + 1 ? "selected" : ""}>${m}</option>`; });
-        for (let y = y0; y >= Math.max(2000, y0 - 60); y--) yy += `<option value="${y}" ${v[0] === y ? "selected" : ""}>${bnPlain(y)}</option>`;
+        if (future) { for (let y = y0; y <= y0 + 1; y++) yy += `<option value="${y}" ${v[0] === y ? "selected" : ""}>${bnPlain(y)}</option>`; } else { for (let y = y0; y >= Math.max(2000, y0 - 60); y--) yy += `<option value="${y}" ${v[0] === y ? "selected" : ""}>${bnPlain(y)}</option>`; }
         return `<div class="dsel" id="${id}"><select data-p="d" aria-label="দিন">${dd}</select><select data-p="m" aria-label="মাস">${mm}</select><select data-p="y" aria-label="বছর">${yy}</select></div>`;
     }
     // ফাঁকা হলে "", অসম্পূর্ণ বা অবৈধ (যেমন ৩১ ফেব্রুয়ারি) হলে null, নইলে YYYY-MM-DD
@@ -816,7 +888,7 @@
         const r = reminderState(d);
         box.innerHTML = `<div class="my-card">
             <img src="${photoSrc(d.photo)}" alt="">
-            <h3 style="margin:8px 0 2px;">${esc(d.name)} <span class="badge">${esc(d.group)}</span></h3>
+            <h3 style="margin:8px 0 2px;">${esc(d.name)}${vtick(d)} <span class="badge">${esc(d.group)}</span></h3>
             <div class="my-row">📍 ${esc(d.address)} &nbsp;|&nbsp; 📞 ${esc(d.phone)}</div>
             <div class="my-row">🩸 ${esc(d.donationCount)} বার রক্তদান &nbsp;|&nbsp; 🗓️ সর্বশেষ: ${validISO(d.lastDonation) ? bnDate(d.lastDonation) : "দেওয়া হয়নি"}</div>
             <span class="st ${ok ? "ok" : "wait"}">${ok ? "✅ অনুমোদিত, ডিরেক্টরিতে দেখা যাচ্ছে" : "⏳ এডমিনের অনুমোদনের অপেক্ষায়"}</span>
@@ -1005,6 +1077,170 @@
         }
     }
 
+    // ===== ভেরিফাইড ব্যাজ =====
+    function vtick(d) { return d && d.verified === true ? '<span class="vtick" title="ভেরিফাইড ডোনার: এডমিন যাচাইকৃত">✔</span>' : ""; }
+
+    // ===== জরুরি রক্তের অনুরোধ =====
+    // কোন গ্রুপের ডোনার কোন গ্রুপের রোগীকে রক্ত দিতে পারেন
+    const CAN_GIVE = { "O-": ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"], "O+": ["O+", "A+", "B+", "AB+"], "A-": ["A-", "A+", "AB-", "AB+"], "A+": ["A+", "AB+"], "B-": ["B-", "B+", "AB-", "AB+"], "B+": ["B+", "AB+"], "AB-": ["AB-", "AB+"], "AB+": ["AB+"] };
+    let requests = [];
+    const canHelp = (r) => !!(myDonor && (CAN_GIVE[myDonor.group] || []).includes(r.group));
+    const sameArea = (r) => !!(myDonor && myDonor.address && r.area && myDonor.address.trim() === r.area.trim());
+    const reqSeenKey = (uid) => "dcu_req_seen_" + uid;
+    function agoBn(ms) {
+        const m = Math.max(0, Math.round((Date.now() - ms) / 60000));
+        if (m < 1) return "এইমাত্র";
+        if (m < 60) return bnNum(m) + " মিনিট আগে";
+        if (m < 1440) return bnNum(Math.floor(m / 60)) + " ঘণ্টা আগে";
+        return bnNum(Math.floor(m / 1440)) + " দিন আগে";
+    }
+
+    function updateUrgentBadge() {
+        const u = auth.currentUser, b = $("uBadge");
+        let seen = 0; try { seen = Number(localStorage.getItem(reqSeenKey(u ? u.uid : ""))) || 0; } catch (e) {}
+        const n = u ? requests.filter(r => r.requesterUid !== u.uid && r.neededDate >= todayISO() && canHelp(r) && sameArea(r) && tsMs(r.createdAt) > seen).length : 0;
+        b.textContent = n > 99 ? "99+" : n;
+        b.style.display = n > 0 ? "inline-block" : "none";
+    }
+
+    async function fetchRequests() {
+        const u = auth.currentUser;
+        if (!u) { requests = []; updateUrgentBadge(); return []; }
+        const snap = await getDocs(query(collection(db, "blood_requests"), where("status", "==", "open")));
+        const t = todayISO();
+        requests = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(r => r.neededDate >= t || r.requesterUid === u.uid).sort((a, b) => tsMs(b.createdAt) - tsMs(a.createdAt));
+        updateUrgentBadge();
+        return requests;
+    }
+
+    function reqCard(r) {
+        const u = auth.currentUser, mine = u && r.requesterUid === u.uid, expired = r.neededDate < todayISO();
+        const days = diffDays(todayISO(), r.neededDate);
+        const when = expired ? bnDate(r.neededDate) : days === 0 ? "আজই" : days === 1 ? "আগামীকাল" : bnDate(r.neededDate);
+        const tel = esc(String(r.contactPhone || "").replace(/[^\d+]/g, ""));
+        return `<div class="rcard ${expired ? "old" : ""}">
+            <div class="rhead"><span class="rgroup">${esc(r.group)}</span>
+                <div><b>${bnNum(r.bags)} ব্যাগ রক্ত লাগবে</b><div style="font-size:12.5px; color:#777;">🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""}${mine ? " · আপনার অনুরোধ" : ""}</div></div></div>
+            <div class="rline">🏥 <b>${esc(r.hospital)}</b> &nbsp;·&nbsp; 📍 ${esc(r.area)}</div>
+            <div class="rline">📅 প্রয়োজন: <b>${when}</b>${expired ? ' <span class="rtag">মেয়াদ শেষ</span>' : ""}</div>
+            ${r.note ? `<div class="rnote">${esc(r.note)}</div>` : ""}
+            <div class="rline">👤 ${esc(r.contactName)} &nbsp;·&nbsp; 📞 ${esc(r.contactPhone)}</div>
+            <div>${canHelp(r) ? '<span class="rtag ok">🩸 আপনি এই গ্রুপে রক্ত দিতে পারেন</span>' : ""}${sameArea(r) ? '<span class="rtag area">📍 আপনার এলাকায়</span>' : ""}</div>
+            <div class="ractions">
+                <a class="btn-call" href="tel:${tel}">📲 কল করুন</a>
+                <button type="button" class="btn-ghost-s" data-q="find" data-id="${esc(r.id)}">🔎 ডোনার খুঁজুন</button>
+                ${mine ? `<button type="button" class="btn-ghost-s" data-q="done" data-id="${esc(r.id)}">✅ রক্ত পাওয়া গেছে</button><button type="button" class="btn-del-s" data-q="del" data-id="${esc(r.id)}">🗑️ মুছুন</button>` : ""}
+            </div></div>`;
+    }
+
+    function renderRequests() {
+        const box = $("rqList"), g = $("rqFilterGroup").value, a = $("rqFilterArea").value.trim().toLowerCase(), onlyMe = $("rqMineOnly").checked;
+        const L = requests.filter(r => (!g || r.group === g) && (!a || String(r.area).toLowerCase().includes(a)) && (!onlyMe || canHelp(r)))
+            .sort((x, y) => ((canHelp(y) && sameArea(y)) - (canHelp(x) && sameArea(x))) || (tsMs(y.createdAt) - tsMs(x.createdAt)));
+        box.innerHTML = L.length ? L.map(reqCard).join("") : "<p style='text-align:center; color:#777;'>এই মুহূর্তে কোনো জরুরি অনুরোধ নেই।</p>";
+    }
+
+    async function loadUrgent() {
+        const box = $("rqList");
+        await Promise.all([authReady, persistReady]);
+        $("rqMineOnly").disabled = !myDonor;
+        if (!auth.currentUser) {
+            box.innerHTML = '<div class="signin-note" style="margin-top:0">🛡️ জরুরি অনুরোধ দেখতে ও দিতে Google দিয়ে সাইন ইন করুন। এতে ভুয়া অনুরোধ ঠেকানো যায়।</div><button class="btn" id="rqSignIn">🔐 Google দিয়ে সাইন ইন করুন</button>';
+            $("rqSignIn").onclick = async () => { try { await ensureUser(); await refreshMyProfile(); loadUrgent(); } catch (e) {} };
+            return;
+        }
+        box.textContent = "লোড হচ্ছে...";
+        try {
+            await fetchRequests();
+            $("rqMineOnly").disabled = !myDonor;
+            renderRequests();
+            const newest = Math.max(0, ...requests.map(r => tsMs(r.createdAt)));
+            try { localStorage.setItem(reqSeenKey(auth.currentUser.uid), String(newest)); } catch (e) {}
+            updateUrgentBadge();
+        } catch (e) { box.innerHTML = "<p style='text-align:center; color:var(--danger);'>অনুরোধ লোড হয়নি (" + esc(e.code || e.message) + ")</p>"; }
+    }
+
+    // ---- অনুরোধ ফর্ম ----
+    $("rqDate").outerHTML = dsel("rqDate", "", true);
+    const vBags = (v) => { v = String(v ?? "").trim(); if (!/^\d+$/.test(v)) return "কত ব্যাগ রক্ত লাগবে তা সংখ্যায় লিখুন"; const n = Number(v); return (n < 1 || n > 10) ? "১ থেকে ১০ ব্যাগের মধ্যে হতে হবে" : ""; };
+    const vHospital = (v) => { v = (v || "").trim(); if (!v) return "হাসপাতালের নাম লিখুন"; if (v.length < 3) return "হাসপাতালের নামটি খুব ছোট"; if (v.length > 100) return "সর্বোচ্চ ১০০ অক্ষর"; if (/^[\d\s]+$/.test(v)) return "সঠিক হাসপাতালের নাম লিখুন"; return ""; };
+    const vNeedDate = () => {
+        const r = readDateSel("rqDate");
+        if (r === null) return "দিন, মাস ও বছর তিনটিই বাছাই করুন";
+        if (!r) return "কবে রক্ত লাগবে তা বাছাই করুন";
+        if (r < todayISO()) return "অতীতের তারিখ হতে পারবে না";
+        if (r > addDaysISO(todayISO(), 30)) return "আগামী ৩০ দিনের মধ্যের তারিখ দিন";
+        return "";
+    };
+    const vNote = (v) => (v || "").length > 200 ? "বিবরণ সর্বোচ্চ ২০০ অক্ষরের হতে পারবে (এখন " + bnNum(v.length) + ")" : "";
+    live($("rqGroup"), () => vGroup($("rqGroup").value), { events: ["change", "blur"] });
+    live($("rqBags"), () => vBags($("rqBags").value));
+    live($("rqHospital"), () => vHospital($("rqHospital").value));
+    live($("rqArea"), () => vArea($("rqArea").value));
+    live($("rqDate"), vNeedDate, { events: ["change"] });
+    live($("rqName"), () => vName($("rqName").value));
+    phoneField($("rqPhone"));
+    live($("rqNote"), () => vNote($("rqNote").value));
+
+    $("rqToggle").onclick = async () => {
+        const f = $("rqForm");
+        if (f.style.display === "block") { f.style.display = "none"; return; }
+        let u; try { u = await ensureUser(); } catch (e) { return; }
+        await refreshMyProfile().catch(() => {});
+        const sv = loadSeeker(u.uid);
+        if (!$("rqName").value) $("rqName").value = (sv && sv.name) || (myDonor && myDonor.name) || "";
+        if (!$("rqPhone").value) $("rqPhone").value = (sv && sv.phone) || (myDonor && myDonor.phone) || "";
+        f.style.display = "block";
+        f.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    $("rqForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = $("rqMsg"), btn = $("rqSubmit");
+        const fields = [$("rqGroup"), $("rqBags"), $("rqHospital"), $("rqArea"), $("rqDate"), $("rqName"), $("rqPhone"), $("rqNote")];
+        if (!validateAll(fields)) { msg.style.color = "var(--danger)"; msg.textContent = "❌ কিছু ঘরে ভুল আছে। লাল চিহ্নিত ঘরগুলো ঠিক করুন।"; return; }
+        btn.disabled = true; msg.style.color = "var(--primary)"; msg.textContent = "অনুরোধ পাঠানো হচ্ছে...";
+        try {
+            const u = await ensureUser();
+            const mine = await getDocs(query(collection(db, "blood_requests"), where("requesterUid", "==", u.uid), where("status", "==", "open")));
+            if (mine.size >= 3) { msg.style.color = "var(--danger)"; msg.textContent = "❌ একসাথে সর্বোচ্চ ৩টি চালু অনুরোধ রাখা যায়। পুরনোগুলোর কোনোটি 'রক্ত পাওয়া গেছে' করুন বা মুছুন।"; btn.disabled = false; return; }
+            await addDoc(collection(db, "blood_requests"), {
+                requesterUid: u.uid, requesterEmail: u.email,
+                group: $("rqGroup").value, bags: parseInt($("rqBags").value, 10),
+                hospital: $("rqHospital").value.trim(), area: $("rqArea").value.trim(),
+                neededDate: readDateSel("rqDate"), contactName: $("rqName").value.trim(),
+                contactPhone: normPhone($("rqPhone").value), note: $("rqNote").value.trim(),
+                status: "open", createdAt: new Date()
+            });
+            msg.style.color = "var(--success)"; msg.textContent = "✅ আপনার জরুরি অনুরোধ প্রকাশ করা হয়েছে। রক্ত পাওয়া গেলে 'রক্ত পাওয়া গেছে' চাপুন।";
+            $("rqForm").reset(); clearFieldErrors($("rqForm")); $("rqForm").style.display = "none";
+            await fetchRequests(); renderRequests();
+        } catch (err) { msg.style.color = "var(--danger)"; msg.textContent = "❌ অনুরোধ পাঠানো যায়নি (" + (err.code || err.message) + ")। Firestore Rules হালনাগাদ করা আছে কিনা দেখুন।"; }
+        btn.disabled = false;
+    });
+
+    $("rqFilterGroup").onchange = renderRequests;
+    $("rqFilterArea").oninput = renderRequests;
+    $("rqMineOnly").onchange = renderRequests;
+    $("rqList").addEventListener("click", async (e) => {
+        const b = e.target.closest("button[data-q]"); if (!b) return;
+        const r = requests.find(x => x.id === b.dataset.id); if (!r) return;
+        try {
+            if (b.dataset.q === "find") {
+                $("searchGroup").value = r.group; $("searchAddress").value = r.area;
+                window.switchTab("find");
+            } else if (b.dataset.q === "done") {
+                if (!confirm("রক্তের ব্যবস্থা হয়ে গেছে? অনুরোধটি তালিকা থেকে সরিয়ে ফেলা হবে।")) return;
+                await updateDoc(doc(db, "blood_requests", r.id), { status: "fulfilled" });
+                await fetchRequests(); renderRequests();
+            } else if (b.dataset.q === "del") {
+                if (!confirm("অনুরোধটি স্থায়ীভাবে মুছে ফেলবেন?")) return;
+                await deleteDoc(doc(db, "blood_requests", r.id));
+                await fetchRequests(); renderRequests();
+            }
+        } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); }
+    });
+
     async function loadLeaderboard() {
         const lbDiv = document.getElementById('leaderboardList');
         lbDiv.innerHTML = "লিডারবোর্ড তৈরি হচ্ছে...";
@@ -1037,7 +1273,7 @@
                 let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1);
                 html += `<tr>
                     <td><b>${medal}</b></td>
-                    <td>${esc(d.name)}</td>
+                    <td>${esc(d.name)}${vtick(d)}</td>
                     <td><span class="badge">${esc(d.group)}</span></td>
                     <td>${esc(d.address)}</td>
                     <td><b style="color:var(--danger);">${d.donationCount || 1} বার</b></td>
