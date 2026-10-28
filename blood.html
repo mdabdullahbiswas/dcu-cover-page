@@ -10,11 +10,11 @@
     <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js">
     <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js">
     <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js">
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="site.css">
     <style>
         :root { --bg: #f4f7f6; --cd: #ffffff; --ink: #1c2733; --ln: #d0d7de; --primary: #0a2240; --accent: #e5a83b; --danger: #d9534f; --success: #28a745; }
-        body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Hind Siliguri', 'Montserrat', sans-serif; line-height: 1.6; padding: 0; }
+        body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'Montserrat', 'Nirmala UI', 'Vrinda', 'Shonar Bangla', sans-serif; line-height: 1.6; padding: 0; }
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
         .card { background: var(--cd); border: 1px solid var(--ln); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         h2 { color: var(--primary); margin-top: 0; }
@@ -197,7 +197,7 @@
         .result-icon { font-size: 36px; }
         .result-body { padding: 14px 22px 22px; }
         .result-label { font-size: 13px; color: #777; margin: 6px 0 2px; }
-        .result-phone { font-family: 'Montserrat', 'Hind Siliguri', sans-serif; font-size: 30px; font-weight: 700; color: var(--primary); letter-spacing: 1px; margin: 0 0 14px; direction: ltr; }
+        .result-phone { font-family: 'Montserrat', 'Hind Siliguri', 'Noto Sans Bengali', 'Nirmala UI', sans-serif; font-size: 30px; font-weight: 700; color: var(--primary); letter-spacing: 1px; margin: 0 0 14px; direction: ltr; }
         .result-actions { display: flex; gap: 10px; }
         .result-actions a, .result-actions button { flex: 1; margin: 0; padding: 12px 8px; border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; border: 0; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-call { background: var(--success); color: #fff; }
@@ -858,12 +858,17 @@ if(window.ResizeObserver)new ResizeObserver(s).observe(h);})();
     const addDaysISO = (s, n) => { const d = parseISO(s); d.setDate(d.getDate() + n); return iso(d); };
     const diffDays = (a, b) => Math.round((parseISO(b) - parseISO(a)) / 864e5);
     const validISO = (s) => /^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(s || "");
-    const bnDate = (s) => validISO(s) ? parseISO(s).toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }) : "";
-    const bnNum = (n) => Number(n).toLocaleString("bn-BD");
+    // বাংলা অঙ্ক: ICU/toLocaleString-এর উপর নির্ভর না করে সরাসরি U+09E6–U+09EF ব্যবহার
+    const BN_D = ["\u09E6","\u09E7","\u09E8","\u09E9","\u09EA","\u09EB","\u09EC","\u09ED","\u09EE","\u09EF"];
+    const toBnDigits = (s) => String(s).replace(/\d/g, (d) => BN_D[+d]);
+    const BN_MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+    const bnDate = (s) => { if (!validISO(s)) return ""; const d = parseISO(s); return toBnDigits(d.getDate()) + " " + BN_MONTHS[d.getMonth()] + ", " + toBnDigits(d.getFullYear()); };
+    const bnNum = (n) => toBnDigits(Number(n).toLocaleString("en-US"));
+    const bnDateTime = (ms) => { const d = new Date(ms), h = d.getHours() % 12 || 12, m = String(d.getMinutes()).padStart(2, "0"); return toBnDigits(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + h + ":" + m) + (d.getHours() < 12 ? " পূর্বাহ্ণ" : " অপরাহ্ণ"); };
     const REMIND_MONTHS = 3, REMIND_EVERY = 15;
     // দিন-মাস-বছর নির্বাচক
     const MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-    const bnPlain = (n) => Number(n).toLocaleString("bn-BD", { useGrouping: false });
+    const bnPlain = (n) => toBnDigits(n);
     function dsel(id, value, future) {
         const v = validISO(value) ? value.split("-").map(Number) : [0, 0, 0], y0 = new Date().getFullYear();
         let dd = '<option value="">দিন</option>', mm = '<option value="">মাস</option>', yy = '<option value="">বছর</option>';
@@ -1211,7 +1216,7 @@ if(window.ResizeObserver)new ResizeObserver(s).observe(h);})();
             box.innerHTML = `<div style="font-size:14px; margin-bottom:4px;">মোট <b>${logs.length}</b> বার আপনার নম্বর দেখা হয়েছে।</div>` + logs.map(l => {
                 const isNew = tsMs(l.timestamp) > seen, ph = String(l.seekerPhone || "");
                 return `<div class="nitem ${isNew ? "new" : ""}">
-                    <div class="nt">🕒 ${tsMs(l.timestamp) ? new Date(tsMs(l.timestamp)).toLocaleString("bn-BD") : "-"}${isNew ? '<span class="nnew">নতুন</span>' : ""}</div>
+                    <div class="nt">🕒 ${tsMs(l.timestamp) ? bnDateTime(tsMs(l.timestamp)) : "-"}${isNew ? '<span class="nnew">নতুন</span>' : ""}</div>
                     <div><span class="nn">${esc(l.seekerName)}</span> আপনার নম্বর দেখেছেন</div>
                     <div style="font-size:14px; color:#444;">📍 ${esc(l.seekerAddress)} &nbsp;|&nbsp; 📞 <a href="tel:${esc(ph.replace(/[^\d+]/g, ""))}">${esc(ph)}</a></div>
                 </div>`;
