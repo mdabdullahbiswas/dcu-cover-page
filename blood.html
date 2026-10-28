@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCU Blood Donor Directory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #f4f7f6; --cd: #ffffff; --ink: #1c2733; --ln: #d0d7de; --primary: #0a2240; --accent: #e5a83b; --danger: #d9534f; }
+        body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Hind Siliguri', 'Montserrat', sans-serif; line-height: 1.6; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: var(--cd); border: 1px solid var(--ln); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h2 { color: var(--primary); margin-top: 0; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tabs button { flex: 1; padding: 12px; border: none; background: var(--ln); color: var(--ink); font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .tabs button.active { background: var(--primary); color: var(--accent); }
+        .section { display: none; }
+        .section.active { display: block; }
+        label { display: block; font-weight: 600; margin-top: 12px; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1.5px solid var(--ln); border-radius: 8px; margin-top: 4px; box-sizing: border-box; font-family: inherit; }
+        .btn { background: var(--primary); color: var(--accent); border: none; border-radius: 8px; padding: 12px 20px; font-weight: 700; cursor: pointer; margin-top: 16px; width: 100%; font-size: 16px; }
+        .donor-card { border: 1px solid var(--ln); border-radius: 8px; padding: 15px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; background: #fafbfc; }
+        .donor-info img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+        .donor-details { flex-grow: 1; margin-left: 15px; }
+        .badge { background: var(--danger); color: white; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 14px; }
+        .alert-box { background: rgba(217, 83, 79, 0.1); border: 1px dashed var(--danger); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #a94442; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🩸 DCU ব্লাড ডোনার ডিরেক্টরি</h2>
+    <div class="tabs">
+        <button class="active" onclick="switchTab('find')">রক্ত খুঁজুন (Find Blood)</button>
+        <button onclick="switchTab('register')">ডোনার হোন (Become a Donor)</button>
+    </div>
+
+    <!-- ব্লাড সার্চ সেকশন -->
+    <div id="findSection" class="section active">
+        <div class="card">
+            <h2>রক্তদাতা খুঁজুন</h2>
+            <div class="alert-box">
+                ⚠️ <b>সতর্কতা:</b> রক্তদাতার সাথে যোগাযোগের জন্য আপনার নাম ও মোবাইল নম্বর দিতে হবে। আপনি যার প্রোফাইল থেকে নম্বর নেবেন, তার কাছে আপনার তথ্য ও নোটিফিকেশন চলে যাবে।
+            </div>
+            <label>রক্তের গ্রুপ নির্বাচন করুন</label>
+            <select id="searchGroup" onchange="loadDonors()">
+                <option value="">সকল গ্রুপ</option>
+                <option value="A+">A+</option><option value="A-">A-</option>
+                <option value="B+">B+</option><option value="B-">B-</option>
+                <option value="O+">O+</option><option value="O-">O-</option>
+                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+            </select>
+            <div id="donorList" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- ডোনার রেজিস্ট্রেশন সেকশন -->
+    <div id="registerSection" class="section">
+        <div class="card">
+            <h2>ডোনার হিসেবে নিবন্ধন করুন</h2>
+            <form id="donorForm">
+                <label>পূর্ণ নাম</label>
+                <input type="text" id="dName" required placeholder="আপনার নাম">
+                
+                <label>রক্তের গ্রুপ</label>
+                <select id="dGroup" required>
+                    <option value="">গ্রুপ সিলেক্ট করুন</option>
+                    <option value="A+">A+</option><option value="A-">A-</option>
+                    <option value="B+">B+</option><option value="B-">B-</option>
+                    <option value="O+">O+</option><option value="O-">O-</option>
+                    <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                </select>
+
+                <label>বর্তমান ঠিকানা / এলাকা</label>
+                <input type="text" id="dAddress" required placeholder="যেমন: মিরপুর, ঢাকা">
+
+                <label>মোবাইল নম্বর</label>
+                <input type="tel" id="dPhone" required placeholder="01XXXXXXXXX">
+
+                <label>প্রোফাইল ছবি (ঐচ্ছিক)</label>
+                <input type="file" id="dPhoto" accept="image/*">
+
+                <button type="submit" class="btn">নিবন্ধন সম্পন্ন করুন</button>
+            </form>
+            <p id="regMsg" style="margin-top: 10px; font-weight: 600; text-align: center;"></p>
+        </div>
+    </div>
+</div>
+
+<!-- সিকিউরিটি ও ইনফো মোডাল (রক্ত নেওয়ার সময় পপআপ) -->
+<div id="infoModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div class="card" style="width: 90%; max-width: 400px; background:white;">
+        <h3>আপনার তথ্য দিন</h3>
+        <p class="hint" style="font-size:13px;">নম্বর দেখতে হলে আপনার তথ্য দিতে হবে, যা ডোনার দেখতে পাবেন।</p>
+        <label>আপনার নাম</label>
+        <input type="text" id="seekerName" required>
+        <label>আপনার মোবাইল নম্বর</label>
+        <input type="tel" id="seekerPhone" required>
+        <button class="btn" onclick="confirmAndShowNumber()">নম্বর দেখুন</button>
+        <button class="btn" style="background:#ccc; color:#333; margin-top:8px;" onclick="closeModal()">বাতিল</button>
+    </div>
+</div>
+
+<!-- Firebase SDK ও মূল লজিক -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    // আপনার ফায়ারবেস কনফিগারেশন এখানে বসানো হলো
+    const firebaseConfig = {
+        apiKey: "AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0",
+        authDomain: "dcu-blood-bank.firebaseapp.com",
+        projectId: "dcu-blood-bank",
+        storageBucket: "dcu-blood-bank.firebasestorage.app",
+        messagingSenderId: "835221249900",
+        appId: "1:835221249900:web:facf545941825a4efa5d49"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+        if(tab === 'find') {
+            document.getElementById('findSection').classList.add('active');
+            event.target.classList.add('active');
+            loadDonors();
+        } else {
+            document.getElementById('registerSection').classList.add('active');
+            event.target.classList.add('active');
+        }
+    }
+
+    // ছবি কম্প্রেস করার ফাংশন (ব্রাউজারে ছোট সাইজ করার জন্য)
+    function compressImage(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 300;
+                    const MAX_HEIGHT = 300;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    canvas.toBlob((blob) => {
+                        resolve(blob);
+                    }, 'image/jpeg', 0.7);
+                }
+            }
+        });
+    }
+
+    // ডোনার রেজিস্ট্রেশন সাবমিট
+    document.getElementById('donorForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById('regMsg');
+        msg.textContent = "তথ্য আপলোড হচ্ছে, অপেক্ষা করুন...";
+
+        try {
+            let photoUrl = "";
+            const fileInput = document.getElementById('dPhoto').files[0];
+            
+            if (fileInput) {
+                const compressedBlob = await compressImage(fileInput);
+                const storageRef = ref(storage, 'donor_photos/' + Date.now() + '.jpg');
+                await uploadBytes(storageRef, compressedBlob);
+                photoUrl = await getDownloadURL(storageRef);
+            }
+
+            await addDoc(collection(db, "donors"), {
+                name: document.getElementById('dName').value,
+                group: document.getElementById('dGroup').value,
+                address: document.getElementById('dAddress').value,
+                phone: document.getElementById('dPhone').value,
+                photo: photoUrl,
+                status: "approved", // সহজে টেস্ট করার জন্য আপাতত approved রাখা হলো (পরে এপ্রুভাল সিস্টেম করতে পারবেন)
+                createdAt: new Date()
+            });
+
+            msg.textContent = "✅ সফলভাবে নিবন্ধন সম্পন্ন হয়েছে! এডমিন যাচাই করার পর এটি লিস্টে দেখাবে।";
+            document.getElementById('donorForm').reset();
+        } catch (error) {
+            msg.textContent = "❌ ত্রুটি হয়েছে: " + error.message;
+        }
+    });
+
+    // ডোনার লিস্ট লোড করা
+    async function loadDonors() {
+        const listDiv = document.getElementById('donorList');
+        const selectedGroup = document.getElementById('searchGroup').value;
+        listDiv.innerHTML = "লোড হচ্ছে...";
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "donors"));
+            let html = "";
+            querySnapshot.forEach((doc) => {
+                const d = doc.data();
+                if(selectedGroup && d.group !== selectedGroup) return;
+                
+                html += `
+                    <div class="donor-card">
+                        <div class="donor-info" style="display:flex; align-items:center;">
+                            <img src="${d.photo || 'https://via.placeholder.com/60'}" alt="User">
+                            <div class="donor-details" style="margin-left:15px;">
+                                <h3 style="margin:0;">${d.name} <span class="badge">${d.group}</span></h3>
+                                <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${d.address}</p>
+                            </div>
+                        </div>
+                        <button class="btn" style="width:auto; padding:8px 14px; margin:0;" onclick="requestNumber('${d.phone}', '${d.name}')">নম্বর দেখুন</button>
+                    </div>
+                `;
+            });
+            listDiv.innerHTML = html || "<p>কোনো ডোনার পাওয়া যায়নি।</p>";
+        } catch (error) {
+            listDiv.innerHTML = "ডেটা লোড করতে সমস্যা হয়েছে।";
+        }
+    }
+    window.loadDonors = loadDonors;
+
+    let targetPhone = "";
+    let targetDonorName = "";
+
+    window.requestNumber = function(phone, donorName) {
+        targetPhone = phone;
+        targetDonorName = donorName;
+        document.getElementById('infoModal').style.display = 'flex';
+    }
+
+    window.closeModal = function() {
+        document.getElementById('infoModal').style.display = 'none';
+    }
+
+    // গ্রহীতার তথ্য নিয়ে নম্বর দেখানো এবং নোটিফিকেশন ট্র্যাক করা
+    window.confirmAndShowNumber = async function() {
+        const sName = document.getElementById('seekerName').value;
+        const sPhone = document.getElementById('seekerPhone').value;
+
+        if(!sName || !sPhone) {
+            alert("দয়া করে আপনার নাম ও মোবাইল নম্বর দিন।");
+            return;
+        }
+
+        try {
+            // ফায়ারবেসে নোটিফিকেশন বা ট্র্যাকিং লগ সেভ করা
+            await addDoc(collection(db, "activity_logs"), {
+                donorName: targetDonorName,
+                donorPhone: targetPhone,
+                seekerName: sName,
+                seekerPhone: sPhone,
+                timestamp: new Date()
+            });
+
+            alert(`✅ ডোনারের মোবাইল নম্বর: ${targetPhone}\n\n(সতর্কতা: আপনার তথ্য ${targetDonorName}-এর কাছে ট্র্যাক করা হয়েছে।)`);
+            closeModal();
+        } catch (error) {
+            alert("সমস্যা হয়েছে, আবার চেষ্টা করুন।");
+        }
+    }
+
+    // পেজ লোড হলে প্রথমবার ডোনার লিস্ট ফেচ করবে
+    loadDonors();
+</script>
+
+</body>
+</html>
