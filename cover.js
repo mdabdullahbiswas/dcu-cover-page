@@ -478,15 +478,26 @@ function applyUI() {
   });
 }
 
-function setSite(l) {
-  SL = l;
-  try { localStorage.setItem('dcuSL', l); } catch(e){}
-  if ($('langBtn')) $('langBtn').textContent = l === 'bn' ? 'EN' : 'বাং';
-  applyUI();
-  if (window.$applyL) window.$applyL(l);
-  profList($('profSel') ? $('profSel').value : '');
-  showCnt();
-  render();
+// ইনফিনিট লুপ প্রতিরোধের জন্য লক ভ্যারিয়েবল
+let inLangSync = false;
+function setSite(l, fromExternal = false) {
+  if (inLangSync) return;
+  inLangSync = true;
+  try {
+    SL = l;
+    try { localStorage.setItem('dcuSL', l); } catch(e){}
+    if ($('langBtn')) $('langBtn').textContent = l === 'bn' ? 'EN' : 'বাং';
+    applyUI();
+    // site.js থেকে এলে আবার $applyL কল হবে না (লুপ বন্ধ)
+    if (!fromExternal && typeof window.$applyL === 'function') {
+      window.$applyL(l);
+    }
+    profList($('profSel') ? $('profSel').value : '');
+    showCnt();
+    render();
+  } finally {
+    inLangSync = false;
+  }
 }
 
 function today() {
@@ -660,7 +671,6 @@ function downloadDoc() {
   const li = arr => arr.filter(Boolean).map(x => '<p style="margin:4pt 0;font-size:12pt">' + x + '</p>').join('');
   const course = (!$('prev-course') || $('prev-course').style.display === 'none') ? '' : '<p style="font-size:12pt;color:' + a + '"><b>' + t('prev-course') + '</b></p>';
 
-  // অতিরিক্ত পেজসমূহ Word ফাইলে স্বয়ংক্রিয়ভাবে যুক্তকরণ
   let extraDoc = '';
   const pb = '<br clear="all" style="page-break-before:always;mso-break-type:section-break" />';
   document.querySelectorAll('#supPages .sup-page').forEach(pg => {
@@ -703,12 +713,13 @@ function resetAll() {
   apply({});
 }
 
-// ন্যাভবার ভাষা পরিবর্তন সিঙ্ক
+// ন্যাভবার ভাষা পরিবর্তন হ্যান্ডলার (রিকার্শন বন্ধ সহ)
 window.onLang = function(l) {
-  setSite(l || (typeof $lang === 'function' ? $lang() : localStorage.getItem('dcuSL')) || 'bn');
+  const targetLang = l || (typeof window.$lang === 'function' ? window.$lang() : localStorage.getItem('dcuSL')) || 'bn';
+  setSite(targetLang, true);
 };
 
-// ইনিশিয়ালাইজেশন
+// ইনিশিয়ালাইজেশন
 document.addEventListener('DOMContentLoaded', () => {
   let s = null;
   try {
