@@ -45,3 +45,26 @@ body.dark .ddm{background:#182231}body.dark .ddm a{color:#e6edf5}body.dark .ddm 
 .pv{background:#eaf6ee;border:1px solid #b7dfc3;color:#1b5e32;border-radius:10px;padding:12px 16px;font-size:14px;line-height:1.6}
 body.dark .pv{background:#12301f;border-color:#235a3a;color:#bfe8cd}
 @media print{.sh,.sf,.pv{display:none!important}}
+/* ===== গ্লোবাল জরুরি রক্ত নোটিশ বার ===== */
+.global-blood-ticker {
+    display: none;
+    position: sticky;
+    top: 60px;
+    z-index: 45;
+    background: linear-gradient(90deg, #7a0e0c, #b3261e 35%, #8b120f);
+    color: #fff;
+    padding: 8px 16px;
+    box-shadow: 0 4px 12px rgba(139,18,15,.35);
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.global-blood-ticker:hover { filter: brightness(1.08); }
+.gbt-left { display: flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.gbt-badge { background: #fff; color: #b3261e; font-weight: 800; padding: 2px 8px; border-radius: 6px; font-size: 13px; }
+.gbt-btn { flex: none; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); border-radius: 20px; padding: 3px 12px; font-size: 12.5px; color: #fff; }
