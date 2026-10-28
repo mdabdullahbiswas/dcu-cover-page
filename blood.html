@@ -22,7 +22,8 @@
         @media(max-width: 600px) { .filter-grid { grid-template-columns: 1fr; } }
         .btn { background: var(--primary); color: var(--accent); border: none; border-radius: 8px; padding: 12px 20px; font-weight: 700; cursor: pointer; margin-top: 16px; width: 100%; font-size: 16px; }
         .btn-success { background: var(--success); color: #fff; }
-        .donor-card { border: 1px solid var(--ln); border-radius: 8px; padding: 15px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; background: #fafbfc; }
+        .donor-card { border: 1px solid var(--ln); border-radius: 8px; padding: 15px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; background: #fafbfc; }
+        .donor-info { flex: 1; min-width: 230px; }
         .donor-info img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
         .donor-details { flex-grow: 1; margin-left: 15px; }
         .badge { background: var(--danger); color: white; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 13px; }
@@ -52,9 +53,28 @@
         .ferr.hint { color: #6b7785; }
         input.invalid, select.invalid, .dsel.invalid select { border-color: var(--danger) !important; background: #fff6f6; }
         .terms-box.invalid { border-color: var(--danger); background: #fff6f6; }
-        .report-link { background: none; border: 0; color: #a94442; font-size: 13px; text-decoration: underline; cursor: pointer; margin-top: 10px; font-family: inherit; }
-        .report-box { margin-top: 8px; text-align: left; }
-        .report-box select { margin-bottom: 8px; }
+        /* রিপোর্ট বাটন ও ডায়ালগ */
+        .rp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: #fff; color: #b3261e; border: 1.5px solid #e6bcb8; border-radius: 9px; padding: 8px 12px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit; margin: 0; width: auto; line-height: 1.3; transition: background .15s, border-color .15s; }
+        .rp-btn:hover { background: #fff5f4; border-color: var(--danger); }
+        .rp-btn.done { color: #1b7a33; border-color: #b7dfc3; background: #f1fbf4; cursor: default; }
+        #resReport { width: 100%; margin-top: 12px; padding: 10px 12px; }
+        .dact { display: flex; flex-direction: column; gap: 6px; min-width: 128px; }
+        .dact .btn { width: 100%; margin: 0; padding: 8px 14px; font-size: 15px; }
+        @media (max-width: 560px) { .dact { flex-direction: row; width: 100%; } .dact > * { flex: 1; } }
+        .rp-ov { position: fixed; inset: 0; z-index: 10050; background: rgba(10,20,35,.6); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .rp-box { background: #fff; border-radius: 16px; max-width: 420px; width: 100%; padding: 22px; box-shadow: 0 20px 50px rgba(0,0,0,.35); animation: popIn .2s ease-out; }
+        .rp-box h3 { margin: 0 0 4px; color: #b3261e; font-size: 19px; }
+        .rp-sub { margin: 0 0 12px; font-size: 13px; color: #666; }
+        .rp-box textarea { margin-top: 8px; resize: vertical; }
+        .rp-msg { min-height: 18px; font-size: 13px; font-weight: 600; margin: 8px 0 0; }
+        .rp-act { display: flex; gap: 8px; margin-top: 12px; }
+        .rp-act button { flex: 1; margin: 0; padding: 11px; border-radius: 9px; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 15px; border: 0; }
+        .rp-send { background: var(--danger); color: #fff; }
+        .rp-send:disabled { opacity: .6; cursor: not-allowed; }
+        .rp-info { text-align: center; }
+        .rp-info .ic { font-size: 34px; }
+        .rp-info p { font-size: 14px; color: #555; margin: 0 0 14px; }
+        .rp-info .btn { margin: 0; width: auto; padding: 10px 28px; }
         /* ===== জরুরি নোটিশ বার (সবার উপরে) ===== */
         #urgentTicker { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 46px; background: linear-gradient(90deg, #5a0e0c, #a71f1b 32%, #b3261e 50%, #a71f1b 68%, #5a0e0c); color: #fff; box-shadow: 0 4px 16px rgba(90,14,12,.45); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; overflow: hidden; align-items: stretch; }
         #urgentTicker::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.15) 50%, transparent 65%); transform: translateX(-100%); animation: tkSheen 5.5s ease-in-out infinite; pointer-events: none; }
@@ -64,10 +84,12 @@
         #urgentTicker .tk-ico { display: inline-block; animation: tkWob 1.1s ease-in-out infinite; transform-origin: 50% 85%; }
         @keyframes tkWob { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
         #urgentTicker .tk-n { background: #b3261e; color: #fff; border-radius: 11px; min-width: 22px; height: 22px; line-height: 22px; text-align: center; font-size: 12.5px; padding: 0 6px; }
-        #urgentTicker .tk-view { flex: 1; overflow: hidden; display: flex; align-items: center; -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
-        #urgentTicker .tk-run { display: inline-flex; white-space: nowrap; animation: tkRun 40s linear infinite; will-change: transform; }
-        #urgentTicker:hover .tk-run { animation-play-state: paused; }
-        @keyframes tkRun { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        #urgentTicker .tk-view { flex: 1; min-width: 0; position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 14px), transparent); mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 14px), transparent); }
+        /* লেখা ডান প্রান্তের বাইরে থেকে শুরু হয়ে বাম প্রান্তের বাইরে গিয়ে শেষ হয় (মাপ জাভাস্ক্রিপ্ট বসায়) */
+        #urgentTicker .tk-run { position: absolute; top: 0; bottom: 0; left: 0; display: flex; align-items: center; width: max-content; white-space: nowrap; will-change: transform; transform: translate3d(var(--tk-from, 100vw), 0, 0); animation: tkRun var(--tk-dur, 30s) linear infinite; }
+        @media (hover: hover) { #urgentTicker:hover .tk-run { animation-play-state: paused; } }
+        @keyframes tkRun { from { transform: translate3d(var(--tk-from, 100vw), 0, 0); } to { transform: translate3d(var(--tk-to, -100%), 0, 0); } }
+        @media (prefers-reduced-motion: reduce) { #urgentTicker .tk-run { animation: none; transform: none; position: static; } #urgentTicker .tk-view { overflow-x: auto; -webkit-mask-image: none; mask-image: none; } }
         #urgentTicker .tk-item { display: inline-flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 600; }
         #urgentTicker .tk-grp { background: #fff; color: #b3261e; font-weight: 800; border-radius: 8px; padding: 1px 9px; font-size: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
         #urgentTicker .tk-w { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4); border-radius: 10px; padding: 0 10px; font-size: 12.5px; font-weight: 700; }
@@ -379,19 +401,7 @@
                 <button type="button" id="resCopy" class="btn-copy">📋 কপি</button>
             </div>
             <div class="result-warn">⚠️ সতর্কতা: আপনার পরিচয় ডোনারের ট্র্যাকিং লগে সংরক্ষিত হলো।</div>
-            <button type="button" class="report-link" id="resReport">🚩 নম্বরটি ভুল বা বন্ধ? রিপোর্ট করুন</button>
-            <div class="report-box" id="resReportBox" style="display:none">
-                <select id="resReason">
-                    <option value="">কারণ বাছাই করুন</option>
-                    <option>নম্বরটি ভুল, অন্য কারো নম্বর</option>
-                    <option>নম্বরটি বন্ধ বা সংযোগ পাওয়া যায়নি</option>
-                    <option>ভুয়া বা সন্দেহজনক তথ্য</option>
-                    <option>ডোনার রক্ত দিতে অনিচ্ছুক</option>
-                    <option>অন্য কারণ</option>
-                </select>
-                <button type="button" class="btn" id="resSend" style="margin-top:0">রিপোর্ট পাঠান</button>
-                <div class="ferr" id="resRepMsg"></div>
-            </div>
+            <button type="button" class="rp-btn" id="resReport">🚩 নম্বরটি ভুল বা বন্ধ? রিপোর্ট করুন</button>
             <button type="button" class="result-close" onclick="closeResult()">বন্ধ করুন</button>
         </div>
     </div>
@@ -633,6 +643,7 @@
 
                 count++;
                 donorMap[docSnap.id] = d;
+                const isMe = !!(auth.currentUser && auth.currentUser.uid === docSnap.id);
                 html += `
                     <div class="donor-card">
                         <div class="donor-info" style="display:flex; align-items:center;">
@@ -643,7 +654,10 @@
                                 ${availabilityHTML(d)}
                             </div>
                         </div>
-                        <button class="btn contact-btn" style="width:auto; padding:8px 14px; margin:0;" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}" data-group="${esc(d.group)}" data-id="${esc(docSnap.id)}">নম্বর দেখুন</button>
+                        <div class="dact">
+                            <button type="button" class="btn contact-btn" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}" data-group="${esc(d.group)}" data-id="${esc(docSnap.id)}">নম্বর দেখুন</button>
+                            ${isMe ? "" : `<button type="button" class="rp-btn" data-rp="donor" data-id="${esc(docSnap.id)}">🚩 রিপোর্ট</button>`}
+                        </div>
                     </div>
                 `;
             });
@@ -727,26 +741,7 @@
         document.querySelector('.result-warn').style.display = logged ? 'block' : 'none';
         const cb = document.getElementById('resCopy');
         cb.textContent = '📋 কপি'; cb.classList.remove('done');
-        // ভুল নম্বর রিপোর্ট
-        const rb = $("resReportBox"), rl = $("resReport"), rm = $("resRepMsg");
-        const rkey = () => "dcu_rep_" + (auth.currentUser ? auth.currentUser.uid : "") + "_" + selectedDonor.id;
-        const reported = () => { try { return !!localStorage.getItem(rkey()); } catch (e) { return false; } };
-        rb.style.display = "none"; rm.textContent = ""; rm.className = "ferr"; $("resReason").value = ""; $("resSend").disabled = false;
-        rl.style.display = "inline"; rl.textContent = reported() ? "✅ আপনি এই নম্বরটি রিপোর্ট করেছেন" : "🚩 নম্বরটি ভুল বা বন্ধ? রিপোর্ট করুন";
-        rl.onclick = () => { if (!reported()) rb.style.display = rb.style.display === "none" ? "block" : "none"; };
-        $("resSend").onclick = async () => {
-            const reason = $("resReason").value;
-            if (!reason) { rm.className = "ferr bad"; rm.textContent = "কারণ বাছাই করুন"; return; }
-            $("resSend").disabled = true;
-            try {
-                const u = auth.currentUser;
-                await addDoc(collection(db, "reports"), { donorUid: selectedDonor.id, donorName: selectedDonor.name, reporterUid: u.uid, reporterEmail: u.email, reason, timestamp: new Date() });
-                try { localStorage.setItem(rkey(), "1"); } catch (e) {}
-                rm.className = "ferr hint"; rm.textContent = "✅ ধন্যবাদ! এডমিন বিষয়টি যাচাই করবেন।";
-                rl.textContent = "✅ আপনি এই নম্বরটি রিপোর্ট করেছেন";
-                setTimeout(() => { rb.style.display = "none"; }, 1800);
-            } catch (e) { $("resSend").disabled = false; rm.className = "ferr bad"; rm.textContent = "রিপোর্ট পাঠানো যায়নি (" + (e.code || e.message) + ")"; }
-        };
+        syncResReport();
         document.getElementById('resultModal').style.display = 'flex';
     }
 
@@ -1148,14 +1143,6 @@
     const canHelp = (r) => !!(myDonor && (CAN_GIVE[myDonor.group] || []).includes(r.group));
     const sameArea = (r) => !!(myDonor && myDonor.address && r.area && myDonor.address.trim() === r.area.trim());
     const reqSeenKey = (uid) => "dcu_req_seen_" + uid;
-    function agoBn(ms) {
-        const m = Math.max(0, Math.round((Date.now() - ms) / 60000));
-        if (m < 1) return "এইমাত্র";
-        if (m < 60) return bnNum(m) + " মিনিট আগে";
-        if (m < 1440) return bnNum(Math.floor(m / 60)) + " ঘণ্টা আগে";
-        return bnNum(Math.floor(m / 1440)) + " দিন আগে";
-    }
-
     function updateUrgentBadge() {
         const u = auth.currentUser, b = $("uBadge");
         let seen = 0; try { seen = Number(localStorage.getItem(reqSeenKey(u ? u.uid : ""))) || 0; } catch (e) {}
@@ -1188,7 +1175,7 @@
         const tel = esc(String(r.contactPhone || "").replace(/[^\d+]/g, ""));
         return `<div class="rcard ${expired ? "old" : ""} ${days === 0 ? "today" : ""}">
             <div class="rhead"><span class="rgroup">${esc(r.group)}</span>
-                <div><b>${bnNum(r.bags)} ব্যাগ রক্ত লাগবে</b><div style="font-size:12.5px; color:#777;">🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""}${mine ? " · আপনার অনুরোধ" : ""}</div></div></div>
+                <div><b>${bnNum(r.bags)} ব্যাগ রক্ত লাগবে</b>${mine ? `<div style="font-size:12.5px; color:#777;">👤 আপনার অনুরোধ</div>` : ""}</div></div>
             <div class="rline">🏥 <b>${esc(r.hospital)}</b> &nbsp;·&nbsp; 📍 ${esc(r.area)}</div>
             <div class="rline">📅 প্রয়োজন: <b>${when}</b>${expired ? ' <span class="rtag">মেয়াদ শেষ</span>' : ""}</div>
             ${r.note ? `<div class="rnote">${esc(r.note)}</div>` : ""}
@@ -1197,7 +1184,7 @@
             <div class="ractions">
                 ${r.contactPhone ? `<a class="btn-call" href="tel:${tel}">📲 কল করুন</a>` : `<button type="button" class="btn-call" data-q="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}
                 <button type="button" class="btn-ghost-s" data-q="find" data-id="${esc(r.id)}">🔎 ডোনার খুঁজুন</button>
-                <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি শেয়ার</button>${mine ? "" : `<button type="button" class="btn-del-s" data-q="report" data-id="${esc(r.id)}">🚩 ভুয়া রিপোর্ট</button>`}
+                <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি শেয়ার</button>${mine ? "" : `<button type="button" class="btn-del-s" data-q="report" data-id="${esc(r.id)}">🚩 রিপোর্ট করুন</button>`}
                 ${mine ? `<button type="button" class="btn-ghost-s" data-q="done" data-id="${esc(r.id)}">✅ রক্ত পাওয়া গেছে</button><button type="button" class="btn-del-s" data-q="del" data-id="${esc(r.id)}">🗑️ মুছুন</button>` : ""}
             </div></div>`;
     }
@@ -1230,25 +1217,48 @@
     // ===== জরুরি ব্যানার: সব ট্যাবের উপরে একটি একটি করে অনুরোধ (অটো-স্লাইড) =====
     var ubIdx = 0, ubTimer = null, ubList = [];
     function ubStart() { clearInterval(ubTimer); if (ubList.length > 1) ubTimer = setInterval(() => { ubIdx = (ubIdx + 1) % ubList.length; renderBanner(); }, 7000); }
+    // একই ব্যক্তির হুবহু একই অনুরোধ (দুবার সাবমিট) একবারই দেখানো হয়
+    function dedupeReq(list) {
+        const seen = new Set();
+        return list.filter(r => {
+            const k = [r.requesterUid, r.group, r.bags, r.hospital, r.area, r.neededDate, r.contactName].map(v => String(v ?? "").trim().toLowerCase()).join("|");
+            if (seen.has(k)) return false;
+            seen.add(k); return true;
+        });
+    }
     function bannerList() {
         const t = todayISO();
-        return requests.filter(r => r.status === "open" && r.neededDate >= t)
-            .sort((a, b) => (a.neededDate < b.neededDate ? -1 : a.neededDate > b.neededDate ? 1 : 0) || (tsMs(b.createdAt) - tsMs(a.createdAt)));
+        return dedupeReq(requests.filter(r => r.status === "open" && r.neededDate >= t)
+            .sort((a, b) => (a.neededDate < b.neededDate ? -1 : a.neededDate > b.neededDate ? 1 : 0) || (tsMs(b.createdAt) - tsMs(a.createdAt))));
     }
     var tkSig = "";
     const reqWhen = (r) => { const d = diffDays(todayISO(), r.neededDate); return d === 0 ? "আজই" : d === 1 ? "আগামীকাল" : bnDate(r.neededDate); };
     function ubDismissed() { try { return JSON.parse(localStorage.getItem("dcu_ub_dismissed") || "[]"); } catch (e) { return []; } }
     function setUbDismissed(a) { try { localStorage.setItem("dcu_ub_dismissed", JSON.stringify(a.slice(-100))); } catch (e) {} }
+    // লেখার মাপ নিয়ে শুরু (ডান প্রান্তের বাইরে) ও শেষ (বাম প্রান্তের বাইরে) বিন্দু এবং গতি ঠিক করে
+    function tkMeasure() {
+        const run = document.querySelector("#urgentTicker .tk-run"), view = document.querySelector("#urgentTicker .tk-view");
+        if (!run || !view) return;
+        const vw = view.clientWidth, cw = run.offsetWidth;
+        if (!vw || !cw) return;
+        const speed = vw < 520 ? 55 : 80;   // পিক্সেল/সেকেন্ড
+        run.style.setProperty("--tk-from", vw + "px");
+        run.style.setProperty("--tk-to", (-cw) + "px");
+        run.style.setProperty("--tk-dur", Math.max(10, Math.round((vw + cw) / speed)) + "s");
+    }
     function renderTicker(list) {
         const el = $("urgentTicker"); if (!el) return;
-        const sig = list.map(r => r.id + r.neededDate).join(",");
+        const sig = todayISO() + "|" + list.map(r => r.id + r.neededDate).join(",");
         if (sig === tkSig) return; tkSig = sig;
         if (!list.length) { el.style.display = "none"; el.innerHTML = ""; document.body.classList.remove("has-ticker"); return; }
-        const one = list.map(r => `<span class="tk-item"><span class="tk-grp">${esc(r.group)}</span><span><b>${bnNum(r.bags)} ব্যাগ রক্ত লাগবে</b> · ${esc(r.hospital)}, ${esc(r.area)}</span><span class="tk-w ${diffDays(todayISO(), r.neededDate) === 0 ? "now" : ""}">${esc(reqWhen(r))}</span></span><span class="tk-sep"></span>`).join("");
-        const dur = Math.max(22, Math.round(list.reduce((n, r) => n + String(r.hospital).length + String(r.area).length + 40, 0) * 0.32));
-        el.innerHTML = `<div class="tk-label"><span class="tk-ico">🚨</span><span class="tk-txt1">জরুরি রক্ত</span><span class="tk-n">${bnNum(list.length)}</span></div><div class="tk-view"><div class="tk-run" style="animation-duration:${dur}s">${one}${one}</div></div><div class="tk-more"><span>বিস্তারিত</span>›</div>`;
+        const items = list.map(r => `<span class="tk-item"><span class="tk-grp">${esc(r.group)}</span><span><b>${bnNum(r.bags)} ব্যাগ রক্ত লাগবে</b> · ${esc(r.hospital)}, ${esc(r.area)}</span><span class="tk-w ${diffDays(todayISO(), r.neededDate) === 0 ? "now" : ""}">${esc(reqWhen(r))}</span></span>`).join('<span class="tk-sep" aria-hidden="true"></span>');
+        el.innerHTML = `<div class="tk-label"><span class="tk-ico">🚨</span><span class="tk-txt1">জরুরি রক্ত</span><span class="tk-n">${bnNum(list.length)}</span></div><div class="tk-view"><div class="tk-run">${items}</div></div><div class="tk-more"><span>বিস্তারিত</span>›</div>`;
         el.style.display = "flex"; document.body.classList.add("has-ticker");
+        tkMeasure();
     }
+    if (window.ResizeObserver) new ResizeObserver(() => tkMeasure()).observe($("urgentTicker"));
+    else window.addEventListener("resize", tkMeasure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(tkMeasure).catch(() => {});
     $("urgentTicker").addEventListener("click", () => { window.switchTab("urgent"); window.scrollTo({ top: 0, behavior: "smooth" }); });
 
     function renderBanner() {
@@ -1261,54 +1271,101 @@
         if (ubIdx >= ubList.length) ubIdx = 0;
         const r = ubList[ubIdx], n = ubList.length;
         const tel = esc(String(r.contactPhone || "").replace(/[^\d+]/g, ""));
+        const me = auth.currentUser, mine = !!(me && r.requesterUid === me.uid);
         box.style.display = "block";
         box.innerHTML = `<div class="ub-ribbon"><span class="ub-live"><span class="ub-dot"></span>🚨 জরুরি রক্ত প্রয়োজন</span><span class="ub-rt"><span class="ub-count">${bnNum(ubIdx + 1)} / ${bnNum(n)}</span><button type="button" class="ub-x" data-ub="close" title="কার্ডটি বন্ধ করুন" aria-label="কার্ডটি বন্ধ করুন">✕</button></span></div>
             <div class="ub-main"><div class="ub-drop"><svg viewBox="0 0 64 80" aria-hidden="true"><path d="M32 2C32 2 6 32 6 52a26 26 0 0 0 52 0C58 32 32 2 32 2z" fill="#fff"/></svg><b>${esc(r.group)}</b></div>
                 <div class="ub-info"><div class="ub-title">${bnNum(r.bags)} ব্যাগ রক্ত লাগবে<span class="ub-when">${esc(reqWhen(r))}</span></div>
-                <div class="ub-chips"><span>🏥 ${esc(r.hospital)}</span><span>📍 ${esc(r.area)}</span><span>📅 ${esc(bnDate(r.neededDate))}</span><span>🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""}</span><span>👤 ${esc(r.contactName)}</span></div>
+                <div class="ub-chips"><span>🏥 ${esc(r.hospital)}</span><span>📍 ${esc(r.area)}</span><span>📅 ${esc(bnDate(r.neededDate))}</span><span>👤 ${esc(r.contactName)}</span></div>
                 ${r.note ? `<div class="ub-note">📝 ${esc(r.note)}</div>` : ""}</div></div>
-            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-sec" data-ub="share">📤 শেয়ার</button><button type="button" class="ub-sec" data-ub="photo">🖼️ ছবি শেয়ার</button><button type="button" class="ub-sec" data-ub="all">সব দেখুন</button>${auth.currentUser && r.requesterUid === auth.currentUser.uid ? "" : `<button type="button" class="ub-sec" data-ub="report" style="flex:0 0 auto;min-width:0;padding:11px 14px;">🚩 রিপোর্ট</button>`}</div>
+            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-sec" data-ub="share">📤 শেয়ার</button><button type="button" class="ub-sec" data-ub="photo">🖼️ ছবি শেয়ার</button><button type="button" class="ub-sec" data-ub="all">সব দেখুন</button>${mine ? "" : `<button type="button" class="ub-sec" data-ub="report" style="flex:0 0 auto;min-width:0;padding:11px 14px;">🚩 রিপোর্ট</button>`}</div>
             ${n > 1 ? `<div class="ub-nav"><button type="button" data-ub="prev" aria-label="আগের">‹</button><div class="ub-dots">${ubList.map((_, i) => `<i data-ub-i="${i}" class="${i === ubIdx ? "on" : ""}"></i>`).join("")}</div><button type="button" data-ub="next" aria-label="পরের">›</button></div>` : ""}`;
         ubStart();
     }
 
-    // ---- ভুয়া/ভুল অনুরোধ রিপোর্ট (শুধু এডমিন দেখবে) ----
-    async function openReport(r) {
-        if (!r || document.getElementById("rpDlg")) return;
-        let u; try { u = await ensureUser(); } catch (e) { return; }
-        if (r.requesterUid === u.uid) return;
-        const d = document.createElement("div"); d.id = "rpDlg";
-        d.style.cssText = "position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px;";
-        d.innerHTML = `<div style="background:#fff;border-radius:16px;max-width:420px;width:100%;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.35);">
-            <h3 style="margin:0 0 4px;color:#b3261e;">🚩 অনুরোধটি রিপোর্ট করুন</h3>
-            <p style="margin:0 0 12px;font-size:13px;color:#666;">${esc(r.group)} · ${esc(r.hospital)}, ${esc(r.area)}</p>
-            <select id="rpWhy" style="width:100%;margin-bottom:8px;"><option>ভুয়া বা মিথ্যা অনুরোধ</option><option>নম্বর বা তথ্য ভুল</option><option>রক্ত ইতিমধ্যে পাওয়া গেছে</option><option>স্প্যাম বা অপ্রাসঙ্গিক</option><option>অন্য কারণ</option></select>
-            <textarea id="rpTxt" rows="2" maxlength="120" placeholder="আরও কিছু জানাতে চাইলে লিখুন (ঐচ্ছিক)" style="width:100%;"></textarea>
-            <p id="rpMsg" style="min-height:18px;font-size:13px;font-weight:600;margin:8px 0 0;"></p>
-            <div style="display:flex;gap:8px;margin-top:10px;">
-                <button type="button" id="rpCancel" class="btn-ghost-s" style="flex:1;margin:0;padding:11px;border-radius:9px;cursor:pointer;font-weight:700;font-family:inherit;">বাতিল</button>
-                <button type="button" id="rpSend" class="btn" style="flex:1;margin:0;width:auto;background:var(--danger);color:#fff;">রিপোর্ট পাঠান</button>
-            </div></div>`;
-        document.body.appendChild(d);
-        const close = () => d.remove(), msg = d.querySelector("#rpMsg");
-        d.addEventListener("click", (e) => { if (e.target === d) close(); });
-        d.querySelector("#rpCancel").onclick = close;
-        d.querySelector("#rpSend").onclick = async (e) => {
-            const btn = e.target; btn.disabled = true; msg.style.color = "var(--primary)"; msg.textContent = "পাঠানো হচ্ছে...";
-            const extra = d.querySelector("#rpTxt").value.trim();
-            const reason = (d.querySelector("#rpWhy").value + (extra ? " — " + extra : "")).slice(0, 200);
+    // ===== রিপোর্ট (শুধু এডমিন দেখবে): ডোনার ও জরুরি অনুরোধ, দুটির জন্য একই ডায়ালগ =====
+    function dlgKey(e) { if (e.key === "Escape") closeDlg(); }
+    function closeDlg() { const d = document.getElementById("rpDlg"); if (d) d.remove(); document.removeEventListener("keydown", dlgKey); }
+    function openDlg(inner) {
+        closeDlg();
+        const o = document.createElement("div"); o.id = "rpDlg"; o.className = "rp-ov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true");
+        o.innerHTML = `<div class="rp-box">${inner}</div>`;
+        o.addEventListener("click", (e) => { if (e.target === o) closeDlg(); });
+        document.body.appendChild(o); document.addEventListener("keydown", dlgKey);
+        return o;
+    }
+    function infoDialog(icon, title, text) {
+        const o = openDlg(`<div class="rp-info"><div class="ic">${icon}</div><h3 style="color:var(--primary)">${esc(title)}</h3><p>${esc(text)}</p><button type="button" class="btn rp-ok">ঠিক আছে</button></div>`);
+        o.querySelector(".rp-ok").onclick = closeDlg; o.querySelector(".rp-ok").focus();
+    }
+    function reportDialog({ title, subtitle, reasons, send }) {
+        const o = openDlg(`<h3>🚩 ${esc(title)}</h3><p class="rp-sub">${esc(subtitle)}</p>
+            <label for="rpWhy" style="margin-top:0">কারণ <span class="req">*</span></label>
+            <select id="rpWhy"><option value="">কারণ বাছাই করুন</option>${reasons.map(x => `<option>${esc(x)}</option>`).join("")}</select>
+            <textarea id="rpTxt" rows="2" maxlength="120" placeholder="আরও কিছু জানাতে চাইলে লিখুন (ঐচ্ছিক)"></textarea>
+            <p id="rpMsg" class="rp-msg" role="status"></p>
+            <div class="rp-act"><button type="button" id="rpCancel" class="btn-ghost-s">বাতিল</button><button type="button" id="rpSend" class="rp-send">রিপোর্ট পাঠান</button></div>`);
+        const msg = o.querySelector("#rpMsg"), btn = o.querySelector("#rpSend");
+        o.querySelector("#rpCancel").onclick = closeDlg;
+        btn.onclick = async () => {
+            const why = o.querySelector("#rpWhy").value, extra = o.querySelector("#rpTxt").value.trim();
+            if (!why) { msg.style.color = "var(--danger)"; msg.textContent = "কারণ বাছাই করুন"; return; }
+            btn.disabled = true; msg.style.color = "var(--primary)"; msg.textContent = "পাঠানো হচ্ছে...";
             try {
-                const bt = writeBatch(db);
-                bt.set(doc(db, "request_reports", r.id + "_" + u.uid), { requestId: r.id, requestInfo: (r.group + " · " + r.hospital + ", " + r.area).slice(0, 200), reporterUid: u.uid, reporterEmail: u.email, reason, timestamp: new Date() });
-                await bt.commit();
+                await send((why + (extra ? " — " + extra : "")).slice(0, 200));
                 msg.style.color = "var(--success)"; msg.textContent = "✅ ধন্যবাদ! রিপোর্টটি এডমিনের কাছে পৌঁছেছে।";
-                setTimeout(close, 1500);
+                setTimeout(() => { if (o.isConnected) closeDlg(); }, 1500);
             } catch (err) {
                 msg.style.color = "var(--danger)";
-                msg.textContent = err.code === "permission-denied" ? "❌ আপনি এই অনুরোধ আগেই রিপোর্ট করেছেন (বা অনুমতি নেই)।" : "❌ পাঠানো যায়নি (" + (err.code || err.message) + ")";
+                msg.textContent = err && err.code === "permission-denied" ? "❌ আপনি এটি আগেই রিপোর্ট করেছেন (বা অনুমতি নেই)।" : "❌ পাঠানো যায়নি (" + ((err && (err.code || err.message)) || "অজানা ত্রুটি") + ")";
                 btn.disabled = false;
             }
         };
+        o.querySelector("#rpWhy").focus();
+    }
+
+    // ডোনারের নম্বর/তথ্য ভুল হলে রিপোর্ট; আইডি = ডোনার + রিপোর্টকারী, তাই একজন একবারই করতে পারেন
+    const DONOR_REASONS = ["নম্বরটি ভুল, অন্য কারো নম্বর", "নম্বরটি বন্ধ বা সংযোগ পাওয়া যায়নি", "ভুয়া বা সন্দেহজনক তথ্য", "ডোনার রক্ত দিতে অনিচ্ছুক", "অন্য কারণ"];
+    const repKey = (uid, id) => "dcu_rep_" + uid + "_" + id;
+    const isReported = (uid, id) => { try { return !!localStorage.getItem(repKey(uid, id)); } catch (e) { return false; } };
+    function syncResReport() {
+        const b = $("resReport"); if (!b || !selectedDonor) return;
+        const u = auth.currentUser, done = !!(u && isReported(u.uid, selectedDonor.id));
+        b.classList.toggle("done", done);
+        b.textContent = done ? "✅ আপনি এই নম্বরটি রিপোর্ট করেছেন" : "🚩 নম্বরটি ভুল বা বন্ধ? রিপোর্ট করুন";
+    }
+    async function reportDonor(id) {
+        const d = donorMap[id]; if (!d || document.getElementById("rpDlg")) return;
+        let u; try { u = await ensureUser(); } catch (e) { return; }
+        if (u.uid === id) return infoDialog("ℹ️", "এটি আপনার নিজের প্রোফাইল", "নিজের প্রোফাইল রিপোর্ট করা যায় না।");
+        if (isReported(u.uid, id)) return infoDialog("✅", "আগেই রিপোর্ট করেছেন", "এই ডোনারকে আপনি আগেই রিপোর্ট করেছেন। এডমিন বিষয়টি যাচাই করবেন।");
+        reportDialog({
+            title: "ডোনারকে রিপোর্ট করুন", subtitle: d.name + " · " + d.group, reasons: DONOR_REASONS,
+            send: async (reason) => {
+                const bt = writeBatch(db);
+                bt.set(doc(db, "reports", id + "_" + u.uid), { donorUid: id, donorName: d.name, reporterUid: u.uid, reporterEmail: u.email, reason, timestamp: new Date() });
+                await bt.commit();
+                try { localStorage.setItem(repKey(u.uid, id), "1"); } catch (e) {}
+                syncResReport();
+            }
+        });
+    }
+    $("resReport").onclick = () => { if (selectedDonor) reportDonor(selectedDonor.id); };
+
+    // জরুরি অনুরোধ ভুয়া/ভুল হলে রিপোর্ট
+    async function openReport(r) {
+        if (!r || document.getElementById("rpDlg")) return;
+        let u; try { u = await ensureUser(); } catch (e) { return; }
+        if (r.requesterUid === u.uid) return infoDialog("ℹ️", "এটি আপনার নিজের অনুরোধ", "নিজের অনুরোধ রিপোর্ট করা যায় না। রক্ত পেয়ে গেলে \"✅ রক্ত পাওয়া গেছে\" চাপুন, ভুল হলে \"🗑️ মুছুন\" ব্যবহার করুন।");
+        reportDialog({
+            title: "অনুরোধটি রিপোর্ট করুন", subtitle: r.group + " · " + r.hospital + ", " + r.area,
+            reasons: ["ভুয়া বা মিথ্যা অনুরোধ", "নম্বর বা তথ্য ভুল", "রক্ত ইতিমধ্যে পাওয়া গেছে", "স্প্যাম বা অপ্রাসঙ্গিক", "অন্য কারণ"],
+            send: async (reason) => {
+                const bt = writeBatch(db);
+                bt.set(doc(db, "request_reports", r.id + "_" + u.uid), { requestId: r.id, requestInfo: (r.group + " · " + r.hospital + ", " + r.area).slice(0, 200), reporterUid: u.uid, reporterEmail: u.email, reason, timestamp: new Date() });
+                await bt.commit();
+            }
+        });
     }
 
     // ---- শেয়ার ও ছবি-কার্ড (নম্বর শুধু নিজের অনুরোধে বসে) ----
@@ -1416,6 +1473,8 @@
         try {
             const u = await ensureUser();
             const mine = await getDocs(query(collection(db, "blood_requests"), where("requesterUid", "==", u.uid), where("status", "==", "open")));
+            const g0 = $("rqGroup").value, h0 = $("rqHospital").value.trim(), a0 = $("rqArea").value.trim(), n0 = readDateSel("rqDate");
+            if (mine.docs.some(x => { const o = x.data(); return o.group === g0 && o.hospital === h0 && o.area === a0 && o.neededDate === n0; })) { msg.style.color = "var(--danger)"; msg.textContent = "❌ এই একই তথ্যের অনুরোধ আপনি আগেই দিয়েছেন।"; btn.disabled = false; return; }
             if (mine.size >= 3) { msg.style.color = "var(--danger)"; msg.textContent = "❌ একসাথে সর্বোচ্চ ৩টি চালু অনুরোধ রাখা যায়। পুরনোগুলোর কোনোটি 'রক্ত পাওয়া গেছে' করুন বা মুছুন।"; btn.disabled = false; return; }
             const rref = doc(collection(db, "blood_requests")), bt = writeBatch(db);
             bt.set(rref, {
@@ -1430,7 +1489,7 @@
             await bt.commit();
             msg.style.color = "var(--success)"; msg.textContent = "✅ আপনার জরুরি অনুরোধ প্রকাশ করা হয়েছে। রক্ত পাওয়া গেলে 'রক্ত পাওয়া গেছে' চাপুন।";
             $("rqForm").reset(); clearFieldErrors($("rqForm")); $("rqForm").style.display = "none";
-            await fetchRequests(); renderRequests();
+            try { await fetchRequests(); renderRequests(); } catch (_) {}
         } catch (err) { msg.style.color = "var(--danger)"; msg.textContent = "❌ অনুরোধ পাঠানো যায়নি (" + (err.code || err.message) + ")। Firestore Rules হালনাগাদ করা আছে কিনা দেখুন।"; }
         btn.disabled = false;
     });
@@ -1509,6 +1568,8 @@
     }
 
     document.getElementById("donorList").addEventListener("click", (e) => {
+        const rp = e.target.closest("[data-rp='donor']");
+        if (rp) { reportDonor(rp.dataset.id); return; }
         const b = e.target.closest(".contact-btn");
         if (b) handleContactClick(b.dataset.phone, b.dataset.name, b.dataset.group, b.dataset.id);
     });
