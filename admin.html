@@ -63,7 +63,7 @@ function render() {
   const q = $("q").value.trim().toLowerCase(), has = o => Object.values(o).some(v => typeof v === "string" && v.length < 300 && v.toLowerCase().includes(q));
   if (tab === "logs") {
     const L = LG.filter(has);
-    $("list").innerHTML = L.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>ডোনার</th><th>অনুসন্ধানকারী</th><th>মোবাইল</th><th>ঠিকানা</th></tr>${L.map(l => `<tr><td>${fd(l.timestamp)}</td><td>${esc(l.donorName)}<br><span class="m">${esc(l.donorPhone)}</span></td><td>${esc(l.seekerName)}</td><td>${esc(l.seekerPhone)}</td><td>${esc(l.seekerAddress)}</td></tr>`).join("")}</table></div>` : '<p class="m">কোনো লগ নেই।</p>';
+    $("list").innerHTML = L.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>ডোনার</th><th>অনুসন্ধানকারী</th><th>মোবাইল / ইমেইল</th><th>ঠিকানা</th></tr>${L.map(l => `<tr><td>${fd(l.timestamp)}</td><td>${esc(l.donorName)}<br><span class="m">${esc(l.donorPhone || (D.find(x => x.id === l.donorUid) || {}).phone || "")}</span></td><td>${esc(l.seekerName)}</td><td>${esc(l.seekerPhone)}<br><span class="m">${esc(l.seekerEmail)}</span></td><td>${esc(l.seekerAddress)}</td></tr>`).join("")}</table></div>` : '<p class="m">কোনো লগ নেই।</p>';
     return;
   }
   const L = D.filter(d => (tab === "approved") === (d.status === "approved")).filter(has);
@@ -75,7 +75,7 @@ $("list").onclick = async e => {
   const b = e.target.closest("button[data-a]"); if (!b) return;
   const id = b.dataset.id, d = D.find(x => x.id === id); if (!d) return;
   try {
-    if (b.dataset.a === "del") { if (!confirm(`"${d.name}"-কে স্থায়ীভাবে মুছে ফেলবেন?`)) return; await deleteDoc(doc(db, "donors", id)); D = D.filter(x => x.id !== id); }
+    if (b.dataset.a === "del") { if (!confirm(`"${d.name}"-কে স্থায়ীভাবে মুছে ফেলবেন?`)) return; await deleteDoc(doc(db, "donors", id)); try { await deleteDoc(doc(db, "phone_claims", d.phone)); } catch (_) {} D = D.filter(x => x.id !== id); }
     else { const st = b.dataset.a === "ok" ? "approved" : "pending"; await updateDoc(doc(db, "donors", id), { status: st }); d.status = st; }
     render();
   } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); }
