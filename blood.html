@@ -175,7 +175,7 @@
             <input type="tel" id="seekerPhone" required placeholder="01XXXXXXXXX">
             <label>আপনার বর্তমান ঠিকানা <span style="color:red">*</span></label>
             <input type="text" id="seekerAddress" required placeholder="যেমন: ধানমন্ডি, ঢাকা">
-            <button type="submit" class="btn">তথ্য দিয়ে নম্বর দেখুন</button>
+            <button type="submit" class="btn">🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন</button>
             <button type="button" class="btn" style="background:#ccc; color:#333; margin-top:8px;" onclick="closeModal()">বাতিল</button>
         </form>
     </div>
@@ -205,7 +205,8 @@
 <!-- Firebase SDK ও মূল স্ক্রিপ্ট -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0",
@@ -218,6 +219,13 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    const okPhone = (p) => /^01[3-9][0-9]{8}$/.test(p);
+    // সাইন ইন না থাকলে Google পপআপ খুলবে (অবশ্যই ক্লিক/সাবমিট থেকে সরাসরি ডাকতে হবে)
+    async function ensureUser() {
+        if (auth.currentUser) return auth.currentUser;
+        return (await signInWithPopup(auth, new GoogleAuthProvider())).user;
+    }
 
     let currentSeeker = null;
     let selectedDonor = null;
@@ -293,6 +301,22 @@
         msg.style.color = "var(--primary)";
         msg.textContent = "তথ্য আপলোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
 
+        const phoneVal = document.getElementById('dPhone').value.trim();
+        if (!okPhone(phoneVal)) {
+            msg.style.color = "var(--danger)";
+            msg.textContent = "❌ সঠিক মোবাইল নম্বর দিন (১১ ডিজিট, যেমন: 01712345678)";
+            submitBtn.disabled = false;
+            return;
+        }
+        let user;
+        try { user = await ensureUser(); }
+        catch (err) {
+            msg.style.color = "var(--danger)";
+            msg.textContent = "❌ Google সাইন ইন সম্পন্ন হয়নি। আবার চেষ্টা করুন।";
+            submitBtn.disabled = false;
+            return;
+        }
+
         const areaVal = document.getElementById('dAreaSelect').value;
         const finalAddress = areaVal === 'অন্যান্য' ? document.getElementById('dCustomAddress').value.trim() : areaVal;
 
@@ -301,16 +325,21 @@
             const fileInput = document.getElementById('dPhoto').files[0];
             if (fileInput) { try { photoUrl = await compressImage(fileInput); } catch (e) { photoUrl = ""; } }
 
-            await addDoc(collection(db, "donors"), {
+            const batch = writeBatch(db);
+            batch.set(doc(db, "donors", user.uid), {
                 name: document.getElementById('dName').value.trim(),
                 group: document.getElementById('dGroup').value,
                 address: finalAddress,
-                phone: document.getElementById('dPhone').value.trim(),
-                donationCount: parseInt(document.getElementById('dDonationCount').value) || 1,
+                phone: phoneVal,
+                donationCount: Math.max(0, parseInt(document.getElementById('dDonationCount').value) || 1),
                 photo: photoUrl,
                 status: "pending", // প্রথমে পেন্ডিং থাকবে, এডমিন এপ্রুভ করলে তবেই দেখাবে
-                createdAt: new Date()
+                createdAt: new Date(),
+                uid: user.uid,
+                email: user.email
             });
+            batch.set(doc(db, "phone_claims", phoneVal), { uid: user.uid }); // এক নম্বর = একটি নিবন্ধন
+            await batch.commit();
 
             msg.style.color = "var(--success)";
             msg.textContent = "✅ আপনার নিবন্ধন সফল হয়েছে! এডমিন যাচাই করার পর এটি ডিরেক্টরিতে যুক্ত হবে।";
@@ -319,7 +348,7 @@
         } catch (error) {
             msg.style.color = "var(--danger)";
             console.error(error);
-            msg.textContent = error.code === "permission-denied" ? "❌ সার্ভার তথ্য গ্রহণ করছে না (Firestore Rules পাবলিশ করা নেই)। এডমিনকে জানান।" : "❌ ত্রুটি হয়েছে: " + (error.code || error.message);
+            msg.textContent = error.code === "permission-denied" ? "❌ নিবন্ধন হয়নি। এই Google অ্যাকাউন্টে আগেই নিবন্ধন করা আছে, অথবা এই নম্বর ইতিমধ্যে ব্যবহৃত, অথবা ছবি অনেক বড়।" : "❌ ত্রুটি হয়েছে: " + (error.code || error.message);
         } finally {
             submitBtn.disabled = false;
         }
@@ -367,7 +396,7 @@
     window.loadDonors = loadDonors;
 
     window.handleContactClick = function(phone, name, group, id) {
-        selectedDonor = { phone, name, group, photo: rawPhoto((donorMap[id] || {}).photo) };
+        selectedDonor = { id, phone, name, group, photo: rawPhoto((donorMap[id] || {}).photo) };
         if (!currentSeeker) {
             document.getElementById('securityModal').style.display = 'flex';
         } else {
@@ -385,7 +414,9 @@
         const phone = document.getElementById('seekerPhone').value.trim();
         const address = document.getElementById('seekerAddress').value.trim();
 
+        if (!okPhone(phone)) { alert('সঠিক মোবাইল নম্বর দিন (যেমন: 01712345678)'); return; }
         if (name && phone && address) {
+            try { await ensureUser(); } catch (err) { alert('Google সাইন ইন সম্পন্ন হয়নি। আবার চেষ্টা করুন।'); return; }
             currentSeeker = { name, phone, address };
             document.getElementById('securityModal').style.display = 'none';
             revealNumber();
@@ -396,12 +427,15 @@
         if (!selectedDonor || !currentSeeker) return;
 
         try {
+            const u = auth.currentUser;
             await addDoc(collection(db, "activity_logs"), {
+                donorUid: selectedDonor.id,
                 donorName: selectedDonor.name,
-                donorPhone: selectedDonor.phone,
                 seekerName: currentSeeker.name,
                 seekerPhone: currentSeeker.phone,
                 seekerAddress: currentSeeker.address,
+                seekerEmail: u.email,
+                seekerUid: u.uid,
                 timestamp: new Date()
             });
 
