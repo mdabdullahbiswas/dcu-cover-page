@@ -1183,7 +1183,6 @@
             <div>${canHelp(r) ? '<span class="rtag ok">🩸 আপনি এই গ্রুপে রক্ত দিতে পারেন</span>' : ""}${sameArea(r) ? '<span class="rtag area">📍 আপনার এলাকায়</span>' : ""}</div>
             <div class="ractions">
                 ${r.contactPhone ? `<a class="btn-call" href="tel:${tel}">📲 কল করুন</a>` : `<button type="button" class="btn-call" data-q="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}
-                <button type="button" class="btn-ghost-s" data-q="find" data-id="${esc(r.id)}">🔎 ডোনার খুঁজুন</button>
                 <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি শেয়ার</button>${mine ? "" : `<button type="button" class="btn-del-s" data-q="report" data-id="${esc(r.id)}">🚩 রিপোর্ট করুন</button>`}
                 ${mine ? `<button type="button" class="btn-ghost-s" data-q="done" data-id="${esc(r.id)}">✅ রক্ত পাওয়া গেছে</button><button type="button" class="btn-del-s" data-q="del" data-id="${esc(r.id)}">🗑️ মুছুন</button>` : ""}
             </div></div>`;
@@ -1506,10 +1505,7 @@
         if (b.dataset.q === "photo") { makePoster(r); return; }
         if (b.dataset.q === "report") { openReport(r); return; }
         try {
-            if (b.dataset.q === "find") {
-                $("searchGroup").value = r.group; $("searchAddress").value = r.area;
-                window.switchTab("find");
-            } else if (b.dataset.q === "done") {
+            if (b.dataset.q === "done") {
                 if (!confirm("রক্তের ব্যবস্থা হয়ে গেছে? অনুরোধটি তালিকা থেকে সরিয়ে ফেলা হবে।")) return;
                 await updateDoc(doc(db, "blood_requests", r.id), { status: "fulfilled" });
                 await fetchRequests(); renderRequests();
