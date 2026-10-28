@@ -6,7 +6,7 @@
 <title>DCU Unofficial</title>
 <meta name="theme-color" content="#0a2240">
 <link rel="icon" href="logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&family=Atma:wght@500;700&family=Baloo+Da+2:wght@600;800&family=Galada&family=Permanent+Marker&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
 *{box-sizing:border-box}
@@ -190,7 +190,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <div class="rfa np"><input id="rfn" maxlength="24" autocomplete="off" aria-label="Name"><select id="rfth" aria-label="Theme"><option value="navy" class="t">🌙 নেভি-গোল্ড|Navy Gold</option><option value="fire" class="t">🔥 ফায়ার|Fire</option><option value="neon" class="t">⚡ নিয়ন|Neon</option></select><button type="button" class="bs t" id="rfr">🎲 নতুন রোস্ট|New Roast</button></div>
 <div class="rfa np"><label class="bs t" for="rfp" style="cursor:pointer;margin:0">📷 ছবি যোগ করুন|📷 Add Photo</label><input id="rfp" type="file" accept="image/*" hidden><button type="button" class="bs t" id="rfpx" style="display:none">🗑️ ছবি সরান|🗑️ Remove Photo</button><span class="hint t" style="margin:0">ছবি আপনার ডিভাইসেই থাকে, কোথাও আপলোড হয় না।|Your photo stays on your device and is never uploaded.</span></div>
 <button type="button" class="bt t" id="btnRoastCard" style="margin:12px 0 0">🎭 রোস্টিং ফটো-কার্ড তৈরি করুন|Create Roast Photo Card</button>
-<div id="roastCardBox" class="np" style="display:none;margin-top:14px;text-align:center"><canvas id="roastCanvas" width="1080" height="1350" style="width:100%;max-width:340px;border-radius:12px"></canvas>
+<div id="roastCardBox" class="np" style="display:none;margin-top:14px;text-align:center"><canvas id="roastCanvas" width="1080" height="1350" style="width:100%;max-width:360px;border-radius:12px"></canvas>
 <div style="margin-top:8px"><button type="button" class="bt t" id="btnDlRoast" style="margin:4px 4px 0 0">⬇️ ডাউনলোড|Download</button><button type="button" class="bs t" id="btnShareRoast" style="margin:4px 4px 0 0">📤 শেয়ার|Share</button><button type="button" class="bs t" id="btnCpRoast" style="margin:4px 0 0">📋 টেক্সট কপি|📋 Copy Text</button></div></div>
 </div>
 </div></div>
@@ -497,12 +497,14 @@ const RFR=['"ও সবসময় বলে পড়িনি, তারপ�
 let RS=0;
 const rBn=n=>$lang()=='en'?String(n):String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
 let RPH=null;
+const RSR=['"কিছুই পড়িনি দোস্ত" বলেই A+ নিয়ে যান 😏','রেজাল্টের চিন্তায় চুল পড়ে, কিন্তু ট্রিট দেন না 🙄','আড্ডা মেরেও ফার্স্ট ক্লাস — রাতের জাদু ✨','"সিজিপিএ দিয়ে কিছু হয় না" — দিনে ৩ বার 😅','স্যাররাও জানেন না আপনি কীভাবে পাস করেন 🎩'];
+const RSH=['বাঁচার কৌশল|Survival','ক্লাস ফাঁকি|Skipping','নিষ্পাপ অভিনয়|Innocence','রিলস নেশা|Reels'];
 const RTT=[['সিলেবাসের জীবন্ত গুগল'],['নোট-ব্যাংকের গভর্নর'],['শেষ রাতের ম্যাজিশিয়ান'],['ভাইভা বোর্ডের প্রধান আতঙ্ক'],['প্রোফেশনাল ব্যাকবেঞ্চার (ব্যাচ সেরা মায়াবী মুখ)','সুপারসনিক সাপ্লিমেন্ট মাস্টার']];
 const RFX=['আপনার বর্তমান পড়াশোনার গতি দেখলে মনে হয়, বিসিএস তো দূরের কথা, নিজের ফেসবুক আইডির পাসওয়ার্ডই কোনোদিন উদ্ধার করতে পারবেন না!','অচিরেই বন্ধুমহলে আপনার নামে ক্যান্টিনের একটা বেঞ্চের নামকরণ হওয়ার প্রবল সম্ভাবনা রয়েছে।'];
 const RST=[['ফার্স্ট ক্লাস সিল ✔','নাসা অনুমোদিত'],['ডিনস লিস্টে নিষিদ্ধ ট্রিট'],['স্মার্ট সারভাইভার ✔'],['ক্যান্টিন বেঞ্চ রিজার্ভড'],['ডিপার্টমেন্ট কর্তৃক নিষিদ্ধ','হাতে কলমে ফেল মারার গ্যারান্টি']];
 function rInfo(cg){const k=ROASTS.findIndex(x=>cg>=x.min),i=k<0?ROASTS.length-1:k,r=ROASTS[i],c=Math.round(cg*100),j=n=>(RS*37+n*53+c)%21-10,cl=v=>Math.max(5,Math.min(99,Math.round(v))),
  tp=[r.title,...(RTT[i]||[])],fp=[r.fortune,...(i>=3?RFX:[])],sp=RST[i]||RST[RST.length-1];
- return{r,title:tp[RS%tp.length],fort:fp[RS%fp.length],stamp:sp[RS%sp.length],car:RCAR[i]||RCAR[RCAR.length-1],fr:RFR[(RS+c)%RFR.length],next:i>0?ROASTS[i-1]:null,
+ return{r,short:RSR[i]||RSR[RSR.length-1],title:tp[RS%tp.length],fort:fp[RS%fp.length],stamp:sp[RS%sp.length],car:RCAR[i]||RCAR[RCAR.length-1],fr:RFR[(RS+c)%RFR.length],next:i>0?ROASTS[i-1]:null,
  m:[['🛟 সিজিপিএ বাঁচানোর কৌশল|CGPA survival skills',cl(96-cg*6+j(1))],['🙈 ক্লাস ফাঁকির ক্রিয়েটিভিটি|Class-skipping creativity',cl(100-cg*11+j(2))],['😇 স্যারদের সামনে নিষ্পাপ অভিনয়|Innocent-face acting',cl(60+(4-cg)*9+j(3))],['📱 পড়ার বদলে রিলস স্ক্রোলিং|Reels instead of studying',cl(99-cg*6+j(4))],['📚 বিসিএস সম্ভাবনা|BCS chances',cl(cg*23+j(5))],['💍 বিয়ের বাজারদর|Marriage market value',cl(35+cg*14+j(6))]]}}
 function updateRoast(cg){const b=$('#roastText');$('#rfn').placeholder=L('আপনার নাম / ডাকনাম (ঐচ্ছিক)|Your name / nickname (optional)');
  if(cg===null){b.innerHTML=`<div class="rfo hint">${L('👆 ওপরের তালিকায় কিছু গ্রেড দিন, সাথে সাথে রোস্ট ও ভবিষ্যৎবাণী ফুটে উঠবে!|Add a few grades above and your roast and fortune appear instantly!')}</div>`;return}
@@ -518,28 +520,56 @@ const rRect=(x,a,b,w,h,r)=>{x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,
 async function rCard(cg){
  if(cg==null){alert(L('আগে কিছু গ্রেড দিন!|Add some grades first!'));return}
  $('#roastCardBox').style.display='block';
- try{await Promise.all([document.fonts.load('700 36px "Hind Siliguri"'),document.fonts.load('800 100px Montserrat')])}catch(e){}
- const d=rInfo(cg),r=d.r,t=RTH[$('#rfth').value]||RTH.navy,nm=$('#rfn').value.trim(),x=$('#roastCanvas').getContext('2d'),W=1080,H=1350,F='"Hind Siliguri",sans-serif',ph=RPH,cx=ph?740:W/2;
- x.textAlign='center';
+ const d=rInfo(cg),r=d.r,t=RTH[$('#rfth').value]||RTH.navy,nm=$('#rfn').value.trim().slice(0,24),x=$('#roastCanvas').getContext('2d'),W=1080,H=1350,ph=RPH,
+  FB='"Baloo Da 2","Hind Siliguri",sans-serif',FA='Atma,"Hind Siliguri",cursive',FG='Galada,"Hind Siliguri",cursive',FM='"Permanent Marker",Montserrat,sans-serif',
+  LB=d.m.slice(0,4).map((a,i)=>a[0].split(' ')[0]+' '+L(RSH[i])),SU='dcu-unofficial.vercel.app',
+  sw=d.stamp.split(' '),cen=W/2;
+ try{const all=[r.emoji,d.title,d.stamp,d.short,nm,'CGPA ভাগ্যফল',...LB].join('');
+  await Promise.all(['800 40px "Baloo Da 2"','600 40px "Baloo Da 2"','500 40px Atma','700 40px Atma','40px Galada','40px "Permanent Marker"'].map(f=>document.fonts.load(f,all+'0123456789')))}catch(e){}
+ x.textAlign='center';x.textBaseline='alphabetic';
+ /* ব্যাকগ্রাউন্ড */
  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,t[0]);g.addColorStop(.55,t[1]);g.addColorStop(1,t[0]);x.fillStyle=g;x.fillRect(0,0,W,H);
- const rg=x.createRadialGradient(W*.8,160,10,W*.8,160,520);rg.addColorStop(0,'rgba(255,255,255,.15)');rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,W,H);
+ x.fillStyle='rgba(255,255,255,.05)';for(let i=0;i<W;i+=54)for(let j=0;j<H;j+=54){x.beginPath();x.arc(i,j,2,0,7);x.fill()}
+ const rg=x.createRadialGradient(cen,300,20,cen,300,560);rg.addColorStop(0,'rgba(255,255,255,.16)');rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,W,H);
  x.save();x.shadowColor=t[2];x.shadowBlur=34;x.strokeStyle=t[2];x.lineWidth=6;x.strokeRect(36,36,W-72,H-72);x.restore();
- x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=2;x.strokeRect(52,52,W-104,H-104);
- x.fillStyle=t[2];x.font='800 42px '+F;x.fillText('🔮 DCU Unofficial · CGPA Fortune 🔮',W/2,116);
- if(nm){x.fillStyle='#fff';x.font='700 40px '+F;x.fillText(nm.slice(0,24),W/2,172)}
- if(ph){const px=290,s=Math.max(240/ph.width,240/ph.height),w=ph.width*s,hh=ph.height*s;x.save();x.beginPath();x.arc(px,320,120,0,7);x.clip();x.drawImage(ph,px-w/2,320-hh/2,w,hh);x.restore();
-  x.save();x.shadowColor=t[2];x.shadowBlur=24;x.strokeStyle=t[2];x.lineWidth=8;x.beginPath();x.arc(px,320,124,0,7);x.stroke();x.restore()}
- x.fillStyle='rgba(255,255,255,.09)';x.beginPath();x.arc(cx,320,135,0,7);x.fill();
- x.fillStyle=t[2];x.font='800 118px Montserrat,sans-serif';x.fillText(cg.toFixed(2),cx,355);x.fillStyle='#cfd8e6';x.font='600 28px '+F;x.fillText('CGPA',cx,412);
- x.fillStyle='#b3261e';rRect(x,100,450,W-200,84,22);x.fill();
- let fs=36;x.font='800 '+fs+'px '+F;const tt=r.emoji+' '+d.title;while(x.measureText(tt).width>W-260&&fs>20){fs-=2;x.font='800 '+fs+'px '+F}
- x.fillStyle='#fff';x.fillText(tt,W/2,450+52+fs*.28);
- x.fillStyle='rgba(255,255,255,.09)';rRect(x,70,565,W-140,690,24);x.fill();x.strokeStyle='rgba(255,255,255,.3)';x.lineWidth=2;x.stroke();
- const wr=(tx,sz,wt,c,y0,mh)=>{x.fillStyle=c;let s=sz,ls;for(;;){x.font=wt+' '+s+'px '+F;ls=[];let l='';for(const q of tx.split(' ')){const u=l?l+' '+q:q;if(x.measureText(u).width>840&&l){ls.push(l);l=q}else l=u}ls.push(l);if(ls.length*s*1.4<=mh||s<22)break;s-=2}ls.forEach((l,i)=>x.fillText(l,W/2,y0+i*s*1.4))};
- wr('🔥 '+r.roast,34,'600','#fff',625,170);wr('🔮 '+d.fort,33,'700',t[2],815,170);
- x.textAlign='left';d.m.slice(0,4).forEach((a,i)=>{const y=1040+i*44;x.fillStyle='#dfe7f3';x.font='600 25px '+F;x.fillText(L(a[0]),105,y);x.fillStyle='rgba(255,255,255,.15)';rRect(x,570,y-22,300,20,10);x.fill();x.fillStyle=t[2];rRect(x,570,y-22,Math.max(20,300*a[1]/100),20,10);x.fill();x.fillStyle='#fff';x.font='700 24px Montserrat,sans-serif';x.fillText(a[1]+'%',888,y)});
- x.save();x.translate(730,1222);x.rotate(-.16);x.font='800 32px '+F;const sw=x.measureText(d.stamp).width+50;x.globalAlpha=.92;x.strokeStyle=x.fillStyle='#e53935';x.lineWidth=6;rRect(x,-sw/2,-36,sw,72,12);x.stroke();x.textAlign='center';x.fillText(d.stamp,0,12);x.restore();
- x.textAlign='center';x.fillStyle='#8fa3c2';x.font='500 26px Montserrat,sans-serif';x.fillText('dcu-unofficial.vercel.app · Dhaka Central University',W/2,1298);
+ x.strokeStyle='rgba(255,255,255,.3)';x.lineWidth=2;x.strokeRect(54,54,W-108,H-108);
+ /* হেডার */
+ x.fillStyle=t[2];x.font='800 44px '+FB;x.fillText('🔮 CGPA ভাগ্যফল',cen,112);
+ /* ছবি / ইমোজি গোল */
+ const py=300,pr=135;
+ x.save();x.beginPath();x.arc(cen,py,pr,0,7);x.clip();
+ if(ph){const k=Math.max(2*pr/ph.width,2*pr/ph.height),w=ph.width*k,h=ph.height*k;x.drawImage(ph,cen-w/2,py-h/2,w,h)}
+ else{x.fillStyle='rgba(255,255,255,.12)';x.fillRect(cen-pr,py-pr,2*pr,2*pr);x.font='150px sans-serif';x.textBaseline='middle';x.fillStyle='#fff';x.fillText(r.emoji,cen,py+8)}
+ x.restore();x.textBaseline='alphabetic';
+ x.save();x.shadowColor=t[2];x.shadowBlur=28;x.strokeStyle=t[2];x.lineWidth=8;x.beginPath();x.arc(cen,py,pr+5,0,7);x.stroke();x.restore();
+ /* বাঁয়ে স্টিকার */
+ x.save();x.translate(210,py);x.rotate(-.2);x.font='110px sans-serif';x.textBaseline='middle';x.fillStyle='#fff';x.fillText('✨',0,0);x.restore();
+ /* ডানে স্ট্যাম্প (২ লাইন) */
+ let best=0,bw=1e9;x.font='700 34px '+FG;for(let k=1;k<sw.length||k==1;k++){const A=sw.slice(0,k).join(' '),B=sw.slice(k).join(' '),w=Math.max(x.measureText(A).width,x.measureText(B).width);if(w<bw){bw=w;best=k}}
+ const L1=sw.slice(0,best).join(' '),L2=sw.slice(best).join(' ');let sf=34;while(Math.max(x.measureText(L1).width,x.measureText(L2).width)>250&&sf>20){sf-=2;x.font='700 '+sf+'px '+FG}
+ const sW=Math.max(x.measureText(L1).width,x.measureText(L2).width)+40,sH=L2?sf*2.5:sf*1.7;
+ x.save();x.translate(870,py);x.rotate(.2);x.globalAlpha=.95;x.fillStyle='rgba(229,57,53,.14)';rRect(x,-sW/2,-sH/2,sW,sH,10);x.fill();x.strokeStyle=x.fillStyle='#ff5252';x.lineWidth=5;rRect(x,-sW/2,-sH/2,sW,sH,10);x.stroke();
+ x.fillText(L1,0,L2?-sf*.12:sf*.3);if(L2)x.fillText(L2,0,sf*1.1);x.restore();
+ /* নাম */
+ if(nm){x.fillStyle='#fff';x.font='54px '+FG;x.fillText(nm,cen,500)}
+ /* CGPA */
+ x.save();x.shadowColor=t[2];x.shadowBlur=26;x.fillStyle=t[2];x.font='150px '+FM;x.fillText(cg.toFixed(2),cen,655);x.restore();
+ /* উপাধি */
+ let fs=40;x.font='800 '+fs+'px '+FB;const tt=r.emoji+' '+d.title;while(x.measureText(tt).width>W-240&&fs>22){fs-=2;x.font='800 '+fs+'px '+FB}
+ x.fillStyle='#b3261e';rRect(x,90,688,W-180,84,42);x.fill();x.strokeStyle='rgba(255,255,255,.4)';x.lineWidth=2;x.stroke();
+ x.fillStyle='#fff';x.fillText(tt,cen,688+42+fs*.3);
+ /* রোস্ট */
+ x.fillStyle='rgba(255,255,255,.09)';rRect(x,70,800,W-140,170,26);x.fill();x.strokeStyle='rgba(255,255,255,.28)';x.lineWidth=2;x.stroke();
+ let s2=46,ls,lh;for(;;){x.font='500 '+s2+'px '+FA;ls=[];let l='';for(const q of d.short.split(' ')){const u=l?l+' '+q:q;if(x.measureText(u).width>820&&l){ls.push(l);l=q}else l=u}ls.push(l);lh=s2*1.3;if(ls.length*lh<=140||s2<26)break;s2-=2}
+ x.fillStyle='#fff';const y0=885-ls.length*lh/2+s2*.9;ls.forEach((l,i)=>x.fillText(l,cen,y0+i*lh));
+ /* মিটার ২x২ */
+ x.fillStyle='rgba(255,255,255,.07)';rRect(x,70,990,W-140,190,26);x.fill();
+ d.m.slice(0,4).forEach((a,i)=>{const x0=112+(i%2)*470,w=398,ry=1055+(i>>1)*80;x.textAlign='left';x.fillStyle='#e8eefb';x.font='600 28px '+FB;x.fillText(LB[i],x0,ry);
+  x.textAlign='right';x.fillStyle=t[2];x.font='800 28px '+FB;x.fillText(a[1]+'%',x0+w,ry);
+  x.fillStyle='rgba(255,255,255,.16)';rRect(x,x0,ry+14,w,16,8);x.fill();x.fillStyle=t[2];rRect(x,x0,ry+14,Math.max(16,w*a[1]/100),16,8);x.fill()});
+ /* ওয়েবসাইট লিংক */
+ x.textAlign='center';x.font='800 34px '+FB;const lw=x.measureText(SU).width+70;
+ x.fillStyle=t[2];rRect(x,cen-lw/2,1218,lw,64,32);x.fill();x.fillStyle=t[0];x.fillText(SU,cen,1218+44);
 }
 const rCg=()=>CGD.cg??null;
 $('#btnRoastCard').onclick=async()=>{await rCard(rCg());if(rCg()!==null)$('#roastCardBox').scrollIntoView({behavior:'smooth',block:'center'})};
