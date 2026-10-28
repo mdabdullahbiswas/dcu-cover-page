@@ -47,6 +47,12 @@
         .nitem .nn { font-weight: 700; color: var(--primary); }
         .nitem a { color: var(--success); font-weight: 700; text-decoration: none; }
         .nnew { background: var(--danger); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; }
+        .req { color: var(--danger); font-weight: 700; }
+        .req-note { font-size: 13px; color: #666; margin: 0 0 4px; }
+        .dsel { display: flex; gap: 8px; margin-top: 4px; }
+        .dsel select { flex: 1; min-width: 0; margin-top: 0; }
+        .dsel select:first-child { flex: .8; }
+        .dsel select:last-child { flex: 1.1; }
         .my-row { font-size: 14px; color: #555; margin-top: 2px; }
         .my-actions { display: flex; gap: 10px; margin-top: 14px; }
         .my-actions .btn { margin-top: 0; }
@@ -132,10 +138,11 @@
             <h2>ডোনার হিসেবে নিবন্ধন করুন</h2>
             <div id="myProfile" style="display:none"></div>
             <form id="donorForm">
-                <label>পূর্ণ নাম</label>
+                <p class="req-note"><span class="req">*</span> চিহ্নিত ঘরগুলো পূরণ করা বাধ্যতামূলক।</p>
+                <label>পূর্ণ নাম <span class="req">*</span></label>
                 <input type="text" id="dName" required placeholder="আপনার নাম">
                 
-                <label>রক্তের গ্রুপ</label>
+                <label>রক্তের গ্রুপ <span class="req">*</span></label>
                 <select id="dGroup" required>
                     <option value="">গ্রুপ সিলেক্ট করুন</option>
                     <option value="A+">A+</option><option value="A-">A-</option>
@@ -144,7 +151,7 @@
                     <option value="AB+">AB+</option><option value="AB-">AB-</option>
                 </select>
 
-                <label>বর্তমান এলাকা নির্বাচন করুন</label>
+                <label>বর্তমান এলাকা নির্বাচন করুন <span class="req">*</span></label>
                 <select id="dAreaSelect" onchange="checkCustomArea(this.value)" required>
                     <option value="">এলাকা সিলেক্ট করুন</option>
                     <option value="মিরপুর">মিরপুর</option>
@@ -160,18 +167,18 @@
                 </select>
 
                 <div id="customAreaDiv" style="display:none; margin-top:8px;">
-                    <label>আপনার এলাকার নাম লিখুন</label>
+                    <label>আপনার এলাকার নাম লিখুন <span class="req">*</span></label>
                     <input type="text" id="dCustomAddress" placeholder="যেমন: বাড্ডা, মালিবাগ...">
                 </div>
 
-                <label>মোবাইল নম্বর</label>
+                <label>মোবাইল নম্বর <span class="req">*</span></label>
                 <input type="tel" id="dPhone" required placeholder="01XXXXXXXXX">
 
-                <label>মোট কতবার রক্ত দিয়েছেন?</label>
+                <label>মোট কতবার রক্ত দিয়েছেন? <span class="req">*</span></label>
                 <input type="number" id="dDonationCount" min="0" value="1" required>
 
                 <label>সর্বশেষ কবে রক্ত দিয়েছেন? (ঐচ্ছিক)</label>
-                <input type="date" id="dLastDonation">
+                <div id="dLastDonation"></div>
                 <div style="font-size:12.5px; color:#666; margin-top:4px;">তারিখ দিলে ৩ মাস পর থেকে প্রতি ১৫ দিন অন্তর আপনাকে রক্তদানের রিমাইন্ডার দেওয়া হবে।</div>
 
                 <label>প্রোফাইল ছবি (ঐচ্ছিক)</label>
@@ -180,7 +187,7 @@
                 <div class="terms-box">
                     <label style="display:inline; font-weight:normal; cursor:pointer;">
                         <input type="checkbox" id="termsCheck" required> 
-                        আমি সম্মত আছি যে, আমার এই তথ্য ডিরেক্টরিতে যে কেউ দেখতে পারবে। পাশাপাশি কেউ আমার মোবাইল নম্বর দেখতে চাইলে তার নাম, মোবাইল নম্বর ও ঠিকানা আমার ট্র্যাকিং নোটিফিকেশনে সংরক্ষিত হবে।
+                        আমি সম্মত আছি যে, আমার এই তথ্য ডিরেক্টরিতে যে কেউ দেখতে পারবে। পাশাপাশি কেউ আমার মোবাইল নম্বর দেখতে চাইলে তার নাম, মোবাইল নম্বর ও ঠিকানা আমার ট্র্যাকিং নোটিফিকেশনে সংরক্ষিত হবে। <span class="req">*</span>
                     </label>
                 </div>
 
@@ -400,10 +407,10 @@
             submitBtn.disabled = false;
             return;
         }
-        const lastVal = document.getElementById('dLastDonation').value;
-        if (lastVal && (!validISO(lastVal) || lastVal > todayISO())) {
+        const lastVal = readDateSel('dLastDonation');
+        if (lastVal === null || (lastVal && (!validISO(lastVal) || lastVal > todayISO()))) {
             msg.style.color = "var(--danger)";
-            msg.textContent = "❌ সর্বশেষ রক্তদানের তারিখ ভবিষ্যতের হতে পারবে না।";
+            msg.textContent = "❌ সর্বশেষ রক্তদানের তারিখ সঠিকভাবে দিন (দিন, মাস ও বছর), অথবা তিনটি ঘরই ফাঁকা রাখুন। ভবিষ্যতের তারিখ গ্রহণযোগ্য নয়।";
             submitBtn.disabled = false;
             return;
         }
@@ -623,7 +630,27 @@
     const bnDate = (s) => validISO(s) ? parseISO(s).toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }) : "";
     const bnNum = (n) => Number(n).toLocaleString("bn-BD");
     const REMIND_MONTHS = 3, REMIND_EVERY = 15;
-    $("dLastDonation").max = todayISO();
+    // দিন-মাস-বছর নির্বাচক
+    const MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+    const bnPlain = (n) => Number(n).toLocaleString("bn-BD", { useGrouping: false });
+    function dsel(id, value) {
+        const v = validISO(value) ? value.split("-").map(Number) : [0, 0, 0], y0 = new Date().getFullYear();
+        let dd = '<option value="">দিন</option>', mm = '<option value="">মাস</option>', yy = '<option value="">বছর</option>';
+        for (let i = 1; i <= 31; i++) dd += `<option value="${i}" ${v[2] === i ? "selected" : ""}>${bnPlain(i)}</option>`;
+        MONTHS.forEach((m, i) => { mm += `<option value="${i + 1}" ${v[1] === i + 1 ? "selected" : ""}>${m}</option>`; });
+        for (let y = y0; y >= Math.max(2000, y0 - 60); y--) yy += `<option value="${y}" ${v[0] === y ? "selected" : ""}>${bnPlain(y)}</option>`;
+        return `<div class="dsel" id="${id}"><select data-p="d" aria-label="দিন">${dd}</select><select data-p="m" aria-label="মাস">${mm}</select><select data-p="y" aria-label="বছর">${yy}</select></div>`;
+    }
+    // ফাঁকা হলে "", অসম্পূর্ণ বা অবৈধ (যেমন ৩১ ফেব্রুয়ারি) হলে null, নইলে YYYY-MM-DD
+    function readDateSel(id) {
+        const r = $(id), d = +r.querySelector('[data-p="d"]').value, m = +r.querySelector('[data-p="m"]').value, y = +r.querySelector('[data-p="y"]').value;
+        if (!d && !m && !y) return "";
+        if (!d || !m || !y) return null;
+        const t = new Date(y, m - 1, d);
+        if (t.getFullYear() !== y || t.getMonth() !== m - 1 || t.getDate() !== d) return null;
+        return iso(t);
+    }
+    $("dLastDonation").outerHTML = dsel("dLastDonation", "");
 
     // রিমাইন্ডার: সর্বশেষ রক্তদানের ৩ মাস পর থেকে প্রতি ১৫ দিন অন্তর
     function reminderState(d) {
@@ -695,13 +722,13 @@
         const inList = AREAS.includes(d.address);
         box.innerHTML = `<div class="my-card edit">
             <h3 style="margin:0 0 4px;">✏️ তথ্য সম্পাদনা</h3>
-            <label>পূর্ণ নাম</label><input id="eName" maxlength="80" value="${esc(d.name)}">
-            <label>রক্তের গ্রুপ</label><select id="eGroup">${GROUPS.map(g => `<option value="${g}" ${g === d.group ? "selected" : ""}>${g}</option>`).join("")}</select>
-            <label>বর্তমান এলাকা</label><input id="eAddr" maxlength="100" list="areaList" value="${esc(d.address)}"><datalist id="areaList">${AREAS.map(a => `<option value="${a}">`).join("")}</datalist>
+            <label>পূর্ণ নাম <span class="req">*</span></label><input id="eName" maxlength="80" value="${esc(d.name)}">
+            <label>রক্তের গ্রুপ <span class="req">*</span></label><select id="eGroup">${GROUPS.map(g => `<option value="${g}" ${g === d.group ? "selected" : ""}>${g}</option>`).join("")}</select>
+            <label>বর্তমান এলাকা <span class="req">*</span></label><input id="eAddr" maxlength="100" list="areaList" value="${esc(d.address)}"><datalist id="areaList">${AREAS.map(a => `<option value="${a}">`).join("")}</datalist>
             <label>মোবাইল নম্বর</label><input value="${esc(d.phone)}" disabled>
             <div class="my-hint" style="text-align:left; margin:2px 0 0;">নিরাপত্তার কারণে নম্বর পরিবর্তন করা যায় না। নম্বর বদলাতে চাইলে তথ্য মুছে নতুন নম্বরে আবার নিবন্ধন করুন।</div>
-            <label>মোট কতবার রক্ত দিয়েছেন</label><input type="number" id="eCount" min="0" max="500" value="${esc(d.donationCount)}">
-            <label>সর্বশেষ কবে রক্ত দিয়েছেন</label><input type="date" id="eLast" max="${todayISO()}" value="${validISO(d.lastDonation) ? d.lastDonation : ""}">
+            <label>মোট কতবার রক্ত দিয়েছেন <span class="req">*</span></label><input type="number" id="eCount" min="0" max="500" value="${esc(d.donationCount)}">
+            <label>সর্বশেষ কবে রক্ত দিয়েছেন</label>${dsel("eLast", validISO(d.lastDonation) ? d.lastDonation : "")}
             <label>প্রোফাইল ছবি পরিবর্তন (ঐচ্ছিক)</label><input type="file" id="ePhoto" accept="image/*">
             <div class="my-actions">
                 <button type="button" class="btn" id="eSave">💾 সংরক্ষণ করুন</button>
@@ -714,10 +741,11 @@
             const msg = $("editMsg"), btn = $("eSave"), u = auth.currentUser;
             const err = (t) => { msg.style.color = "var(--danger)"; msg.textContent = "❌ " + t; btn.disabled = false; };
             const name = $("eName").value.trim(), addr = $("eAddr").value.trim(), grp = $("eGroup").value;
-            const cnt = parseInt($("eCount").value, 10), last = $("eLast").value;
+            const cnt = parseInt($("eCount").value, 10), last = readDateSel("eLast");
             if (!name || name.length > 80) return err("নাম সঠিকভাবে লিখুন (সর্বোচ্চ ৮০ অক্ষর)।");
             if (!addr || addr.length > 100) return err("এলাকা সঠিকভাবে লিখুন।");
             if (!Number.isInteger(cnt) || cnt < 0 || cnt > 500) return err("রক্তদানের সংখ্যা ০ থেকে ৫০০ এর মধ্যে হতে হবে।");
+            if (last === null) return err("সর্বশেষ রক্তদানের পূর্ণ তারিখ (দিন, মাস, বছর) বাছাই করুন, অথবা তিনটি ঘরই ফাঁকা রাখুন।");
             if (last && (!validISO(last) || last > todayISO())) return err("সর্বশেষ রক্তদানের তারিখ ভবিষ্যতের হতে পারবে না।");
             btn.disabled = true; msg.style.color = "var(--primary)"; msg.textContent = "সংরক্ষণ হচ্ছে...";
             const upd = { name, group: grp, address: addr, donationCount: cnt, lastDonation: last || "" };
@@ -778,8 +806,8 @@
                 <button type="button" class="btn btn-ghost" id="rNo">না, এখনো দিইনি</button>
             </div>
             <div id="rForm" style="display:none; margin-top:12px;">
-                <label>কবে রক্ত দিয়েছেন?</label>
-                <input type="date" id="rDate" min="${addDaysISO(d.lastDonation, 1)}" max="${todayISO()}" value="${todayISO()}">
+                <label>কবে রক্ত দিয়েছেন? <span class="req">*</span></label>
+                ${dsel("rDate", todayISO())}
                 <button type="button" class="btn btn-success" id="rSave">💾 তারিখ সংরক্ষণ করুন</button>
             </div>
             <p id="rMsg" style="margin:10px 0 0; font-weight:600; text-align:center;"></p>
@@ -797,8 +825,8 @@
             } catch (e) { msg.style.color = "var(--danger)"; msg.textContent = "❌ সংরক্ষণ হয়নি (" + (e.code || e.message) + ")"; }
         };
         $("rSave").onclick = async () => {
-            const msg = $("rMsg"), dt = $("rDate").value;
-            if (!validISO(dt) || dt > todayISO() || dt <= d.lastDonation) { msg.style.color = "var(--danger)"; msg.textContent = "❌ সঠিক তারিখ দিন (আগের রক্তদানের পরে এবং আজকের মধ্যে)।"; return; }
+            const msg = $("rMsg"), dt = readDateSel("rDate");
+            if (!validISO(dt) || dt > todayISO() || dt <= d.lastDonation) { msg.style.color = "var(--danger)"; msg.textContent = "❌ দিন, মাস ও বছর সঠিকভাবে বাছাই করুন (তারিখ আগের রক্তদানের পরে এবং আজকের মধ্যে হতে হবে)।"; return; }
             $("rSave").disabled = true;
             try {
                 const upd = { lastDonation: dt, donationCount: Math.min(500, (parseInt(d.donationCount, 10) || 0) + 1), snoozeUntil: "" };
