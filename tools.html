@@ -6,7 +6,7 @@
 <title>DCU Unofficial</title>
 <meta name="theme-color" content="#0a2240">
 <link rel="icon" href="logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&family=Atma:wght@500;700&family=Baloo+Da+2:wght@600;800&family=Galada&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
 *{box-sizing:border-box}
@@ -58,18 +58,6 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 .tmd{font:800 54px 'Montserrat',sans-serif;text-align:center;color:#0a2240}body.dark .tmd{color:#e5a83b}
 #pm{font-weight:600}
 @media print{.np,.tabs{display:none!important}body{background:#fff}.bx{border:0}}
-.rf{border:1.5px solid #e5a83b;background:linear-gradient(135deg,rgba(229,168,59,.12),transparent)}
-.rfo{margin-top:10px;padding:14px;border-radius:12px;background:var(--cd);border:1px solid var(--ln);animation:rfi .5s}
-@keyframes rfi{from{opacity:0;transform:translateY(8px) scale(.98)}}
-.rfe{font-size:46px;line-height:1;display:inline-block;animation:rfb 2.4s ease-in-out infinite}
-@keyframes rfb{50%{transform:translateY(-6px) rotate(-6deg)}}
-.rfti{display:inline-block;background:#b3261e;color:#fff;border-radius:20px;padding:3px 14px;font-weight:700;font-size:14.5px}
-.rfl{margin-top:10px;font-size:14.5px}
-.rfm{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 18px;margin-top:14px}
-.rfm .pb{margin:3px 0 0;height:10px}.rfm .pb i{background:linear-gradient(90deg,#e5a83b,#b3261e)}
-.rfa{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.rfa input{flex:1;min-width:150px;margin:0}.rfa select{width:auto;margin:0}.rfa .bs{margin:0}
-@media(prefers-reduced-motion:reduce){.rf *{animation:none!important}}
-
 .kh{cursor:pointer;display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed var(--ln);font-size:14px}
 #cvw{overflow:hidden;border-radius:8px}
 #cvp{width:794px;min-height:1123px;background:#fff;color:#1c2733;font-family:'Hind Siliguri',sans-serif;font-size:13.5px;line-height:1.55;transform-origin:top left;box-shadow:0 8px 28px rgba(0,0,0,.25)}
@@ -183,16 +171,6 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <!-- ২. রিটেক ইমপ্যাক্ট -->
 <div class="bx"><h2 class="t">🔄 রিটেক ইমপ্যাক্ট|Retake Impact</h2><p class="hint t">রিটেক দিলে CGPA কত বাড়বে তা হিসাব করুন।|Simulate how a retake can boost your CGPA.</p><label class="t">কোর্স বাছুন|Pick a course</label><select id="rtc"></select><label class="t">সম্ভাব্য নতুন গ্রেড|Possible new grade</label><select id="rtg"></select><div id="rtv" class="tvb"></div></div>
 
-<!-- ৩. 🔮 ভবিষ্যৎবাণী ও রোস্টার -->
-<div class="bx rf"><h2 class="t">🔮 CGPA ভবিষ্যৎবাণী ও রোস্টার|CGPA Roast & Fortune</h2>
-<p class="hint t">CGPA অনুযায়ী ক্যারিয়ার, বিয়ের বাজারদর আর বন্ধুদের গোপন মন্তব্য — সবই মজার ছলে, সিরিয়াসলি নেবেন না! 😄|Your career, marriage value and friends’ secret comments based on your CGPA — just for fun, don’t take it seriously! 😄</p>
-<div id="roastText"></div>
-<div class="rfa np"><input id="rfn" maxlength="24" autocomplete="off" aria-label="Name"><select id="rfth" aria-label="Theme"><option value="navy" class="t">🌙 নেভি-গোল্ড|Navy Gold</option><option value="fire" class="t">🔥 ফায়ার|Fire</option><option value="neon" class="t">⚡ নিয়ন|Neon</option></select><button type="button" class="bs t" id="rfr">🎲 নতুন রোস্ট|New Roast</button></div>
-<div class="rfa np"><label class="bs t" for="rfp" style="cursor:pointer;margin:0">📷 ছবি যোগ করুন|📷 Add Photo</label><input id="rfp" type="file" accept="image/*" hidden><button type="button" class="bs t" id="rfpx" style="display:none">🗑️ ছবি সরান|🗑️ Remove Photo</button><span class="hint t" style="margin:0">ছবি আপনার ডিভাইসেই থাকে, কোথাও আপলোড হয় না।|Your photo stays on your device and is never uploaded.</span></div>
-<button type="button" class="bt t" id="btnRoastCard" style="margin:12px 0 0">🎭 রোস্টিং ফটো-কার্ড তৈরি করুন|Create Roast Photo Card</button>
-<div id="roastCardBox" class="np" style="display:none;margin-top:14px;text-align:center"><canvas id="roastCanvas" width="1080" height="1350" style="width:100%;max-width:360px;border-radius:12px"></canvas>
-<div style="margin-top:8px"><button type="button" class="bt t" id="btnDlRoast" style="margin:4px 4px 0 0">⬇️ ডাউনলোড|Download</button><button type="button" class="bs t" id="btnShareRoast" style="margin:4px 4px 0 0">📤 শেয়ার|Share</button><button type="button" class="bs t" id="btnCpRoast" style="margin:4px 0 0">📋 টেক্সট কপি|📋 Copy Text</button></div></div>
-</div>
 </div></div>
 <div id="cgl"></div><button class="bt t" id="cga">+ ইয়ার যোগ করুন|+ Add Year</button>
 </section>
@@ -453,7 +431,6 @@ function cgC(){
  else if(!(rem>0))h='<span class="hint">'+L('বাকি ক্রেডিট লিখুন।|Enter your remaining credits.')+'</span>';
  else{const n=(tg*(TC+rem)-TP)/rem,mxc=(TP+4*rem)/(TC+rem);
   h=n>4?'⚠️ '+L('এই লক্ষ্য ৪.০০ স্কেলে সম্ভব নয়। বাকি সব বিষয়ে ৪.০০ পেলেও সর্বোচ্চ CGPA হবে|Not reachable on a 4.00 scale. Even with straight 4.00s the maximum CGPA is')+` <b>${mxc.toFixed(2)}</b>`:n<=0?'✅ '+L('লক্ষ্য ইতিমধ্যে অর্জিত!|Target already achieved!'):'🎯 '+L(`বাকি ${rem} ক্রেডিটে গড়ে ন্যূনতম|You need an average of at least`)+` <b>${n.toFixed(2)}</b> `+L(`GPA পেতে হবে।|GPA in the remaining ${rem} credits.`)}
- updateRoast(cg);
  $('#tv').innerHTML=h;SUM=cg===null?'':`CGPA ${cg.toFixed(2)} (${TC} ${L('ক্রেডিট|credits')})`;sv('dcuCg',C);cgX(cg,TC,sg,cnt)}
 let CGD={};
 function cgX(cg,TC,sg,cnt){CGD={cg,TC,sg,cnt};
@@ -473,119 +450,6 @@ window.setGoal = function(target) {
   cgC();
 };
 
-/* ফানি CGPA রোস্টার ও ভবিষ্যৎবাণী ডাটা */
-const ROASTS = [
-  { min: 3.80, title: "পড়ালেখার জাহাজ (নাসার বিজ্ঞানী)", emoji: "🚀", 
-    roast: "মুখে সবসময় বলবেন 'কিছুই পড়া হয়নি দোস্ত', কিন্তু পরীক্ষার হলে অতিরিক্ত ৪টা লুজ শিট সবার আগে আপনারই লাগবে!", 
-    fortune: "শ্বশুরবাড়ির আত্মীয়দের কাছে আপনার কদর তুঙ্গে থাকবে, কিন্তু বন্ধুমহলে আপনাকে গোপনে আনফ্রেন্ড করে রাখা হয়েছে।" },
-  { min: 3.50, title: "ডিনস অনার যোদ্ধা", emoji: "👑", 
-    roast: "না ক্লাসের আড্ডায় পুরো মন দেন, না পড়ার টেবিলে বিরতি নেন। সারাক্ষণ রেজাল্টের চিন্তায় চুল পড়ে যাওয়ার উপক্রম!", 
-    fortune: "বিসিএস প্রিলি এক চান্সে পাশ করার সম্ভাবনা ৮৯%, তবে বন্ধুদের ট্রিট না দেওয়ার রেকর্ড অক্ষত থাকবে।" },
-  { min: 3.00, title: "ফার্স্ট ক্লাস কিংবদন্তি (স্মার্ট সারভাইভার)", emoji: "🏆", 
-    roast: "সারা বছর আড্ডা মেরে পরীক্ষার ঠিক আগের রাতে অলৌকিক ক্ষমতায় ৩.০০+ ফার্স্ট ক্লাস তুলে নেওয়া আপনার জন্মগত অধিকার!", 
-    fortune: "লাইফে যাই হোক, অন্তত বাসায় আত্মীয়দের প্রশ্নের মুখে মাথা উঁচু করে 'ফার্স্ট ক্লাস পেয়েছি' বলে মিষ্টি গিলতে পারবেন।" },
-  { min: 2.50, title: "ক্যাফেটেরিয়ার অনারারি মেম্বার", emoji: "☕", 
-    roast: "'সিজিপিএ দিয়ে লাইফে কিছুই হয় না, আসল হলো অভিজ্ঞতা'—এই ডায়লগ দিনে কমপক্ষে ৩ বার বন্ধুদের শোনান!", 
-    fortune: "চাকরির ইন্টারভিউতে সিজিপিএ নিয়ে প্রশ্ন শুনলে হঠাৎ 'নেটওয়ার্ক সমস্যা'র ভান করার সম্ভাবনা ৯৪%।" },
-  { min: 0.00, title: "ঝুঁকিপূর্ণ জাদুকর (মিস্ট্রি ম্যান)", emoji: "🎩", 
-    roast: "আপনি এখনো কীভাবে প্রতি সেমিস্টার পার করে এগিয়ে যাচ্ছেন, এটা ডিপার্টমেন্টের শিক্ষকদের কাছে এখনো অমীমাংসিত রহস্য!", 
-    fortune: "বিসিএসের স্বপ্ন দ্রুত ত্যাগ করে অবিলম্বে মোড়ের মাথায় প্রিমিয়াম চায়ের দোকান দেওয়ার শুভ যোগ রয়েছে।" }
-];
-/* ===== 🔮 ভবিষ্যৎবাণী ও রোস্টার ===== */
-const RCAR=['গুগল/নাসা থেকে অফার আসবে, কিন্তু মায়ের রান্না ফেলে যাবেন না!','বিসিএস ক্যাডার; পাত্রীপক্ষের লাইন লেগে যাবে 😎','ব্যাংক/কর্পোরেটে স্থিতিশীল চাকরি, প্রতি ঈদে প্রমোশনের গুজব','ফ্রিল্যান্সার বা স্টার্টআপ ফাউন্ডার — "আমি এখন ব্যস্ত" বলে ঘুরবেন','চায়ের দোকানের মালিক; কাস্টমার সব জুনিয়র ভাই-বোন ☕'];
-const RFR=['"ও সবসময় বলে পড়িনি, তারপর ঠিকই A+!" — রুমমেট','"নোট চাইলে ঝাপসা ছবি পাঠায়" — ব্যাচমেট','"ট্রিট চাইলে নেটওয়ার্ক চলে যায়" — ক্লাসমেট','"আড্ডায় সবার আগে, পরীক্ষায় সবার শেষে" — বেস্ট ফ্রেন্ড','"ওর ফোনে ১২টা স্টাডি-প্ল্যান, সবই ডিলিট" — ছোটভাই','"রেজাল্টের দিন ফোন বন্ধ রাখে" — মা (গোপনে)'];
-let RS=0;
-const rBn=n=>$lang()=='en'?String(n):String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
-let RPH=null;
-const RSR=['"কিছুই পড়িনি দোস্ত" বলেই A+ নিয়ে যান 😏','রেজাল্টের চিন্তায় চুল পড়ে, কিন্তু ট্রিট দেন না 🙄','আড্ডা মেরেও ফার্স্ট ক্লাস — রাতের জাদু ✨','"সিজিপিএ দিয়ে কিছু হয় না" — দিনে ৩ বার 😅','স্যাররাও জানেন না আপনি কীভাবে পাস করেন 🎩'];
-const RSH=['বাঁচার কৌশল|Survival','ক্লাস ফাঁকি|Skipping','নিষ্পাপ অভিনয়|Innocence','রিলস নেশা|Reels'];
-const RTT=[['সিলেবাসের জীবন্ত গুগল'],['নোট-ব্যাংকের গভর্নর'],['শেষ রাতের ম্যাজিশিয়ান'],['ভাইভা বোর্ডের প্রধান আতঙ্ক'],['প্রোফেশনাল ব্যাকবেঞ্চার (ব্যাচ সেরা মায়াবী মুখ)','সুপারসনিক সাপ্লিমেন্ট মাস্টার']];
-const RFX=['আপনার বর্তমান পড়াশোনার গতি দেখলে মনে হয়, বিসিএস তো দূরের কথা, নিজের ফেসবুক আইডির পাসওয়ার্ডই কোনোদিন উদ্ধার করতে পারবেন না!','অচিরেই বন্ধুমহলে আপনার নামে ক্যান্টিনের একটা বেঞ্চের নামকরণ হওয়ার প্রবল সম্ভাবনা রয়েছে।'];
-const RST=[['ফার্স্ট ক্লাস সিল ✔','নাসা অনুমোদিত'],['ডিনস লিস্টে নিষিদ্ধ ট্রিট'],['স্মার্ট সারভাইভার ✔'],['ক্যান্টিন বেঞ্চ রিজার্ভড'],['ডিপার্টমেন্ট কর্তৃক নিষিদ্ধ','হাতে কলমে ফেল মারার গ্যারান্টি']];
-function rInfo(cg){const k=ROASTS.findIndex(x=>cg>=x.min),i=k<0?ROASTS.length-1:k,r=ROASTS[i],c=Math.round(cg*100),j=n=>(RS*37+n*53+c)%21-10,cl=v=>Math.max(5,Math.min(99,Math.round(v))),
- tp=[r.title,...(RTT[i]||[])],fp=[r.fortune,...(i>=3?RFX:[])],sp=RST[i]||RST[RST.length-1];
- return{r,short:RSR[i]||RSR[RSR.length-1],title:tp[RS%tp.length],fort:fp[RS%fp.length],stamp:sp[RS%sp.length],car:RCAR[i]||RCAR[RCAR.length-1],fr:RFR[(RS+c)%RFR.length],next:i>0?ROASTS[i-1]:null,
- m:[['🛟 সিজিপিএ বাঁচানোর কৌশল|CGPA survival skills',cl(96-cg*6+j(1))],['🙈 ক্লাস ফাঁকির ক্রিয়েটিভিটি|Class-skipping creativity',cl(100-cg*11+j(2))],['😇 স্যারদের সামনে নিষ্পাপ অভিনয়|Innocent-face acting',cl(60+(4-cg)*9+j(3))],['📱 পড়ার বদলে রিলস স্ক্রোলিং|Reels instead of studying',cl(99-cg*6+j(4))],['📚 বিসিএস সম্ভাবনা|BCS chances',cl(cg*23+j(5))],['💍 বিয়ের বাজারদর|Marriage market value',cl(35+cg*14+j(6))]]}}
-function updateRoast(cg){const b=$('#roastText');$('#rfn').placeholder=L('আপনার নাম / ডাকনাম (ঐচ্ছিক)|Your name / nickname (optional)');
- if(cg===null){b.innerHTML=`<div class="rfo hint">${L('👆 ওপরের তালিকায় কিছু গ্রেড দিন, সাথে সাথে রোস্ট ও ভবিষ্যৎবাণী ফুটে উঠবে!|Add a few grades above and your roast and fortune appear instantly!')}</div>`;return}
- const d=rInfo(cg),r=d.r,nm=esc($('#rfn').value.trim());
- b.innerHTML=`<div class="rfo"><div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="rfe">${r.emoji}</span><div><div class="hint" style="margin:0">${nm?nm+' · ':''}CGPA ${cg.toFixed(2)}</div><span class="rfti">${d.title}</span></div></div>
-<div class="rfl">🔥 <b>${L('রোস্ট|Roast')}:</b> ${r.roast}</div><div class="rfl">🔮 <b>${L('ভবিষ্যৎবাণী|Fortune')}:</b> ${d.fort}</div>
-<div class="rfl">💼 <b>${L('ক্যারিয়ার|Career')}:</b> ${d.car}</div><div class="rfl">🗣️ <b>${L('বন্ধুদের গোপন মন্তব্য|Friends’ secret comment')}:</b> ${d.fr}</div>
-<div class="rfm">${d.m.map(a=>`<div><div style="display:flex;justify-content:space-between;font-size:13px"><span>${L(a[0])}</span><b>${rBn(a[1])}%</b></div><div class="pb"><i style="width:${a[1]}%"></i></div></div>`).join('')}</div>
-<div class="hint">${d.next?L(`পরের উপাধি "${d.next.title}" পেতে আর ${rBn((d.next.min-cg).toFixed(2))} দরকার 🚀|${rBn((d.next.min-cg).toFixed(2))} more CGPA to unlock the next title 🚀`):L('🎉 সর্বোচ্চ উপাধি অর্জিত!|🎉 Top title unlocked!')}</div></div>`;
- if($('#roastCardBox').style.display!='none')rCard(cg)}
-const RTH={navy:['#0a2240','#3a1c71','#e5a83b'],fire:['#2b0505','#8a1c10','#ffb347'],neon:['#10002b','#3c096c','#00f5d4']};
-const rRect=(x,a,b,w,h,r)=>{x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()};
-async function rCard(cg){
- if(cg==null){alert(L('আগে কিছু গ্রেড দিন!|Add some grades first!'));return}
- $('#roastCardBox').style.display='block';
- const d=rInfo(cg),r=d.r,t=RTH[$('#rfth').value]||RTH.navy,nm=$('#rfn').value.trim().slice(0,24),x=$('#roastCanvas').getContext('2d'),W=1080,H=1350,ph=RPH,
-  FB='"Baloo Da 2","Hind Siliguri",sans-serif',FA='Atma,"Hind Siliguri",cursive',FG='Galada,"Hind Siliguri",cursive',FM='"Permanent Marker",Montserrat,sans-serif',
-  LB=d.m.slice(0,4).map((a,i)=>a[0].split(' ')[0]+' '+L(RSH[i])),SU='dcu-unofficial.vercel.app',
-  sw=d.stamp.split(' '),cen=W/2;
- try{const all=[r.emoji,d.title,d.stamp,d.short,nm,'CGPA ভাগ্যফল',...LB].join('');
-  await Promise.all(['800 40px "Baloo Da 2"','600 40px "Baloo Da 2"','500 40px Atma','700 40px Atma','40px Galada','40px "Permanent Marker"'].map(f=>document.fonts.load(f,all+'0123456789')))}catch(e){}
- x.textAlign='center';x.textBaseline='alphabetic';
- /* ব্যাকগ্রাউন্ড */
- const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,t[0]);g.addColorStop(.55,t[1]);g.addColorStop(1,t[0]);x.fillStyle=g;x.fillRect(0,0,W,H);
- x.fillStyle='rgba(255,255,255,.05)';for(let i=0;i<W;i+=54)for(let j=0;j<H;j+=54){x.beginPath();x.arc(i,j,2,0,7);x.fill()}
- const rg=x.createRadialGradient(cen,300,20,cen,300,560);rg.addColorStop(0,'rgba(255,255,255,.16)');rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,W,H);
- x.save();x.shadowColor=t[2];x.shadowBlur=34;x.strokeStyle=t[2];x.lineWidth=6;x.strokeRect(36,36,W-72,H-72);x.restore();
- x.strokeStyle='rgba(255,255,255,.3)';x.lineWidth=2;x.strokeRect(54,54,W-108,H-108);
- /* হেডার */
- x.fillStyle=t[2];x.font='800 44px '+FB;x.fillText('🔮 CGPA ভাগ্যফল',cen,112);
- /* ছবি / ইমোজি গোল */
- const py=300,pr=135;
- x.save();x.beginPath();x.arc(cen,py,pr,0,7);x.clip();
- if(ph){const k=Math.max(2*pr/ph.width,2*pr/ph.height),w=ph.width*k,h=ph.height*k;x.drawImage(ph,cen-w/2,py-h/2,w,h)}
- else{x.fillStyle='rgba(255,255,255,.12)';x.fillRect(cen-pr,py-pr,2*pr,2*pr);x.font='150px sans-serif';x.textBaseline='middle';x.fillStyle='#fff';x.fillText(r.emoji,cen,py+8)}
- x.restore();x.textBaseline='alphabetic';
- x.save();x.shadowColor=t[2];x.shadowBlur=28;x.strokeStyle=t[2];x.lineWidth=8;x.beginPath();x.arc(cen,py,pr+5,0,7);x.stroke();x.restore();
- /* বাঁয়ে স্টিকার */
- x.save();x.translate(210,py);x.rotate(-.2);x.font='110px sans-serif';x.textBaseline='middle';x.fillStyle='#fff';x.fillText('✨',0,0);x.restore();
- /* ডানে স্ট্যাম্প (২ লাইন) */
- let best=0,bw=1e9;x.font='700 34px '+FG;for(let k=1;k<sw.length||k==1;k++){const A=sw.slice(0,k).join(' '),B=sw.slice(k).join(' '),w=Math.max(x.measureText(A).width,x.measureText(B).width);if(w<bw){bw=w;best=k}}
- const L1=sw.slice(0,best).join(' '),L2=sw.slice(best).join(' ');let sf=34;while(Math.max(x.measureText(L1).width,x.measureText(L2).width)>250&&sf>20){sf-=2;x.font='700 '+sf+'px '+FG}
- const sW=Math.max(x.measureText(L1).width,x.measureText(L2).width)+40,sH=L2?sf*2.5:sf*1.7;
- x.save();x.translate(870,py);x.rotate(.2);x.globalAlpha=.95;x.fillStyle='rgba(229,57,53,.14)';rRect(x,-sW/2,-sH/2,sW,sH,10);x.fill();x.strokeStyle=x.fillStyle='#ff5252';x.lineWidth=5;rRect(x,-sW/2,-sH/2,sW,sH,10);x.stroke();
- x.fillText(L1,0,L2?-sf*.12:sf*.3);if(L2)x.fillText(L2,0,sf*1.1);x.restore();
- /* নাম */
- if(nm){x.fillStyle='#fff';x.font='54px '+FG;x.fillText(nm,cen,500)}
- /* CGPA */
- x.save();x.shadowColor=t[2];x.shadowBlur=26;x.fillStyle=t[2];x.font='150px '+FM;x.fillText(cg.toFixed(2),cen,655);x.restore();
- /* উপাধি */
- let fs=40;x.font='800 '+fs+'px '+FB;const tt=r.emoji+' '+d.title;while(x.measureText(tt).width>W-240&&fs>22){fs-=2;x.font='800 '+fs+'px '+FB}
- x.fillStyle='#b3261e';rRect(x,90,688,W-180,84,42);x.fill();x.strokeStyle='rgba(255,255,255,.4)';x.lineWidth=2;x.stroke();
- x.fillStyle='#fff';x.fillText(tt,cen,688+42+fs*.3);
- /* রোস্ট */
- x.fillStyle='rgba(255,255,255,.09)';rRect(x,70,800,W-140,170,26);x.fill();x.strokeStyle='rgba(255,255,255,.28)';x.lineWidth=2;x.stroke();
- let s2=46,ls,lh;for(;;){x.font='500 '+s2+'px '+FA;ls=[];let l='';for(const q of d.short.split(' ')){const u=l?l+' '+q:q;if(x.measureText(u).width>820&&l){ls.push(l);l=q}else l=u}ls.push(l);lh=s2*1.3;if(ls.length*lh<=140||s2<26)break;s2-=2}
- x.fillStyle='#fff';const y0=885-ls.length*lh/2+s2*.9;ls.forEach((l,i)=>x.fillText(l,cen,y0+i*lh));
- /* মিটার ২x২ */
- x.fillStyle='rgba(255,255,255,.07)';rRect(x,70,990,W-140,190,26);x.fill();
- d.m.slice(0,4).forEach((a,i)=>{const x0=112+(i%2)*470,w=398,ry=1055+(i>>1)*80;x.textAlign='left';x.fillStyle='#e8eefb';x.font='600 28px '+FB;x.fillText(LB[i],x0,ry);
-  x.textAlign='right';x.fillStyle=t[2];x.font='800 28px '+FB;x.fillText(a[1]+'%',x0+w,ry);
-  x.fillStyle='rgba(255,255,255,.16)';rRect(x,x0,ry+14,w,16,8);x.fill();x.fillStyle=t[2];rRect(x,x0,ry+14,Math.max(16,w*a[1]/100),16,8);x.fill()});
- /* ওয়েবসাইট লিংক */
- x.textAlign='center';x.font='800 34px '+FB;const lw=x.measureText(SU).width+70;
- x.fillStyle=t[2];rRect(x,cen-lw/2,1218,lw,64,32);x.fill();x.fillStyle=t[0];x.fillText(SU,cen,1218+44);
-}
-const rCg=()=>CGD.cg??null;
-$('#btnRoastCard').onclick=async()=>{await rCard(rCg());if(rCg()!==null)$('#roastCardBox').scrollIntoView({behavior:'smooth',block:'center'})};
-$('#btnDlRoast').onclick=()=>{const a=document.createElement('a');a.download='dcu-cgpa-roast.png';a.href=$('#roastCanvas').toDataURL('image/png');a.click()};
-$('#btnShareRoast').onclick=()=>$('#roastCanvas').toBlob(async b=>{if(!b)return;const f=new File([b],'cgpa-roast.png',{type:'image/png'});
- if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],text:L('আমার CGPA ভবিষ্যৎবাণী দেখে নাও! 😂 #DCU|Check my CGPA fortune! 😂 #DCU')});return}catch(e){}}
- $('#btnDlRoast').click()});
-$('#btnCpRoast').onclick=async e=>{const cg=rCg();if(cg===null)return;const d=rInfo(cg),r=d.r;
- try{await navigator.clipboard.writeText(`${r.emoji} ${d.title} — CGPA ${cg.toFixed(2)}\n🔥 ${r.roast}\n🔮 ${d.fort}\n💼 ${d.car}\n#DCU`);e.target.textContent=L('✅ কপি হয়েছে|✅ Copied')}catch(x){}
- setTimeout(()=>e.target.textContent=L('📋 টেক্সট কপি|📋 Copy Text'),1500)};
-$('#rfr').onclick=()=>{RS++;updateRoast(rCg())};
-$('#rfn').oninput=$('#rfth').onchange=()=>updateRoast(rCg());
-$('#rfp').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;if(!/^image\//.test(f.type)){alert(L('শুধু ছবি (JPG/PNG) দিন।|Please choose an image (JPG/PNG).'));return}
- const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{RPH=im;$('#rfpx').style.display='';URL.revokeObjectURL(u);if(rCg()!==null)rCard(rCg());else alert(L('ছবি যোগ হয়েছে। এবার কিছু গ্রেড দিন।|Photo added. Now enter some grades.'))};
- im.onerror=()=>alert(L('ছবিটি পড়া যায়নি, অন্য ছবি দিন।|Could not read this image, try another.'));im.src=u};
-$('#rfpx').onclick=e=>{RPH=null;e.target.style.display='none';if($('#roastCardBox').style.display!='none')rCard(rCg())};
 function rtC(){const v=$('#rtc').value,e=$('#rtv');
  if(!v){e.innerHTML='<span class="hint">'+L('আগে কিছু কোর্সের গ্রেড দিন, তারপর এখানে রিটেক ট্রায়াল করুন।|Enter some course grades first, then try a retake here.')+'</span>';return}
  const[i,j]=v.split('-').map(Number),S=JSON.parse(JSON.stringify(C.s)),o=cgT(C.s);S[i][j].g=$('#rtg').value;const n=cgT(S),d=n-o;
