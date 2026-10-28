@@ -151,7 +151,43 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <button class="bs t" id="cgy" style="margin-top:10px">ফলাফল কপি করুন|Copy Result</button> <button class="bs t" id="cgx">সব মুছুন|Clear All</button> <button class="bs t" id="cgk">রেজাল্ট কার্ড|Result Card</button>
 <div id="cgcw" class="np" style="display:none;margin-top:12px"><canvas id="cgcv" width="1080" height="1350" style="width:100%;max-width:360px;border-radius:12px;display:block"></canvas><button class="bt t" id="cgkp">ছবি ডাউনলোড|Download Image</button><button class="bt t" id="cgkf">PDF ডাউনলোড|Download PDF</button><button class="bt t" id="cgks">শেয়ার|Share</button><div class="hint" id="cgm"></div></div>
 <p class="hint t">কোর্সের নাম ঐচ্ছিক। শুধু ক্রেডিট ঠিক করে গ্রেড বাছুন, বাকি হিসাব নিজে থেকেই হবে। স্কেল আপনার ডিপার্টমেন্টের নিয়মের সাথে মিলিয়ে নিন।|Course names are optional. Set the credit, pick the grade, and the rest is calculated automatically. Check the scale against your department's rules.</p></div>
-<div><div class="bx"><h2 class="t">লক্ষ্য CGPA হিসাব|CGPA Goal Planner</h2>
+<div>
+<!-- ১. স্মার্ট ফার্স্ট ক্লাস ও লক্ষ্য সিমুলেটর -->
+<div class="bx"><h2 class="t">🎯 স্মার্ট ফার্স্ট ক্লাস ও লক্ষ্য সিমুলেটর|Smart Target Simulator</h2>
+<p class="hint t">ফার্স্ট ক্লাস (৩.০০) বা কাঙ্ক্ষিত টার্গেট পেতে বাকি সেমিস্টারগুলোতে কত GPA প্রয়োজন তা নিমেষেই জেনে নিন।|Quickly calculate required GPA to secure First Class (3.00) or your target.</p>
+<div class="g3">
+  <div><label class="t">বাকি ক্রেডিট|Remaining credits</label><input id="tr" type="number" min="1" placeholder="যেমন: ৩০"></div>
+  <div><label class="t">লক্ষ্য CGPA|Target CGPA</label><input id="tt" type="number" min="0" max="4" step=".01" placeholder="৩.০০"></div>
+</div>
+<!-- কুইক টার্গেট প্রিসেট বাটন -->
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px;">
+  <button type="button" class="bs" onclick="setGoal(3.00)">🏆 ১ম শ্রেণি (৩.০০)</button>
+  <button type="button" class="bs" onclick="setGoal(3.25)">🌟 ৩.২৫+</button>
+  <button type="button" class="bs" onclick="setGoal(3.50)">💎 ৩.৫০+</button>
+  <button type="button" class="bs" onclick="setGoal(3.75)">👑 ডিনস অনার (৩.৭৫)</button>
+</div>
+<div id="tv" class="tvb"></div>
+</div>
+
+<!-- ২. রিটেক ইমপ্যাক্ট -->
+<div class="bx"><h2 class="t">🔄 রিটেক ইমপ্যাক্ট|Retake Impact</h2><p class="hint t">রিটেক দিলে CGPA কত বাড়বে তা হিসাব করুন।|Simulate how a retake can boost your CGPA.</p><label class="t">কোর্স বাছুন|Pick a course</label><select id="rtc"></select><label class="t">সম্ভাব্য নতুন গ্রেড|Possible new grade</label><select id="rtg"></select><div id="rtv" class="tvb"></div></div>
+
+<!-- ৩. 🔥 ভাইরাল CGPA ভবিষ্যৎবাণী ও রোস্টার -->
+<div class="bx" style="border:1.5px solid #e5a83b;background:linear-gradient(135deg,rgba(229,168,59,.08),transparent);"><h2 class="t">🔮 CGPA ভবিষ্যৎবাণী ও রোস্টার|CGPA Roast & Fortune</h2>
+<p class="hint t">আপনার সিজিপিএ অনুযায়ী ভবিষ্যৎ ক্যারিয়ার, বিয়ের সম্ভাবনা ও বন্ধুদের গোপন মন্তব্য জেনে নিন!|Discover your funny future horoscope and roast card based on your CGPA.</p>
+<div id="roastText" class="tvb" style="background:#fff;border-color:#f0d28a;font-size:14.5px;"></div>
+<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+  <button type="button" class="bt" id="btnRoastCard" style="margin:0;flex:1;">🎭 রোস্টিং ফটো-কার্ড তৈরি করুন</button>
+</div>
+<div id="roastCardBox" style="display:none;margin-top:14px;text-align:center;">
+  <canvas id="roastCanvas" width="1080" height="1350" style="width:100%;max-width:320px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);"></canvas>
+  <div style="margin-top:8px;">
+    <button type="button" class="bt" id="btnDlRoast" style="margin:4px 4px 0 0;">⬇️ ডাউনলোড করুন</button>
+    <button type="button" class="bs" id="btnShareRoast" style="margin:4px 0 0;">📤 ফেসবুকে শেয়ার</button>
+  </div>
+</div>
+</div>
+</div>
 <div class="g3"><div><label class="t">বাকি ক্রেডিট|Remaining credits</label><input id="tr" type="number" min="1"></div><div><label class="t">লক্ষ্য CGPA|Target CGPA</label><input id="tt" type="number" min="0" max="4" step=".01"></div></div>
 <div id="tv" class="tvb"></div></div>
 <div class="bx"><h2 class="t">রিটেক ইমপ্যাক্ট|Retake Impact</h2><p class="hint t">রিটেক দিলে CGPA কত হতে পারে, ট্রায়াল করে দেখুন। আপনার দেওয়া তথ্য বদলাবে না।|Try a retake to see how your CGPA could change. Your entries stay unchanged.</p><label class="t">কোর্স বাছুন|Pick a course</label><select id="rtc"></select><label class="t">সম্ভাব্য নতুন গ্রেড|Possible new grade</label><select id="rtg"></select><div id="rtv" class="tvb"></div></div></div></div>
