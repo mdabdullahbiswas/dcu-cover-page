@@ -25,16 +25,27 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var $L = function (s) { var p = String(s).split('|'); return SL === 'en' && p[1] ? p[1] : p[0]; };
   window.$L = $L; window.$lang = function () { return SL; };
 
-  var TL = [['card', 'শেয়ার কার্ড|Share Card'], ['frame', 'প্রোফাইল ফ্রেম|Profile Frame'], ['cv', 'সিভি বিল্ডার|CV Builder'], ['routine', 'ক্লাস রুটিন|Class Routine'], ['cgpa', 'CGPA ক্যালকুলেটর|CGPA Calculator'], ['exam', 'পরীক্ষা প্ল্যানার|Exam Planner'], ['pdf', 'PDF টুলকিট|PDF Toolkit'], ['calc', 'সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator']];
+  // রেজাল্ট টুলস ড্রপডাউনের ভেতরে যুক্ত করা হয়েছে
+  var TL = [
+    ['card', 'শেয়ার কার্ড|Share Card'],
+    ['frame', 'প্রোফাইল ফ্রেম|Profile Frame'],
+    ['cv', 'সিভি বিল্ডার|CV Builder'],
+    ['routine', 'ক্লাস রুটিন|Class Routine'],
+    ['cgpa', 'CGPA ক্যালকুলেটর|CGPA Calculator'],
+    ['exam', 'পরীক্ষা প্ল্যানার|Exam Planner'],
+    ['pdf', 'PDF টুলকিট|PDF Toolkit'],
+    ['calc', 'সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator'],
+    ['result', 'রেজাল্ট|Results']
+  ];
   var tl = TL.map(function (a) { return '<a class="t" href="tools.html#' + a[0] + '">' + a[1] + '</a>'; }).join('');
   var isI = P === 'index';
 
+  // মূল মেনুবার থেকে রেজাল্ট অপশনটি বাদ দিয়ে টুলস ড্রপডাউনে নেওয়া হয়েছে
   var hd = '<div class="sh" role="banner"><div class="sh-in">' +
     '<a class="brand" href="./"><img src="logo.png" alt="" onerror="this.remove()"><span>Dhaka Central University</span></a>' +
     '<nav class="mn" id="mn" aria-label="Main">' +
     '<a class="t' + (isI ? ' on' : '') + '" href="./">অ্যাসাইনমেন্ট|Assignment</a>' +
     '<div class="dd"><button type="button" class="t' + (P === 'tools' ? ' on' : '') + '" id="ddb">টুলস ▾|Tools ▾</button><div class="ddm">' + tl + '</div></div>' +
-    '<a class="t' + (P === 'result' ? ' on' : '') + '" href="tools.html#result">রেজাল্ট|Results</a>' +
     '<a class="t' + (P === 'blood' ? ' on' : '') + '" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a>' +
     '<a class="t' + (P === 'about' ? ' on' : '') + '" href="about.html">সম্পর্কে|About</a>' +
     '<a class="t' + (P === 'feedback' ? ' on' : '') + '" href="feedback.html">মতামত|Feedback</a></nav>' +
@@ -42,7 +53,6 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '<button type="button" id="langBtn"' + (isI ? ' onclick="setSite(SL===\'bn\'?\'en\':\'bn\')"' : '') + ' title="Language">' + (SL === 'bn' ? 'EN' : 'বাং') + '</button>' +
     '<button type="button" id="darkBtn" onclick="toggleDark()" title="Theme">🌙</button>' +
     '<button type="button" id="mt" aria-label="Menu" aria-expanded="false">☰</button></div></div></div>';
-
 
   /* ---------- সোশ্যাল আইকন (ইনলাইন SVG: কোনো বাইরের ফাইল/ইন্টারনেট লাগে না) ---------- */
   var IC = {
@@ -54,12 +64,13 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>',
     link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>'
   };
-  /* $SOC('Facebook', url) বা $SOC('email', 'mailto:..', 'Email') → শুধু আইকনসহ লিংক */
+
   window.$SOC = function (name, url, label, blank) {
     var k = String(name).toLowerCase(), t = label || name;
     return '<a class="si si-' + (IC[k] ? k : 'link') + '" href="' + url + '"' + (blank === false ? '' : ' target="_blank" rel="noopener"') +
       ' aria-label="' + t + '" title="' + t + '">' + (IC[k] || IC.link) + '</a>';
   };
+
   var st = document.createElement('style');
   st.textContent =
     'a.si{--c:#0a2240;display:inline-flex!important;align-items:center;justify-content:center;width:44px!important;height:44px!important;padding:0!important;margin:0;border-radius:50%!important;' +
@@ -75,7 +86,6 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.sf .soc a.si{width:40px!important;height:40px!important}.sf .soc a.si svg{width:19px;height:19px}' +
     '.sf .soc a.si:hover,.sf .soc a.si:focus-visible{color:#fff!important}' +
     '.ln{gap:10px!important}' +
-    /* হেডার #hdr র‍্যাপারের ভেতরে ছিল বলে sticky কাজ করছিল না; র‍্যাপারকেই sticky করা হলো */
     '#hdr{position:sticky;top:0;z-index:50}' +
     'html{scroll-padding-top:76px}';
   document.head.appendChild(st);
@@ -86,7 +96,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '<div><div class="b"><img src="logo.png" alt="" onerror="this.remove()"><span>Dhaka Central University</span></div>' +
     '<p class="t">শিক্ষার্থীদের জন্য বিনামূল্যের অ্যাসাইনমেন্ট কভার পেজ ও পড়াশোনার টুল।|Free assignment cover pages and study tools for students.</p><p id="cnt"></p>' +
     '<span class="t">বন্ধুদের সাথে শেয়ার করুন|Share with friends</span><a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a></div>' +
-    '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4><a class="t" href="./">অ্যাসাইনমেন্ট কভার পেজ|Assignment Cover Page</a>' + tl + '<a class="t" href="tools.html#result">রেজাল্ট দেখুন|View Results</a><a class="t" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a></div>' +
+    '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4><a class="t" href="./">অ্যাসাইনমেন্ট কভার পেজ|Assignment Cover Page</a>' + tl + '<a class="t" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a></div>' +
     '<div><h4 class="t">গোপনীয়তা|Privacy</h4><p class="t">আপনার সব তথ্য ও ফাইল শুধু আপনার ডিভাইসের ব্রাউজারেই থাকে। এগুলো কোনো সার্ভারে পাঠানো হয় না, তাই কেউ চাইলেও দেখতে পারে না।|Your data and files stay in your own browser. Nothing is sent to a server, so nobody else can see it.</p><a class="t" href="about.html#privacy">বিস্তারিত|Learn more</a></div>' +
     '<div><h4 class="t">ডেভেলপার|Developer</h4><a href="about.html"><b>' + DEV.name + '</b></a><span class="t" style="display:block">' + DEV.role + '</span>' + soc +
     '<a class="t" href="feedback.html">মতামত জানান|Send Feedback</a><a id="fbk" style="display:none"></a></div></div>' +
@@ -145,9 +155,10 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   }
   applyL();
 })();
+
 /* সব পাতায় জরুরি রক্ত নোটিশ বার দেখানো */
 (function() {
-    if (document.body.dataset.page === 'blood') return; // ব্লাড পেজে আলাদা আছে
+    if (document.body.dataset.page === 'blood') return;
 
     fetch("https://firestore.googleapis.com/v1/projects/dcu-blood-bank/databases/(default)/documents/blood_requests")
         .then(res => res.json())
