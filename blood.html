@@ -235,6 +235,8 @@
             #urgentBanner { animation: none !important; }
         }
         @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; } }
+        .sk{height:78px;border-radius:12px;margin-bottom:10px;background:linear-gradient(90deg,#e6ebf0 25%,#f4f7f9 40%,#e6ebf0 60%);background-size:400% 100%;animation:skm 1.2s ease infinite}
+        @keyframes skm{0%{background-position:100% 0}100%{background-position:0 0}}
     </style>
 </head>
 <body data-page="blood">
@@ -451,6 +453,7 @@
 <!-- Firebase SDK ও মূল স্ক্রিপ্ট -->
 <div id="ftr"></div>
 <script src="site.js"></script>
+<script src="blood-i18n.js"></script>
 <script>
 /* মেইন সাইটের হেডার/ফুটার: ডার্ক মোড বন্ধ রাখা এবং জরুরি বার মেনুর ঠিক নিচে বসানো */
 document.body.classList.remove('dark');
@@ -461,7 +464,7 @@ if(window.ResizeObserver)new ResizeObserver(s).observe(h);})();
 </script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, writeBatch, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -675,11 +678,15 @@ if(window.ResizeObserver)new ResizeObserver(s).observe(h);})();
     // ===== গতি: ডোনার তালিকা একবার এনে মেমরিতে রাখা হয় (প্রতি অক্ষর/ফিল্টারে আর সার্ভারে যাওয়া লাগে না) =====
     let donorsCache = null, donorsAt = 0, donorsInflight = null, ldToken = 0, ldTimer = 0;
     const DONORS_TTL = 90000;
+    // দ্রুত লোড: ডোনার তালিকা IndexedDB-তে রেখে পরের বার সঙ্গে সঙ্গে দেখানো হয়, পেছনে নতুন ডেটা এনে হালনাগাদ হয়
+    const idbOpen = () => new Promise((ok, no) => { const r = indexedDB.open("dcu_cache", 1); r.onupgradeneeded = () => r.result.createObjectStore("kv"); r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error); });
+    const idbGet = async () => { try { const db = await idbOpen(); return await new Promise((ok) => { const q = db.transaction("kv").objectStore("kv").get("donors_v1"); q.onsuccess = () => ok(q.result || null); q.onerror = () => ok(null); }); } catch (e) { return null; } };
+    const idbSet = async (rows) => { try { const db = await idbOpen(); db.transaction("kv", "readwrite").objectStore("kv").put(rows.map((r) => ({ id: r.id, d: JSON.parse(JSON.stringify(r.d)) })), "donors_v1"); } catch (e) {} };
     function fetchDonors(force) {
         if (!force && donorsCache && Date.now() - donorsAt < DONORS_TTL) return Promise.resolve(donorsCache);
         if (donorsInflight) return donorsInflight;
         donorsInflight = getDocs(query(collection(db, "donors"), where("status", "==", "approved")))
-            .then((snap) => { donorsCache = snap.docs.map((x) => ({ id: x.id, d: x.data(), h: {} })); donorsAt = Date.now(); return donorsCache; })
+            .then((snap) => { donorsCache = snap.docs.map((x) => ({ id: x.id, d: x.data(), h: {} })); donorsAt = Date.now(); idbSet(donorsCache); return donorsCache; })
             .finally(() => { donorsInflight = null; });
         return donorsInflight;
     }
@@ -729,7 +736,18 @@ if(window.ResizeObserver)new ResizeObserver(s).observe(h);})();
         const my = ++ldToken;
         const listDiv = document.getElementById('donorList');
         try {
-            if (!donorsCache) listDiv.innerHTML = "খোঁজা হচ্ছে...";
+            if (!donorsCache) {
+                const c = await idbGet();
+                if (my !== ldToken) return;
+                if (c && c.length) { donorsCache = c.map((r) => ({ id: r.id, d: r.d, h: {} })); donorsAt = 0; renderDonors(donorsCache); }
+                else {
+                    listDiv.innerHTML = '<div class="sk"></div><div class="sk"></div><div class="sk"></div>';
+                    const $f = (i) => document.getElementById(i);
+                    if (!$f("searchGroup").value && !$f("searchAddress").value.trim() && !$f("onlyVerified").checked)
+                        getDocs(query(collection(db, "donors"), where("status", "==", "approved"), limit(12)))
+                            .then((s) => { if (!donorsCache && my === ldToken) renderDonors(s.docs.map((x) => ({ id: x.id, d: x.data(), h: {} }))); }).catch(() => {});
+                }
+            }
             const rows = await fetchDonors();
             if (my !== ldToken) return;      // নতুন ফিল্টার এসে গেলে পুরনোটা বাদ
             renderDonors(rows);
