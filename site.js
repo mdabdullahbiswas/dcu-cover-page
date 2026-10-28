@@ -40,9 +40,10 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   var tl = TL.map(function (a) { return '<a class="t" href="tools.html#' + a[0] + '">' + a[1] + '</a>'; }).join('');
   var isI = P === 'index';
 
-  // হেডার: গাইড বাটন (❓) এখন প্রতিটি পেজেই সবসময় থাকবে
+  // হেডার: লোগো ও বিশ্ববিদ্যালয়ের নামের নিচে "আন-অফিশিয়াল" সাবটাইটেল (ক্লিকেবল)
   var hd = '<div class="sh" role="banner"><div class="sh-in">' +
-    '<a class="brand" href="./"><img src="logo.png" alt="" onerror="this.remove()"><span>Dhaka Central University</span></a>' +
+    '<a class="brand" href="./" title="Home"><img src="logo.png" alt="" onerror="this.remove()">' +
+    '<div class="brand-text"><span>Dhaka Central University</span><small class="t brand-sub">আন-অফিশিয়াল|Unofficial</small></div></a>' +
     '<nav class="mn" id="mn" aria-label="Main">' +
     '<a class="t' + (isI ? ' on' : '') + '" href="./">অ্যাসাইনমেন্ট|Assignment</a>' +
     '<div class="dd"><button type="button" class="t' + (P === 'tools' ? ' on' : '') + '" id="ddb">টুলস ▾|Tools ▾</button><div class="ddm">' + tl + '</div></div>' +
@@ -89,7 +90,14 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.ln{gap:10px!important}' +
     '#hdr{position:sticky;top:0;z-index:50}' +
     'html{scroll-padding-top:76px}' +
-    /* ইউনিভার্সাল গাইড বক্স স্টাইল */
+    /* লোগো ও ব্র্যান্ড টেক্সটের স্টাইল */
+    '.brand-text{display:flex;flex-direction:column;line-height:1.15;text-align:left}' +
+    '.brand-sub{font-size:11px;font-weight:600;color:#e8c179;letter-spacing:.6px;text-transform:uppercase;margin-top:2px}' +
+    '.sf .b{text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin-bottom:8px}' +
+    '.sf .b:hover span{color:#fff}' +
+    '.sf a.dev-link{color:inherit;text-decoration:none;transition:color .2s}' +
+    '.sf a.dev-link:hover{color:#e5a83b}' +
+    /* গাইড বক্স স্টাইল */
     '.dcu-tour-box{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:min(92vw,430px);background:var(--cd,#fff);color:var(--ink,#1c2733);border:1.5px solid var(--ln,#d5dde6);border-radius:14px;padding:18px 20px;box-shadow:0 12px 36px rgba(0,0,0,.28);z-index:99999;font-family:inherit;animation:dcuTourIn .2s ease-out}' +
     '@keyframes dcuTourIn{from{transform:translateX(-50%) translateY(14px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}' +
     '.dcu-tour-hl{outline:3.5px solid #e5a83b!important;outline-offset:4px!important;border-radius:8px!important;transition:outline .2s!important}' +
@@ -107,16 +115,19 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
 
   var soc = '<div class="soc">' + DEV.links.filter(function (l) { return l[1]; }).map(function (l) { return $SOC(l[0], l[1]); }).join('') +
     (DEV.email ? $SOC('email', 'mailto:' + DEV.email, 'Email', false) : '') + '</div>';
+
+  // ফুটার: লোগো ও বিশ্ববিদ্যালয়ের নাম ক্লিকেবল (হোমে যাবে) এবং ডেভেলপারের নামে ক্লিক করলে প্রোফাইল পেজে (about.html) যাবে
   var ft = '<div class="sf" role="contentinfo"><div class="sf-in">' +
-    '<div><div class="b"><img src="logo.png" alt="" onerror="this.remove()"><span>Dhaka Central University</span></div>' +
+    '<div><a class="b" href="./" title="Home"><img src="logo.png" alt="" onerror="this.remove()">' +
+    '<div class="brand-text"><span>Dhaka Central University</span><small class="t brand-sub">আন-অফিশিয়াল|Unofficial</small></div></a>' +
     '<p class="t">শিক্ষার্থীদের জন্য বিনামূল্যের অ্যাসাইনমেন্ট কভার পেজ ও পড়াশোনার টুল।|Free assignment cover pages and study tools for students.</p><p id="cnt"></p>' +
     '<span class="t">বন্ধুদের সাথে শেয়ার করুন|Share with friends</span><a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a></div>' +
     '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4><a class="t" href="./">অ্যাসাইনমেন্ট কভার পেজ|Assignment Cover Page</a>' + tl + '<a class="t" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a></div>' +
     '<div><h4 class="t">গোপনীয়তা|Privacy</h4><p class="t">আপনার সব তথ্য ও ফাইল শুধু আপনার ডিভাইসের ব্রাউজারেই থাকে। এগুলো কোনো সার্ভারে পাঠানো হয় না, তাই কেউ চাইলেও দেখতে পারে না।|Your data and files stay in your own browser. Nothing is sent to a server, so nobody else can see it.</p><a class="t" href="about.html#privacy">বিস্তারিত|Learn more</a></div>' +
-    '<div><h4 class="t">ডেভেলপার|Developer</h4><a href="about.html"><b>' + DEV.name + '</b></a><span class="t" style="display:block">' + DEV.role + '</span>' + soc +
+    '<div><h4 class="t">ডেভেলপার|Developer</h4><a class="dev-link" href="about.html" title="View Profile"><b>' + DEV.name + '</b></a><span class="t" style="display:block">' + DEV.role + '</span>' + soc +
     '<a class="t" href="feedback.html">মতামত জানান|Send Feedback</a><a id="fbk" style="display:none"></a></div></div>' +
     '<div class="sf-note"><p class="t">⚠️ এটি একটি আন-অফিশিয়াল (অনানুষ্ঠানিক) ওয়েবসাইট। Dhaka Central University কর্তৃপক্ষের সাথে এর কোনো সরকারি সম্পর্ক বা অনুমোদন নেই। অফিশিয়াল তথ্যের জন্য বিশ্ববিদ্যালয়ের নিজস্ব নোটিশ ও ওয়েবসাইট দেখুন।|⚠️ This is an unofficial website. It has no official affiliation with, or endorsement from, Dhaka Central University. For official information, please refer to the university\'s own notices and website.</p>' +
-    '<p>© ' + new Date().getFullYear() + ' · <span class="t">তৈরি করেছেন|Developed by</span> <b>' + DEV.name + '</b></p></div></div>';
+    '<p>© ' + new Date().getFullYear() + ' · <span class="t">তৈরি করেছেন|Developed by</span> <a class="dev-link" href="about.html" title="View Profile" style="color:var(--g,#e5a83b);font-weight:700;"><b>' + DEV.name + '</b></a></p></div></div>';
 
   function applyL(l) {
     if (l) SL = l;
