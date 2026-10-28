@@ -67,7 +67,7 @@ function render() {
     return;
   }
   const L = D.filter(d => (tab === "approved") === (d.status === "approved")).filter(has);
-  $("list").innerHTML = L.length ? L.map(d => `<div class="card dn"><img src="${typeof d.photo === "string" && (d.photo.startsWith("data:image/") || d.photo.startsWith("https://firebasestorage.googleapis.com/")) ? esc(d.photo) : AV}" alt=""><div class="i"><b>${esc(d.name)}</b> <span class="badge">${esc(d.group)}</span><div class="m">📍 ${esc(d.address)} | 📞 ${esc(d.phone)} | 🩸 ${esc(d.donationCount)} বার</div><div class="m">নিবন্ধন: ${fd(d.createdAt)}</div></div><div>${d.status === "approved" ? `<button class="o" data-a="pend" data-id="${esc(d.id)}">অনুমোদন প্রত্যাহার</button>` : `<button class="g" data-a="ok" data-id="${esc(d.id)}">✅ অনুমোদন</button>`} <button class="d" data-a="del" data-id="${esc(d.id)}">🗑️ মুছুন</button></div></div>`).join("") : '<p class="m">এই তালিকায় কিছু নেই।</p>';
+  $("list").innerHTML = L.length ? L.map(d => `<div class="card dn"><img src="${typeof d.photo === "string" && (d.photo.startsWith("data:image/") || d.photo.startsWith("https://firebasestorage.googleapis.com/")) ? esc(d.photo) : AV}" alt=""><div class="i"><b>${esc(d.name)}</b> <span class="badge">${esc(d.group)}</span><div class="m">📍 ${esc(d.address)} | 📞 ${esc(d.phone)} | 🩸 ${esc(d.donationCount)} বার${d.lastDonation ? " | 🗓️ সর্বশেষ: " + esc(d.lastDonation) : ""}</div><div class="m">নিবন্ধন: ${fd(d.createdAt)}</div></div><div>${d.status === "approved" ? `<button class="o" data-a="pend" data-id="${esc(d.id)}">অনুমোদন প্রত্যাহার</button>` : `<button class="g" data-a="ok" data-id="${esc(d.id)}">✅ অনুমোদন</button>`} <button class="d" data-a="del" data-id="${esc(d.id)}">🗑️ মুছুন</button></div></div>`).join("") : '<p class="m">এই তালিকায় কিছু নেই।</p>';
 }
 $("tabs").onclick = e => { if (e.target.dataset.t) { tab = e.target.dataset.t; render(); } };
 $("q").oninput = render; $("ref").onclick = load;
@@ -81,7 +81,7 @@ $("list").onclick = async e => {
   } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); }
 };
 $("csv").onclick = () => {
-  const c = v => '"' + String(v ?? "").replace(/"/g, '""') + '"', rows = [["Name","Group","Address","Phone","Donations","Status","Registered"]].concat(D.map(d => [d.name, d.group, d.address, d.phone, d.donationCount, d.status, ms(d.createdAt) ? new Date(ms(d.createdAt)).toISOString() : ""]));
+  const c = v => '"' + String(v ?? "").replace(/"/g, '""') + '"', rows = [["Name","Group","Address","Phone","Donations","Status","Registered","LastDonation"]].concat(D.map(d => [d.name, d.group, d.address, d.phone, d.donationCount, d.status, ms(d.createdAt) ? new Date(ms(d.createdAt)).toISOString() : "", d.lastDonation || ""]));
   const a = document.createElement("a"); a.download = "donors.csv"; a.href = URL.createObjectURL(new Blob(["\ufeff" + rows.map(r => r.map(c).join(",")).join("\n")], { type: "text/csv" })); a.click();
 };
 </script>
