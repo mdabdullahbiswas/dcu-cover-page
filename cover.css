@@ -234,6 +234,9 @@ body.grp .single-only { display: none; }
   margin-bottom: 15px;
   color: #0a2240;
   font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .a4-page {
@@ -322,7 +325,7 @@ body.grp .single-only { display: none; }
 .theme-executive .submitted-by { border-left: 4px solid var(--pri); }
 .theme-executive .submitted-to { border-left: 4px solid var(--acc2); }
 
-/* সাধারণ শেয়ার্ড উপাদান */
+/* সাধারণ উপাদান */
 .dcu-logo { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
 .section-heading { color: var(--pri); font-size: 14pt; font-weight: 800; letter-spacing: 1px; margin-bottom: 4mm; padding-bottom: 2mm; border-bottom: 1.5px solid #eee; display: flex; gap: 5px; }
 .submitted-to .section-heading { color: var(--acc2); }
@@ -376,8 +379,23 @@ body.grp .single-only { display: none; }
 .prof select { margin-top: 0; }
 .prof .mini { margin: 0; }
 .warn { color: #b3261e; font-weight: 600; }
-.cb { display: flex; align-items: center; gap: 8px; font-weight: 500; margin-top: 10px; }
-.cb input { width: auto; margin: 0; }
+
+/* অতিরিক্ত পেজের চেকবক্স ও ডিজাইন */
+.cb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-top: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.cb input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
 .chip { width: auto; padding: 6px 12px; font-size: 12px; margin: 6px 6px 0 0; border-radius: 20px; letter-spacing: 0; background: #eef3f8; color: #0a2240; box-shadow: none; }
 .alt2 { background: #fff; color: #0a2240; border: 1px solid #0a2240; box-shadow: none; }
 
@@ -388,4 +406,72 @@ body.grp .single-only { display: none; }
 .a4-page .teacher-item.lead { font-size: calc(14pt * var(--fit,1)); }
 .a4-page .student-name { font-size: calc(15pt * var(--fit,1)); }
 
-/* অতিরিক্ত পেজের ডিজাইন
+/* অতিরিক্ত পেজের লাইভ প্রিভিউ ডিজাইন */
+#supPages { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.page-sep-label {
+  width: 100%;
+  max-width: 580px;
+  background: var(--pri);
+  color: var(--acc);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  margin: 22px 0 6px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+.sup-page { padding: 28mm 24mm; justify-content: flex-start; }
+.sup-page, .sup-page * { font-family: 'Times New Roman', 'Hind Siliguri', serif; }
+.sup-page .sp-t { font-family: 'Cinzel', serif; text-align: center; color: var(--pri); font-size: 22pt; letter-spacing: 3px; border-bottom: 3px double var(--acc); padding-bottom: 5mm; margin-bottom: 14mm; }
+.bn-lang .sp-t { font-family: 'Noto Serif Bengali', serif !important; }
+.sp-p { font-size: 14pt; line-height: 1.9; text-align: justify; }
+.sp-r { margin-top: 14mm; text-align: right; font-weight: 700; font-size: 13pt; }
+.sg { display: flex; justify-content: space-between; gap: 20mm; margin-top: 36mm; }
+.sg div { flex: 1; text-align: center; }
+.sg .ln { display: block; border-top: 1.2px solid #222; margin-bottom: 2mm; }
+.sg p { font-size: 12pt; }
+#prev-sign { margin: 2mm 4mm 12mm; z-index: 2; }
+.toc { display: flex; align-items: baseline; gap: 6px; font-size: 13.5pt; margin-bottom: 4mm; }
+.toc i { flex: 1; border-bottom: 2px dotted #888; }
+
+/* ডার্ক মোড */
+body.dark { background: #0f1722; color: #e6edf5; }
+body.dark .form-section { background: #182231; box-shadow: none; }
+body.dark .form-section h2, body.dark .form-section h3, body.dark label, body.dark .preview-section > h2, body.dark .tpl { color: #d7e2ef; }
+body.dark input, body.dark textarea, body.dark select { background: #0f1722; color: #e6edf5; border-color: #33445a; }
+body.dark .btns .alt { background: #182231; color: #e5a83b; border-color: #e5a83b; }
+body.dark .hint, body.dark footer, body.dark footer a { color: #90a4ae; }
+
+/* রেসপনসিভ ও প্রিন্ট */
+@media screen and (max-width: 700px) {
+  .container { padding: 12px; }
+  .form-section { padding: 20px; }
+  .preview-section { min-width: 0; width: 100%; overflow: hidden; }
+  .a4-page { transform: scale(.42); margin-bottom: -170mm; }
+}
+
+@media print {
+  @page { size: A4 portrait; margin: 0; }
+  html, body { background: #fff; margin: 0; padding: 0; }
+  header, footer, .form-section, .preview-section > h2, .toast, .page-sep-label { display: none !important; }
+  .container { padding: 0; margin: 0; max-width: none; display: block; }
+  .preview-section { width: 100%; margin: 0; padding: 0; display: block; }
+  .a4-page {
+    transform: none !important;
+    margin: 0 0 0 var(--gut,0mm) !important;
+    box-shadow: none !important;
+    width: calc(210mm - var(--gut,0mm)) !important;
+    height: 296mm !important;
+    page-break-inside: avoid;
+    page-break-after: always !important;
+    break-after: page !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #supPages { display: block; }
+  .sup-page {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+}
