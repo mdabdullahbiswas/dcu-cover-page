@@ -213,7 +213,7 @@ function toast(msg) {
 }
 
 /* ========================================================
-   ✨ আধুনিক কাস্টম পপআপ মোডাল সিস্টেম (Browser Prompt Replacement)
+   ✨ আধুনিক কাস্টম পপআপ মোডাল সিস্টেম
    ======================================================== */
 function showModal({ icon = '💾', title, text, input = false, value = '', placeholder = '', confirmText = 'ঠিক আছে', cancelText = 'বাতিল', isDanger = false, onConfirm }) {
   const old = document.getElementById('customModalOverlay');
@@ -239,7 +239,6 @@ function showModal({ icon = '💾', title, text, input = false, value = '', plac
   `;
 
   document.body.appendChild(overlay);
-
   requestAnimationFrame(() => overlay.classList.add('active'));
 
   const inp = document.getElementById('cModalInput');
@@ -293,6 +292,9 @@ function showModal({ icon = '💾', title, text, input = false, value = '', plac
 function setTheme(p, a) {
   document.documentElement.style.setProperty('--pri', p);
   document.documentElement.style.setProperty('--acc', a);
+  // color-mix এড়াতে সরাসরি ভ্যালু সেট
+  document.documentElement.style.setProperty('--pri2', p);
+  document.documentElement.style.setProperty('--acc2', a);
   if ($('cPri')) $('cPri').value = p;
   if ($('cAcc')) $('cAcc').value = a;
 }
@@ -553,7 +555,7 @@ function applyUI() {
   });
 }
 
-// ইনফিনিট লুপ প্রতিরোধের জন্য লক ভ্যারিয়েবল
+// ইনফিনিট লুপ প্রতিরোধের লক
 let inLangSync = false;
 function setSite(l, fromExternal = false) {
   if (inLangSync) return;
@@ -619,7 +621,7 @@ function profList(sel) {
   if (sel) s.value = sel;
 }
 
-// ✨ নতুন স্টাইলিশ মোডাল দিয়ে প্রোফাইল সেভ
+// ✨ স্টাইলিশ মোডাল দিয়ে প্রোফাইল সেভ
 function profSave() {
   const bn = SL === 'bn';
   showModal({
@@ -645,7 +647,7 @@ function profLoad() {
   if (s) { apply(s); toast('প্রোফাইল লোড হয়েছে'); }
 }
 
-// ✨ নতুন স্টাইলিশ মোডাল দিয়ে প্রোফাইল ডিলিট
+// ✨ স্টাইলিশ মোডাল দিয়ে প্রোফাইল ডিলিট
 function profDel() {
   const n = $('profSel').value;
   const bn = SL === 'bn';
@@ -731,28 +733,69 @@ function tclear() {
   tchips();
 }
 
+/* ========================================================
+   🖼️ নিখুঁত PNG ডাউনলোড (কভার + সকল অতিরিক্ত পেজ সহ)
+   ======================================================== */
 async function downloadPNG() {
   toast('ছবি প্রস্তুত করা হচ্ছে...');
+  const target = $('cover-template');
+  if (!target) return;
+
   try {
-    const c = await html2canvas($('cover-template'), {
-      scale: 3,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-      onclone: d => {
-        const e = d.getElementById('cover-template');
-        e.style.transform = 'none';
-        e.style.margin = '0';
-        e.style.width = '210mm';
-      }
-    });
-    const a = document.createElement('a');
-    a.download = 'cover-page-' + (val('studentName').replace(/\s+/g, '-') || 'dcu') + '.png';
-    a.href = c.toDataURL('image/png');
-    a.click();
-    toast('ডাউনলোড শুরু হয়েছে');
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+
+    const pages = [target, ...document.querySelectorAll('#supPages .sup-page')];
+
+    for (let i = 0; i < pages.length; i++) {
+      const pg = pages[i];
+      const isCover = (i === 0);
+
+      const c = await html2canvas(pg, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        onclone: (clonedDoc) => {
+          const el = isCover
+            ? clonedDoc.getElementById('cover-template')
+            : clonedDoc.querySelectorAll('#supPages .sup-page')[i - 1];
+          if (el) {
+            el.style.transform = 'none';
+            el.style.margin = '0';
+            el.style.boxShadow = 'none';
+            el.style.width = '210mm';
+            el.style.height = '297mm';
+          }
+        }
+      });
+
+      await new Promise(resolve => {
+        c.toBlob(blob => {
+          if (blob) {
+            const a = document.createElement('a');
+            const suffix = isCover ? 'cover' : `page-${i + 1}`;
+            a.download = `cover-page-${val('studentName').replace(/\s+/g, '-') || 'dcu'}-${suffix}.png`;
+            a.href = URL.createObjectURL(blob);
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+              a.remove();
+              URL.revokeObjectURL(a.href);
+            }, 1000);
+          }
+          setTimeout(resolve, 350);
+        }, 'image/png');
+      });
+    }
+
+    toast(pages.length > 1 ? `✅ ${pages.length}টি পেজের PNG ডাউনলোড সম্পন্ন` : '✅ PNG ডাউনলোড সম্পন্ন হয়েছে');
     bump();
-  } catch(e) {
-    toast('ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন');
+  } catch (err) {
+    console.error("PNG Download Error:", err);
+    toast('❌ ছবি তৈরি করা যায়নি: ' + (err.message || 'Error'));
   }
 }
 
@@ -807,7 +850,7 @@ function share() {
     .catch(() => prompt(T('লিংকটি কপি করুন:'), u));
 }
 
-// ✨ নতুন স্টাইলিশ মোডাল দিয়ে রিসেট
+// ✨ স্টাইলিশ মোডাল দিয়ে রিসেট
 function resetAll() {
   const bn = SL === 'bn';
   showModal({
@@ -826,7 +869,7 @@ function resetAll() {
   });
 }
 
-// ন্যাভবার ভাষা পরিবর্তন হ্যান্ডলার
+// ন্যাভবার ভাষা পরিবর্তন হ্যান্ডলার (লুপ প্রোটেকশন সহ)
 window.onLang = function(l) {
   const targetLang = l || (typeof window.$lang === 'function' ? window.$lang() : localStorage.getItem('dcuSL')) || 'bn';
   setSite(targetLang, true);
