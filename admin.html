@@ -31,17 +31,18 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{border-bottom:1px
 </div></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, getDocs, query, orderBy, limit, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 const ADMIN_EMAIL = "ojanaraja3@gmail.com";
-const app = initializeApp({ apiKey:"AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0", authDomain:"dcu-blood-bank.firebaseapp.com", projectId:"dcu-blood-bank", storageBucket:"dcu-blood-bank.firebasestorage.app", messagingSenderId:"835221249900", appId:"1:835221249900:web:facf545941825a4efa5d49" });
+const app = initializeApp({ apiKey:"AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0", authDomain:"dcu-blood-bank.firebaseapp.com", projectId:"dcu-blood-bank", storageBucket:"dcu-blood-bank.firebasestorage.app", messagingSenderId:"835221249900", appId:"1:835221249900:web:facf545941825a4efa5d49" }, "admin");
 const auth = getAuth(app), db = getFirestore(app), $ = id => document.getElementById(id);
 const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const AV = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"><rect width="56" height="56" rx="28" fill="#eee"/><circle cx="28" cy="21" r="9" fill="#bbb"/><path d="M9 50c3-13 35-13 38 0z" fill="#bbb"/></svg>');
 const ms = d => d && d.toMillis ? d.toMillis() : 0, fd = d => ms(d) ? new Date(ms(d)).toLocaleString("bn-BD") : "-";
 let D = [], LG = [], RP = [], BR = [], tab = "pending";
 
-$("login").onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e => $("gmsg").textContent = "সাইন ইন সম্ভব হয়নি: " + e.code);
+const persistReady = setPersistence(auth, browserLocalPersistence).catch(() => {});
+$("login").onclick = () => persistReady.then(() => signInWithPopup(auth, new GoogleAuthProvider())).catch(e => $("gmsg").textContent = "সাইন ইন সম্ভব হয়নি: " + e.code);
 $("out").onclick = () => signOut(auth);
 onAuthStateChanged(auth, u => {
   if (!u) { $("gate").style.display = "block"; $("app").style.display = "none"; return; }
