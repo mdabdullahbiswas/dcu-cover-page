@@ -47,6 +47,12 @@
         .nitem .nn { font-weight: 700; color: var(--primary); }
         .nitem a { color: var(--success); font-weight: 700; text-decoration: none; }
         .nnew { background: var(--danger); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; }
+        .my-card { border: 1px solid var(--ln); border-radius: 12px; padding: 16px; background: #fafbfc; text-align: center; }
+        .my-card img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); }
+        .my-card .st { display: inline-block; margin-top: 8px; padding: 3px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+        .st.ok { background: rgba(40,167,69,.15); color: #1b7a33; }
+        .st.wait { background: rgba(229,168,59,.2); color: #7a5a10; }
+        .btn-del { background: #fff; color: var(--danger); border: 1.5px solid var(--danger); }
         /* ফোন নম্বর রেজাল্ট কার্ড */
         .result-modal { text-align: center; max-width: 380px; padding: 0; overflow: hidden; animation: popIn .25s ease-out; }
         @keyframes popIn { from { transform: scale(.9) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
@@ -110,6 +116,7 @@
     <div id="registerSection" class="section">
         <div class="card">
             <h2>ডোনার হিসেবে নিবন্ধন করুন</h2>
+            <div id="myProfile" style="display:none"></div>
             <form id="donorForm">
                 <label>পূর্ণ নাম</label>
                 <input type="text" id="dName" required placeholder="আপনার নাম">
@@ -270,6 +277,7 @@
         $("regNote").style.display = u ? "none" : "block";
         $("seekNote").style.display = u ? "none" : "block";
         $("seekerSubmit").textContent = u ? "নম্বর দেখুন" : "🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন";
+        refreshMyProfile().catch(() => {});
         if (u) { fetchNotify().catch(() => {}); } else { notifyLogs = []; updateBadge(); }
         if (u) {
             const sv = loadSeeker(u.uid);
@@ -305,6 +313,7 @@
             loadDonors();
         } else if(tab === 'register') {
             document.getElementById('registerSection').classList.add('active');
+            refreshMyProfile().catch(() => {});
         } else if(tab === 'notify') {
             document.getElementById('notifySection').classList.add('active');
             loadNotify();
@@ -433,6 +442,7 @@
             msg.textContent = "✅ আপনার নিবন্ধন সফল হয়েছে! এডমিন যাচাই করার পর এটি ডিরেক্টরিতে যুক্ত হবে।";
             document.getElementById('donorForm').reset();
             document.getElementById('customAreaDiv').style.display = 'none';
+            refreshMyProfile().catch(() => {});
         } catch (error) {
             msg.style.color = "var(--danger)";
             console.error(error);
@@ -571,6 +581,44 @@
         }
         cb.textContent = '✅ কপি হয়েছে'; cb.classList.add('done');
     });
+
+    // ===== আমার প্রোফাইল: নিজের নিবন্ধন দেখা ও ডিলেট করা =====
+    async function refreshMyProfile() {
+        const box = document.getElementById('myProfile'), form = document.getElementById('donorForm');
+        const u = auth.currentUser;
+        let d = null;
+        if (u) { try { const snap = await getDoc(doc(db, "donors", u.uid)); if (snap.exists()) d = snap.data(); } catch (_) {} }
+        if (!d) { box.style.display = 'none'; box.innerHTML = ''; form.style.display = 'block'; return; }
+        form.style.display = 'none';
+        box.style.display = 'block';
+        const ok = d.status === 'approved';
+        box.innerHTML = `<div class="my-card">
+            <img src="${photoSrc(d.photo)}" alt="">
+            <h3 style="margin:8px 0 2px;">${esc(d.name)} <span class="badge">${esc(d.group)}</span></h3>
+            <div style="font-size:14px; color:#555;">📍 ${esc(d.address)} &nbsp;|&nbsp; 📞 ${esc(d.phone)} &nbsp;|&nbsp; 🩸 ${esc(d.donationCount)} বার দান</div>
+            <span class="st ${ok ? 'ok' : 'wait'}">${ok ? '✅ অনুমোদিত, ডিরেক্টরিতে দেখা যাচ্ছে' : '⏳ এডমিনের অনুমোদনের অপেক্ষায়'}</span>
+            <p style="font-size:13px; color:#666; margin:12px 0 0;">আপনি চাইলে যেকোনো সময় আপনার তথ্য ডিরেক্টরি থেকে মুছে ফেলতে পারেন। পরে ইচ্ছা হলে আবার ডোনার হিসেবে যুক্ত হতে পারবেন।</p>
+            <button type="button" class="btn btn-del" id="delMe">🗑️ আমার তথ্য ডিরেক্টরি থেকে মুছে ফেলুন</button>
+        </div>`;
+        document.getElementById('delMe').onclick = async () => {
+            if (!confirm("আপনি কি নিশ্চিত যে আপনার ডোনার তথ্য স্থায়ীভাবে মুছে ফেলতে চান?\n\nপরে চাইলে আবার নতুন করে নিবন্ধন করতে পারবেন।")) return;
+            const msg = document.getElementById('regMsg'), btn = document.getElementById('delMe');
+            btn.disabled = true;
+            try {
+                const b = writeBatch(db);
+                b.delete(doc(db, "donors", u.uid));
+                b.delete(doc(db, "phone_claims", d.phone));
+                await b.commit();
+                msg.style.color = "var(--success)";
+                msg.textContent = "✅ আপনার তথ্য মুছে ফেলা হয়েছে। আবার ডোনার হতে চাইলে নিচের ফর্ম পূরণ করে নিবন্ধন করুন।";
+                await refreshMyProfile();
+            } catch (e) {
+                btn.disabled = false;
+                msg.style.color = "var(--danger)";
+                msg.textContent = "❌ মোছা সম্ভব হয়নি (" + (e.code || e.message) + ")";
+            }
+        };
+    }
 
     // ===== নোটিফিকেশন: কে আমার নম্বর দেখেছে =====
     let notifyLogs = [];
