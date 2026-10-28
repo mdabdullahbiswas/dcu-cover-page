@@ -1197,7 +1197,7 @@
             <div class="ractions">
                 ${r.contactPhone ? `<a class="btn-call" href="tel:${tel}">📲 কল করুন</a>` : `<button type="button" class="btn-call" data-q="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}
                 <button type="button" class="btn-ghost-s" data-q="find" data-id="${esc(r.id)}">🔎 ডোনার খুঁজুন</button>
-                <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি শেয়ার</button>
+                <button type="button" class="btn-ghost-s" data-q="share" data-id="${esc(r.id)}">📤 শেয়ার</button><button type="button" class="btn-ghost-s" data-q="photo" data-id="${esc(r.id)}">🖼️ ছবি শেয়ার</button>${mine ? "" : `<button type="button" class="btn-del-s" data-q="report" data-id="${esc(r.id)}">🚩 ভুয়া রিপোর্ট</button>`}
                 ${mine ? `<button type="button" class="btn-ghost-s" data-q="done" data-id="${esc(r.id)}">✅ রক্ত পাওয়া গেছে</button><button type="button" class="btn-del-s" data-q="del" data-id="${esc(r.id)}">🗑️ মুছুন</button>` : ""}
             </div></div>`;
     }
@@ -1267,9 +1267,48 @@
                 <div class="ub-info"><div class="ub-title">${bnNum(r.bags)} ব্যাগ রক্ত লাগবে<span class="ub-when">${esc(reqWhen(r))}</span></div>
                 <div class="ub-chips"><span>🏥 ${esc(r.hospital)}</span><span>📍 ${esc(r.area)}</span><span>📅 ${esc(bnDate(r.neededDate))}</span><span>🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""}</span><span>👤 ${esc(r.contactName)}</span></div>
                 ${r.note ? `<div class="ub-note">📝 ${esc(r.note)}</div>` : ""}</div></div>
-            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-sec" data-ub="share">📤 শেয়ার</button><button type="button" class="ub-sec" data-ub="photo">🖼️ ছবি শেয়ার</button><button type="button" class="ub-sec" data-ub="all">সব দেখুন</button></div>
+            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-sec" data-ub="share">📤 শেয়ার</button><button type="button" class="ub-sec" data-ub="photo">🖼️ ছবি শেয়ার</button><button type="button" class="ub-sec" data-ub="all">সব দেখুন</button>${auth.currentUser && r.requesterUid === auth.currentUser.uid ? "" : `<button type="button" class="ub-sec" data-ub="report" style="flex:0 0 auto;min-width:0;padding:11px 14px;">🚩 রিপোর্ট</button>`}</div>
             ${n > 1 ? `<div class="ub-nav"><button type="button" data-ub="prev" aria-label="আগের">‹</button><div class="ub-dots">${ubList.map((_, i) => `<i data-ub-i="${i}" class="${i === ubIdx ? "on" : ""}"></i>`).join("")}</div><button type="button" data-ub="next" aria-label="পরের">›</button></div>` : ""}`;
         ubStart();
+    }
+
+    // ---- ভুয়া/ভুল অনুরোধ রিপোর্ট (শুধু এডমিন দেখবে) ----
+    async function openReport(r) {
+        if (!r || document.getElementById("rpDlg")) return;
+        let u; try { u = await ensureUser(); } catch (e) { return; }
+        if (r.requesterUid === u.uid) return;
+        const d = document.createElement("div"); d.id = "rpDlg";
+        d.style.cssText = "position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px;";
+        d.innerHTML = `<div style="background:#fff;border-radius:16px;max-width:420px;width:100%;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.35);">
+            <h3 style="margin:0 0 4px;color:#b3261e;">🚩 অনুরোধটি রিপোর্ট করুন</h3>
+            <p style="margin:0 0 12px;font-size:13px;color:#666;">${esc(r.group)} · ${esc(r.hospital)}, ${esc(r.area)}</p>
+            <select id="rpWhy" style="width:100%;margin-bottom:8px;"><option>ভুয়া বা মিথ্যা অনুরোধ</option><option>নম্বর বা তথ্য ভুল</option><option>রক্ত ইতিমধ্যে পাওয়া গেছে</option><option>স্প্যাম বা অপ্রাসঙ্গিক</option><option>অন্য কারণ</option></select>
+            <textarea id="rpTxt" rows="2" maxlength="120" placeholder="আরও কিছু জানাতে চাইলে লিখুন (ঐচ্ছিক)" style="width:100%;"></textarea>
+            <p id="rpMsg" style="min-height:18px;font-size:13px;font-weight:600;margin:8px 0 0;"></p>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+                <button type="button" id="rpCancel" class="btn-ghost-s" style="flex:1;margin:0;padding:11px;border-radius:9px;cursor:pointer;font-weight:700;font-family:inherit;">বাতিল</button>
+                <button type="button" id="rpSend" class="btn" style="flex:1;margin:0;width:auto;background:var(--danger);color:#fff;">রিপোর্ট পাঠান</button>
+            </div></div>`;
+        document.body.appendChild(d);
+        const close = () => d.remove(), msg = d.querySelector("#rpMsg");
+        d.addEventListener("click", (e) => { if (e.target === d) close(); });
+        d.querySelector("#rpCancel").onclick = close;
+        d.querySelector("#rpSend").onclick = async (e) => {
+            const btn = e.target; btn.disabled = true; msg.style.color = "var(--primary)"; msg.textContent = "পাঠানো হচ্ছে...";
+            const extra = d.querySelector("#rpTxt").value.trim();
+            const reason = (d.querySelector("#rpWhy").value + (extra ? " — " + extra : "")).slice(0, 200);
+            try {
+                const bt = writeBatch(db);
+                bt.set(doc(db, "request_reports", r.id + "_" + u.uid), { requestId: r.id, requestInfo: (r.group + " · " + r.hospital + ", " + r.area).slice(0, 200), reporterUid: u.uid, reporterEmail: u.email, reason, timestamp: new Date() });
+                await bt.commit();
+                msg.style.color = "var(--success)"; msg.textContent = "✅ ধন্যবাদ! রিপোর্টটি এডমিনের কাছে পৌঁছেছে।";
+                setTimeout(close, 1500);
+            } catch (err) {
+                msg.style.color = "var(--danger)";
+                msg.textContent = err.code === "permission-denied" ? "❌ আপনি এই অনুরোধ আগেই রিপোর্ট করেছেন (বা অনুমতি নেই)।" : "❌ পাঠানো যায়নি (" + (err.code || err.message) + ")";
+                btn.disabled = false;
+            }
+        };
     }
 
     // ---- শেয়ার ও ছবি-কার্ড (নম্বর শুধু নিজের অনুরোধে বসে) ----
@@ -1318,6 +1357,7 @@
     $("urgentBanner").addEventListener("click", (e) => {
         const b = e.target.closest("[data-ub],[data-ub-i]"); if (!b) return;
         if (b.dataset.ub === "close") { const r = ubList[ubIdx]; if (r) { setUbDismissed(ubDismissed().concat(r.id)); renderBanner(); } return; }
+        if (b.dataset.ub === "report") { openReport(ubList[ubIdx]); return; }
         if (b.dataset.ub === "share") { shareReq(ubList[ubIdx]); return; }
         if (b.dataset.ub === "photo") { makePoster(ubList[ubIdx]); return; }
         if (b.dataset.ub === "all") { window.switchTab("urgent"); return; }
@@ -1405,6 +1445,7 @@
         const r = requests.find(x => x.id === b.dataset.id); if (!r) return;
         if (b.dataset.q === "share") { shareReq(r); return; }
         if (b.dataset.q === "photo") { makePoster(r); return; }
+        if (b.dataset.q === "report") { openReport(r); return; }
         try {
             if (b.dataset.q === "find") {
                 $("searchGroup").value = r.group; $("searchAddress").value = r.area;
