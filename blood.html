@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DCU Blood Donor Directory & Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #f4f7f6; --cd: #ffffff; --ink: #1c2733; --ln: #d0d7de; --primary: #0a2240; --accent: #e5a83b; --danger: #d9534f; --success: #28a745; }
@@ -196,6 +202,15 @@
         .btn-copy.done { background: var(--primary); color: var(--accent); }
         .result-warn { margin-top: 14px; background: rgba(229,168,59,.15); border: 1px dashed var(--accent); color: #7a5a10; padding: 9px 12px; border-radius: 8px; font-size: 12.5px; text-align: left; }
         .result-close { margin-top: 12px; width: 100%; background: #e6e9ee; color: #333; border: 0; border-radius: 10px; padding: 11px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 15px; }
+    
+        /* ===== গতি: অফস্ক্রিনের কার্ড রেন্ডার হবে না, মোবাইলে ভারী ইফেক্ট কম ===== */
+        .donor-card, .rcard { content-visibility: auto; contain-intrinsic-size: auto 110px; }
+        .donor-info img { background: #eef1f5; }
+        @media (max-width: 768px) {
+            .modal-overlay, .rp-ov { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+            #urgentBanner { animation: none !important; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; } }
     </style>
 </head>
 <body>
@@ -230,7 +245,7 @@
                 </div>
                 <div>
                     <label>এলাকা নির্বাচন বা সার্চ করুন</label>
-                    <input type="text" id="searchAddress" list="areaList" autocomplete="off" placeholder="যেমন: মিরপুর, গুলশান..." oninput="loadDonors()">
+                    <input type="text" id="searchAddress" list="areaList" autocomplete="off" placeholder="যেমন: মিরপুর, গুলশান..." oninput="loadDonorsSoon()">
                 </div>
             </div>
             <label style="font-weight:normal; cursor:pointer;"><input type="checkbox" id="onlyVerified" style="width:auto; margin-right:6px;" onchange="loadDonors()"> শুধু <span class="vtick">✔</span> ভেরিফাইড ডোনার দেখান</label>
@@ -605,7 +620,7 @@
                 email: user.email
             });
             batch.set(doc(db, "phone_claims", phoneVal), { uid: user.uid }); // এক নম্বর = একটি নিবন্ধন
-            await batch.commit();
+            await batch.commit(); dropDonorsCache();
 
             msg.style.color = "var(--success)";
             msg.textContent = "✅ আপনার নিবন্ধন সফল হয়েছে! এডমিন যাচাই করার পর এটি ডিরেক্টরিতে যুক্ত হবে।";
@@ -622,31 +637,25 @@
     });
 
     // পাবলিক ডোনার লিস্ট (শুধুমাত্র approved ডোনাররা দেখাবে)
-    async function loadDonors() {
-        const listDiv = document.getElementById('donorList');
-        const selectedGroup = document.getElementById('searchGroup').value;
-        const selectedAddress = document.getElementById('searchAddress').value.toLowerCase().trim();
-        listDiv.innerHTML = "খোঁজা হচ্ছে...";
+    // ===== গতি: ডোনার তালিকা একবার এনে মেমরিতে রাখা হয় (প্রতি অক্ষর/ফিল্টারে আর সার্ভারে যাওয়া লাগে না) =====
+    let donorsCache = null, donorsAt = 0, donorsInflight = null, ldToken = 0, ldTimer = 0;
+    const DONORS_TTL = 90000;
+    function fetchDonors(force) {
+        if (!force && donorsCache && Date.now() - donorsAt < DONORS_TTL) return Promise.resolve(donorsCache);
+        if (donorsInflight) return donorsInflight;
+        donorsInflight = getDocs(query(collection(db, "donors"), where("status", "==", "approved")))
+            .then((snap) => { donorsCache = snap.docs.map((x) => ({ id: x.id, d: x.data(), h: {} })); donorsAt = Date.now(); return donorsCache; })
+            .finally(() => { donorsInflight = null; });
+        return donorsInflight;
+    }
+    const dropDonorsCache = () => { donorsCache = null; donorsAt = 0; };
 
-        try {
-            const querySnapshot = await getDocs(query(collection(db, "donors"), where("status", "==", "approved")));
-            let html = "";
-            let count = 0;
-
-            querySnapshot.forEach((docSnap) => {
-                const d = docSnap.data();
-                if(d.status !== "approved") return; // পেন্ডিং বা অন্য স্ট্যাটাস হাইড থাকবে
-                if(selectedGroup && d.group !== selectedGroup) return;
-                if(document.getElementById('onlyVerified').checked && d.verified !== true) return;
-                if(selectedAddress && !d.address.toLowerCase().includes(selectedAddress)) return;
-
-                count++;
-                donorMap[docSnap.id] = d;
-                const isMe = !!(auth.currentUser && auth.currentUser.uid === docSnap.id);
-                html += `
+    function donorCardHTML(row, isMe) {
+        const d = row.d, id = row.id;
+        return `
                     <div class="donor-card">
                         <div class="donor-info" style="display:flex; align-items:center;">
-                            <img src="${photoSrc(d.photo)}" alt="User">
+                            <img src="${photoSrc(d.photo)}" alt="User" loading="lazy" decoding="async" width="60" height="60">
                             <div class="donor-details" style="margin-left:15px;">
                                 <h3 style="margin:0;">${esc(d.name)}${vtick(d)} <span class="badge">${esc(d.group)}</span></h3>
                                 <p style="margin:2px 0; font-size:14px; color:#555;">📍 ${esc(d.address)} | 🩸 ${esc(d.donationCount || 1)} বার দান</p>
@@ -654,18 +663,47 @@
                             </div>
                         </div>
                         <div class="dact">
-                            <button type="button" class="btn contact-btn" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}" data-group="${esc(d.group)}" data-id="${esc(docSnap.id)}">নম্বর দেখুন</button>
-                            ${isMe ? "" : `<button type="button" class="rp-btn" data-rp="donor" data-id="${esc(docSnap.id)}">🚩 রিপোর্ট</button>`}
+                            <button type="button" class="btn contact-btn" data-phone="${esc(d.phone)}" data-name="${esc(d.name)}" data-group="${esc(d.group)}" data-id="${esc(id)}">নম্বর দেখুন</button>
+                            ${isMe ? "" : `<button type="button" class="rp-btn" data-rp="donor" data-id="${esc(id)}">🚩 রিপোর্ট</button>`}
                         </div>
                     </div>
                 `;
-            });
+    }
 
-            listDiv.innerHTML = count > 0 ? html : "<p style='text-align:center; color:#777;'>এই ফিল্টারে কোনো অনুমোদিত রক্তদাতা পাওয়া যায়নি।</p>";
+    function renderDonors(rows) {
+        const listDiv = document.getElementById('donorList');
+        const selectedGroup = document.getElementById('searchGroup').value;
+        const selectedAddress = document.getElementById('searchAddress').value.toLowerCase().trim();
+        const onlyVer = document.getElementById('onlyVerified').checked;
+        const myUid = auth.currentUser ? auth.currentUser.uid : null;
+        const out = [];
+        for (const row of rows) {
+            const d = row.d;
+            if (d.status !== "approved") continue; // পেন্ডিং বা অন্য স্ট্যাটাস হাইড থাকবে
+            if (selectedGroup && d.group !== selectedGroup) continue;
+            if (onlyVer && d.verified !== true) continue;
+            if (selectedAddress && !String(d.address || "").toLowerCase().includes(selectedAddress)) continue;
+            donorMap[row.id] = d;
+            const isMe = myUid === row.id;
+            out.push(row.h[isMe] || (row.h[isMe] = donorCardHTML(row, isMe)));
+        }
+        listDiv.innerHTML = out.length > 0 ? out.join("") : "<p style='text-align:center; color:#777;'>এই ফিল্টারে কোনো অনুমোদিত রক্তদাতা পাওয়া যায়নি।</p>";
+    }
+
+    async function loadDonors() {
+        const my = ++ldToken;
+        const listDiv = document.getElementById('donorList');
+        try {
+            if (!donorsCache) listDiv.innerHTML = "খোঁজা হচ্ছে...";
+            const rows = await fetchDonors();
+            if (my !== ldToken) return;      // নতুন ফিল্টার এসে গেলে পুরনোটা বাদ
+            renderDonors(rows);
         } catch (error) {
-            listDiv.innerHTML = "ডেটা লোড করতে সমস্যা হয়েছে।";
+            if (my === ldToken) listDiv.innerHTML = "ডেটা লোড করতে সমস্যা হয়েছে।";
         }
     }
+    // টাইপ করার সময় প্রতি অক্ষরে নয়, থেমে গেলে একবার
+    window.loadDonorsSoon = function () { clearTimeout(ldTimer); ldTimer = setTimeout(loadDonors, 120); };
     window.loadDonors = loadDonors;
 
     window.handleContactClick = function(phone, name, group, id) {
@@ -963,7 +1001,7 @@
                 const b = writeBatch(db);
                 b.delete(doc(db, "donors", u.uid));
                 b.delete(doc(db, "phone_claims", d.phone));
-                await b.commit();
+                await b.commit(); dropDonorsCache();
                 msg.style.color = "var(--success)";
                 msg.textContent = "✅ আপনার তথ্য মুছে ফেলা হয়েছে। আবার ডোনার হতে চাইলে নিচের ফর্ম পূরণ করে নিবন্ধন করুন।";
                 await refreshMyProfile();
@@ -1022,7 +1060,7 @@
                 upd.photo = ph;
             }
             try {
-                await updateDoc(doc(db, "donors", u.uid), upd);
+                await updateDoc(doc(db, "donors", u.uid), upd); dropDonorsCache();
                 myDonor = { ...myDonor, ...upd };
                 updateBadge(); renderReminder(); renderProfileView();
                 const m = $("regMsg"); m.style.color = "var(--success)"; m.textContent = "✅ আপনার তথ্য সফলভাবে হালনাগাদ হয়েছে।";
@@ -1082,7 +1120,7 @@
             const msg = $("rMsg");
             try {
                 const until = addDaysISO(todayISO(), REMIND_EVERY);
-                await updateDoc(doc(db, "donors", u.uid), { snoozeUntil: until });
+                await updateDoc(doc(db, "donors", u.uid), { snoozeUntil: until }); dropDonorsCache();
                 myDonor = { ...myDonor, snoozeUntil: until };
                 updateBadge();
                 box.innerHTML = `<div class="card remind ok"><p style="margin:0; font-weight:600;">👍 ঠিক আছে। ${bnDate(until)} তারিখে আপনাকে আবার মনে করিয়ে দেওয়া হবে।</p></div>`;
@@ -1094,7 +1132,7 @@
             $("rSave").disabled = true;
             try {
                 const upd = { lastDonation: dt, donationCount: Math.min(500, (parseInt(d.donationCount, 10) || 0) + 1), snoozeUntil: "" };
-                await updateDoc(doc(db, "donors", u.uid), upd);
+                await updateDoc(doc(db, "donors", u.uid), upd); dropDonorsCache();
                 myDonor = { ...myDonor, ...upd };
                 updateBadge();
                 box.innerHTML = `<div class="card remind ok"><p style="margin:0; font-weight:600;">🎉 ধন্যবাদ! আপনার রক্তদানের তারিখ (${bnDate(dt)}) সংরক্ষিত হয়েছে। আপনার মোট রক্তদান এখন ${bnNum(upd.donationCount)} বার।</p></div>`;
@@ -1152,7 +1190,12 @@
     }
 
     var phoneCache = {};
-    async function fetchRequests() {
+    let reqInflight = null;
+    function fetchRequests(force) {
+        if (reqInflight && !force) return reqInflight;
+        return (reqInflight = fetchRequestsNow().finally(() => { reqInflight = null; }));
+    }
+    async function fetchRequestsNow() {
         const u = auth.currentUser;
         const snap = await getDocs(query(collection(db, "blood_requests"), where("status", "==", "open")));
         const t = todayISO();
@@ -1485,7 +1528,7 @@
             await bt.commit();
             msg.style.color = "var(--success)"; msg.textContent = "✅ আপনার জরুরি অনুরোধ প্রকাশ করা হয়েছে। রক্ত পাওয়া গেলে 'রক্ত পাওয়া গেছে' চাপুন।";
             $("rqForm").reset(); clearFieldErrors($("rqForm")); $("rqForm").style.display = "none";
-            try { await fetchRequests(); renderRequests(); } catch (_) {}
+            try { await fetchRequests(true); renderRequests(); } catch (_) {}
         } catch (err) { msg.style.color = "var(--danger)"; msg.textContent = "❌ অনুরোধ পাঠানো যায়নি (" + (err.code || err.message) + ")। Firestore Rules হালনাগাদ করা আছে কিনা দেখুন।"; }
         btn.disabled = false;
     });
@@ -1495,7 +1538,7 @@
     $("rqList").addEventListener("click", async (e) => {
         const b = e.target.closest("button[data-q]"); if (!b) return;
         if (b.dataset.q === "undismiss") { setUbDismissed([]); ubIdx = 0; renderBanner(); renderRequests(); return; }
-        if (b.dataset.q === "signin") { try { await ensureUser(); await refreshMyProfile().catch(() => {}); await fetchRequests(); renderRequests(); } catch (err) {} return; }
+        if (b.dataset.q === "signin") { try { await ensureUser(); await refreshMyProfile().catch(() => {}); await fetchRequests(true); renderRequests(); } catch (err) {} return; }
         const r = requests.find(x => x.id === b.dataset.id); if (!r) return;
         if (b.dataset.q === "share") { shareReq(r); return; }
         if (b.dataset.q === "photo") { makePoster(r); return; }
@@ -1504,11 +1547,11 @@
             if (b.dataset.q === "done") {
                 if (!confirm("রক্তের ব্যবস্থা হয়ে গেছে? অনুরোধটি তালিকা থেকে সরিয়ে ফেলা হবে।")) return;
                 await updateDoc(doc(db, "blood_requests", r.id), { status: "fulfilled" });
-                await fetchRequests(); renderRequests();
+                await fetchRequests(true); renderRequests();
             } else if (b.dataset.q === "del") {
                 if (!confirm("অনুরোধটি স্থায়ীভাবে মুছে ফেলবেন?")) return;
                 const bd = writeBatch(db); bd.delete(doc(db, "blood_requests", r.id, "private", "contact")); bd.delete(doc(db, "blood_requests", r.id)); await bd.commit();
-                await fetchRequests(); renderRequests();
+                await fetchRequests(true); renderRequests();
             }
         } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); }
     });
@@ -1518,11 +1561,10 @@
         lbDiv.innerHTML = "লিডারবোর্ড তৈরি হচ্ছে...";
 
         try {
-            const querySnapshot = await getDocs(query(collection(db, "donors"), where("status", "==", "approved")));
+            const rows = await fetchDonors();
             let donors = [];
-            querySnapshot.forEach((docSnap) => {
-                const d = docSnap.data();
-                if(d.status === "approved") donors.push(d); // শুধু এপ্রুভড ডোনাররা লিডারবোর্ডে থাকবে
+            rows.forEach((row) => {
+                if(row.d.status === "approved") donors.push(row.d); // শুধু এপ্রুভড ডোনাররা লিডারবোর্ডে থাকবে
             });
 
             donors.sort((a, b) => (b.donationCount || 1) - (a.donationCount || 1));
