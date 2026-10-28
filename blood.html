@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DCU Blood Donor Directory & Admin Panel</title>
+    <title>DCU Blood Donor Directory & Admin Panel · v3</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
@@ -864,7 +864,8 @@ if(window.ResizeObserver)new ResizeObserver(s).observe(h);})();
     const BN_D = ["\u09E6","\u09E7","\u09E8","\u09E9","\u09EA","\u09EB","\u09EC","\u09ED","\u09EE","\u09EF"];
     const bnDigitsOK = () => { try { const c = document.createElement("canvas").getContext("2d"); c.font = "20px " + getComputedStyle(document.body).fontFamily;
         const bad = c.measureText("\u0984").width; return [1, 2, 5, 8].every((n) => Math.abs(c.measureText(BN_D[n]).width - bad) > 0.01); } catch (e) { return true; } };
-    const toBnDigits = (s) => bnDigitsOK() ? String(s).replace(/\d/g, (d) => BN_D[+d]) : String(s);
+    const USE_BN_DIGITS = false; // true করলে বাংলা অঙ্ক (২৮), false হলে ইংরেজি অঙ্ক (28) সব জায়গায়
+    const toBnDigits = (s) => (USE_BN_DIGITS && bnDigitsOK()) ? String(s).replace(/\d/g, (d) => BN_D[+d]) : String(s);
     const BN_MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
     const bnDate = (s) => { if (!validISO(s)) return ""; const d = parseISO(s); return toBnDigits(d.getDate()) + " " + BN_MONTHS[d.getMonth()] + ", " + toBnDigits(d.getFullYear()); };
     const bnNum = (n) => toBnDigits(Number(n).toLocaleString("en-US"));
