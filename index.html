@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DCU Unofficial</title>
+<title>DCU Cover Page Generator — Unofficial</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Noto+Serif+Bengali:wght@600;800&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
@@ -13,7 +13,6 @@
 <meta name="twitter:card" content="summary"><link rel="icon" href="logo.png">
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script><script defer src="/_vercel/insights/script.js"></script>
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0a2240">
-<link rel="stylesheet" href="site.css">
 <style>
 :root{--pri:#0a2240;--acc:#e5a83b;--pri2:color-mix(in srgb,var(--pri) 78%,#000);--acc2:color-mix(in srgb,var(--acc) 78%,#000)}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Montserrat','Hind Siliguri',sans-serif}
@@ -176,19 +175,83 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 .container{padding:0;margin:0;max-width:none;display:block}
 .preview-section{width:100%;margin:0;padding:0;display:block}
 .a4-page{transform:none!important;margin:0 0 0 var(--gut,0mm)!important;box-shadow:none!important;width:calc(210mm - var(--gut,0mm))!important;height:296mm!important;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* ===== Professional UI layer ===== */
+:root{--ink:#0f1b2d;--mut:#64748b;--line:#dbe3ec;--bg:#f1f4f8;--r:14px}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-size:15px;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+header.site-hdr{background:linear-gradient(120deg,#06142a,#0a2240 60%,#12335f);padding:0;text-align:left;box-shadow:0 2px 0 var(--acc);position:sticky;top:0;z-index:30}
+.hdr-in{max-width:1440px;margin:0 auto;padding:12px 25px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--acc);color:#0a2240;font:800 14px 'Montserrat',sans-serif}
+header.site-hdr h1{font:700 18px 'Montserrat','Hind Siliguri',sans-serif;letter-spacing:.2px;color:#fff;margin:0}
+header.site-hdr p{font-size:12px;letter-spacing:.2px;color:#a9bbd3;text-transform:none}
+.hdr-act{display:flex;gap:8px}
+.hdr-act button{width:auto;min-width:42px;padding:8px 12px;font-size:13px;letter-spacing:0;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);box-shadow:none;border-radius:8px}
+.hdr-act button:hover{background:rgba(255,255,255,.2);transform:none;box-shadow:none}
+.container{align-items:flex-start}
+.form-section{border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,27,45,.04),0 12px 32px rgba(15,27,45,.06)}
+.form-section h2{border:0;font-size:22px;font-weight:700;margin-bottom:4px;padding-bottom:12px;position:relative}
+.form-section h2::after{content:'';position:absolute;left:0;bottom:0;width:48px;height:3px;border-radius:2px;background:var(--acc)}
+.form-section h3{font-size:13px;font-weight:700;color:var(--mut);margin:4px 0 0;display:flex;align-items:center;gap:10px}
+.form-section h3::after{content:'';flex:1;height:1px;background:var(--line)}
+.form-section hr{border:0;margin:10px 0 0}
+label{font-size:13px;font-weight:600;color:#334155;margin-top:16px}
+input,textarea,select{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px}
+input:hover,textarea:hover,select:hover{border-color:#b6c3d4}
+input:focus,textarea:focus,select:focus{background:#fff;border-color:var(--pri);box-shadow:0 0 0 4px color-mix(in srgb,var(--pri) 14%,transparent)}
+textarea{resize:vertical;line-height:1.5}
+input[type=file]{padding:9px 12px;font-size:13px}
+.cb input{accent-color:var(--pri);width:18px;height:18px}
+.cb{margin-top:12px;font-weight:500;font-size:14px}
+button{border-radius:10px;letter-spacing:0}
+.btns .alt:hover{background:#0a2240;color:#fff}
+.btns .danger:hover{background:#fdeceb}
+.mini{background:#eef2f7;color:#0a2240;border:1px solid var(--line);box-shadow:none;font-weight:600}
+.mini:hover{background:#e2e8f0;transform:none;box-shadow:none}
+#tourNext{background:#0a2240;color:#fff;border-color:#0a2240}
+.prof select{flex:1;min-width:0}
+.tpl .th{height:96px;border-radius:8px;transition:transform .2s}
+.tpl:hover .th{transform:translateY(-2px)}
+.tpl.on{color:#0a2240;font-weight:700}
+.themes .sw{transition:transform .15s}.themes .sw:hover{transform:scale(1.12)}
+.hint{font-size:12px;line-height:1.5}
+.preview-section{align-self:flex-start}
+.preview-section>h2{font-size:15px;font-weight:700;color:var(--mut);margin-bottom:14px}
+.a4-page{transform:scale(var(--ps,.72));margin-bottom:calc((var(--ps,.72) - 1)*297mm);transition:none}
+.chip{border:1px solid var(--line)}
+footer{padding:28px 20px 36px;font-size:13px}
+footer .share{display:flex;gap:6px 14px;justify-content:center;flex-wrap:wrap;align-items:center}
+footer .share a{margin:0;text-decoration:none;border-bottom:1px solid currentColor}
+footer .cnt{font-weight:600;color:#0a2240;margin-bottom:8px}
+footer .disc{margin-top:12px;font-size:12px;color:#94a3b8}
+body.dark{--ink:#e6edf5;--mut:#9fb0c4;--line:#2c3c52;--bg:#0f1722}
+body.dark .form-section{border-color:var(--line)}
+body.dark label{color:#c5d3e3}
+body.dark input,body.dark textarea,body.dark select{background:#0f1722}
+body.dark input:focus,body.dark textarea:focus,body.dark select:focus{background:#121d2c}
+body.dark .mini,body.dark .chip{background:#22324a;color:#e6edf5;border-color:#33445a}
+body.dark .alt2{background:#182231;color:#e5a83b;border-color:#e5a83b}
+body.dark .btns .alt:hover{background:#e5a83b;color:#0a2240}
+body.dark footer .cnt{color:#e5a83b}
+body.dark #tourBox{background:#182231;color:#e6edf5}
+@media screen and (max-width:700px){.hdr-in{padding:10px 14px}.brand p{display:none}.container{gap:20px}}
+@media print{#tourBox{display:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body data-page="index">
-<div id="hdr"></div>
+<header class="site-hdr"><div class="hdr-in"><div class="brand"><span class="mark">DCU</span><div><h1>Cover Page Generator</h1><p>Dhaka Central University — Unofficial</p></div></div><div class="hdr-act"><button type="button" id="langBtn" onclick="setSite(SL==='en'?'bn':'en')">EN</button><button type="button" id="darkBtn" aria-label="Dark mode" title="Dark mode" onclick="toggleDark()">&#9680;</button></div></div></header>
 <main class="container">
 <section class="form-section">
 <h2>তথ্য প্রদান করুন</h2>
 <form id="coverForm" onsubmit="return false">
-<label>📁 সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):</label><div class="prof"><select id="profSel"></select><button type="button" class="mini" onclick="profSave()">💾</button><button type="button" class="mini" onclick="profLoad()">📂</button><button type="button" class="mini" onclick="profDel()">🗑️</button></div>
+<label>সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):</label><div class="prof"><select id="profSel"></select><button type="button" class="mini" onclick="profSave()">সংরক্ষণ</button><button type="button" class="mini" onclick="profLoad()">লোড</button><button type="button" class="mini" onclick="profDel()">মুছুন</button></div>
 <label>কভার পেজ টেমপ্লেট নির্বাচন করুন:</label>
 <select id="templateSelector" hidden><option value="theme-classic">Classic</option><option value="theme-minimal">Minimal</option><option value="theme-executive">Executive</option><option value="theme-classic tc-bold">Bold</option><option value="theme-classic tc-frame">Heritage</option></select><div class="gal"><button type="button" class="tpl" data-v="theme-classic"><div class="th" style="border-color:var(--pri);background:linear-gradient(var(--pri) 0 10%,#fff 10% 90%,var(--pri) 90%)"></div>Classic</button><button type="button" class="tpl" data-v="theme-minimal"><div class="th" style="border:5px solid var(--pri);background:#fff"></div>Minimal</button><button type="button" class="tpl" data-v="theme-executive"><div class="th" style="background:linear-gradient(90deg,var(--pri) 0 12%,var(--acc) 12% 18%,#fff 18%)"></div>Executive</button><button type="button" class="tpl" data-v="theme-classic tc-bold"><div class="th" style="background:linear-gradient(var(--pri) 0 42%,#fff 42%)"></div>Bold</button><button type="button" class="tpl" data-v="theme-classic tc-frame"><div class="th" style="border:4px double var(--pri);background:#fff"></div>Heritage</button></div>
 
-<label>🎨 থিমের রং:</label>
+<label>থিমের রং:</label>
 <div class="themes">
 <button type="button" class="sw" style="background:linear-gradient(135deg,#0a2240 50%,#e5a83b 50%)" data-p="#0a2240" data-a="#e5a83b" title="Navy & Gold"></button>
 <button type="button" class="sw" style="background:linear-gradient(135deg,#0b3d2e 50%,#d4a017 50%)" data-p="#0b3d2e" data-a="#d4a017" title="Green & Gold"></button>
@@ -199,23 +262,24 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <input type="color" id="cPri" title="মূল রং"><input type="color" id="cAcc" title="অ্যাকসেন্ট রং"><small>← কাস্টম রং</small>
 </div>
 
-<label>📝 কভারের ধরন:</label>
+<label>কভারের ধরন:</label>
 <select id="docType"><option value="assignment">অ্যাসাইনমেন্ট</option><option value="lab">ল্যাব রিপোর্ট</option><option value="presentation">প্রেজেন্টেশন</option><option value="project">প্রজেক্ট / থিসিস</option><option value="quiz">কুইজ / পরীক্ষা</option></select>
-<div class="row2"><div><label>🌐 কভারের ভাষা:</label><select id="lang"><option value="en">English</option><option value="bn">বাংলা</option></select></div>
-<div><label>🔢 সংখ্যা:</label><select id="digits"><option value="en">1 2 3</option><option value="bn">১ ২ ৩</option></select></div>
-<div><label>🔤 শিরোনামের ফন্ট:</label><select id="font"><option>Cinzel</option><option>Playfair Display</option><option>Noto Serif Bengali</option><option>Montserrat</option></select></div>
-<div><label>🖼️ সীমারেখা (বর্ডার):</label><select id="bs"><option value="none">সীমারেখাবিহীন</option><option value="double">দ্বৈত রেখা</option><option value="solid">একক রেখা</option><option value="ornate">অলংকৃত</option></select></div></div>
-<label>🏛️ নিজস্ব লোগো (ঐচ্ছিক):</label><input type="file" id="logoFile" accept="image/*"><button type="button" class="mini" onclick="logoReset()">↩️ মূল লোগো পুনরুদ্ধার</button>
+<div class="row2"><div><label>কভারের ভাষা:</label><select id="lang"><option value="en">English</option><option value="bn">বাংলা</option></select></div>
+<div><label>সংখ্যা:</label><select id="digits"><option value="en">1 2 3</option><option value="bn">১ ২ ৩</option></select></div>
+<div><label>শিরোনামের ফন্ট:</label><select id="font"><option>Cinzel</option><option>Playfair Display</option><option>Noto Serif Bengali</option><option>Montserrat</option></select></div>
+<div><label>সীমারেখা (বর্ডার):</label><select id="bs"><option value="none">সীমারেখাবিহীন</option><option value="double">দ্বৈত রেখা</option><option value="solid">একক রেখা</option><option value="ornate">অলংকৃত</option></select></div></div>
+<label>নিজস্ব লোগো (ঐচ্ছিক):</label><input type="file" id="logoFile" accept="image/*"><button type="button" class="mini" onclick="logoReset()">মূল লোগো পুনরুদ্ধার</button>
 
-<div class="row2"><div><label>💧 ওয়াটারমার্ক:</label><select id="wm"><option value="auto">টেমপ্লেট অনুযায়ী</option><option value="on">চালু</option><option value="off">বন্ধ</option></select></div>
-<div><label>✍️ স্বাক্ষরের স্থান:</label><select id="sign"><option value="off">বন্ধ</option><option value="on">চালু</option></select></div></div>
-<label>📎 বাইন্ডিং মার্জিন (বাম পাশে):</label><select id="gut"><option value="0">বন্ধ</option><option value="5">৫ মিমি — হালকা স্ট্যাপল</option><option value="10">১০ মিমি — স্ট্যাপল / ক্লিপ</option><option value="15">১৫ মিমি — স্পাইরাল</option><option value="20">২০ মিমি — হার্ড বাইন্ডিং</option></select>
+<div class="row2"><div><label>ওয়াটারমার্ক:</label><select id="wm"><option value="auto">টেমপ্লেট অনুযায়ী</option><option value="on">চালু</option><option value="off">বন্ধ</option></select></div>
+<div><label>স্বাক্ষরের স্থান:</label><select id="sign"><option value="off">বন্ধ</option><option value="on">চালু</option></select></div></div>
+<label>বাইন্ডিং মার্জিন (বাম পাশে):</label><select id="gut"><option value="0">বন্ধ</option><option value="5">৫ মিমি — হালকা স্ট্যাপল</option><option value="10">১০ মিমি — স্ট্যাপল / ক্লিপ</option><option value="15">১৫ মিমি — স্পাইরাল</option><option value="20">২০ মিমি — হার্ড বাইন্ডিং</option></select>
 <p class="hint">বাইন্ডিংয়ে বাম পাশ ঢাকা পড়ে; এটি দিলে লেখা ও বর্ডার ডানে সরে আসবে। প্রিভিউতে ধূসর অংশটিই বাইন্ডিং এলাকা।</p>
 <label>ক্যাম্পাসের নাম:</label>
 <input type="text" id="campus" list="campusList" placeholder="e.g. MAIN CAMPUS">
 <label>ডিপার্টমেন্ট:</label>
 <input type="text" id="dept" list="deptList" placeholder="e.g. DEPARTMENT OF COMPUTER SCIENCE">
 
+<datalist id="campusList"><option value="MAIN CAMPUS, DHAKA"><option value="CITY CAMPUS, DHAKA"><option value="PERMANENT CAMPUS"></datalist>
 <datalist id="deptList"><option value="DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING"><option value="DEPARTMENT OF COMPUTER SCIENCE"><option value="DEPARTMENT OF ELECTRICAL & ELECTRONIC ENGINEERING"><option value="DEPARTMENT OF BUSINESS ADMINISTRATION"><option value="DEPARTMENT OF ACCOUNTING"><option value="DEPARTMENT OF FINANCE & BANKING"><option value="DEPARTMENT OF MARKETING"><option value="DEPARTMENT OF MANAGEMENT"><option value="DEPARTMENT OF ENGLISH"><option value="DEPARTMENT OF BANGLA"><option value="DEPARTMENT OF ECONOMICS"><option value="DEPARTMENT OF LAW"><option value="DEPARTMENT OF MATHEMATICS"><option value="DEPARTMENT OF PHYSICS"><option value="DEPARTMENT OF CHEMISTRY"><option value="DEPARTMENT OF SOCIOLOGY"><option value="DEPARTMENT OF POLITICAL SCIENCE"><option value="DEPARTMENT OF HISTORY"><option value="DEPARTMENT OF ISLAMIC STUDIES"><option value="DEPARTMENT OF PUBLIC HEALTH"></datalist>
 <label>কোর্স কোড (ঐচ্ছিক):</label>
 <input type="text" id="courseCode" placeholder="e.g. CSE-101">
@@ -227,7 +291,7 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <hr>
 <h3>Submitted By (শিক্ষার্থী)</h3>
 <label>জমাদানের ধরন:</label>
-<select id="mode"><option value="single">👤 একক (Individual)</option><option value="group">👥 গ্রুপ (Group)</option></select>
+<select id="mode"><option value="single">একক (Individual)</option><option value="group">গ্রুপ (Group)</option></select>
 
 <div class="single-only">
 <label>শিক্ষার্থীর পূর্ণ নাম:</label>
@@ -246,11 +310,11 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <label>অ্যাকাডেমিক সেশন:</label>
 <input type="text" id="session" placeholder="e.g. 2025-26">
 <label>মোবাইল নম্বর:</label>
-<input type="text" id="mobile" placeholder="e.g. 01700000000">
+<input type="text" id="mobile" inputmode="tel" autocomplete="tel" placeholder="e.g. 01700000000">
 <p class="hint warn" id="mobWarn"></p>
 <label>জমাদানের তারিখ:</label>
 <input type="text" id="submitDate" placeholder="e.g. 12/02/2026">
-<div class="prof"><select id="dateFmt"><option value="dmy">26/10/2026</option><option value="long">26 October 2026</option></select><button type="button" class="mini" onclick="today()">📅 আজকের তারিখ</button></div>
+<div class="prof"><select id="dateFmt"><option value="dmy">26/10/2026</option><option value="long">26 October 2026</option></select><button type="button" class="mini" onclick="today()">আজকের তারিখ</button></div>
 
 <hr>
 <h3>Submitted To (শিক্ষক)</h3>
@@ -267,13 +331,13 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 
 <p class="hint warn" id="ovWarn"></p>
 <div class="btns">
-<button type="button" class="full" onclick="bump();window.print()">🖨️ Save as PDF / Print</button>
-<button type="button" class="alt" onclick="downloadPNG()">🖼️ PNG ডাউনলোড</button>
-<button type="button" class="alt" onclick="downloadDoc()">📝 Word (সম্পাদনাযোগ্য)</button>
-<button type="button" class="alt full" onclick="share()">🔗 লিংক শেয়ার</button>
-<button type="button" class="danger full" onclick="resetAll()">🗑️ সব তথ্য মুছে ফেলুন</button>
+<button type="button" class="full" onclick="bump();window.print()">Save as PDF / Print</button>
+<button type="button" class="alt" onclick="downloadPNG()">PNG ডাউনলোড</button>
+<button type="button" class="alt" onclick="downloadDoc()">Word (সম্পাদনাযোগ্য)</button>
+<button type="button" class="alt full" onclick="share()">লিংক শেয়ার</button>
+<button type="button" class="danger full" onclick="resetAll()">সব তথ্য মুছে ফেলুন</button>
 </div>
-<p class="hint">✅ আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।</p>
+<p class="hint">আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।</p>
 </form>
 </section>
 
@@ -303,7 +367,7 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 
 <div class="info-grid">
 <div class="info-column submitted-by">
-<h4 class="section-heading"><span>👤</span> <span id="prev-bylabel">SUBMITTED BY</span></h4>
+<h4 class="section-heading"><span id="prev-bylabel">SUBMITTED BY</span></h4>
 <p class="student-name uppercase single-only" id="prev-sname"></p>
 <div class="members group-only" id="prev-members"></div>
 <div class="info-row single-only"><span class="label-text" data-k="roll">Class Roll:</span><span class="val-text" id="prev-sroll"></span></div>
@@ -313,7 +377,7 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <div class="info-row"><span class="label-text" data-k="dt">Submission Date:</span><span class="val-text" id="prev-date"></span></div>
 </div>
 <div class="info-column submitted-to">
-<h4 class="section-heading"><span>🎓</span> <span id="prev-tolabel">SUBMITTED TO</span></h4>
+<h4 class="section-heading"><span id="prev-tolabel">SUBMITTED TO</span></h4>
 <div id="prev-teachers" class="teacher-list"></div>
 <div class="teacher-meta">
 <p class="teacher-dept uppercase" id="prev-tdept"></p>
@@ -326,10 +390,9 @@ header,footer,.form-section,.preview-section>h2,.toast{display:none!important}
 <div id="supPages"></div>
 </section>
 </main>
-<div id="ftr"></div>
+<footer><div id="cnt" class="cnt"></div><div class="share"><span>বন্ধুদের সঙ্গে শেয়ার করুন:</span><a id="wa" target="_blank" rel="noopener">WhatsApp</a><a id="fb" target="_blank" rel="noopener">Facebook</a><a id="fbk" target="_blank" rel="noopener" style="display:none">মতামত জানান</a></div><p class="disc">Unofficial student tool — not affiliated with Dhaka Central University.</p></footer>
 <div id="tourBox"><p id="tourTxt"></p><div class="tb"><button type="button" class="mini alt2" onclick="tour(99)">এড়িয়ে যান</button><button type="button" class="mini" id="tourNext" onclick="tour(ti+1)">পরবর্তী</button></div></div>
 <div class="toast" id="toast"></div>
-<script src="site.js"></script>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -412,7 +475,7 @@ async function downloadPNG(){
   try {
     const c = await html2canvas($('cover-template'), {
       scale: 3, useCORS: true, backgroundColor: '#ffffff',
-      onclone: d => { const e = d.getElementById('cover-template'); e.style.transform = 'none'; e.style.margin = '0'; e.style.width = '210mm'; }
+      onclone: d => { const e = d.getElementById('cover-template'); e.style.transform = 'none'; e.style.margin = '0'; }
     });
     const a = document.createElement('a');
     a.download = 'cover-page-' + (val('studentName').replace(/\s+/g, '-') || 'dcu') + '.png';
@@ -461,8 +524,8 @@ function digitsPass(){
 }
 function checks(){
   const m = $('mobile').value.replace(/[\s-]/g, ''), c = $('cover-template');
-  $('mobWarn').textContent = (!m || /^(\+?88)?01[3-9]\d{8}$/.test(m)) ? '' : T('⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)');
-  $('ovWarn').textContent = c.scrollHeight > c.clientHeight + 2 ? T('⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।') : '';
+  $('mobWarn').textContent = (!m || /^(\+?88)?01[3-9]\d{8}$/.test(m)) ? '' : T('মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)');
+  $('ovWarn').textContent = c.scrollHeight > c.clientHeight + 2 ? T('লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।') : '';
 }
 function today(){
   const d = new Date(), l = $('lang').value === 'bn' ? 'bn-BD' : 'en-GB';
@@ -470,7 +533,7 @@ function today(){
   render();
 }
 function toggleDark(){
-  const d = document.body.classList.toggle('dark'); $('darkBtn').textContent = d ? '☀️' : '🌙';
+  const d = document.body.classList.toggle('dark'); $('darkBtn').setAttribute('aria-pressed', d);
   try { localStorage.setItem('dcuDark', d ? '1' : ''); } catch(e){}
 }
 const PK = 'dcuProfiles';
@@ -481,16 +544,16 @@ function profList(sel){
 }
 function profSave(){
   const n = prompt(T('প্রোফাইলের নাম লিখুন (উদাহরণ: CSE-101 – রহমান স্যার):')); if (!n) return;
-  const p = profs(); p[n] = get(); localStorage.setItem(PK, JSON.stringify(p)); profList(n); toast('প্রোফাইল সংরক্ষিত হয়েছে');
+  const p = profs(); p[n] = get(); try{localStorage.setItem(PK, JSON.stringify(p));}catch(e){} profList(n); toast('প্রোফাইল সংরক্ষিত হয়েছে');
 }
 function profLoad(){ const s = profs()[$('profSel').value]; if (s) { apply(s); toast('প্রোফাইল লোড হয়েছে'); } }
 function profDel(){
   const n = $('profSel').value; if (!n || !confirm('"' + n + '" — ' + T('এই প্রোফাইলটি মুছে ফেলতে চান?'))) return;
-  const p = profs(); delete p[n]; localStorage.setItem(PK, JSON.stringify(p)); profList();
+  const p = profs(); delete p[n]; try{localStorage.setItem(PK, JSON.stringify(p));}catch(e){} profList();
 }
 function setLogo(src){ document.querySelector('.dcu-logo').src = src; $('cover-template').style.setProperty('--wmurl', 'url(' + src + ')'); }
 function logoReset(){ try { localStorage.removeItem('dcuLogo'); } catch(e){} setLogo('./logo.png'); $('cover-template').style.removeProperty('--wmurl'); $('logoFile').value = ''; }
-function showCnt(){ let n = 0; try { n = +localStorage.getItem('dcuCnt') || 0; } catch(e){} $('cnt').textContent = n ? (SL === 'en' ? '🎉 You have created ' + n + ' cover(s) so far' : '🎉 আপনি এ পর্যন্ত ' + n + 'টি কভার তৈরি করেছেন') : ''; }
+function showCnt(){ let n = 0; try { n = +localStorage.getItem('dcuCnt') || 0; } catch(e){} $('cnt').textContent = n ? (SL === 'en' ? 'You have created ' + n + ' cover(s) so far' : 'আপনি এ পর্যন্ত ' + n + 'টি কভার তৈরি করেছেন') : ''; }
 function bump(){ tsave(); try { localStorage.setItem('dcuCnt', (+localStorage.getItem('dcuCnt') || 0) + 1); } catch(e){} showCnt(); }
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 function downloadDoc(){
@@ -514,40 +577,47 @@ function downloadDoc(){
   l.href = URL.createObjectURL(new Blob(['\ufeff' + h], {type:'application/msword'})); l.click(); bump(); toast('Word ফাইল ডাউনলোড হয়েছে');
 }
 
+
+const FALLBACK_LOGO = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="94" fill="#0a2240" stroke="#e5a83b" stroke-width="6"/><circle cx="100" cy="100" r="76" fill="none" stroke="#e5a83b" stroke-width="2"/><text x="100" y="118" text-anchor="middle" font-family="Georgia,serif" font-size="54" font-weight="700" fill="#e5a83b">DCU</text></svg>');
+function logoFail(i){ if (i.src.startsWith('data:')) return; i.src = FALLBACK_LOGO; $('cover-template').style.setProperty('--wmurl', 'url("' + FALLBACK_LOGO + '")'); }
+function scalePrev(){
+  const w = document.querySelector('.preview-section').clientWidth, px = 210 * 96 / 25.4;
+  document.documentElement.style.setProperty('--ps', Math.min(.9, Math.max(.3, (w - 8) / px)).toFixed(3));
+}
 const FEEDBACK_URL = '';  // এখানে আপনার Google Form / WhatsApp / Messenger লিংক বসান
-let SL = 'en', ti = -1;
+let SL = 'bn', ti = -1;
 const UI = Object.fromEntries([
-['তথ্য প্রদান করুন','Enter Information'],['📁 সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):','📁 Saved Profiles (by course / teacher):'],
-['কভার পেজ টেমপ্লেট নির্বাচন করুন:','Select Cover Page Template:'],['🎨 থিমের রং:','🎨 Theme Colour:'],['← কাস্টম রং','← Custom colour'],
-['📝 কভারের ধরন:','📝 Cover Type:'],['অ্যাসাইনমেন্ট','Assignment'],['ল্যাব রিপোর্ট','Lab Report'],['প্রেজেন্টেশন','Presentation'],['প্রজেক্ট / থিসিস','Project / Thesis'],['কুইজ / পরীক্ষা','Quiz / Exam'],
-['🌐 কভারের ভাষা:','🌐 Cover Language:'],['🔢 সংখ্যা:','🔢 Digits:'],['🔤 শিরোনামের ফন্ট:','🔤 Title Font:'],['🖼️ সীমারেখা (বর্ডার):','🖼️ Border:'],
+['তথ্য প্রদান করুন','Enter Information'],['সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):','Saved Profiles (by course / teacher):'],
+['কভার পেজ টেমপ্লেট নির্বাচন করুন:','Select Cover Page Template:'],['থিমের রং:','Theme Colour:'],['← কাস্টম রং','← Custom colour'],
+['কভারের ধরন:','Cover Type:'],['অ্যাসাইনমেন্ট','Assignment'],['ল্যাব রিপোর্ট','Lab Report'],['প্রেজেন্টেশন','Presentation'],['প্রজেক্ট / থিসিস','Project / Thesis'],['কুইজ / পরীক্ষা','Quiz / Exam'],
+['কভারের ভাষা:','Cover Language:'],['সংখ্যা:','Digits:'],['শিরোনামের ফন্ট:','Title Font:'],['সীমারেখা (বর্ডার):','Border:'],
 ['সীমারেখাবিহীন','No border'],['দ্বৈত রেখা','Double line'],['একক রেখা','Single line'],['অলংকৃত','Ornate'],
-['🏛️ নিজস্ব লোগো (ঐচ্ছিক):','🏛️ Custom Logo (optional):'],['↩️ মূল লোগো পুনরুদ্ধার','↩️ Restore default logo'],
-['💧 ওয়াটারমার্ক:','💧 Watermark:'],['টেমপ্লেট অনুযায়ী','Per template'],['চালু','On'],['বন্ধ','Off'],['✍️ স্বাক্ষরের স্থান:','✍️ Signature Area:'],
+['নিজস্ব লোগো (ঐচ্ছিক):','Custom Logo (optional):'],['মূল লোগো পুনরুদ্ধার','Restore default logo'],
+['ওয়াটারমার্ক:','Watermark:'],['টেমপ্লেট অনুযায়ী','Per template'],['চালু','On'],['বন্ধ','Off'],['স্বাক্ষরের স্থান:','Signature Area:'],
 ['ক্যাম্পাসের নাম:','Campus Name:'],['ডিপার্টমেন্ট:','Department:'],['কোর্স কোড (ঐচ্ছিক):','Course Code (optional):'],['কোর্সের নাম (ঐচ্ছিক):','Course Name (optional):'],['অ্যাসাইনমেন্টের বিষয় (Topic):','Topic:'],
-['Submitted By (শিক্ষার্থী)','Submitted By (Student)'],['Submitted To (শিক্ষক)','Submitted To (Teacher)'],['জমাদানের ধরন:','Submission Type:'],['👤 একক (Individual)','👤 Individual'],['👥 গ্রুপ (Group)','👥 Group'],
+['Submitted By (শিক্ষার্থী)','Submitted By (Student)'],['Submitted To (শিক্ষক)','Submitted To (Teacher)'],['জমাদানের ধরন:','Submission Type:'],['একক (Individual)','Individual'],['গ্রুপ (Group)','Group'],
 ['শিক্ষার্থীর পূর্ণ নাম:','Student Full Name:'],['ক্লাস রোল নম্বর:','Class Roll No.:'],['গ্রুপ সদস্য (প্রতি লাইনে একজন: নাম, রোল):','Group Members (one per line: Name, Roll):'],['সর্বোচ্চ ৮ জন সদস্য সুন্দরভাবে প্রদর্শিত হবে।','Up to 8 members fit neatly.'],
-['ক্লাস/ডিগ্রি:','Class / Degree:'],['অ্যাকাডেমিক সেশন:','Academic Session:'],['মোবাইল নম্বর:','Mobile Number:'],['জমাদানের তারিখ:','Submission Date:'],['📅 আজকের তারিখ',"📅 Today's date"],
+['ক্লাস/ডিগ্রি:','Class / Degree:'],['অ্যাকাডেমিক সেশন:','Academic Session:'],['মোবাইল নম্বর:','Mobile Number:'],['জমাদানের তারিখ:','Submission Date:'],['আজকের তারিখ',"Today's date"],
 ['শিক্ষকের নাম ও পদবি (প্রতি লাইনে একজন):','Teacher Name & Designation (one per line):'],['সংরক্ষিত শিক্ষক (ক্লিক করে ব্যবহার করুন):','Saved Teachers (click to use):'],['তালিকা মুছুন','Clear list'],
 ['অতিরিক্ত পেজ (থিসিস / প্রজেক্ট)','Extra Pages (Thesis / Project)'],['ঘোষণাপত্র (Declaration)','Declaration'],['অনুমোদনপত্র (Approval Certificate)','Approval Certificate'],['কৃতজ্ঞতা স্বীকার (Acknowledgement)','Acknowledgement'],['সূচিপত্র (Table of Contents)','Table of Contents'],['প্রতি লাইনে: অধ্যায়ের নাম | পৃষ্ঠা নম্বর','One per line: Chapter title | Page number'],
-['🖼️ PNG ডাউনলোড','🖼️ Download PNG'],['📝 Word (সম্পাদনাযোগ্য)','📝 Word (editable)'],['🔗 লিংক শেয়ার','🔗 Share Link'],['🗑️ সব তথ্য মুছে ফেলুন','🗑️ Clear All Data'],
-['✅ আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।','✅ Your data is saved automatically in this browser, so you won’t need to retype it next time.'],
-['লাইভ প্রিভিউ','Live Preview'],['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],['💬 মতামত জানান','💬 Send Feedback'],
+['PNG ডাউনলোড','Download PNG'],['Word (সম্পাদনাযোগ্য)','Word (editable)'],['লিংক শেয়ার','Share Link'],['সব তথ্য মুছে ফেলুন','Clear All Data'],
+['আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।','Your data is saved automatically in this browser, so you won’t need to retype it next time.'],
+['লাইভ প্রিভিউ','Live Preview'],['সংরক্ষণ','Save'],['লোড','Load'],['মুছুন','Delete'],['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],['মতামত জানান','Send Feedback'],
 ['এড়িয়ে যান','Skip'],['পরবর্তী','Next'],['সমাপ্ত','Finish'],['— নির্বাচন করুন —','— Select —'],
-['⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)','⚠️ Mobile number looks invalid (e.g. 01712345678)'],['⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।','⚠️ Too much text; the bottom of the cover may be cut off. Please shorten it.'],
+['মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)','Mobile number looks invalid (e.g. 01712345678)'],['লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।','Too much text; the bottom of the cover may be cut off. Please shorten it.'],
 ['ছবি প্রস্তুত করা হচ্ছে...','Preparing image...'],['ডাউনলোড শুরু হয়েছে','Download started'],['ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন','Could not create the image; please use PDF'],['লিংক কপি করা হয়েছে','Link copied'],['প্রোফাইল সংরক্ষিত হয়েছে','Profile saved'],['প্রোফাইল লোড হয়েছে','Profile loaded'],['ছবির আকার বড়, সংরক্ষণ করা যায়নি','Image too large to save'],['Word ফাইল ডাউনলোড হয়েছে','Word file downloaded'],
 ['লিংকটি কপি করুন:','Copy this link:'],['আপনি কি সব তথ্য মুছে ফেলতে চান?','Clear all data?'],['প্রোফাইলের নাম লিখুন (উদাহরণ: CSE-101 – রহমান স্যার):','Profile name (e.g. CSE-101 – Prof. Rahman):'],['এই প্রোফাইলটি মুছে ফেলতে চান?','Delete this profile?'],
-['১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।','1/4 — Start by choosing a template.'],['২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।','2/4 — Pick a theme colour you like.'],['৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।','3/4 — Fill in department, course and your details; the preview updates live.'],['৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।','4/4 — Finally, download as PDF, PNG or Word.']
-['📎 বাইন্ডিং মার্জিন (বাম পাশে):','📎 Binding Margin (left side):'],['৫ মিমি — হালকা স্ট্যাপল','5 mm — light staple'],['১০ মিমি — স্ট্যাপল / ক্লিপ','10 mm — staple / clip'],['১৫ মিমি — স্পাইরাল','15 mm — spiral'],['২০ মিমি — হার্ড বাইন্ডিং','20 mm — hard binding'],
+['১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।','1/4 — Start by choosing a template.'],['২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।','2/4 — Pick a theme colour you like.'],['৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।','3/4 — Fill in department, course and your details; the preview updates live.'],['৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।','4/4 — Finally, download as PDF, PNG or Word.'],
+['বাইন্ডিং মার্জিন (বাম পাশে):','Binding Margin (left side):'],['৫ মিমি — হালকা স্ট্যাপল','5 mm — light staple'],['১০ মিমি — স্ট্যাপল / ক্লিপ','10 mm — staple / clip'],['১৫ মিমি — স্পাইরাল','15 mm — spiral'],['২০ মিমি — হার্ড বাইন্ডিং','20 mm — hard binding'],
 ['বাইন্ডিংয়ে বাম পাশ ঢাকা পড়ে; এটি দিলে লেখা ও বর্ডার ডানে সরে আসবে। প্রিভিউতে ধূসর অংশটিই বাইন্ডিং এলাকা।','Binding hides part of the left edge. This shifts text and borders to the right; the grey strip in the preview is the binding area.']
 ]);
-const T = b => SL === 'en' ? (UI[b] || b) : b;
+const T = b => SL === 'en' ? (Object.hasOwn(UI, b) ? UI[b] : b) : b;
 function applyUI(){
   document.documentElement.lang = SL;
   document.querySelectorAll('.form-section label,.form-section h2,.form-section h3,.form-section button,.form-section option,.form-section small,.form-section .hint:not(.warn),.form-section .cb span,.preview-section>h2,footer span,footer a,header a,#tourBox button').forEach(e => {
     if (e.children.length) return;
     const k = e.dataset.bn || (e.dataset.bn = e.textContent.trim());
-    if (UI[k]) e.textContent = SL === 'en' ? UI[k] : k;
+    if (Object.hasOwn(UI, k)) e.textContent = SL === 'en' ? UI[k] : k;
   });
 }
 function setSite(l){
@@ -623,8 +693,10 @@ document.addEventListener('DOMContentLoaded', () => {
     r.readAsDataURL(f);
   });
   try { const lg = localStorage.getItem('dcuLogo'); if (lg) setLogo(lg); if (localStorage.getItem('dcuDark')) toggleDark(); } catch(e){}
-  try { SL = localStorage.getItem('dcuSL') || 'en'; } catch(e){}
+  try { SL = localStorage.getItem('dcuSL') || 'bn'; } catch(e){}
   $('teacherInfo').addEventListener('blur', tsave); tchips();
+  const lg0 = document.querySelector('.dcu-logo'); lg0.addEventListener('error', () => logoFail(lg0)); if (lg0.complete && !lg0.naturalWidth) logoFail(lg0);
+  scalePrev(); new ResizeObserver(scalePrev).observe(document.querySelector('.preview-section'));
   if (FEEDBACK_URL) { $('fbk').href = FEEDBACK_URL; $('fbk').style.display = 'inline'; }
   setSite(SL);
   try { if (!localStorage.getItem('dcuTour') && !location.hash) setTimeout(() => tour(0), 900); } catch(e){}
