@@ -3,7 +3,7 @@
  */
 const $ = id => document.getElementById(id);
 const KEY = 'dcuCoverV2';
-const F = ['campus','dept','courseCode','courseName','topic','studentName','studentClass','studentRoll','session','mobile','submitDate','teacherInfo','members','ackText','tocText'];
+const F = ['campus','dept','courseCode','courseName','topic','studentName','studentClass','studentRoll','session','mobile','submitDate','teacherInfo','members','declText','apprText','ackText','tocText'];
 const D = {
   campus: 'MAIN CAMPUS, DHAKA',
   dept: 'DEPARTMENT OF COMPUTER SCIENCE',
@@ -367,7 +367,9 @@ function fit() {
 }
 
 function supRender() {
-  if (!$('supPages')) return;
+  const supContainer = $('supPages');
+  if (!supContainer) return;
+
   const bn = $('lang') && $('lang').value === 'bn';
   const S = SP[bn ? 'bn' : 'en'];
   const docTypeVal = ($('docType') && $('docType').value) || 'assignment';
@@ -375,37 +377,96 @@ function supRender() {
   const kind = bn ? ty[1] : ty[0].toLowerCase();
   const grp = $('mode') && $('mode').value === 'group';
   const tl = lines(val('teacherInfo'));
-  const sv = esc(tl[0] || '');
+  const sv = esc(tl[0] || (bn ? 'তত্ত্বাবধায়ক' : 'Supervisor'));
   const names = esc(grp ? lines(val('members')).map(l => l.split(/[,|]/)[0].trim()).join(', ') : val('studentName'));
   const topic = esc(val('topic'));
   const roll = esc(val('studentRoll'));
   const ses = esc(val('session'));
 
-  const pg = (t, b) => `<div class="a4-page sup-page${bn ? ' bn-lang' : ''}"><h2 class="sp-t">${t}</h2>${b}</div>`;
-  const sg = (a, b) => `<div class="sg"><div><span class="ln"></span><p>${a}</p></div><div><span class="ln"></span><p>${b}</p></div></div>`;
+  const pg = (badgeTitle, mainTitle, contentHtml) => `
+    <div class="page-sep-label">📄 ${badgeTitle}</div>
+    <div class="a4-page sup-page${bn ? ' bn-lang' : ''}">
+      <h2 class="sp-t">${mainTitle}</h2>
+      ${contentHtml}
+    </div>`;
+  const sg = (leftText, rightText) => `
+    <div class="sg">
+      <div><span class="ln"></span><p>${leftText}</p></div>
+      <div><span class="ln"></span><p>${rightText}</p></div>
+    </div>`;
 
   let h = '';
-  if ($('pgDecl') && $('pgDecl').checked) {
-    h += pg(S.decl, `<p class="sp-p">${S.declT(names, topic, kind, sv)}</p>${sg(S.sig + ' — ' + names, S.date)}`);
+  let activePageCount = 1;
+
+  // ১. ঘোষণাপত্র
+  const isDecl = $('pgDecl') && $('pgDecl').checked;
+  if ($('declBox')) $('declBox').style.display = isDecl ? 'block' : 'none';
+  if (isDecl) {
+    activePageCount++;
+    const customDecl = $('declText') && $('declText').value.trim();
+    const declBody = customDecl ? esc(customDecl).replace(/\n/g, '<br>') : S.declT(names, topic, kind, sv);
+    h += pg(
+      bn ? 'পৃষ্ঠা ' + activePageCount + ': ঘোষণাপত্র' : 'Page ' + activePageCount + ': Declaration',
+      S.decl,
+      `<p class="sp-p">${declBody}</p>${sg(S.sig + ' — ' + names, S.date)}`
+    );
   }
-  if ($('pgAppr') && $('pgAppr').checked) {
-    h += pg(S.appr, `<p class="sp-p">${S.apprT(names, roll, ses, topic, kind)}</p>${sg(S.sup + ' — ' + sv + (tl[1] ? '<br>' + esc(tl[1]) : ''), S.date)}`);
+
+  // ২. অনুমোদনপত্র
+  const isAppr = $('pgAppr') && $('pgAppr').checked;
+  if ($('apprBox')) $('apprBox').style.display = isAppr ? 'block' : 'none';
+  if (isAppr) {
+    activePageCount++;
+    const customAppr = $('apprText') && $('apprText').value.trim();
+    const apprBody = customAppr ? esc(customAppr).replace(/\n/g, '<br>') : S.apprT(names, roll, ses, topic, kind);
+    h += pg(
+      bn ? 'পৃষ্ঠা ' + activePageCount + ': অনুমোদনপত্র' : 'Page ' + activePageCount + ': Approval Certificate',
+      S.appr,
+      `<p class="sp-p">${apprBody}</p>${sg(S.sup + ' — ' + sv + (tl[1] ? '<br>' + esc(tl[1]) : ''), S.date)}`
+    );
   }
-  if ($('pgAck') && $('pgAck').checked) {
-    h += pg(S.ack, `<p class="sp-p">${(esc($('ackText') ? $('ackText').value.trim() : '') || S.ackD(sv)).replace(/\n/g, '<br>')}</p><p class="sp-r">${names}</p>`);
+
+  // ৩. কৃতজ্ঞতা স্বীকার
+  const isAck = $('pgAck') && $('pgAck').checked;
+  if ($('ackBox')) $('ackBox').style.display = isAck ? 'block' : 'none';
+  if (isAck) {
+    activePageCount++;
+    const customAck = $('ackText') && $('ackText').value.trim();
+    const ackBody = (customAck ? esc(customAck) : S.ackD(sv)).replace(/\n/g, '<br>');
+    h += pg(
+      bn ? 'পৃষ্ঠা ' + activePageCount + ': কৃতজ্ঞতা স্বীকার' : 'Page ' + activePageCount + ': Acknowledgement',
+      S.ack,
+      `<p class="sp-p">${ackBody}</p><p class="sp-r">${names}</p>`
+    );
   }
-  if ($('pgToc') && $('pgToc').checked) {
-    h += pg(S.toc, lines(($('tocText') && $('tocText').value) || S.toc0).map(l => {
+
+  // ৪. সূচিপত্র
+  const isToc = $('pgToc') && $('pgToc').checked;
+  if ($('tocBox')) $('tocBox').style.display = isToc ? 'block' : 'none';
+  if (isToc) {
+    activePageCount++;
+    const tocRaw = ($('tocText') && $('tocText').value) || S.toc0;
+    const tocItems = lines(tocRaw).map(l => {
       const k = l.lastIndexOf('|');
       const a = k > -1 ? l.slice(0, k).trim() : l;
       const b = k > -1 ? l.slice(k + 1).trim() : '';
       return `<div class="toc"><span>${esc(a)}</span><i></i><span>${esc(b)}</span></div>`;
-    }).join(''));
+    }).join('');
+    h += pg(
+      bn ? 'পৃষ্ঠা ' + activePageCount + ': সূচিপত্র' : 'Page ' + activePageCount + ': Table of Contents',
+      S.toc,
+      tocItems
+    );
   }
 
-  $('supPages').innerHTML = h;
-  if ($('ackBox')) $('ackBox').style.display = ($('pgAck') && $('pgAck').checked) ? 'block' : 'none';
-  if ($('tocBox')) $('tocBox').style.display = ($('pgToc') && $('pgToc').checked) ? 'block' : 'none';
+  supContainer.innerHTML = h;
+
+  const badge = $('pageCountBadge');
+  if (badge) {
+    badge.textContent = activePageCount > 1 
+      ? (bn ? `(মোট ${activePageCount}টি পেজ)` : `(Total ${activePageCount} Pages)`) 
+      : '';
+  }
 }
 
 function applyUI() {
@@ -599,7 +660,7 @@ function downloadDoc() {
   const li = arr => arr.filter(Boolean).map(x => '<p style="margin:4pt 0;font-size:12pt">' + x + '</p>').join('');
   const course = (!$('prev-course') || $('prev-course').style.display === 'none') ? '' : '<p style="font-size:12pt;color:' + a + '"><b>' + t('prev-course') + '</b></p>';
 
-  // অতিরিক্ত পেজ Word ডকুমেন্টে স্বয়ংক্রিয়ভাবে সংযুক্ত
+  // অতিরিক্ত পেজসমূহ Word ফাইলে স্বয়ংক্রিয়ভাবে যুক্তকরণ
   let extraDoc = '';
   const pb = '<br clear="all" style="page-break-before:always;mso-break-type:section-break" />';
   document.querySelectorAll('#supPages .sup-page').forEach(pg => {
@@ -642,7 +703,7 @@ function resetAll() {
   apply({});
 }
 
-// গ্লোবাল ন্যাভবার ভাষা পরিবর্তন হ্যান্ডলার
+// ন্যাভবার ভাষা পরিবর্তন সিঙ্ক
 window.onLang = function(l) {
   setSite(l || (typeof $lang === 'function' ? $lang() : localStorage.getItem('dcuSL')) || 'bn');
 };
@@ -706,5 +767,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ['cPri','cAcc'].forEach(id => {
     if ($(id)) $(id).addEventListener('input', () => { setTheme($('cPri').value, $('cAcc').value); render(); });
+  });
+
+  // অতিরিক্ত ৪টি পেজের চেকবক্স হ্যান্ডলার
+  ['pgDecl', 'pgAppr', 'pgAck', 'pgToc'].forEach(id => {
+    const el = $(id);
+    if (el) {
+      el.addEventListener('change', () => {
+        render();
+        if (el.checked) {
+          toast('✅ নতুন পেজ প্রিভিউতে যুক্ত হয়েছে (নিচে স্ক্রল করে দেখুন)');
+        }
+      });
+    }
+  });
+
+  // অতিরিক্ত ৪টি পেজের টেক্সটবক্স হ্যান্ডলার
+  ['declText', 'apprText', 'ackText', 'tocText'].forEach(id => {
+    const el = $(id);
+    if (el) el.addEventListener('input', render);
   });
 });
