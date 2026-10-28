@@ -409,7 +409,8 @@
         $("regNote").style.display = u ? "none" : "block";
         $("seekNote").style.display = u ? "none" : "block";
         $("seekerSubmit").textContent = u ? "নম্বর দেখুন" : "🔐 Google দিয়ে সাইন ইন করে নম্বর দেখুন";
-        refreshMyProfile().then(() => (u ? fetchRequests() : (requests = [], updateUrgentBadge()))).catch(() => {});
+        if (!u) phoneCache = {};
+        refreshMyProfile().catch(() => {}).then(() => fetchRequests()).catch(() => {});
         if (u) { fetchNotify().catch(() => {}); } else { notifyLogs = []; updateBadge(); }
         if (u) {
             const sv = loadSeeker(u.uid);
@@ -1132,12 +1133,18 @@
         renderBanner();
     }
 
+    var phoneCache = {};
     async function fetchRequests() {
         const u = auth.currentUser;
-        if (!u) { requests = []; updateUrgentBadge(); return []; }
         const snap = await getDocs(query(collection(db, "blood_requests"), where("status", "==", "open")));
         const t = todayISO();
-        requests = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(r => r.neededDate >= t || r.requesterUid === u.uid).sort((a, b) => tsMs(b.createdAt) - tsMs(a.createdAt));
+        const L = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(r => r.neededDate >= t || (u && r.requesterUid === u.uid)).sort((a, b) => tsMs(b.createdAt) - tsMs(a.createdAt));
+        // মোবাইল নম্বর আলাদা প্রাইভেট ডকুমেন্টে থাকে; শুধু সাইন ইন করা অবস্থায় পড়া যায়
+        if (u) await Promise.all(L.filter(r => !r.contactPhone && !phoneCache[r.id]).map(async r => {
+            try { const p = await getDoc(doc(db, "blood_requests", r.id, "private", "contact")); if (p.exists()) phoneCache[r.id] = p.data().contactPhone; } catch (e) {}
+        }));
+        L.forEach(r => { if (!r.contactPhone && phoneCache[r.id]) r.contactPhone = phoneCache[r.id]; });
+        requests = L;
         updateUrgentBadge();
         return requests;
     }
@@ -1153,10 +1160,10 @@
             <div class="rline">🏥 <b>${esc(r.hospital)}</b> &nbsp;·&nbsp; 📍 ${esc(r.area)}</div>
             <div class="rline">📅 প্রয়োজন: <b>${when}</b>${expired ? ' <span class="rtag">মেয়াদ শেষ</span>' : ""}</div>
             ${r.note ? `<div class="rnote">${esc(r.note)}</div>` : ""}
-            <div class="rline">👤 ${esc(r.contactName)} &nbsp;·&nbsp; 📞 ${esc(r.contactPhone)}</div>
+            <div class="rline">👤 ${esc(r.contactName)}${r.contactPhone ? " &nbsp;·&nbsp; 📞 " + esc(r.contactPhone) : ""}</div>
             <div>${canHelp(r) ? '<span class="rtag ok">🩸 আপনি এই গ্রুপে রক্ত দিতে পারেন</span>' : ""}${sameArea(r) ? '<span class="rtag area">📍 আপনার এলাকায়</span>' : ""}</div>
             <div class="ractions">
-                <a class="btn-call" href="tel:${tel}">📲 কল করুন</a>
+                ${r.contactPhone ? `<a class="btn-call" href="tel:${tel}">📲 কল করুন</a>` : `<button type="button" class="btn-call" data-q="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}
                 <button type="button" class="btn-ghost-s" data-q="find" data-id="${esc(r.id)}">🔎 ডোনার খুঁজুন</button>
                 ${mine ? `<button type="button" class="btn-ghost-s" data-q="done" data-id="${esc(r.id)}">✅ রক্ত পাওয়া গেছে</button><button type="button" class="btn-del-s" data-q="del" data-id="${esc(r.id)}">🗑️ মুছুন</button>` : ""}
             </div></div>`;
@@ -1167,17 +1174,13 @@
         const L = requests.filter(r => (!g || r.group === g) && (!a || String(r.area).toLowerCase().includes(a)) && (!onlyMe || canHelp(r)))
             .sort((x, y) => ((canHelp(y) && sameArea(y)) - (canHelp(x) && sameArea(x))) || (tsMs(y.createdAt) - tsMs(x.createdAt)));
         box.innerHTML = L.length ? L.map(reqCard).join("") : "<p style='text-align:center; color:#777;'>এই মুহূর্তে কোনো জরুরি অনুরোধ নেই।</p>";
+        if (!auth.currentUser) box.insertAdjacentHTML("afterbegin", '<div class="signin-note" style="margin-top:0">🔐 জরুরি অনুরোধ সবাই দেখতে পারেন। যোগাযোগের নম্বর দেখতে ও নতুন অনুরোধ দিতে Google দিয়ে সাইন ইন করুন।</div>');
     }
 
     async function loadUrgent() {
         const box = $("rqList");
         await Promise.all([authReady, persistReady]);
         $("rqMineOnly").disabled = !myDonor;
-        if (!auth.currentUser) {
-            box.innerHTML = '<div class="signin-note" style="margin-top:0">🛡️ জরুরি অনুরোধ দেখতে ও দিতে Google দিয়ে সাইন ইন করুন। এতে ভুয়া অনুরোধ ঠেকানো যায়।</div><button class="btn" id="rqSignIn">🔐 Google দিয়ে সাইন ইন করুন</button>';
-            $("rqSignIn").onclick = async () => { try { await ensureUser(); await refreshMyProfile(); loadUrgent(); } catch (e) {} };
-            return;
-        }
         box.textContent = "লোড হচ্ছে...";
         try {
             await fetchRequests();
@@ -1201,7 +1204,7 @@
         const box = $("urgentBanner"); if (!box) return;
         ubList = bannerList();
         clearInterval(ubTimer);
-        if (!auth.currentUser || !ubList.length) { box.style.display = "none"; box.innerHTML = ""; return; }
+        if (!ubList.length) { box.style.display = "none"; box.innerHTML = ""; return; }
         if (ubIdx >= ubList.length) ubIdx = 0;
         const r = ubList[ubIdx], n = ubList.length;
         const days = diffDays(todayISO(), r.neededDate);
@@ -1214,13 +1217,14 @@
                 <div class="ub-line">🏥 ${esc(r.hospital)} · 📍 ${esc(r.area)}</div>
                 <div class="ub-line">🕒 ${tsMs(r.createdAt) ? agoBn(tsMs(r.createdAt)) : ""} · 👤 ${esc(r.contactName)}</div>
                 ${r.note ? `<div class="ub-note">${esc(r.note)}</div>` : ""}</div></div>
-            <div class="ub-act"><a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a><button type="button" class="ub-all" data-ub="all">সব অনুরোধ দেখুন</button></div>
+            <div class="ub-act">${r.contactPhone ? `<a class="ub-call" href="tel:${tel}">📲 কল করুন · ${esc(r.contactPhone)}</a>` : `<button type="button" class="ub-call" data-ub="signin">🔐 সাইন ইন করে নম্বর দেখুন</button>`}<button type="button" class="ub-all" data-ub="all">সব অনুরোধ দেখুন</button></div>
             ${n > 1 ? `<div class="ub-nav"><button type="button" data-ub="prev" aria-label="আগের">‹</button><div class="ub-dots">${ubList.map((_, i) => `<i data-ub-i="${i}" class="${i === ubIdx ? "on" : ""}"></i>`).join("")}</div><button type="button" data-ub="next" aria-label="পরের">›</button></div>` : ""}`;
         ubStart();
     }
     $("urgentBanner").addEventListener("click", (e) => {
         const b = e.target.closest("[data-ub],[data-ub-i]"); if (!b) return;
         if (b.dataset.ub === "all") { window.switchTab("urgent"); return; }
+        if (b.dataset.ub === "signin") { ensureUser().then(() => refreshMyProfile().catch(() => {})).then(() => fetchRequests()).then(() => renderRequests()).catch(() => {}); return; }
         if (b.dataset.ub === "next") ubIdx = (ubIdx + 1) % ubList.length;
         else if (b.dataset.ub === "prev") ubIdx = (ubIdx - 1 + ubList.length) % ubList.length;
         else ubIdx = Number(b.dataset.ubI);
@@ -1229,8 +1233,8 @@
     $("urgentBanner").addEventListener("mouseenter", () => clearInterval(ubTimer));
     $("urgentBanner").addEventListener("mouseleave", ubStart);
     // নতুন অনুরোধ ধরতে: ট্যাবে ফিরলে ও প্রতি ৩ মিনিটে হালনাগাদ
-    document.addEventListener("visibilitychange", () => { if (!document.hidden && auth.currentUser) fetchRequests().catch(() => {}); });
-    setInterval(() => { if (!document.hidden && auth.currentUser) fetchRequests().catch(() => {}); }, 180000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchRequests().catch(() => {}); });
+    setInterval(() => { if (!document.hidden) fetchRequests().catch(() => {}); }, 180000);
 
     // ---- অনুরোধ ফর্ম ----
     $("rqDate").outerHTML = dsel("rqDate", "", true);
@@ -1276,14 +1280,17 @@
             const u = await ensureUser();
             const mine = await getDocs(query(collection(db, "blood_requests"), where("requesterUid", "==", u.uid), where("status", "==", "open")));
             if (mine.size >= 3) { msg.style.color = "var(--danger)"; msg.textContent = "❌ একসাথে সর্বোচ্চ ৩টি চালু অনুরোধ রাখা যায়। পুরনোগুলোর কোনোটি 'রক্ত পাওয়া গেছে' করুন বা মুছুন।"; btn.disabled = false; return; }
-            await addDoc(collection(db, "blood_requests"), {
-                requesterUid: u.uid, requesterEmail: u.email,
+            const rref = doc(collection(db, "blood_requests")), bt = writeBatch(db);
+            bt.set(rref, {
+                requesterUid: u.uid,
                 group: $("rqGroup").value, bags: parseInt($("rqBags").value, 10),
                 hospital: $("rqHospital").value.trim(), area: $("rqArea").value.trim(),
                 neededDate: readDateSel("rqDate"), contactName: $("rqName").value.trim(),
-                contactPhone: normPhone($("rqPhone").value), note: $("rqNote").value.trim(),
+                note: $("rqNote").value.trim(),
                 status: "open", createdAt: new Date()
             });
+            bt.set(doc(db, "blood_requests", rref.id, "private", "contact"), { requesterUid: u.uid, requesterEmail: u.email, contactPhone: normPhone($("rqPhone").value) });
+            await bt.commit();
             msg.style.color = "var(--success)"; msg.textContent = "✅ আপনার জরুরি অনুরোধ প্রকাশ করা হয়েছে। রক্ত পাওয়া গেলে 'রক্ত পাওয়া গেছে' চাপুন।";
             $("rqForm").reset(); clearFieldErrors($("rqForm")); $("rqForm").style.display = "none";
             await fetchRequests(); renderRequests();
@@ -1296,6 +1303,7 @@
     $("rqMineOnly").onchange = renderRequests;
     $("rqList").addEventListener("click", async (e) => {
         const b = e.target.closest("button[data-q]"); if (!b) return;
+        if (b.dataset.q === "signin") { try { await ensureUser(); await refreshMyProfile().catch(() => {}); await fetchRequests(); renderRequests(); } catch (err) {} return; }
         const r = requests.find(x => x.id === b.dataset.id); if (!r) return;
         try {
             if (b.dataset.q === "find") {
@@ -1307,7 +1315,7 @@
                 await fetchRequests(); renderRequests();
             } else if (b.dataset.q === "del") {
                 if (!confirm("অনুরোধটি স্থায়ীভাবে মুছে ফেলবেন?")) return;
-                await deleteDoc(doc(db, "blood_requests", r.id));
+                const bd = writeBatch(db); bd.delete(doc(db, "blood_requests", r.id, "private", "contact")); bd.delete(doc(db, "blood_requests", r.id)); await bd.commit();
                 await fetchRequests(); renderRequests();
             }
         } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); }
