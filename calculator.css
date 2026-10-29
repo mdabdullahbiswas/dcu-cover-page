@@ -1,97 +1,314 @@
-/* ===== WideMath ক্যালকুলেটর ===== */
-.wmx{background:none!important;border:0!important;padding:0!important;display:flex;flex-direction:column;align-items:center}
-.wm{width:100%;max-width:400px;background:linear-gradient(160deg,#2b2e32,#1b1d20);border-radius:16px;padding:16px 14px 18px;box-shadow:0 14px 34px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);color:#eee;font-family:'Montserrat','Hind Siliguri',sans-serif;user-select:none;-webkit-user-select:none;touch-action:manipulation}
-.wtop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
-.wbr b{display:block;font:800 21px/1.15 'Cinzel','Montserrat',serif;color:#f0c35a;letter-spacing:.8px;white-space:nowrap}
-.wbr small{display:block;font-size:9px;letter-spacing:.2px;color:#9aa1a9;margin-top:3px;font-family:'Hind Siliguri','Montserrat',sans-serif;font-weight:500}
-.wsr{text-align:right;font-size:9px;font-weight:800;color:#f0c35a;letter-spacing:.6px;font-family:'Cinzel','Montserrat',serif}.wsr span{display:block;margin-top:5px}
-.sol{display:block;width:104px;height:26px;border-radius:3px;background:repeating-linear-gradient(90deg,#3a2f26 0 25%,#241c16 25% 26%),#2a211a;border:1px solid #111;margin-left:auto}
-.wlcd{background:linear-gradient(#c3ccb3,#b3bda3);border-radius:8px;box-shadow:inset 0 3px 7px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.12);border:2px solid #0e0f10;padding:5px 10px 8px;color:#1c2217;font-family:ui-monospace,'Consolas',monospace;min-height:120px;position:relative}
-.wlcd.off #wst,.wlcd.off #wl1,.wlcd.off #wl2{visibility:hidden}
-#wst{display:flex;gap:6px;font:700 8.5px/1.2 sans-serif;height:12px;align-items:center;letter-spacing:.3px}#wst b{opacity:.18}#wst b.on{opacity:1}#wst .sp{flex:1}
-#wl1{position:relative;white-space:nowrap;overflow:hidden;font-size:18px;height:30px;line-height:30px;margin-top:4px}
-#wl2{text-align:right;font-size:32px;font-weight:700;min-height:48px;line-height:48px;margin-top:6px;overflow-x:auto;overflow-y:hidden;white-space:nowrap}
-.wlcd.zm #wl1{font-size:22px}.wlcd.zm #wl2{font-size:38px}
-#wl2 sup,#wl1 sup{font-size:.55em;position:relative;top:-.3em;vertical-align:baseline}
-#wl2 .er{font-size:20px;color:#7a1b12}#wl2 .ms{font-size:15px}#wl2.sm{font-size:19px}
-#wl2 .mn{font-size:15px;display:inline-block;margin-left:8px;cursor:pointer}#wl2 .mn:hover{background:rgba(0,0,0,.15)}
-.cur{display:inline-block;width:2px;height:1.05em;background:#1c2217;vertical-align:-.15em;animation:wblk 1s steps(1) infinite}
-@keyframes wblk{50%{opacity:0}}
-.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;font-size:.62em;line-height:1.1}.fr i{font-style:normal;padding:0 3px}.fr i:first-child{border-bottom:2px solid currentColor}
-.wpills{display:flex;gap:8px;margin:12px 0 10px;align-items:center}
-.wpills button{flex:0 0 auto;min-width:62px;padding:4px 10px;border-radius:12px;border:0;background:linear-gradient(#3a3e44,#2a2d32);color:#e9edf2;font:800 10px 'Montserrat',sans-serif;letter-spacing:.4px;cursor:pointer;box-shadow:0 2px 0 #0e0f10}
-.wpills .zm{margin-left:auto;min-width:0;background:none;box-shadow:none;font-size:15px;color:#8b9097}
-.kgA,.kgB{display:grid;gap:3px 7px;border-top:1px solid #3a3e44;padding-top:10px}
-.kgA{grid-template-columns:repeat(6,1fr)}.kgB{grid-template-columns:repeat(5,1fr);gap:3px 9px;border:0;padding-top:4px}
-.kc{min-width:0}.kl{display:flex;justify-content:center;gap:4px;height:14px;line-height:14px;font:700 8.5px 'Montserrat',sans-serif;white-space:nowrap}
-.ks{color:#e5a83b}.ka{color:#ff6b6b}
-.kb{display:block;width:100%;height:33px;border:0;border-radius:9px;background:linear-gradient(#41454b,#2b2e33);color:#f2f4f7;font:700 12.5px 'Montserrat','Hind Siliguri',sans-serif;cursor:pointer;box-shadow:0 3px 0 #0d0e10,inset 0 1px 0 rgba(255,255,255,.14);padding:0;margin-bottom:4px}
-.kb:active{transform:translateY(2px);box-shadow:0 1px 0 #0d0e10}
-.kb.nm{background:linear-gradient(#fff,#e2e2e2);color:#111;box-shadow:0 3px 0 #8d8d8d;font-size:15px;height:36px}
-.kgB .kb{height:36px;font-size:14px}
-.kb.sh{color:#e5a83b}.kb.al{color:#ff6b6b}
-.kb.on{outline:2px solid #fff}
-.kb.gr1{background:linear-gradient(#78c24a,#4b8f2a);box-shadow:0 3px 0 #2a5a14}.kb.gr2{background:linear-gradient(#88d35a,#5ba32f);box-shadow:0 3px 0 #2a5a14}
-.kpad{grid-column:3/5;grid-row:1/3;position:relative;margin:8px 0 6px;border-radius:34px;background:linear-gradient(#3b3f44,#2a2d31);box-shadow:0 3px 0 #0d0e10,inset 0 1px 0 rgba(255,255,255,.12)}
-.kpad button{position:absolute;border:0;background:none;color:#cfd4da;font-size:11px;cursor:pointer;width:34px;height:24px;padding:0}
-.kpad button:active{color:#e5a83b}
-.kpad .u{top:2px;left:calc(50% - 17px)}.kpad .d{bottom:2px;left:calc(50% - 17px)}.kpad .l{left:3px;top:calc(50% - 12px)}.kpad .r{right:3px;top:calc(50% - 12px)}
-.kpad i{position:absolute;left:calc(50% - 15px);top:calc(50% - 15px);width:30px;height:30px;border-radius:50%;background:#16181b;box-shadow:inset 0 2px 4px rgba(0,0,0,.7)}
-.wm .mnu span{cursor:pointer;margin-right:12px;font-size:17px}
-@media(max-width:420px){.wm{padding:12px 9px 14px}.kb{font-size:11.5px}.kl{font-size:7.5px}}
-#wl2.mnu{white-space:normal;line-height:26px;height:auto;min-height:48px}#wl2.mnu span{font-size:15px;margin-right:10px}
-.wlcd .mt{border-collapse:collapse;display:inline-table;font-size:14px;line-height:1.25}.wlcd .mt td{border:0;padding:1px 7px;text-align:right}#wl2.mx{height:auto;line-height:1.2;white-space:normal;padding:4px 0}.bs.on{background:#0a2240;color:#e5a83b;border-color:#0a2240}
-/* স্ট্যাটাস সারি: ছোট স্ক্রিনে ভাঙা/কাটা ঠেকানো */
-#wst{white-space:nowrap;overflow:hidden;gap:5px;font-size:8px;letter-spacing:.2px}#wst b{flex:0 0 auto}
-@media(max-width:420px){#wst{gap:4px;font-size:7.5px}#wst .md:not(.on){display:none}}
-@media(max-width:340px){.kl{font-size:6.5px;gap:3px}.kb{font-size:10.5px}.kb.nm{font-size:13px}}
-.kb{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform .06s,filter .06s}
-@media(hover:hover) and (pointer:fine){.kb:hover{filter:brightness(1.12)}}
-/* বাটনের লেখা সবসময় মাঝে: চওড়া ফন্টে লেখা উপচে পড়লেও দুই দিকে সমান থাকে */
-.kb{display:flex;align-items:center;justify-content:center;text-align:center;white-space:nowrap;overflow:visible}
-.kb.sh,.kb.al{font-size:11.5px;letter-spacing:-.2px}
-@media(max-width:360px){.kb.sh,.kb.al{font-size:10px;letter-spacing:-.3px}}
-
-/* ফোনে ব্যবহার: বড় টাচ এলাকা (কমপক্ষে ~৪০–৪৪px) */
-@media(max-width:560px){
- .kb{height:40px;font-size:13px}.kb.nm,.kgB .kb{height:44px;font-size:16px}
- .kgA{gap:4px 8px}.kgB{gap:4px 10px}.kl{height:16px;line-height:16px;font-size:9px}
- .wpills button{padding:7px 12px;font-size:11px}
- #wl2{font-size:36px}.wbr b{font-size:19px}.sol{width:84px;height:22px}
- .wm{padding-bottom:22px}
+/* ===== WideMath ক্যালকুলেটর (মোবাইল-রেসপনসিভ) ===== */
+.wmx {
+  background: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
-@media(max-width:360px){.kl{font-size:7px}.wbr b{font-size:17px}.sol{width:70px}.kb{font-size:11.5px}.kb.nm,.kgB .kb{font-size:15px}}
-
-/* ===== শুধু মোবাইলের জন্য ===== */
-#wm{-webkit-touch-callout:none;touch-action:manipulation}
-#whap{margin-left:auto}#wzm{margin-left:4px!important}
-.kb:active{transform:none;filter:none;position:relative;top:2px;box-shadow:0 1px 0 #0d0e10}
-#wbk{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:55}#wbk.on{display:block}
-@media(max-width:560px){
- .wmx{margin-left:-8px;margin-right:-8px}
- .wm{max-width:none;border-radius:20px;padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
- /* LCD স্ক্রল করলেও ওপরে আটকে থাকে, নিচের কী চাপলেও ফল দেখা যায় */
- .wlcd{position:sticky;top:var(--stk,0px);z-index:6;box-shadow:inset 0 3px 7px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.12),0 10px 16px -8px rgba(0,0,0,.65)}
- #wstat,#wmat{scroll-margin-top:calc(var(--stk,0px) + var(--lcdh,130px) + 10px)}
- /* CONST / CONV নিচ থেকে ওঠা শিট */
- #wlist{position:fixed!important;left:0;right:0;bottom:0;margin:0!important;width:auto!important;max-width:none!important;max-height:72vh;overflow-y:auto;overscroll-behavior:contain;z-index:60;border-radius:18px 18px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom));box-shadow:0 -12px 34px rgba(0,0,0,.4)}
- #wlist [style*="max-height"]{max-height:52vh!important}
- #wlist{background:#fff;color:#14202e}body.dark #wlist{background:#1b2433;color:#e6edf5}
- #wlist::before{content:'';display:block;width:42px;height:4px;border-radius:4px;background:rgba(128,128,128,.5);margin:-6px auto 10px}
- /* iOS-এ ইনপুটে ট্যাপ করলে জুম হওয়া বন্ধ */
- #wm input,#wm select,#wstat input,#wstat select,#wmat input,#wmat select,#wlist input,#wlist select,#wlist textarea{font-size:16px!important}
- #wstat input,#wmat input{min-height:40px}
+.wm {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(160deg, #2b2e32, #1b1d20);
+  border-radius: 18px;
+  padding: 16px 14px 20px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08);
+  color: #eee;
+  font-family: 'Montserrat', 'Hind Siliguri', sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 0 auto;
 }
-/* ফোন আড়াআড়ি ধরলে */
-@media(max-height:500px) and (orientation:landscape){
- .wlcd{position:static!important}.wmx{margin-left:0;margin-right:0}
- .wm{max-width:min(100%,720px)}
- .kb{height:34px!important}.kb.nm,.kgB .kb{height:36px!important}
- #wlist{max-height:85vh}
+.wtop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.wbr b {
+  display: block;
+  font: 800 20px/1.2 'Cinzel', 'Montserrat', serif;
+  color: #f0c35a;
+  letter-spacing: .6px;
+  white-space: nowrap;
+}
+.wbr small {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: .2px;
+  color: #9aa1a9;
+  margin-top: 2px;
+  font-family: 'Hind Siliguri', 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+.wsr {
+  text-align: right;
+  font-size: 9px;
+  font-weight: 800;
+  color: #f0c35a;
+  letter-spacing: .6px;
+  font-family: 'Cinzel', 'Montserrat', serif;
+}
+.wsr span {
+  display: block;
+  margin-top: 5px;
+}
+.sol {
+  display: block;
+  width: 96px;
+  height: 24px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(90deg, #3a2f26 0 25%, #241c16 25% 26%), #2a211a;
+  border: 1px solid #111;
+  margin-left: auto;
+}
+.wlcd {
+  background: linear-gradient(#c3ccb3, #b3bda3);
+  border-radius: 10px;
+  box-shadow: inset 0 3px 7px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.12);
+  border: 2px solid #0e0f10;
+  padding: 6px 10px 8px;
+  color: #1c2217;
+  font-family: ui-monospace, 'Consolas', monospace;
+  min-height: 120px;
+  position: relative;
+}
+.wlcd.off #wst, .wlcd.off #wl1, .wlcd.off #wl2 {
+  visibility: hidden;
+}
+#wst {
+  display: flex;
+  gap: 6px;
+  font: 700 8.5px/1.2 sans-serif;
+  height: 14px;
+  align-items: center;
+  letter-spacing: .3px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#wst b { opacity: .18; flex: 0 0 auto; }
+#wst b.on { opacity: 1; }
+#wst .sp { flex: 1; }
+#wl1 {
+  position: relative;
+  white-space: nowrap;
+  overflow-x: auto;
+  font-size: 18px;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 4px;
+  scrollbar-width: none;
+}
+#wl1::-webkit-scrollbar { display: none; }
+#wl2 {
+  text-align: right;
+  font-size: 32px;
+  font-weight: 700;
+  min-height: 48px;
+  line-height: 48px;
+  margin-top: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+#wl2::-webkit-scrollbar { display: none; }
+.wlcd.zm #wl1 { font-size: 22px; }
+.wlcd.zm #wl2 { font-size: 38px; }
+#wl2 sup, #wl1 sup {
+  font-size: .55em;
+  position: relative;
+  top: -.3em;
+  vertical-align: baseline;
+}
+#wl2 .er { font-size: 20px; color: #7a1b12; }
+#wl2 .ms { font-size: 15px; }
+#wl2.sm { font-size: 20px; }
+#wl2 .mn { font-size: 15px; display: inline-block; margin-left: 8px; cursor: pointer; }
+.cur {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: #1c2217;
+  vertical-align: -.15em;
+  animation: wblk 1s steps(1) infinite;
+}
+@keyframes wblk { 50% { opacity: 0; } }
+.fr {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0 4px;
+  font-size: .62em;
+  line-height: 1.1;
+}
+.fr i { font-style: normal; padding: 0 3px; }
+.fr i:first-child { border-bottom: 2px solid currentColor; }
+
+.wpills {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 10px;
+  align-items: center;
+}
+.wpills button {
+  flex: 0 0 auto;
+  min-width: 60px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 0;
+  background: linear-gradient(#3a3e44, #2a2d32);
+  color: #e9edf2;
+  font: 800 11px 'Montserrat', sans-serif;
+  letter-spacing: .4px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #0d0e10;
+  min-height: 34px;
+}
+.wpills .zm {
+  margin-left: auto;
+  min-width: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 16px;
+  color: #8b9097;
 }
 
-/* কী-প্যাডের সব বাটন নিজস্ব স্তরে বন্দি: বাইরের কোনো স্টাইল (z-index/position) SHIFT-কে LCD-র ওপরে তুলতে পারবে না */
-.kgA,.kgB{position:relative;z-index:1;isolation:isolate}
-.kb,.kpad button{transition:none!important;will-change:auto}
-.kb.sh,.kb.al{z-index:auto!important}
-@media(max-width:560px){.wlcd{z-index:30!important}}
+.kgA, .kgB {
+  display: grid;
+  gap: 4px 7px;
+  border-top: 1px solid #3a3e44;
+  padding-top: 10px;
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+.kgA { grid-template-columns: repeat(6, 1fr); }
+.kgB { grid-template-columns: repeat(5, 1fr); gap: 4px 8px; border: 0; padding-top: 6px; }
+.kc { min-width: 0; }
+.kl {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  height: 15px;
+  line-height: 15px;
+  font: 700 8.5px 'Montserrat', sans-serif;
+  white-space: nowrap;
+}
+.ks { color: #e5a83b; }
+.ka { color: #ff6b6b; }
+.kb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 38px;
+  border: 0;
+  border-radius: 9px;
+  background: linear-gradient(#41454b, #2b2e33);
+  color: #f2f4f7;
+  font: 700 13px 'Montserrat', 'Hind Siliguri', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #0d0e10, inset 0 1px 0 rgba(255,255,255,.14);
+  padding: 0;
+  margin-bottom: 4px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.kb:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #0d0e10;
+}
+.kb.nm {
+  background: linear-gradient(#fff, #e2e2e2);
+  color: #111;
+  box-shadow: 0 3px 0 #8d8d8d;
+  font-size: 16px;
+  height: 42px;
+}
+.kgB .kb {
+  height: 42px;
+  font-size: 15px;
+}
+.kb.sh { color: #e5a83b; }
+.kb.al { color: #ff6b6b; }
+.kb.on { outline: 2px solid #fff; }
+.kb.gr1 { background: linear-gradient(#78c24a, #4b8f2a); box-shadow: 0 3px 0 #2a5a14; }
+.kb.gr2 { background: linear-gradient(#88d35a, #5ba32f); box-shadow: 0 3px 0 #2a5a14; }
+
+.kpad {
+  grid-column: 3/5;
+  grid-row: 1/3;
+  position: relative;
+  margin: 6px 0 4px;
+  border-radius: 34px;
+  background: linear-gradient(#3b3f44, #2a2d31);
+  box-shadow: 0 3px 0 #0d0e10, inset 0 1px 0 rgba(255,255,255,.12);
+}
+.kpad button {
+  position: absolute;
+  border: 0;
+  background: none;
+  color: #cfd4da;
+  font-size: 12px;
+  cursor: pointer;
+  width: 36px;
+  height: 26px;
+  padding: 0;
+  min-height: 0;
+  box-shadow: none;
+}
+.kpad button:active { color: #e5a83b; }
+.kpad .u { top: 2px; left: calc(50% - 18px); }
+.kpad .d { bottom: 2px; left: calc(50% - 18px); }
+.kpad .l { left: 2px; top: calc(50% - 13px); }
+.kpad .r { right: 2px; top: calc(50% - 13px); }
+.kpad i {
+  position: absolute;
+  left: calc(50% - 15px);
+  top: calc(50% - 15px);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #16181b;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.7);
+}
+
+/* ===== মোবাইল স্ক্রিন রেসপনসিভনেস ===== */
+@media(max-width: 560px) {
+  .wm {
+    padding: 12px 10px 18px;
+    border-radius: 14px;
+  }
+  .kb {
+    height: 42px;
+    font-size: 13.5px;
+  }
+  .kb.nm, .kgB .kb {
+    height: 46px;
+    font-size: 17px;
+  }
+  .kgA { gap: 4px 6px; }
+  .kgB { gap: 4px 7px; }
+  .kl { font-size: 8px; }
+  .wbr b { font-size: 17px; }
+  .sol { width: 78px; height: 20px; }
+  #wl2 { font-size: 30px; }
+  
+  .wlcd {
+    position: sticky;
+    top: var(--hh, 60px);
+    z-index: 30 !important;
+  }
+}
+@media(max-width: 360px) {
+  .kb { font-size: 11.5px; height: 38px; }
+  .kb.nm, .kgB .kb { font-size: 15px; height: 42px; }
+  .kl { font-size: 7px; }
+  .sol { display: none; }
+}
