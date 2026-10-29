@@ -2,38 +2,62 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Passport / Stamp Photo Maker</title>
+<link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Montserrat','Hind Siliguri',sans-serif}
-body{background:#e9eef3;color:#222;line-height:1.5}
-header{background:linear-gradient(135deg,#07192f,#0a2240);color:#fff;text-align:center;padding:22px 15px;position:relative}
-header h1{color:#e5a83b;font-size:24px}header p{font-size:13px;color:#d1dcec}
-header a,header button{position:absolute;top:16px;color:#fff;background:#ffffff22;border:0;border-radius:8px;padding:8px 12px;font-size:13px;text-decoration:none;cursor:pointer;width:auto;margin:0}
-.wrap{display:flex;flex-wrap:wrap;gap:28px;padding:22px;max-width:1100px;margin:0 auto}
-.panel{flex:1;min-width:310px;background:#fff;padding:24px;border-radius:12px;box-shadow:0 8px 24px rgba(10,34,64,.08);height:fit-content}
-.view{flex:1;min-width:310px;display:flex;flex-direction:column;align-items:center;gap:10px;position:sticky;top:10px;height:fit-content}
-h3{color:#0a2240;font-size:15px;margin:18px 0 4px;border-bottom:2px solid #e5a83b;padding-bottom:4px}h3:first-child{margin-top:0}
+body{background:#e9eef3;color:#222;line-height:1.5;-webkit-tap-highlight-color:transparent}
+header{background:linear-gradient(135deg,#07192f,#0a2240);color:#fff;padding:14px 16px;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.header-bar{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.header-bar a,.header-bar button{color:#fff;background:rgba(255,255,255,.18);border:0;border-radius:8px;padding:8px 12px;font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer;flex-shrink:0;min-height:38px;display:flex;align-items:center}
+.header-title{text-align:center;flex:1;min-width:0}
+.header-title h1{color:#e5a83b;font-size:19px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-title p{font-size:12px;color:#d1dcec;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrap{display:flex;flex-wrap:wrap;gap:20px;padding:16px;max-width:1100px;margin:0 auto}
+.panel{flex:1;min-width:300px;background:#fff;padding:20px;border-radius:14px;box-shadow:0 8px 24px rgba(10,34,64,.08);height:fit-content}
+.view{flex:1;min-width:300px;display:flex;flex-direction:column;align-items:center;gap:12px;position:sticky;top:14px;height:fit-content}
+h3{color:#0a2240;font-size:15.5px;margin:18px 0 6px;border-bottom:2px solid #e5a83b;padding-bottom:4px}h3:first-child{margin-top:0}
 label{display:block;margin-top:10px;font-weight:600;font-size:13px;color:#37474f}
-input,select{width:100%;padding:9px 11px;margin-top:5px;border:1.5px solid #cfd8dc;border-radius:6px;font-size:14px;outline:none}
-input[type=range]{padding:0;accent-color:#0a2240}input[type=color]{height:38px;padding:2px;cursor:pointer}
-button{width:100%;background:linear-gradient(135deg,#0a2240,#143560);color:#e5a83b;font-weight:700;padding:12px;border:0;border-radius:8px;margin-top:10px;cursor:pointer;font-size:14px}
+input,select{width:100%;padding:10px 12px;margin-top:5px;border:1.5px solid #cfd8dc;border-radius:8px;font-size:16px;outline:none;background:#fff;color:#111}
+input[type=range]{padding:0;accent-color:#0a2240;height:38px}input[type=color]{height:42px;padding:3px;cursor:pointer}
+button{width:100%;background:linear-gradient(135deg,#0a2240,#143560);color:#e5a83b;font-weight:700;padding:12px;border:0;border-radius:8px;margin-top:10px;cursor:pointer;font-size:15px;min-height:46px;touch-action:manipulation}
+button:active{transform:scale(.98)}
 button.alt{background:#fff;color:#0a2240;border:1.5px solid #0a2240}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sw{display:flex;gap:8px;margin-top:6px}.sw b{width:30px;height:30px;border-radius:50%;border:2px solid #b0bec5;cursor:pointer}
-.hint{font-size:12px;color:#607d8b;margin-top:6px}.warn{color:#8a5a00;background:#fff6e0;padding:8px 10px;border-radius:6px}
-#pv{max-width:100%;width:360px;background:repeating-conic-gradient(#ddd 0 25%,#fff 0 50%) 0 0/16px 16px;box-shadow:0 8px 30px rgba(0,0,0,.2);touch-action:none}
-#st{font-size:13px;color:#0a2240;min-height:20px;text-align:center}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sw{display:flex;gap:8px;margin-top:6px}.sw b{width:36px;height:36px;border-radius:50%;border:2px solid #b0bec5;cursor:pointer}
+.hint{font-size:12px;color:#607d8b;margin-top:6px;line-height:1.45}.warn{color:#8a5a00;background:#fff6e0;padding:8px 10px;border-radius:8px}
+#pv{max-width:100%;width:340px;background:repeating-conic-gradient(#ddd 0 25%,#fff 0 50%) 0 0/16px 16px;box-shadow:0 8px 30px rgba(0,0,0,.2);border-radius:10px}
+#st{font-size:13.5px;color:#0a2240;min-height:22px;text-align:center;font-weight:600}
+
+/* মোবাইলে প্রিভিউ ক্যানভাস আগে দেখানো এবং টাচ স্ক্রিন অপ্টিমাইজেশন */
+@media(max-width:820px){
+ .wrap{flex-direction:column;padding:10px;gap:14px}
+ .view{order:-1;position:static;width:100%;min-width:0;padding:10px;background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+ .panel{width:100%;min-width:0;padding:16px 14px}
+ #pv{width:280px;max-width:85vw}
+ .header-title h1{font-size:16px}
+}
 </style>
 </head>
 <body>
 <header>
-<a href="./" style="left:16px" data-en="← Cover Page">← কভার পেজ</a><button id="lb" style="right:16px">EN</button>
-<h1 data-en="Passport / Stamp Photo Maker">পাসপোর্ট / স্ট্যাম্প ছবি তৈরি</h1>
-<p data-en="Your photo is processed on your own device and never uploaded.">আপনার ছবি আপনার ডিভাইসেই প্রসেস হয়, কোথাও আপলোড হয় না।</p>
+<div class="header-bar">
+ <a href="./" data-en="← Cover">← কভার পেজ</a>
+ <div class="header-title">
+  <h1 data-en="Passport / Stamp Photo Maker">পাসপোর্ট / স্ট্যাম্প ছবি তৈরি</h1>
+  <p data-en="Processed on your device">আপনার ছবি ডিভাইসেই সুরক্ষিত থাকে</p>
+ </div>
+ <button id="lb" type="button">EN</button>
+</div>
 </header>
 
 <div class="wrap">
+<div class="view">
+ <canvas id="pv"></canvas>
+ <div id="st"></div>
+</div>
+
 <div class="panel">
 <h3 data-en="1. Photo & Size">১. ছবি ও আকার</h3>
 <label data-en="Upload a regular photo (front-facing, good light):">একটি সাধারণ ছবি আপলোড করুন (সামনে তাকানো, ভালো আলো):</label>
@@ -49,7 +73,7 @@ button.alt{background:#fff;color:#0a2240;border:1.5px solid #0a2240}
 </select>
 
 <h3 data-en="2. Background">২. পটভূমি (ব্যাকগ্রাউন্ড)</h3>
-<button id="rm" data-en="✂️ Remove background">✂️ পটভূমি সরান</button>
+<button type="button" id="rm" data-en="✂️ Remove background">✂️ পটভূমি সরান</button>
 <label data-en="Background colour:">পটভূমির রং:</label>
 <div class="sw" id="sw"><b style="background:#fff" data-c="#ffffff"></b><b style="background:#dbe9f7" data-c="#dbe9f7"></b><b style="background:#e5e7eb" data-c="#e5e7eb"></b><b style="background:#c8102e" data-c="#c8102e"></b><b style="background:#0a2240" data-c="#0a2240"></b></div>
 <input type="color" id="bg" value="#ffffff">
@@ -58,29 +82,27 @@ button.alt{background:#fff;color:#0a2240;border:1.5px solid #0a2240}
 <h3 data-en="3. Framing">৩. ফ্রেমিং</h3>
 <label data-en="Zoom:">জুম:</label><input type="range" id="z" min=".3" max="3" step=".01">
 <div class="row"><div><label data-en="Left–Right:">বাম–ডান:</label><input type="range" id="x" min="-.6" max=".6" step=".005"></div><div><label data-en="Up–Down:">ওপর–নিচ:</label><input type="range" id="y" min="-.6" max=".8" step=".005"></div></div>
-<button class="alt" id="af" data-en="🎯 Auto-fit face">🎯 স্বয়ংক্রিয়ভাবে মুখ সাজান</button>
+<button type="button" class="alt" id="af" data-en="🎯 Auto-fit face">🎯 স্বয়ংক্রিয়ভাবে মুখ সাজান</button>
 
 <h3 data-en="4. Hair / beard touch-up">৪. চুল / দাড়ির কিনারা ঠিক করা</h3>
 <label data-en="Brush:">ব্রাশ:</label>
 <select id="bm"><option value="off" data-en="Off">বন্ধ</option><option value="restore" data-en="Restore (bring back beard / hair)">পুনরুদ্ধার (দাড়ি / চুল ফিরিয়ে আনুন)</option><option value="erase" data-en="Erase (remove leftover background)">মুছুন (অবশিষ্ট পটভূমি সরান)</option></select>
 <label data-en="Brush size:">ব্রাশের আকার:</label><input type="range" id="bsz" min="4" max="60" value="16">
-<button class="alt" id="br" data-en="↩️ Reset touch-ups">↩️ ব্রাশের কাজ বাতিল করুন</button>
+<button type="button" class="alt" id="br" data-en="↩️ Reset touch-ups">↩️ ব্রাশের কাজ বাতিল করুন</button>
 <p class="hint" data-en="No AI is 100% perfect on beards. Zoom in, then use the brush on the preview to fix the edges.">কোনো এআই দাড়ির ক্ষেত্রে ১০০% নিখুঁত নয়। জুম করে প্রিভিউয়ের ওপর ব্রাশ চালিয়ে কিনারা ঠিক করে নিন।</p>
 
 <h3 data-en="5. Outfit (optional)">৫. পোশাক (ঐচ্ছিক)</h3>
 <select id="outfit"><option value="none" data-en="Original clothes">নিজের পোশাক</option><option value="suit" data-en="Suit & tie">স্যুট ও টাই</option><option value="shirt" data-en="Formal shirt">ফরমাল শার্ট</option><option value="panjabi" data-en="Panjabi">পাঞ্জাবি</option></select>
 <div class="row"><div><label data-en="Outfit colour:">পোশাকের রং:</label><input type="color" id="ocol" value="#1b2a49"></div><div><label data-en="Neckline:">গলার লাইন:</label><input type="range" id="neck" min=".4" max=".95" step=".005" value=".75"></div></div>
-<p class="hint" data-en="The dashed line shows where the outfit starts. If you have a beard, move it below the beard so it is not cut.">ড্যাশ লাইনের নিচ থেকে পোশাক শুরু হয়। দাড়ি থাকলে লাইনটি দাড়ির নিচে নামান, নইলে দাড়ি কেটে যাবে। পোশাকটি সরল ডিজাইনের, বাস্তব ছবির মতো নয়।</p>
+<p class="hint" data-en="The dashed line shows where the outfit starts. If you have a beard, move it below the beard so it is not cut.">ড্যাশ লাইনের নিচ থেকে পোশাক শুরু হয়। দাড়ি থাকলে লাইনটি দাড়ির নিচে নামান, নইলে দাড়ি কেটে যাবে।</p>
 
 <h3 data-en="6. Download & print">৬. ডাউনলোড ও প্রিন্ট</h3>
 <label data-en="Print sheet:">প্রিন্ট শিট:</label>
 <select id="sheet"><option value="210,297">A4</option><option value="102,152" data-en="4×6 inch photo paper">৪×৬ ইঞ্চি ফটো পেপার</option></select>
-<div class="row"><button id="d1" data-en="⬇️ Single photo">⬇️ একটি ছবি</button><button id="d2" data-en="⬇️ Full sheet">⬇️ পুরো শিট</button></div>
-<button class="alt" id="pr" data-en="🖨️ Print sheet">🖨️ শিট প্রিন্ট করুন</button>
+<div class="row"><button type="button" id="d1" data-en="⬇️ Single photo">⬇️ একটি ছবি</button><button type="button" id="d2" data-en="⬇️ Full sheet">⬇️ পুরো শিট</button></div>
+<button type="button" class="alt" id="pr" data-en="🖨️ Print sheet">🖨️ শিট প্রিন্ট করুন</button>
 <p class="hint warn" data-en="For official passport, visa or exam photos, changing the background or clothes may not be accepted. Check the official requirements first.">সরকারি পাসপোর্ট, ভিসা বা পরীক্ষার ছবিতে পটভূমি বা পোশাক পরিবর্তন গ্রহণযোগ্য নাও হতে পারে। আগে অফিসিয়াল নিয়ম দেখে নিন।</p>
 </div>
-
-<div class="view"><canvas id="pv"></canvas><div id="st"></div></div>
 </div>
 
 <script>
@@ -124,7 +146,6 @@ $('rm').onclick = async () => {
   } catch(err){ say(t('পটভূমি সরানো যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।', 'Could not remove the background. Check your connection and try again.')); }
 };
 
-// find head width/top from the top 30% of the subject
 function head(c){
   const s = Math.min(1, 300 / Math.max(c.width, c.height)), w = Math.round(c.width * s), h = Math.round(c.height * s), x = document.createElement('canvas');
   x.width = w; x.height = h; const g = x.getContext('2d'); g.drawImage(c, 0, 0, w, h); const d = g.getImageData(0, 0, w, h).data;
@@ -184,14 +205,18 @@ function outfit(x, W, H, o, cx, ny){
   }
 }
 function draw(){
-  const [pw, ph] = SZ(); pv.width = 360; pv.height = Math.round(360 * ph / pw);
+  const [pw, ph] = SZ(); pv.width = 340; pv.height = Math.round(340 * ph / pw);
   pv.getContext('2d').drawImage(render(pv.width, pv.height, true), 0, 0);
-  pv.style.cursor = $('bm').value === 'off' ? 'default' : 'crosshair';
+  const bmOn = $('bm').value !== 'off';
+  pv.style.cursor = bmOn ? 'crosshair' : 'default';
+  pv.style.touchAction = bmOn ? 'none' : 'auto';
 }
 const pv = $('pv'); draw();
+$('bm').onchange = draw;
 function paint(e){
-  if (!cut) return; const r = pv.getBoundingClientRect(), W = pv.width, H = pv.height, fx = (e.clientX - r.left) * W / r.width, fy = (e.clientY - r.top) * H / r.height;
-  const sc = W * S.z / cut.width, ox = W * (.5 + S.x) - cut.width * sc / 2, oy = H * (.5 + S.y) - cut.height * sc / 2, sx = (fx - ox) / sc, sy = (fy - oy) / sc, rad = $('bsz').value * W / 360 / sc, x = cut.getContext('2d');
+  if (!cut || $('bm').value === 'off') return;
+  const r = pv.getBoundingClientRect(), W = pv.width, H = pv.height, fx = (e.clientX - r.left) * W / r.width, fy = (e.clientY - r.top) * H / r.height;
+  const sc = W * S.z / cut.width, ox = W * (.5 + S.x) - cut.width * sc / 2, oy = H * (.5 + S.y) - cut.height * sc / 2, sx = (fx - ox) / sc, sy = (fy - oy) / sc, rad = $('bsz').value * W / 340 / sc, x = cut.getContext('2d');
   if ($('bm').value === 'erase') { x.save(); x.globalCompositeOperation = 'destination-out'; x.beginPath(); x.arc(sx, sy, rad, 0, 7); x.fill(); x.restore(); }
   else { x.save(); x.beginPath(); x.arc(sx, sy, rad, 0, 7); x.clip(); x.drawImage(orig, 0, 0); x.restore(); }
   draw();
