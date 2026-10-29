@@ -375,9 +375,11 @@ function render() {
   }
 
   supRender();
+  pvTabs();
   fit();
   digitsPass();
   checks();
+  pvLayout();
 
   try { localStorage.setItem(KEY, JSON.stringify(get())); } catch(e){}
 }
@@ -763,6 +765,7 @@ async function downloadPNG() {
             ? clonedDoc.getElementById('cover-template')
             : clonedDoc.querySelectorAll('#supPages .sup-page')[i - 1];
           if (el) {
+            el.classList.remove('pv-off');
             el.style.transform = 'none';
             el.style.margin = '0';
             el.style.boxShadow = 'none';
@@ -955,3 +958,88 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el) el.addEventListener('input', render);
   });
 });
+
+
+/* ========================================================
+   📌 লাইভ প্রিভিউ: ট্যাব (কভার / অতিরিক্ত পেজ) + স্টিকি + অটো-ফিট
+   ======================================================== */
+let pvKey = 'cover';
+
+function pvTabs() {
+  const cover = $('cover-template');
+  if (!cover) return;
+  const ids = ['pgDecl', 'pgAppr', 'pgAck', 'pgToc'].filter(i => $(i) && $(i).checked);
+  const sups = [...document.querySelectorAll('#supPages .sup-page')];
+  const labels = [...document.querySelectorAll('#supPages .page-sep-label')];
+  const items = [{ key: 'cover', el: cover, name: SL === 'en' ? 'Cover' : 'কভার' }];
+  sups.forEach((p, i) => {
+    const key = ids[i] || ('p' + i);
+    p.dataset.pg = key;
+    const t = labels[i] ? labels[i].textContent.replace('📄', '').trim() : '';
+    const k = t.indexOf(':');
+    items.push({ key, el: p, name: (k > -1 ? t.slice(k + 1) : t).trim() || ('Page ' + (i + 2)) });
+  });
+  if (!items.some(x => x.key === pvKey)) pvKey = 'cover';
+  items.forEach(x => x.el.classList.toggle('pv-off', x.key !== pvKey));
+
+  let bar = $('pvTabs');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'pvTabs';
+    bar.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      pvKey = b.dataset.k;
+      pvTabs();
+      pvLayout();
+    });
+    cover.parentNode.insertBefore(bar, cover);
+  }
+  bar.style.display = items.length > 1 ? 'flex' : 'none';
+  bar.innerHTML = items.map(x =>
+    `<button type="button" data-k="${x.key}" class="${x.key === pvKey ? 'on' : ''}">${esc(x.name)}</button>`
+  ).join('');
+}
+
+function pvLayout() {
+  const sec = document.querySelector('.preview-section');
+  if (!sec) return;
+  const wide = window.innerWidth >= 900;
+
+  // হেডার/টিকার যতটুকু ওপরে আটকে থাকে, তার নিচে প্রিভিউ বসবে
+  let top = 0;
+  if (wide) {
+    document.querySelectorAll('#hdr, #hdr *, header, .global-blood-ticker, .sh').forEach(el => {
+      if (sec.contains(el) || el.closest('main')) return;
+      const pos = getComputedStyle(el).position;
+      if (pos !== 'sticky' && pos !== 'fixed') return;
+      const r = el.getBoundingClientRect();
+      if (r.height > 0 && r.top < 200 && r.bottom < 400 && r.bottom > top) top = r.bottom;
+    });
+    top += 25;
+  }
+  sec.style.setProperty('--pvtop', (top || 25) + 'px');
+
+  const PW = 793.7, PH = 1122.5;               // 210mm × 297mm (px)
+  const h2 = sec.querySelector(':scope > h2');
+  const bar = $('pvTabs');
+  const used = (h2 ? h2.offsetHeight + 15 : 0) + (bar && bar.style.display !== 'none' ? bar.offsetHeight + 12 : 0);
+  const availH = wide ? sec.clientHeight - used - 6 : Infinity;
+  const availW = sec.clientWidth - 4;
+  const s = Math.max(.25, Math.min(1, availW / PW, availH / PH));
+  sec.style.setProperty('--pvs', s.toFixed(3));
+}
+
+(function pvInit() {
+  ['pgDecl', 'pgAppr', 'pgAck', 'pgToc'].forEach(id => {
+    const cb = $(id);
+    if (cb) cb.addEventListener('change', () => {
+      if (cb.checked) setTimeout(() => { pvKey = id; pvTabs(); pvLayout(); }, 0);
+    });
+  });
+  window.addEventListener('resize', pvLayout);
+  window.addEventListener('load', () => { pvLayout(); setTimeout(pvLayout, 400); setTimeout(pvLayout, 1500); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(pvLayout);
+  pvTabs();
+  pvLayout();
+})();
