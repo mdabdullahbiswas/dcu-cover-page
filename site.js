@@ -443,8 +443,8 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     en: {
       chip: 'Unofficial website',
       title: 'Not the official <em>DCU</em> website',
-      lead: 'A free, independent project made by students — not affiliated with or operated by Dhaka Central University.',
-      cap: 'Built to make student life easier',
+      lead: 'A free, independent project — not affiliated with, endorsed by, or operated by Dhaka Central University.',
+      cap: 'Crafted to simplify campus life',
       tiles: [['doc', 'Cover pages'], ['calc', 'Study tools'], ['drop', 'Blood donors']],
       ok: 'Continue to site',
       off: 'Official site · dcu.ac.bd',
@@ -454,8 +454,8 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     bn: {
       chip: 'অনানুষ্ঠানিক ওয়েবসাইট',
       title: 'এটি অফিশিয়াল <em>DCU</em> ওয়েবসাইট নয়',
-      lead: 'শিক্ষার্থীদের তৈরি একটি বিনামূল্যের স্বতন্ত্র উদ্যোগ — ঢাকা সেন্ট্রাল ইউনিভার্সিটির সাথে সম্পৃক্ত বা পরিচালিত নয়।',
-      cap: 'শিক্ষার্থীদের কাজ সহজ করতে তৈরি',
+      lead: 'একটি বিনামূল্যের স্বতন্ত্র উদ্যোগ — ঢাকা সেন্ট্রাল ইউনিভার্সিটির সাথে সম্পৃক্ত, অনুমোদিত বা পরিচালিত নয়।',
+      cap: 'ক্যাম্পাস জীবন সহজ করতে নিবেদিত',
       tiles: [['doc', 'কভার পেজ'], ['calc', 'স্টাডি টুলস'], ['drop', 'রক্তদাতা']],
       ok: 'ওয়েবসাইটে চালিয়ে যান',
       off: 'অফিশিয়াল সাইট · dcu.ac.bd',
@@ -464,7 +464,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     }
   };
   var IC = {
-    shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M12 8.5v4.5M12 16.4v.1"/></svg>',
+    shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="dn-dr" pathLength="100" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path class="dn-dr" pathLength="100" d="M12 8.5v4.5M12 16.4v.1"/></svg>',
     doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>',
     calc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.5h7M9 12h.1M12 12h.1M15 12h.1M9 16h.1M12 16h.1M15 16h.1"/></svg>',
     drop: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/></svg>',
@@ -483,11 +483,11 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.dn-ov.in{opacity:1}' +
     '.dn-ov .dn-card{position:relative;width:100%;max-width:430px;max-height:calc(100vh - 36px);max-height:calc(100dvh - 36px);display:flex;flex-direction:column;overflow:hidden;border-radius:26px;' +
       'border:1px solid transparent;' +
-      'background:linear-gradient(165deg,#0d2b57 0%,#08193a 48%,#050f24 100%) padding-box,linear-gradient(140deg,rgba(246,214,143,.85),rgba(232,176,74,.12) 38%,rgba(232,176,74,.12) 62%,rgba(246,214,143,.6)) border-box;' +
+      'background:linear-gradient(165deg,#0d2b57 0%,#08193a 48%,#050f24 100%) padding-box,conic-gradient(from var(--dn-a,0deg),rgba(246,214,143,.16),#f6d68f 9%,rgba(246,214,143,.16) 22%,rgba(232,176,74,.10) 60%,rgba(246,214,143,.16)) border-box;animation:dnSpin 8s linear infinite;' +
       'box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 60px rgba(232,176,74,.08);transform:translateY(28px) scale(.96);transition:transform .5s cubic-bezier(.2,.9,.25,1.1)}' +
     '.dn-ov.in .dn-card{transform:none}' +
-    '.dn-ov .dn-card:before{content:"";position:absolute;top:-120px;right:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(232,176,74,.26),transparent 66%);pointer-events:none}' +
-    '.dn-ov .dn-card:after{content:"";position:absolute;left:-110px;bottom:-130px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(70,130,220,.20),transparent 66%);pointer-events:none}' +
+    '.dn-ov .dn-card:before{content:"";position:absolute;top:-120px;right:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(232,176,74,.30),transparent 66%);pointer-events:none;animation:dnDriftA 13s ease-in-out infinite alternate}' +
+    '.dn-ov .dn-card:after{content:"";position:absolute;left:-110px;bottom:-130px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(70,130,220,.24),transparent 66%);pointer-events:none;animation:dnDriftB 16s ease-in-out infinite alternate}' +
     '.dn-ov .dn-main{position:relative;z-index:1;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 24px 6px;text-align:center}' +
     /* ওপরের সারি: ভাষা + বন্ধ */
     '.dn-ov .dn-bar{display:flex;align-items:center;justify-content:space-between;margin:0 -6px 6px}' +
@@ -499,14 +499,14 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.dn-ov .dn-x:hover,.dn-ov .dn-lang:hover{background:rgba(255,255,255,.16);color:#fff}' +
     /* হিরো */
     '.dn-ov .dn-ico{position:relative;width:64px;height:64px;margin:4px auto 14px;border-radius:50%;display:grid;place-items:center;color:#f6d68f;' +
-      'background:radial-gradient(circle at 30% 25%,rgba(246,214,143,.28),rgba(246,214,143,.06));border:1.5px solid rgba(246,214,143,.7);box-shadow:0 10px 30px rgba(0,0,0,.4),inset 0 0 18px rgba(246,214,143,.12);animation:dnPop .7s .1s both cubic-bezier(.2,.9,.25,1.3)}' +
+      'background:radial-gradient(circle at 30% 25%,rgba(246,214,143,.28),rgba(246,214,143,.06));border:1.5px solid rgba(246,214,143,.7);box-shadow:0 10px 30px rgba(0,0,0,.4),inset 0 0 18px rgba(246,214,143,.12);animation:dnPop .7s .1s both cubic-bezier(.2,.9,.25,1.3),dnFloat 4.6s 1.2s ease-in-out infinite}' +
     '.dn-ov .dn-ico:after{content:"";position:absolute;top:-7px;right:-7px;bottom:-7px;left:-7px;border-radius:50%;border:1px solid rgba(246,214,143,.35);animation:dnHalo 2.8s ease-out infinite}' +
     '.dn-ov .dn-ico svg{width:30px;height:30px}' +
     '.dn-ov .dn-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:999px;margin-bottom:13px;font:700 10.5px/1.2 "Montserrat","Hind Siliguri",sans-serif;letter-spacing:2px;text-transform:uppercase;color:#f6d68f;background:rgba(232,176,74,.12);border:1px solid rgba(232,176,74,.4)}' +
     '.dn-ov .dn-chip i{width:6px;height:6px;border-radius:50%;background:#e8b04a;box-shadow:0 0 0 3px rgba(232,176,74,.25)}' +
     '.dn-ov .dn-title{margin:0 0 10px;font-weight:700;color:#fff;font-family:"Playfair Display","Cinzel",serif;font-size:27px;line-height:1.22;letter-spacing:.2px}' +
     '.dn-ov .dn-bn .dn-title{font-family:"Noto Serif Bengali","Hind Siliguri",serif;font-size:24px;line-height:1.45;letter-spacing:0}' +
-    '.dn-ov .dn-title em{font-style:normal;background:linear-gradient(120deg,#f6d68f,#e8b04a 60%,#fff0c4);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}' +
+    '.dn-ov .dn-title em{font-style:normal;background:linear-gradient(110deg,#e8b04a 20%,#fff3cf 40%,#e8b04a 60%) 0 0/220% auto;animation:dnShimmer 5s linear infinite;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}' +
     '.dn-ov .dn-lead{margin:0 auto;max-width:340px;font-size:14.5px;line-height:1.7;font-weight:400;color:#b9c6dc}' +
     '.dn-ov .dn-en .dn-lead{font-family:"Montserrat","Hind Siliguri",sans-serif;font-size:13.5px;line-height:1.75;font-weight:500}' +
     /* বিভাজক + টাইলস */
@@ -515,8 +515,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.dn-ov .dn-div:before,.dn-ov .dn-div:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(246,214,143,.4))}' +
     '.dn-ov .dn-div:after{transform:scaleX(-1)}' +
     '.dn-ov .dn-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}' +
-    '.dn-ov .dn-tile{padding:14px 6px 12px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);animation:dnUp .6s both ease-out}' +
-    '.dn-ov .dn-tile:nth-child(1){animation-delay:.25s}.dn-ov .dn-tile:nth-child(2){animation-delay:.34s}.dn-ov .dn-tile:nth-child(3){animation-delay:.43s}' +
+    '.dn-ov .dn-tile{padding:14px 6px 12px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1)}' +
     '.dn-ov .dn-tile i{display:grid;place-items:center;width:40px;height:40px;margin:0 auto 9px;border-radius:12px;color:#07152b;background:linear-gradient(135deg,#f6d68f,#e8b04a);box-shadow:0 6px 16px rgba(232,176,74,.3)}' +
     '.dn-ov .dn-tile i svg{width:20px;height:20px}' +
     '.dn-ov .dn-tile b{display:block;font:600 12.5px/1.3 "Hind Siliguri","Montserrat",sans-serif;color:#eef2f9}' +
@@ -541,6 +540,38 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '@keyframes dnHalo{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.25);opacity:0}}' +
     '@keyframes dnUp{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}' +
     '@keyframes dnShine{0%{left:-70%}30%,100%{left:140%}}' +
+    /* ✨ প্রিমিয়াম অ্যানিমেশন */
+    '@property --dn-a{syntax:"<angle>";inherits:false;initial-value:0deg}' +
+    '.dn-ov .dn-fx{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;pointer-events:none;z-index:0}' +
+    '.dn-ov .dn-fx i{position:absolute;bottom:-12px;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;opacity:0;background:radial-gradient(circle,#fff7da,#f6d68f 45%,transparent 72%);animation:dnRise var(--t) var(--dl) infinite linear}' +
+    '.dn-ov .dn-gloss{position:absolute;top:0;bottom:0;left:-60%;width:38%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);transform:skewX(-18deg);opacity:0}' +
+    '.dn-ov.in .dn-gloss{animation:dnGloss 1.7s .45s ease-out 1 both}' +
+    '.dn-ov:not(.in) .dn-st{opacity:0}' +
+    '.dn-ov.in .dn-st{animation:dnUp .75s var(--d,0s) cubic-bezier(.2,.8,.2,1) backwards}' +
+    '.dn-ov.in .dn-title.dn-st{animation-name:dnReveal}' +
+    '.dn-ov .dn-dr{stroke-dasharray:100;stroke-dashoffset:100}' +
+    '.dn-ov.in .dn-dr{animation:dnDraw 1.2s .35s cubic-bezier(.5,.1,.2,1) forwards}' +
+    '.dn-ov .dn-tile{transition:transform .25s,border-color .25s,box-shadow .25s}' +
+    '.dn-ov .dn-tile:hover{transform:translateY(-4px);border-color:rgba(246,214,143,.5);box-shadow:0 14px 28px rgba(0,0,0,.35),0 0 24px rgba(232,176,74,.16)}' +
+    '.dn-ov .dn-tile i{animation:dnBob 3.6s ease-in-out infinite}' +
+    '.dn-ov .dn-tile:nth-child(2) i{animation-delay:.5s}.dn-ov .dn-tile:nth-child(3) i{animation-delay:1s}' +
+    '.dn-ov .dn-okw{position:relative}' +
+    '.dn-ov .dn-okw:before{content:"";position:absolute;top:12px;right:16px;bottom:-8px;left:16px;border-radius:18px;background:#e8b04a;filter:blur(18px);opacity:.3;animation:dnBreathe 3.2s ease-in-out infinite}' +
+    '.dn-ov .dn-ok{z-index:1}' +
+    '.dn-ov .dn-ok svg{animation:dnNudge 1.9s ease-in-out infinite}' +
+    '.dn-ov.re .dn-st,.dn-ov.re .dn-ico,.dn-ov.re .dn-dr{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}' +
+    '@keyframes dnSpin{to{--dn-a:360deg}}' +
+    '@keyframes dnDriftA{from{transform:translate(0,0) scale(1)}to{transform:translate(-50px,70px) scale(1.25)}}' +
+    '@keyframes dnDriftB{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,-60px) scale(1.2)}}' +
+    '@keyframes dnFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}' +
+    '@keyframes dnShimmer{to{background-position:-220% 0}}' +
+    '@keyframes dnRise{0%{transform:translate(0,0) scale(.6);opacity:0}12%{opacity:.9}85%{opacity:.35}100%{transform:translate(var(--dx),-620px) scale(1);opacity:0}}' +
+    '@keyframes dnGloss{0%{left:-60%;opacity:0}20%{opacity:1}100%{left:130%;opacity:0}}' +
+    '@keyframes dnReveal{from{opacity:0;transform:translateY(14px);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}' +
+    '@keyframes dnDraw{to{stroke-dashoffset:0}}' +
+    '@keyframes dnBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}' +
+    '@keyframes dnBreathe{0%,100%{opacity:.22;transform:scale(.96)}50%{opacity:.5;transform:scale(1.04)}}' +
+    '@keyframes dnNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}' +
     /* মোবাইল: নিচ থেকে ওঠা শিট */
     '@media(max-width:560px){' +
       '.dn-ov{padding:0;align-items:flex-end}' +
@@ -552,7 +583,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
       '.dn-ov .dn-tile{padding:12px 4px 10px}' +
     '}' +
     '@media(max-height:620px){.dn-ov .dn-ico{display:none}.dn-ov .dn-div{margin:14px 0 10px}}' +
-    '@media(prefers-reduced-motion:reduce){.dn-ov,.dn-ov .dn-card{transition:none}.dn-ov .dn-ico,.dn-ov .dn-ico:after,.dn-ov .dn-ok:after,.dn-ov .dn-tile{animation:none}}' +
+    '@media(prefers-reduced-motion:reduce){.dn-ov,.dn-ov *,.dn-ov *:before,.dn-ov *:after{animation:none!important;transition:none!important}.dn-ov .dn-st{opacity:1!important}.dn-ov .dn-dr{stroke-dashoffset:0}.dn-ov .dn-fx{display:none}}' +
     '@media print{.dn-ov{display:none!important}}';
   document.head.appendChild(css);
 
@@ -565,28 +596,37 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     try { l = localStorage.getItem('dcuSL') || 'en'; } catch (e) {}
     return l === 'bn' ? 'bn' : 'en';
   }
+  function sparks() {
+    var X = [8, 21, 35, 49, 63, 77, 90, 14, 70], S = [3, 4, 2.5, 3.5, 2.5, 4, 3, 2, 3];
+    var o = '';
+    for (var i = 0; i < X.length; i++) {
+      o += '<i style="--x:' + X[i] + '%;--s:' + S[i] + 'px;--t:' + (7 + (i % 4) * 1.6).toFixed(1) + 's;--dl:' + (i * 0.9).toFixed(1) + 's;--dx:' + ((i % 2 ? 1 : -1) * (14 + i * 3)) + 'px"></i>';
+    }
+    return o;
+  }
   function render() {
     var l = lang(), t = T[l];
     ov.innerHTML =
       '<div class="dn-card dn-' + l + '" role="dialog" aria-modal="true" aria-labelledby="dnT">' +
+        '<div class="dn-fx" aria-hidden="true"><b class="dn-gloss"></b>' + sparks() + '</div>' +
         '<div class="dn-main">' +
           '<div class="dn-bar">' +
             '<button type="button" class="dn-lang" data-a="lang" aria-label="Language"><span class="' + (l === 'bn' ? 'on' : '') + '">বাং</span><span class="' + (l === 'en' ? 'on' : '') + '">EN</span></button>' +
             '<button type="button" class="dn-x" data-a="close" aria-label="' + t.close + '">' + IC.x + '</button>' +
           '</div>' +
           '<div class="dn-ico">' + IC.shield + '</div>' +
-          '<div class="dn-chip"><i></i>' + t.chip + '</div>' +
-          '<h2 class="dn-title" id="dnT">' + t.title + '</h2>' +
-          '<p class="dn-lead">' + t.lead + '</p>' +
-          '<div class="dn-div">' + t.cap + '</div>' +
-          '<div class="dn-tiles">' + t.tiles.map(function (it) {
-            return '<div class="dn-tile"><i>' + IC[it[0]] + '</i><b>' + it[1] + '</b></div>';
+          '<div class="dn-chip dn-st" style="--d:.3s"><i></i>' + t.chip + '</div>' +
+          '<h2 class="dn-title dn-st" style="--d:.42s" id="dnT">' + t.title + '</h2>' +
+          '<p class="dn-lead dn-st" style="--d:.58s">' + t.lead + '</p>' +
+          '<div class="dn-div dn-st" style="--d:.7s">' + t.cap + '</div>' +
+          '<div class="dn-tiles">' + t.tiles.map(function (it, i) {
+            return '<div class="dn-tile dn-st" style="--d:' + (0.8 + i * 0.1).toFixed(2) + 's"><i>' + IC[it[0]] + '</i><b>' + it[1] + '</b></div>';
           }).join('') + '</div>' +
         '</div>' +
         '<div class="dn-ft">' +
-          '<button type="button" class="dn-ok" data-a="close"><span>' + t.ok + '</span>' + IC.arrow + '</button>' +
-          '<a class="dn-go" data-a="go" href="' + OFFICIAL + '" target="_blank" rel="noopener noreferrer"><span>' + t.off + '</span>' + IC.ext + '</a>' +
-          '<p class="dn-fine">' + t.fine + '</p>' +
+          '<div class="dn-okw dn-st" style="--d:1.1s"><button type="button" class="dn-ok" data-a="close"><span>' + t.ok + '</span>' + IC.arrow + '</button></div>' +
+          '<a class="dn-go dn-st" style="--d:1.2s" data-a="go" href="' + OFFICIAL + '" target="_blank" rel="noopener noreferrer"><span>' + t.off + '</span>' + IC.ext + '</a>' +
+          '<p class="dn-fine dn-st" style="--d:1.25s">' + t.fine + '</p>' +
         '</div>' +
       '</div>';
   }
@@ -626,6 +666,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
       var b = document.getElementById('langBtn');
       if (b) b.click();
       else { try { localStorage.setItem('dcuSL', lang() === 'bn' ? 'en' : 'bn'); } catch (er) {} }
+      ov.classList.add('re');
       setTimeout(function () {
         render();
         var nb = ov.querySelector('.dn-lang'); if (nb) nb.focus();
