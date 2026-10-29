@@ -741,6 +741,15 @@ async function downloadPNG() {
             ? clonedDoc.getElementById('cover-template')
             : clonedDoc.querySelectorAll('#supPages .sup-page')[i - 1];
           if (el) {
+            if (window.innerWidth < 900) for (let n = el.parentElement; n && n !== clonedDoc.documentElement; n = n.parentElement) {
+              n.style.transform = 'none';
+              n.style.visibility = 'visible';
+              n.style.overflow = 'visible';
+              n.style.position = 'static';
+              n.style.width = 'auto';
+              n.style.height = 'auto';
+            }
+            el.style.visibility = 'visible';
             el.classList.remove('pv-off');
             el.style.transform = 'none';
             el.style.margin = '0';
@@ -943,6 +952,7 @@ document.addEventListener('DOMContentLoaded', () => {
    📌 লাইভ প্রিভিউ: ট্যাব (কভার / অতিরিক্ত পেজ) + স্টিকি + অটো-ফিট
    ======================================================== */
 let pvKey = 'cover';
+let pvZ = 1, pvS = .45, pvFit = .45;
 
 function pvTabs() {
   const cover = $('cover-template');
@@ -971,10 +981,12 @@ function pvTabs() {
       const b = e.target.closest('button');
       if (!b) return;
       pvKey = b.dataset.k;
+      pvZ = 1;
       pvTabs();
       pvLayout();
     });
-    cover.parentNode.insertBefore(bar, cover);
+    const host = $('pvStage') || cover;
+    host.parentNode.insertBefore(bar, host);
   }
   bar.style.display = items.length > 1 ? 'flex' : 'none';
   pvFabUpdate(items.length);
@@ -1003,16 +1015,27 @@ function pvLayout() {
   sec.style.setProperty('--pvtop', (top || 25) + 'px');
 
   const PW = 793.7, PH = 1122.5;               // 210mm × 297mm (px)
-  const h2 = sec.querySelector(':scope > h2');
-  const bar = $('pvTabs');
-  const cs = getComputedStyle(sec);
   const px = v => parseFloat(v) || 0;
-  const blk = el => el ? el.offsetHeight + px(getComputedStyle(el).marginBottom) : 0;
-  const used = blk(h2) + (bar && bar.style.display !== 'none' ? blk(bar) : 0);
-  const availH = sec.clientHeight - px(cs.paddingTop) - px(cs.paddingBottom) - used - 6;
-  const availW = sec.clientWidth - px(cs.paddingLeft) - px(cs.paddingRight) - 4;
-  const s = Math.max(.25, Math.min(1, availW / PW, availH / PH));
+  let s;
+  const st = $('pvStage');
+  if (!wide && st && st.clientWidth > 0) {
+    const fit = Math.max(.2, Math.min(1, (st.clientWidth - 12) / PW, (st.clientHeight - 12) / PH));
+    s = Math.min(3, fit * pvZ);
+    pvFit = fit;
+  } else {
+    const h2 = sec.querySelector(':scope > h2');
+    const bar = $('pvTabs');
+    const cs = getComputedStyle(sec);
+    const blk = el => el ? el.offsetHeight + px(getComputedStyle(el).marginBottom) : 0;
+    const used = blk(h2) + (bar && bar.style.display !== 'none' ? blk(bar) : 0);
+    const availH = sec.clientHeight - px(cs.paddingTop) - px(cs.paddingBottom) - used - 6;
+    const availW = sec.clientWidth - px(cs.paddingLeft) - px(cs.paddingRight) - 4;
+    s = Math.max(.25, Math.min(1, availW / PW, availH / PH));
+  }
+  pvS = s;
   sec.style.setProperty('--pvs', s.toFixed(3));
+  const lb = $('pvZoomLbl');
+  if (lb) lb.textContent = pvZ <= 1.01 ? (SL === 'en' ? 'Fit' : 'ফিট') : Math.round(pvZ * 100) + '%';
 }
 
 (function pvInit() {
@@ -1036,6 +1059,7 @@ function pvLayout() {
 function pvOpen(on) {
   const sec = document.querySelector('.preview-section');
   if (!sec) return;
+  if (on) pvZ = 1;
   sec.classList.toggle('pv-open', !!on);
   document.body.classList.toggle('pv-lock', !!on);
   if (on) pvLayout();
@@ -1065,7 +1089,75 @@ function pvFabUpdate(n) {
   cl.addEventListener('click', () => pvOpen(false));
   sec.insertBefore(cl, sec.firstChild);
 
+  // কভার ও অতিরিক্ত পেজ একটি স্ক্রলযোগ্য স্টেজে
+  const cover = $('cover-template'), sup = $('supPages');
+  const stage = document.createElement('div'); stage.id = 'pvStage';
+  const sizer = document.createElement('div'); sizer.id = 'pvSizer';
+  sec.insertBefore(stage, cover);
+  stage.appendChild(sizer);
+  sizer.appendChild(cover);
+  if (sup) sizer.appendChild(sup);
+  const bar0 = $('pvTabs');
+  if (bar0) sec.insertBefore(bar0, stage);
+
+  // জুম বার
+  const zb = document.createElement('div'); zb.id = 'pvZoom';
+  zb.innerHTML = '<button type="button" data-z="-1" aria-label="Zoom out">−</button>' +
+                 '<button type="button" class="lbl" id="pvZoomLbl" data-z="0"></button>' +
+                 '<button type="button" data-z="1" aria-label="Zoom in">+</button>';
+  zb.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const d = +b.dataset.z;
+    const r = stage.getBoundingClientRect();
+    pvZoomTo(d === 0 ? 1 : (d > 0 ? Math.min(4, pvZ * 1.4) : Math.max(1, pvZ / 1.4)), r.left + r.width / 2, r.top + r.height / 2);
+  });
+  sec.insertBefore(zb, stage);
+
+  // পিঞ্চ-জুম ও ডাবল-ট্যাপ
+  let pin = null, lastTap = { t: 0, x: 0, y: 0 }, moved = false;
+  const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  stage.addEventListener('touchstart', e => {
+    moved = false;
+    if (e.touches.length === 2) pin = { d: dist(e.touches), z: pvZ };
+  }, { passive: true });
+  stage.addEventListener('touchmove', e => {
+    moved = true;
+    if (pin && e.touches.length === 2) {
+      e.preventDefault();
+      const t = e.touches;
+      pvZoomTo(Math.max(1, Math.min(4, pin.z * dist(t) / pin.d)),
+               (t[0].clientX + t[1].clientX) / 2, (t[0].clientY + t[1].clientY) / 2);
+    }
+  }, { passive: false });
+  stage.addEventListener('touchend', e => {
+    if (e.touches.length < 2) pin = null;
+    if (e.touches.length === 0 && e.changedTouches.length === 1 && !moved) {
+      const c = e.changedTouches[0], now = Date.now();
+      if (now - lastTap.t < 320 && Math.hypot(c.clientX - lastTap.x, c.clientY - lastTap.y) < 30) {
+        pvZoomTo(pvZ > 1.05 ? 1 : 2.5, c.clientX, c.clientY);
+        lastTap.t = 0;
+      } else {
+        lastTap = { t: now, x: c.clientX, y: c.clientY };
+      }
+    }
+  }, { passive: true });
+
   document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
   window.addEventListener('resize', () => { if (window.innerWidth >= 900) pvOpen(false); });
   pvFabUpdate(1);
 })();
+
+
+/* আঙুলের নিচের বিন্দু স্থির রেখে জুম */
+function pvZoomTo(z, cx, cy) {
+  const st = $('pvStage'), sz = $('pvSizer');
+  if (!st || !sz) return;
+  const r0 = sz.getBoundingClientRect(), s0 = pvS || 1;
+  const ax = (cx - r0.left) / s0, ay = (cy - r0.top) / s0;
+  pvZ = Math.max(1, Math.min(4, z));
+  pvLayout();
+  if (pvZ <= 1.01) { st.scrollLeft = 0; st.scrollTop = 0; return; }
+  const r1 = sz.getBoundingClientRect();
+  st.scrollLeft += (r1.left + ax * pvS) - cx;
+  st.scrollTop += (r1.top + ay * pvS) - cy;
+}
