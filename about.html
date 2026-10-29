@@ -50,7 +50,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',
 /* marquee */
 .mq{overflow:hidden;border-radius:14px;margin:0 0 16px;background:var(--cd);border:1px solid var(--ln);padding:11px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .mt{display:flex;width:max-content;animation:mq 26s linear infinite}
-.mq:hover .mt{animation-play-state:paused}
+@media (hover:hover) and (pointer:fine){.mq:hover .mt{animation-play-state:paused}}
 .mt a{position:relative;padding:4px 22px;font-weight:700;font-size:14px;color:var(--mu);white-space:nowrap;text-decoration:none;cursor:pointer;transition:color .2s,transform .2s}
 .mt a:before{content:"✦";color:var(--gd);margin-right:22px;display:inline-block;transition:transform .4s}
 .mt a:after{content:"";position:absolute;left:44px;right:22px;bottom:0;height:2px;border-radius:2px;background:var(--gd);transform:scaleX(0);transform-origin:left;transition:transform .25s}
@@ -58,7 +58,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',
 .mt a:hover:before,.mt a:focus-visible:before{transform:rotate(180deg) scale(1.25)}
 .mt a:hover:after,.mt a:focus-visible:after{transform:scaleX(1)}
 .mt a:focus-visible{outline:2px solid var(--gd);outline-offset:2px;border-radius:8px}
-.mq:focus-within .mt{animation-play-state:paused}
+.mq:has(a:focus-visible) .mt{animation-play-state:paused}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* stats */
@@ -222,6 +222,15 @@ document.addEventListener('pointermove',e=>{
  const r=b.getBoundingClientRect();b.style.setProperty('--mx',(e.clientX-r.left)+'px');b.style.setProperty('--my',(e.clientY-r.top)+'px');
 });
 
+/* ফিরে এলে (Back/bfcache) মার্কি ও ভাষা ঠিক করা */
+function kickMarquee(){
+ const m=document.querySelector('.mt');if(!m)return;
+ const ae=document.activeElement;if(ae&&ae!==document.body&&ae.closest&&ae.closest('.mq'))ae.blur();
+ m.style.animation='none';void m.offsetWidth;m.style.animation='';
+}
+addEventListener('pageshow',()=>{kickMarquee();render()});
+addEventListener('storage',()=>render());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)kickMarquee()});
 window.onLang=render;render();
 </script>
 </body>
