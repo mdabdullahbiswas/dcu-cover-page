@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#0a2240">
 
 <!-- স্টাইলশিট -->
-<link rel="stylesheet" href="site.css?v=20261029">
+<link rel="stylesheet" href="site.css?v=20261030">
 <link rel="stylesheet" href="cover.css?v=20261029">
 </head>
 <body data-page="index">
@@ -236,6 +236,11 @@
 
 <p class="hint warn" id="ovWarn"></p>
 <div class="btns">
+  <button type="button" class="pvw-btn full" id="pvwOpen" aria-haspopup="dialog" aria-controls="pvwSection">
+    <span class="pvw-ico" aria-hidden="true">👁</span>
+    <span class="pvw-txt"><b>প্রিভিউ দেখুন</b><small>কভার পেজ ফুলস্ক্রিনে দেখে নিন</small></span>
+    <span class="pvw-cnt" id="pvwCnt" hidden></span>
+  </button>
   <button type="button" class="full" onclick="bump();window.print()">🖨️ Save as PDF / Print</button>
   <button type="button" class="alt" onclick="downloadPNG()">🖼️ PNG ডাউনলোড</button>
   <button type="button" class="alt" onclick="downloadDoc()">📝 Word (সম্পাদনাযোগ্য)</button>
@@ -246,9 +251,20 @@
 </form>
 </section>
 
-<!-- ২. লাইভ প্রিভিউ -->
-<section class="preview-section">
-<h2>লাইভ প্রিভিউ <span id="pageCountBadge" style="font-size:14px; color:var(--acc); font-weight:700;"></span></h2>
+<!-- ২. প্রিভিউ ভিউয়ার (বাটনে ক্লিক করলে খোলে) -->
+<section class="preview-section pvw" id="pvwSection" role="dialog" aria-modal="true" aria-labelledby="pvwTitle">
+<div class="pvw-bar">
+  <div class="pvw-ttl"><span id="pvwTitle">প্রিভিউ</span><span id="pageCountBadge" class="pvw-badge"></span></div>
+  <div class="pvw-zoom" role="group" aria-label="জুম">
+    <button type="button" id="pvwOut" aria-label="ছোট করুন">−</button>
+    <button type="button" id="pvwFit" aria-label="স্ক্রিনে ফিট করুন">100%</button>
+    <button type="button" id="pvwIn" aria-label="বড় করুন">+</button>
+  </div>
+  <button type="button" class="pvw-x" id="pvwClose" aria-label="বন্ধ করুন">✕</button>
+</div>
+<div class="pvw-body" id="pvwBody" tabindex="-1">
+<div class="pvw-stage" id="pvwStage">
+<div class="pvw-scaler" id="pvwScaler">
 <div id="cover-template" class="a4-page theme-classic">
   <div class="top-accent-bar"></div>
   <div class="inner-border"></div>
@@ -305,7 +321,17 @@
 
 <!-- অতিরিক্ত পেজগুলোর কন্টেইনার -->
 <div id="supPages"></div>
+</div>
+</div>
+</div>
+<div class="pvw-act">
+  <button type="button" onclick="bump();window.print()">🖨️ <span>PDF / Print</span></button>
+  <button type="button" onclick="downloadPNG()">🖼️ <span>PNG</span></button>
+  <button type="button" onclick="downloadDoc()">📝 <span>Word</span></button>
+</div>
 </section>
+<div class="pvw-back" id="pvwBack"></div>
+<button type="button" class="pvw-fab" id="pvwFab" aria-label="প্রিভিউ দেখুন"><span aria-hidden="true">👁</span><b>প্রিভিউ</b></button>
 </main>
 
 <div id="ftr"></div>
@@ -314,5 +340,93 @@
 <!-- স্ক্রিপ্ট -->
 <script src="site.js?v=20261029"></script>
 <script src="cover.js?v=20261029"></script>
+<script>
+/* প্রিভিউ ভিউয়ার: বাটনে খোলে, মোবাইল ও পিসি—দুটোতেই ফিট হয় */
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var sec=$('pvwSection'),body=$('pvwBody'),sc=$('pvwScaler'),fit=$('pvwFit'),
+      back=$('pvwBack'),fab=$('pvwFab'),openB=$('pvwOpen'),badge=$('pageCountBadge'),cnt=$('pvwCnt');
+  if(!sec||!openB)return;
+  var zoom=0,isOpen=false,lastFocus=null,pushed=false;
+
+  function pageW(){var p=$('cover-template');return p?p.offsetWidth:794}
+  function fitScale(){
+    var w=body.clientWidth-(window.innerWidth<600?16:48);
+    return Math.max(.2,Math.min(1,w/pageW()));
+  }
+  function apply(){
+    var base=fitScale(),k=zoom?zoom:base;
+    k=Math.max(.2,Math.min(2.5,k));
+    sc.style.transform='scale('+k+')';
+    sc.style.width=pageW()+'px';
+    sc.style.height='';
+    var h=sc.scrollHeight*k;
+    sc.parentNode.style.setProperty('--pvw-h',h+'px');
+    sc.parentNode.style.setProperty('--pvw-w',(pageW()*k)+'px');
+    fit.textContent=Math.round(k*100)+'%';
+  }
+  function step(d){
+    var cur=zoom||fitScale();
+    zoom=Math.max(.2,Math.min(2.5,Math.round((cur+d)*100)/100));
+    apply();
+  }
+  function open(){
+    if(isOpen)return;
+    isOpen=true;lastFocus=document.activeElement;
+    zoom=0;
+    document.documentElement.classList.add('pvw-lock');
+    sec.classList.add('pvw-open');back.classList.add('on');
+    apply();body.scrollTop=0;
+    requestAnimationFrame(function(){apply();$('pvwClose').focus()});
+    try{history.pushState({pvw:1},'');pushed=true}catch(e){pushed=false}
+  }
+  function close(fromPop){
+    if(!isOpen)return;
+    isOpen=false;
+    sec.classList.remove('pvw-open');back.classList.remove('on');
+    document.documentElement.classList.remove('pvw-lock');
+    if(pushed&&!fromPop){try{history.back()}catch(e){}}
+    pushed=false;
+    if(lastFocus&&lastFocus.focus)lastFocus.focus();
+  }
+  openB.addEventListener('click',open);
+  fab.addEventListener('click',open);
+  $('pvwClose').addEventListener('click',function(){close()});
+  back.addEventListener('click',function(){close()});
+  $('pvwIn').addEventListener('click',function(){step(.1)});
+  $('pvwOut').addEventListener('click',function(){step(-.1)});
+  fit.addEventListener('click',function(){zoom=0;apply()});
+  window.addEventListener('popstate',function(){if(isOpen)close(true)});
+  window.addEventListener('resize',function(){if(isOpen)apply()});
+  window.addEventListener('orientationchange',function(){setTimeout(function(){if(isOpen)apply()},250)});
+  document.addEventListener('keydown',function(e){
+    if(!isOpen)return;
+    if(e.key==='Escape'){close()}
+    else if(e.key==='+'||e.key==='='){step(.1)}
+    else if(e.key==='-'){step(-.1)}
+    else if(e.key==='0'){zoom=0;apply()}
+    else if(e.key==='Tab'){
+      var f=sec.querySelectorAll('button:not([disabled])');
+      if(!f.length)return;
+      var a=f[0],z=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}
+      else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}
+    }
+  });
+  /* পেজ সংখ্যা বাটনেও দেখান */
+  function sync(){
+    var t=(badge.textContent||'').trim();
+    if(t){cnt.textContent=t;cnt.hidden=false}else cnt.hidden=true;
+    if(isOpen)apply();
+  }
+  new MutationObserver(sync).observe(sec,{childList:true,subtree:true,characterData:true});
+  sync();
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(en){
+      fab.classList.toggle('hide',en[0].isIntersecting);
+    },{threshold:.6}).observe(openB);
+  }
+})();
+</script>
 </body>
 </html>
