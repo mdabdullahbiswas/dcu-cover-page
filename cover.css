@@ -630,7 +630,8 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
 }
 
 /* 📱 মোবাইল/ছোট স্ক্রিন: ভাসমান "প্রিভিউ" বাটন → নিচ থেকে ওঠা পূর্ণ-স্ক্রিন প্রিভিউ */
-#pvFab, #pvClose { display: none; }
+#pvFab, #pvClose, #pvZoom { display: none; }
+#pvStage, #pvSizer { display: contents; }
 @media screen and (max-width: 899px) {
   .container { padding-bottom: 84px; }
   #pvFab {
@@ -660,6 +661,32 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
   }
   .preview-section.pv-open { transform: none; visibility: visible; transition: transform .28s cubic-bezier(.2,.8,.2,1); }
   .preview-section > h2 { margin: 0 0 10px; padding: 0 46px; font-size: 17px; text-align: center; justify-content: center; flex-wrap: wrap; }
+  /* প্রিভিউ স্টেজ: স্ক্রল ও জুম করা যায় */
+  #pvStage {
+    display: block; position: relative; flex: 1 1 0; min-height: 0; width: 100%;
+    overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+    touch-action: pan-x pan-y; border-radius: 12px; padding: 6px;
+    background: rgba(10,34,64,.06);
+  }
+  body.dark #pvStage { background: rgba(255,255,255,.05); }
+  #pvSizer {
+    display: block; position: relative; margin: 0 auto;
+    width: calc(793.7px * var(--pvs, .45)); height: calc(1122.5px * var(--pvs, .45));
+  }
+  #pvSizer .a4-page { transform-origin: top left !important; margin-bottom: 0 !important; transition: none !important; }
+  #pvZoom {
+    display: inline-flex; align-items: center; gap: 2px; margin: 0 auto 10px; padding: 3px;
+    background: #eef2f7; border: 1px solid #d9e1ea; border-radius: 999px;
+  }
+  body.dark #pvZoom { background: #182231; border-color: #2c3d54; }
+  #pvZoom button {
+    all: unset; box-sizing: border-box; min-width: 34px; height: 30px; padding: 0 10px; text-align: center;
+    border-radius: 999px; cursor: pointer; font: 700 13px/30px 'Hind Siliguri', sans-serif; color: var(--n, #0a2240);
+    -webkit-tap-highlight-color: transparent;
+  }
+  body.dark #pvZoom button { color: #d7e2ef; }
+  #pvZoom button:active { background: rgba(10,34,64,.12); }
+  #pvZoom button.lbl { min-width: 56px; font-size: 12px; color: #4a5b73; }
   #pvClose {
     position: absolute; top: calc(8px + env(safe-area-inset-top, 0px)); right: 10px;
     display: inline-flex; align-items: center; justify-content: center;
@@ -717,7 +744,8 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     max-width: none !important;
   }
 
-  #pvTabs, #pvFab, #pvClose { display: none !important; }
+  #pvTabs, #pvFab, #pvClose, #pvZoom { display: none !important; }
+  #pvStage, #pvSizer { display: contents !important; }
   .a4-page.pv-off {
     position: static !important; visibility: visible !important;
     left: auto !important; top: auto !important;
