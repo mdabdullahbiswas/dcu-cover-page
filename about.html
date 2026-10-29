@@ -164,6 +164,8 @@ html{scroll-behavior:smooth;scroll-padding-top:80px}
 <script>
 const $=s=>document.querySelector(s),D=$DEV,L=$L;
 const PHOTO='devloper.jpg';
+const ROLE='ওয়েব ডেভেলপার ও ওয়েব ডিজাইনার|Web Developer & Web Designer';
+const HIDE=/github/i;
 const PROFILE=[
  ['👨‍🎓 পরিচিতি|👨‍🎓 About','আমি মোঃ আব্দুল্লাহ বিশ্বাস, সরকারি বাঙলা কলেজে অর্থনীতি বিভাগের অনার্স শিক্ষার্থী (শিক্ষাবর্ষ: ২০২২–২৩)। প্রযুক্তি, ডিজিটাল দক্ষতা ও নতুন কিছু শেখার প্রতি আগ্রহী। ভবিষ্যতে নিজের দক্ষতা কাজে লাগিয়ে সৎ ও সম্মানজনক পেশাগত জীবন গড়ে তুলতে চাই।|I am Md. Abdullah Biswas, an Honours student of Economics at Government Bangla College (session 2022–23). I am interested in technology, digital skills and learning new things, and I hope to build an honest and respectable career using my skills.'],
  ['💼 পেশাগত আগ্রহ|💼 Professional Interests','কম্পিউটার অপারেশন, ডিজিটাল মার্কেটিং, গ্রাফিক ডিজাইন এবং ওয়েব ডেভেলপমেন্ট।|Computer operation, digital marketing, graphic design and web development.']
@@ -179,10 +181,9 @@ const esc=s=>String(s).replace(/[&<>"']/g,m=>'&#'+m.charCodeAt(0)+';');
 function render(){
  const av=$('#av');av.textContent=[...D.name][0]||'D';
  const im=new Image();im.alt=D.name;im.onload=()=>{av.textContent='';av.appendChild(im)};im.src=PHOTO;
- $('#dn').textContent=D.name;$('#dr').textContent=L(D.role);$('#db').innerHTML=PROFILE.map(([h,t])=>`<h3>${esc(L(h))}</h3><p>${esc(L(t))}</p>`).join('')+`<h3>${L('🛠️ দক্ষতার তালিকা|🛠️ Skills')}</h3>`;
- const ls=D.links.filter(l=>l[1]).map(l=>$SOC(l[0],l[1]));
+ $('#dn').textContent=D.name;$('#dr').textContent=L(ROLE);$('#db').innerHTML=PROFILE.map(([h,t])=>`<h3>${esc(L(h))}</h3><p>${esc(L(t))}</p>`).join('')+`<h3>${L('🛠️ দক্ষতার তালিকা|🛠️ Skills')}</h3>`;
+ const ls=D.links.filter(l=>l[1]&&!HIDE.test(l[0])&&!HIDE.test(l[1])).map(l=>$SOC(l[0],l[1]));
  if(D.email)ls.push($SOC('email','mailto:'+D.email,L('ইমেইল|Email'),false));
- ls.push($SOC('code',D.repo,L('সোর্স কোড|Source Code')));
  $('#dl').innerHTML=ls.join('');
  [...$('#dl').children].forEach((c,i)=>c.style.setProperty('--i',i));
  $('#ds').innerHTML=SKILLS.map((x,i)=>`<div class="skc" style="--i:${i}"><i>${SKI[i]||'✨'}</i><span>${esc(L(x))}</span></div>`).join('');
