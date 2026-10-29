@@ -803,3 +803,62 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     overflow: hidden !important;
   }
 }
+
+
+/* ========================================================
+   📱 প্রিভিউ বাটন — প্রফেশনাল ফিক্স (এই ব্লকটি ফাইলের একদম শেষে থাকতে হবে)
+   ======================================================== */
+@media screen and (max-width: 899px) {
+  /* ফর্মের শেষ ফিল্ডও যেন বাটনের নিচে ঢাকা না পড়ে */
+  .container { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  /* ভাসমান বাটন: কোণায় ছোট পিল, পুরো প্রস্থ নয় (অন্য CSS-এর button নিয়ম বাতিল) */
+  body > button#pvFab {
+    position: fixed !important; left: auto !important; top: auto !important;
+    right: 16px !important; bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    width: auto !important; min-width: 0 !important; max-width: calc(100vw - 32px) !important;
+    height: 52px !important; margin: 0 !important; padding: 0 22px !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 9px !important;
+    border: 1px solid rgba(255,255,255,.18) !important; border-radius: 999px !important;
+    background: linear-gradient(135deg, #0f2f57, #0a2240) !important; color: #f1c15d !important;
+    font: 700 15px/1 'Hind Siliguri', sans-serif !important; letter-spacing: .2px;
+    box-shadow: 0 10px 26px rgba(10,34,64,.45), 0 2px 6px rgba(0,0,0,.2) !important;
+    z-index: 70 !important; cursor: pointer; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transform: none; transition: transform .15s, box-shadow .15s;
+  }
+  body > button#pvFab:active { transform: scale(.95) !important; box-shadow: 0 5px 14px rgba(10,34,64,.4) !important; }
+  body > button#pvFab:focus-visible { outline: 3px solid #f1c15d; outline-offset: 3px; }
+  body > button#pvFab span[aria-hidden] { font-size: 18px; line-height: 1; }
+  body.pv-lock > button#pvFab { display: none !important; }
+
+  /* প্রিভিউ পপ-আপ: ওপরে স্পষ্ট হেডার, নিচ থেকে স্লাইড করে ওঠে */
+  .preview-section {
+    z-index: 100 !important;
+    background: var(--bg, #eef2f6) !important;
+    box-shadow: 0 -8px 30px rgba(0,0,0,.25);
+    display: flex !important; flex-direction: column; align-items: stretch;
+    border-radius: 0 !important;
+  }
+  .preview-section > h2 {
+    flex: 0 0 auto; min-height: 44px; display: flex; align-items: center; justify-content: center;
+    margin: 0 0 8px !important; padding: 0 56px !important;
+  }
+
+  /* বন্ধ করার বাটন: বড় (৪৮px) ট্যাপ এরিয়া, সহজে ধরা যায় */
+  .preview-section > button#pvClose {
+    position: absolute !important; top: calc(6px + env(safe-area-inset-top, 0px)) !important; right: 8px !important;
+    width: 48px !important; height: 48px !important; min-width: 48px !important; margin: 0 !important; padding: 0 !important;
+    display: inline-flex !important; align-items: center; justify-content: center;
+    border: 0 !important; border-radius: 50% !important;
+    background: #0a2240 !important; color: #fff !important; font-size: 20px !important; line-height: 1;
+    box-shadow: 0 3px 10px rgba(0,0,0,.28) !important; z-index: 5; cursor: pointer;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  }
+  .preview-section > button#pvClose:active { transform: scale(.92); }
+  .preview-section > button#pvClose:focus-visible { outline: 3px solid #f1c15d; outline-offset: 2px; }
+}
+
+/* কম নড়াচড়া পছন্দ করলে অ্যানিমেশন বন্ধ */
+@media (prefers-reduced-motion: reduce) {
+  .preview-section, #pvFab { transition: none !important; }
+}
