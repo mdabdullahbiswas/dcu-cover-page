@@ -1,1210 +1,354 @@
-/**
- * DCU Cover Page Generator Logic
- */
-const $ = id => document.getElementById(id);
-const KEY = 'dcuCoverV2';
-const F = ['campus','dept','courseCode','courseName','topic','studentName','studentClass','studentRoll','session','mobile','submitDate','teacherInfo','members','declText','apprText','ackText','tocText'];
-const D = {
-  campus: 'MAIN CAMPUS, DHAKA',
-  dept: 'DEPARTMENT OF COMPUTER SCIENCE',
-  topic: 'INTRODUCTION TO ARTIFICIAL INTELLIGENCE',
-  studentName: 'ABDUL KARIM',
-  studentClass: 'BSc Honours 1st Year',
-  studentRoll: '101',
-  session: '2025-26',
-  mobile: '01700000000',
-  submitDate: '12/02/2026',
-  teacherInfo: 'Prof. Dr. X\nAssociate Professor\nCourse Instructor',
-  members: 'ABDUL KARIM, 101\nRAHIM UDDIN, 102\nKARIMA BEGUM, 103'
+/* ============ সাইট কনফিগারেশন: শুধু এই অংশটুকু নিজের তথ্য দিয়ে বদলান ============ */
+var DEV = {
+  name: 'Md Abdullah Biswas',                       // আপনার নাম
+  role: 'ওয়েব ডেভেলপার|Web Developer',               // পরিচিতি (বাংলা|English)
+  bio: 'শিক্ষার্থীদের প্রতিদিনের কাজ সহজ করতে এই ওয়েবসাইট ও টুলগুলো তৈরি করেছি। আপনার মতামত পেলে সাইটটিকে আরও উন্নত করতে পারব।|I built this website and its tools to make everyday student work easier. Your feedback helps me improve it.',
+  email: 'abdullah84402660@gmail.com',
+  whatsapp: '8801784402660',                         // দেশ কোডসহ
+  links: [                                           // খালি লিংক দেখানো হবে না
+    ['GitHub', 'https://github.com/mdabdullahbiswas'],
+    ['Facebook', 'https://www.facebook.com/mdabdullah.biswas.84'],
+    ['LinkedIn', 'https://www.linkedin.com/in/md-abdullah-biswas/'],
+    ['Instagram', 'https://www.instagram.com/mdabdullah84_biswas/']
+  ],
+  skills: [],
+  repo: 'https://github.com/mdabdullahbiswas/dcu-cover-page'
 };
-const P = {
-  campus: ['prev-campus'],
-  dept: ['prev-dept','prev-tdept'],
-  topic: ['prev-topic'],
-  studentName: ['prev-sname'],
-  studentClass: ['prev-sclass'],
-  studentRoll: ['prev-sroll'],
-  session: ['prev-session'],
-  mobile: ['prev-mobile'],
-  submitDate: ['prev-date']
-};
+var RESULT_URL = 'https://result.7college.du.ac.bd/';
+var COLS = [['Dhaka College','ঢাকা কলেজ'],['Eden Mohila College','ইডেন মহিলা কলেজ'],['Government Titumir College','সরকারি তিতুমীর কলেজ'],['Government Bangla College','সরকারি বাঙলা কলেজ'],['Begum Badrunnessa Government Mohila College','বেগম বদরুন্নেসা সরকারি মহিলা কলেজ'],['Government Shaheed Suhrawardy College','সরকারি শহীদ সোহরাওয়ার্দী কলেজ'],['Kabi Nazrul Government College','কবি নজরুল সরকারি কলেজ']];
+var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Arabic','আরবি'],['History','ইতিহাস'],['Islamic History & Culture','ইসলামের ইতিহাস ও সংস্কৃতি'],['Philosophy','দর্শন'],['Islamic Studies','ইসলামিক স্টাডিজ'],['Political Science','রাষ্ট্রবিজ্ঞান'],['Sociology','সমাজবিজ্ঞান'],['Social Work','সমাজকর্ম'],['Economics','অর্থনীতি'],['Marketing','মার্কেটিং'],['Finance & Banking','ফিন্যান্স এন্ড ব্যাংকিং'],['Accounting','হিসাববিজ্ঞান'],['Management','ব্যবস্থাপনা'],['Physics','পদার্থবিজ্ঞান'],['Chemistry','রসায়ন'],['Botany','উদ্ভিদবিজ্ঞান'],['Zoology','প্রাণিবিদ্যা'],['Mathematics','গণিত'],['Geography & Environment','ভূগোল ও পরিবেশ'],['Soil Science','মৃত্তিকাবিজ্ঞান'],['Psychology','মনোবিজ্ঞান'],['Home Economics','গার্হস্থ্য অর্থনীতি'],['Statistics','পরিসংখ্যান']];
+/* ===================================================================== */
+(function () {
+  window.$DEV = DEV;
+  var P = document.body.dataset.page || '', SL = 'en';
+  try { SL = localStorage.getItem('dcuSL') || 'en'; } catch (e) {}
+  var $L = function (s) { var p = String(s).split('|'); return SL === 'en' && p[1] ? p[1] : p[0]; };
+  window.$L = $L; window.$lang = function () { return SL; };
 
-const EXTRA = ['docType','lang','digits','font','bs','dateFmt','wm','sign','gut'];
-const CHK = ['pgDecl','pgAppr','pgAck','pgToc'];
-const LG = {
-  en: {
-    uni: 'DHAKA CENTRAL UNIVERSITY',
-    by: 'SUBMITTED BY',
-    byg: 'SUBMITTED BY (GROUP)',
-    to: 'SUBMITTED TO',
-    roll: 'Class Roll:',
-    cls: 'Class/Degree:',
-    ses: 'Session:',
-    mob: 'Mobile No:',
-    dt: 'Submission Date:',
-    course: 'COURSE: ',
-    r: 'Roll: ',
-    col: 'Dhaka Central University',
-    sg1: "Student's Signature",
-    sg2: "Teacher's Signature"
-  },
-  bn: {
-    uni: 'ঢাকা সেন্ট্রাল ইউনিভার্সিটি',
-    by: 'জমাদানকারী',
-    byg: 'জমাদানকারী (গ্রুপ)',
-    to: 'জমা গ্রহণকারী',
-    roll: 'ক্লাস রোল:',
-    cls: 'ক্লাস/ডিগ্রি:',
-    ses: 'সেশন:',
-    mob: 'মোবাইল নম্বর:',
-    dt: 'জমার তারিখ:',
-    course: 'কোর্স: ',
-    r: 'রোল: ',
-    col: 'ঢাকা সেন্ট্রাল ইউনিভার্সিটি',
-    sg1: 'শিক্ষার্থীর স্বাক্ষর',
-    sg2: 'শিক্ষকের স্বাক্ষর'
-  }
-};
-const TY = {
-  assignment: ['ASSIGNMENT','অ্যাসাইনমেন্ট','TOPIC','বিষয়'],
-  lab: ['LAB REPORT','ল্যাব রিপোর্ট','EXPERIMENT','পরীক্ষণ'],
-  presentation: ['PRESENTATION','প্রেজেন্টেশন','TOPIC','বিষয়'],
-  project: ['PROJECT','প্রজেক্ট','TITLE','শিরোনাম'],
-  quiz: ['QUIZ','কুইজ','SUBJECT','বিষয়']
-};
+  // টুলস ড্রপডাউন তালিকা
+  var TL = [
+    ['card', 'শেয়ার কার্ড|Share Card'],
+    ['frame', 'প্রোফাইল ফ্রেম|Profile Frame'],
+    ['cv', 'সিভি বিল্ডার|CV Builder'],
+    ['routine', 'ক্লাস রুটিন|Class Routine'],
+    ['cgpa', 'CGPA ক্যালকুলেটর|CGPA Calculator'],
+    ['exam', 'পরীক্ষা প্ল্যানার|Exam Planner'],
+    ['pdf', 'PDF টুলকিট|PDF Toolkit'],
+    ['calc', 'সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator'],
+    ['result', 'রেজাল্ট|Results']
+  ];
+  var tl = TL.map(function (a) { return '<a class="t" href="tools.html#' + a[0] + '">' + a[1] + '</a>'; }).join('');
+  var isI = P === 'index';
 
-const SP = {
-  en: {
-    decl: 'DECLARATION',
-    appr: 'APPROVAL CERTIFICATE',
-    ack: 'ACKNOWLEDGEMENT',
-    toc: 'TABLE OF CONTENTS',
-    sig: 'Signature',
-    date: 'Date',
-    sup: 'Supervisor',
-    declT: (n,t,k,s) => `I, ${n}, hereby declare that the ${k} titled “${t}” is my own original work${s ? ', carried out under the supervision of ' + s : ''}. It has not been submitted elsewhere for any other degree, diploma or course.`,
-    apprT: (n,r,ss,t,k) => `This is to certify that ${n} (Roll: ${r}, Session: ${ss}) has satisfactorily completed the ${k} titled “${t}” under my supervision.`,
-    ackD: s => `I would like to express my sincere gratitude to everyone who helped me complete this work. I am especially thankful to my respected supervisor${s ? ', ' + s : ''}, for continuous guidance, encouragement and valuable suggestions. I also thank my teachers, friends and family for their constant support.`,
-    toc0: 'Introduction | 1\nLiterature Review | 5\nMethodology | 12\nResults and Discussion | 20\nConclusion | 30\nReferences | 34'
-  },
-  bn: {
-    decl: 'ঘোষণাপত্র',
-    appr: 'অনুমোদনপত্র',
-    ack: 'কৃতজ্ঞতা স্বীকার',
-    toc: 'সূচিপত্র',
-    sig: 'স্বাক্ষর',
-    date: 'তারিখ',
-    sup: 'তত্ত্বাবধায়ক',
-    declT: (n,t,k,s) => `আমি ${n} ঘোষণা করছি যে “${t}” শীর্ষক ${k} আমার নিজস্ব মৌলিক কর্ম${s ? ' এবং ' + s + '-এর তত্ত্বাবধানে সম্পাদিত' : ''}। এটি অন্য কোনো ডিগ্রি, ডিপ্লোমা বা কোর্সের জন্য কোথাও জমা দেওয়া হয়নি।`,
-    apprT: (n,r,ss,t,k) => `এই মর্মে প্রত্যয়ন করা যাচ্ছে যে ${n} (রোল: ${r}, সেশন: ${ss}) আমার তত্ত্বাবধানে “${t}” শীর্ষক ${k} সন্তোষজনকভাবে সম্পন্ন করেছেন।`,
-    ackD: s => `এই কাজটি সম্পন্ন করতে যাঁরা সহায়তা করেছেন, তাঁদের সবার প্রতি আমি আন্তরিক কৃতজ্ঞতা জানাই। বিশেষত আমার শ্রদ্ধেয় তত্ত্বাবধায়ক${s ? ' ' + s : ''}-এর নিরন্তর দিকনির্দেশনা, উৎসাহ ও মূল্যবান পরামর্শের জন্য আমি ঋণী। এছাড়া শিক্ষকমণ্ডলী, বন্ধুবান্ধব ও পরিবারের সদস্যদের সহযোগিতার জন্যও ধন্যবাদ জানাই।`,
-    toc0: 'ভূমিকা | 1\nসাহিত্য পর্যালোচনা | 5\nপদ্ধতি | 12\nফলাফল ও আলোচনা | 20\nউপসংহার | 30\nগ্রন্থপঞ্জি | 34'
-  }
-};
+  // হেডার
+  var hd = '<div class="sh" role="banner"><div class="sh-in">' +
+    '<a class="brand" href="./" title="Home"><img src="logo.png" alt="" onerror="this.remove()">' +
+    '<div class="brand-text"><span>Dhaka Central University</span><small class="t brand-sub">আন-অফিশিয়াল|Unofficial</small></div></a>' +
+    '<nav class="mn" id="mn" aria-label="Main">' +
+    '<a class="t' + (isI ? ' on' : '') + '" href="./">অ্যাসাইনমেন্ট|Assignment</a>' +
+    '<div class="dd"><button type="button" class="t' + (P === 'tools' ? ' on' : '') + '" id="ddb">টুলস ▾|Tools ▾</button><div class="ddm">' + tl + '</div></div>' +
+    '<a class="t' + (P === 'blood' ? ' on' : '') + '" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a>' +
+    '<a class="t' + (P === 'about' ? ' on' : '') + '" href="about.html">সম্পর্কে|About</a>' +
+    '<a class="t' + (P === 'feedback' ? ' on' : '') + '" href="feedback.html">মতামত|Feedback</a></nav>' +
+    '<div class="ut">' +
+    '<button type="button" id="helpBtn" title="গাইড / Guide">❓</button>' +
+    '<button type="button" id="langBtn" title="Language">' + (SL === 'bn' ? 'EN' : 'বাং') + '</button>' +
+    '<button type="button" id="darkBtn" onclick="toggleDark()" title="Theme">🌙</button>' +
+    '<button type="button" id="mt" aria-label="Menu" aria-expanded="false">☰</button></div></div></div>';
 
-const UI = Object.fromEntries([
-  ['তথ্য প্রদান করুন','Enter Information'],
-  ['📁 সংরক্ষিত প্রোফাইল (কোর্স/শিক্ষক অনুযায়ী):','📁 Saved Profiles (by course / teacher):'],
-  ['কভার পেজ টেমপ্লেট নির্বাচন করুন:','Select Cover Page Template:'],
-  ['🎨 থিমের রং:','🎨 Theme Colour:'],
-  ['← কাস্টম রং','← Custom colour'],
-  ['📝 কভারের ধরন:','📝 Cover Type:'],
-  ['অ্যাসাইনমেন্ট','Assignment'],
-  ['ল্যাব রিপোর্ট','Lab Report'],
-  ['প্রেজেন্টেশন','Presentation'],
-  ['প্রজেক্ট / থিসিস','Project / Thesis'],
-  ['কুইজ / পরীক্ষা','Quiz / Exam'],
-  ['🌐 কভারের ভাষা:','🌐 Cover Language:'],
-  ['🔢 সংখ্যা:','🔢 Digits:'],
-  ['🔤 শিরোনামের ফন্ট:','🔤 Title Font:'],
-  ['🖼️ সীমারেখা (বর্ডার):','🖼️ Border:'],
-  ['সীমারেখাবিহীন','No border'],
-  ['দ্বৈত রেখা','Double line'],
-  ['একক রেখা','Single line'],
-  ['অলংকৃত','Ornate'],
-  ['🏛️ নিজস্ব লোগো (ঐচ্ছিক):','🏛️ Custom Logo (optional):'],
-  ['↩️ মূল লোগো পুনরুদ্ধার','↩️ Restore default logo'],
-  ['💧 ওয়াটারমার্ক:','💧 Watermark:'],
-  ['টেমপ্লেট অনুযায়ী','Per template'],
-  ['চালু','On'],
-  ['বন্ধ','Off'],
-  ['✍️ স্বাক্ষরের স্থান:','✍️ Signature Area:'],
-  ['ক্যাম্পাসের নাম:','Campus Name:'],
-  ['ডিপার্টমেন্ট:','Department:'],
-  ['কোর্স কোড (ঐচ্ছিক):','Course Code (optional):'],
-  ['কোর্সের নাম (ঐচ্ছিক):','Course Name (optional):'],
-  ['অ্যাসাইনমেন্টের বিষয় (Topic):','Topic:'],
-  ['Submitted By (শিক্ষার্থী)','Submitted By (Student)'],
-  ['Submitted To (শিক্ষক)','Submitted To (Teacher)'],
-  ['জমাদানের ধরন:','Submission Type:'],
-  ['👤 একক (Individual)','👤 Individual'],
-  ['👥 গ্রুপ (Group)','👥 Group'],
-  ['শিক্ষার্থীর পূর্ণ নাম:','Student Full Name:'],
-  ['ক্লাস রোল নম্বর:','Class Roll No.:'],
-  ['গ্রুপ সদস্য (প্রতি লাইনে একজন: নাম, রোল):','Group Members (one per line: Name, Roll):'],
-  ['সর্বোচ্চ ৮ জন সদস্য সুন্দরভাবে প্রদর্শিত হবে।','Up to 8 members fit neatly.'],
-  ['ক্লাস/ডিগ্রি:','Class / Degree:'],
-  ['অ্যাকাডেমিক সেশন:','Academic Session:'],
-  ['মোবাইল নম্বর:','Mobile Number:'],
-  ['জমাদানের তারিখ:','Submission Date:'],
-  ['📅 আজকের তারিখ',"📅 Today's date"],
-  ['শিক্ষকের নাম ও পদবি (প্রতি লাইনে একজন):','Teacher Name & Designation (one per line):'],
-  ['সংরক্ষিত শিক্ষক (ক্লিক করে ব্যবহার করুন):','Saved Teachers (click to use):'],
-  ['তালিকা মুছুন','Clear list'],
-  ['অতিরিক্ত পেজ (থিসিস / প্রজেক্ট)','Extra Pages (Thesis / Project)'],
-  ['ঘোষণাপত্র (Declaration)','Declaration'],
-  ['অনুমোদনপত্র (Approval Certificate)','Approval Certificate'],
-  ['কৃতজ্ঞতা স্বীকার (Acknowledgement)','Acknowledgement'],
-  ['সূচিপত্র (Table of Contents)','Table of Contents'],
-  ['প্রতি লাইনে: অধ্যায়ের নাম | পৃষ্ঠা নম্বর','One per line: Chapter title | Page number'],
-  ['🖼️ PNG ডাউনলোড','🖼️ Download PNG'],
-  ['📝 Word (সম্পাদনাযোগ্য)','📝 Word (editable)'],
-  ['🔗 লিংক শেয়ার','🔗 Share Link'],
-  ['🗑️ সব তথ্য মুছে ফেলুন','🗑️ Clear All Data'],
-  ['✅ আপনার তথ্য এই ব্রাউজারে স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়; পরবর্তী ব্যবহারে পুনরায় লিখতে হবে না।','✅ Your data is saved automatically in this browser, so you won’t need to retype it next time.'],
-  ['লাইভ প্রিভিউ','Live Preview'],
-  ['বন্ধুদের সঙ্গে শেয়ার করুন:','Share with friends:'],
-  ['💬 মতামত জানান','💬 Send Feedback'],
-  ['এড়িয়ে যান','Skip'],
-  ['পরবর্তী','Next'],
-  ['সমাপ্ত','Finish'],
-  ['— নির্বাচন করুন —','— Select —'],
-  ['⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)','⚠️ Mobile number looks invalid (e.g. 01712345678)'],
-  ['⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।','⚠️ Too much text; the bottom of the cover may be cut off. Please shorten it.'],
-  ['ছবি প্রস্তুত করা হচ্ছে...','Preparing image...'],
-  ['ডাউনলোড শুরু হয়েছে','Download started'],
-  ['ছবি তৈরি করা যায়নি; অনুগ্রহ করে PDF ব্যবহার করুন','Could not create the image; please use PDF'],
-  ['লিংক কপি করা হয়েছে','Link copied'],
-  ['প্রোফাইল সংরক্ষিত হয়েছে','Profile saved'],
-  ['প্রোফাইল লোড হয়েছে','Profile loaded'],
-  ['ছবির আকার বড়, সংরক্ষণ করা যায়নি','Image too large to save'],
-  ['Word ফাইল ডাউনলোড হয়েছে','Word file downloaded'],
-  ['লিংকটি কপি করুন:','Copy this link:'],
-  ['১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।','1/4 — Start by choosing a template.'],
-  ['২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।','2/4 — Pick a theme colour you like.'],
-  ['৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।','3/4 — Fill in department, course and your details; the preview updates live.'],
-  ['৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।','4/4 — Finally, download as PDF, PNG or Word.'],
-  ['📎 বাইন্ডিং মার্জিন (বাম পাশে):','📎 Binding Margin (left side):'],
-  ['৫ মিমি — হালকা স্ট্যাপল','5 mm — light staple'],
-  ['১০ মিমি — স্ট্যাপল / ক্লিপ','10 mm — staple / clip'],
-  ['১৫ মিমি — স্পাইরাল','15 mm — spiral'],
-  ['২০ মিমি — হার্ড বাইন্ডিং','20 mm — hard binding'],
-  ['বাইন্ডিংয়ে বাম পাশ ঢাকা পড়ে; এটি দিলে লেখা ও বর্ডার ডানে সরে আসবে। প্রিভিউতে ধূসর অংশটিই বাইন্ডিং এলাকা।','Binding hides part of the left edge. This shifts text and borders to the right; the grey strip in the preview is the binding area.']
-]);
+  /* ---------- সোশ্যাল আইকন ---------- */
+  var IC = {
+    github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+    linkedin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>',
+    instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg>',
+    code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>'
+  };
 
-let SL = 'bn';
-let ti = -1;
+  window.$SOC = function (name, url, label, blank) {
+    var k = String(name).toLowerCase(), t = label || name;
+    return '<a class="si si-' + (IC[k] ? k : 'link') + '" href="' + url + '"' + (blank === false ? '' : ' target="_blank" rel="noopener"') +
+      ' aria-label="' + t + '" title="' + t + '">' + (IC[k] || IC.link) + '</a>';
+  };
 
-const val = id => {
-  const el = $(id);
-  return (el && el.value.trim()) || D[id] || '';
-};
-const lines = t => (t || '').split('\n').map(l => l.trim()).filter(Boolean);
-const T = b => SL === 'en' ? (UI[b] || b) : b;
-const L = () => LG[($('lang') && $('lang').value) || 'en'];
-const esc = t => String(t || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  var st = document.createElement('style');
+  st.textContent =
+    'a.si{--c:#0a2240;display:inline-flex!important;align-items:center;justify-content:center;width:34px!important;height:34px!important;padding:0!important;margin:0;border-radius:50%!important;' +
+      'background:#fff!important;color:var(--c)!important;border:1px solid #dbe3ec!important;box-shadow:0 1px 3px rgba(10,34,64,.15);text-decoration:none!important;line-height:0;' +
+      'transition:transform .2s ease,background .2s ease,color .2s ease}' +
+    'a.si svg{width:17px;height:17px;display:block}' +
+    'a.si:hover,a.si:focus-visible{background:var(--c)!important;color:#fff!important;border-color:var(--c)!important;transform:translateY(-2px)}' +
+    'a.si-github{--c:#181717}a.si-facebook{--c:#1877f2}a.si-linkedin{--c:#0a66c2}a.si-instagram{--c:#e4405f}a.si-email{--c:#ea4335}a.si-code{--c:#0a2240}a.si-link{--c:#5d6b7a}' +
+    'a.si-instagram:hover{background:linear-gradient(45deg,#f9a03f,#e1306c 55%,#833ab4)!important;border-color:transparent!important}' +
+    'body.dark a.si-code{--c:#243349}' +
+    '#hdr{position:sticky;top:0;z-index:50}' +
+    'html{scroll-padding-top:76px}' +
+    /* লোগো ও ব্র্যান্ড টেক্সটের স্টাইল */
+    '.brand-text{display:flex;flex-direction:column;line-height:1.15;text-align:left}' +
+    '.brand-sub{font-size:10.5px;font-weight:600;color:#e8c179;letter-spacing:.6px;text-transform:uppercase;margin-top:2px}' +
+    /* স্লিম ফুটার স্টাইল */
+    '.sf{background:#07192f;color:#b9c7d8;margin-top:28px;font-size:13px;line-height:1.5}' +
+    '.sf-in{max-width:1160px;margin:0 auto;padding:22px 18px 12px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:20px}' +
+    '.sf h4{color:#e5a83b;font-size:14px;margin-bottom:6px;font-weight:700}' +
+    '.sf a{display:block;color:#d5e0ee;text-decoration:none;padding:2px 0;font-size:13px;transition:color .15s}' +
+    '.sf a:hover{color:#e5a83b}' +
+    '.sf p{margin:0 0 6px;font-size:12.5px;color:#9fb0c3}' +
+    '.sf .b{text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin-bottom:6px}' +
+    '.sf .b img{width:32px;height:32px}' +
+    '.sf .b:hover span{color:#fff}' +
+    '.sf a.dev-link{color:inherit;text-decoration:none}' +
+    '.sf a.dev-link:hover{color:#e5a83b}' +
+    '.sf .soc{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 6px}' +
+    '.sf .soc a.si{width:32px!important;height:32px!important}' +
+    '.sf .soc a.si svg{width:15px;height:15px}' +
+    '.sf-note{max-width:1160px;margin:0 auto;padding:10px 18px 14px;border-top:1px solid rgba(255,255,255,.12);text-align:center;font-size:11.5px;color:#8596a8}' +
+    '.sf-note p{margin:2px 0}' +
+    '.sf-note a{display:inline;padding:0}' +
+    '@media(max-width:768px){.sf-in{grid-template-columns:1fr 1fr;gap:16px}}' +
+    /* মোবাইল: কমপ্যাক্ট ফুটার ও হেডার */
+    '@media(max-width:600px){' +
+      '.sf{margin-top:20px;font-size:12.5px}' +
+      '.sf-in{grid-template-columns:1fr 1fr;gap:10px 16px;padding:16px 16px 8px}' +
+      '.sf-in>div:nth-child(1){grid-column:1/-1}' +
+      '.sf-in>div:nth-child(2){grid-column:1;grid-row:2/span 2}' +
+      '.sf-in>div:nth-child(4){grid-column:2;grid-row:2}' +
+      '.sf-in>div:nth-child(3){grid-column:2;grid-row:3}' +
+      '.sf-in>div:nth-child(3)>p{display:none}' +
+      '.sf h4{margin-bottom:3px;font-size:13.5px}' +
+      '.sf a{padding:3px 0}' +
+      '.sf .soc{gap:6px;margin:6px 0 2px}' +
+      '.sf .soc a.si{width:28px!important;height:28px!important}' +
+      '.sf .soc a.si svg{width:13px;height:13px}' +
+      '.sf-note{padding:8px 16px 12px;font-size:11px}' +
+      '.sh-in{gap:8px;padding:6px 10px}' +
+      '.sh .brand{font-size:12.5px;letter-spacing:.3px;white-space:normal;gap:8px;line-height:1.15}' +
+      '.brand img{width:28px;height:28px;flex:none}' +
+      '.brand-text{min-width:0}.brand-text span{white-space:normal}' +
+      '.brand-sub{font-size:9px}' +
+      '.sh .ut{flex:none;gap:4px}' +
+      '.sh .ut button{padding:7px 9px;font-size:13px}' +
+      '.dcu-tour-btn{padding:9px 18px}' +
+      '.global-blood-ticker{position:static}' +
+    '}' +
+    /* গাইড বক্স স্টাইল */
+    '.dcu-tour-box{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(94vw,420px);background:var(--cd,#fff);color:var(--ink,#1c2733);border:1.5px solid var(--ln,#d5dde6);border-radius:14px;padding:16px 18px;box-shadow:0 12px 36px rgba(0,0,0,.28);z-index:99999;font-family:inherit;animation:dcuTourIn .2s ease-out}' +
+    '@keyframes dcuTourIn{from{transform:translateX(-50%) translateY(14px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}' +
+    '.dcu-tour-hl{outline:3.5px solid #e5a83b!important;outline-offset:4px!important;border-radius:8px!important}' +
+    '.dcu-tour-step{font-size:11.5px;font-weight:700;color:#e5a83b;text-transform:uppercase;margin-bottom:2px}' +
+    '.dcu-tour-title{font-size:16px;font-weight:800;color:var(--n,#0a2240);margin-bottom:4px}' +
+    'body.dark .dcu-tour-title{color:#e5a83b}' +
+    '.dcu-tour-txt{font-size:13.5px;line-height:1.5;margin-bottom:12px;color:var(--mu,#5d6b7a)}' +
+    'body.dark .dcu-tour-txt{color:#cfd8e6}' +
+    '.dcu-tour-acts{display:flex;justify-content:space-between;align-items:center;gap:8px}' +
+    '.dcu-tour-btn{border:0;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}' +
+    '.dcu-tour-btn.next{background:#0a2240;color:#e5a83b}' +
+    'body.dark .dcu-tour-btn.next{background:#e5a83b;color:#0a2240}' +
+    '.dcu-tour-btn.skip{background:transparent;color:var(--mu,#6c7a89);border:1px solid var(--ln,#d5dde6)}';
+  document.head.appendChild(st);
 
-function toast(msg) {
-  const t = $('toast');
-  if (!t) return;
-  t.textContent = T(msg);
-  t.classList.add('on');
-  setTimeout(() => t.classList.remove('on'), 2200);
-}
+  var soc = '<div class="soc">' + DEV.links.filter(function (l) { return l[1]; }).map(function (l) { return $SOC(l[0], l[1]); }).join('') +
+    (DEV.email ? $SOC('email', 'mailto:' + DEV.email, 'Email', false) : '') + '</div>';
 
-/* ========================================================
-   ✨ আধুনিক কাস্টম পপআপ মোডাল সিস্টেম
-   ======================================================== */
-function showModal({ icon = '💾', title, text, input = false, value = '', placeholder = '', confirmText = 'ঠিক আছে', cancelText = 'বাতিল', isDanger = false, onConfirm }) {
-  const old = document.getElementById('customModalOverlay');
-  if (old) old.remove();
+  // স্লিম এবং পরিচ্ছন্ন ফুটার স্ট্রাকচার
+  var ft = '<div class="sf" role="contentinfo"><div class="sf-in">' +
+    '<div><a class="b" href="./" title="Home"><img src="logo.png" alt="" onerror="this.remove()">' +
+    '<div class="brand-text"><span>Dhaka Central University</span><small class="t brand-sub">আন-অফিশিয়াল|Unofficial</small></div></a>' +
+    '<p class="t">শিক্ষার্থীদের জন্য বিনামূল্যের অ্যাসাইনমেন্ট কভার পেজ ও শিক্ষা টুল।|Free cover page generator & study tools for students.</p>' +
+    '<p><span class="t">শেয়ার: |Share: </span><a id="wa" target="_blank" rel="noopener" style="display:inline;color:#25d366;font-weight:600;">WhatsApp</a> · <a id="fb" target="_blank" rel="noopener" style="display:inline;color:#1877f2;font-weight:600;">Facebook</a></p></div>' +
+    '<div><h4 class="t">দ্রুত লিংক|Quick Links</h4>' +
+    '<a class="t" href="./">কভার পেজ|Cover Page</a>' +
+    '<a class="t" href="tools.html">সকল শিক্ষা টুলস|All Study Tools</a>' +
+    '<a class="t" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a>' +
+    '<a class="t" href="tools.html#result">রেজাল্ট পোর্টাল|Results</a>' +
+    '<a class="t" href="feedback.html">মতামত জানান|Feedback</a></div>' +
+    '<div><h4 class="t">গোপনীয়তা|Privacy</h4><p class="t">আপনার তথ্য শুধু আপনার ডিভাইসের ব্রাউজারেই থাকে; কোনো সার্ভারে পাঠানো হয় না।|Your data stays only in your browser; never sent to any server.</p><a class="t" href="about.html#privacy">বিস্তারিত নীতি|Privacy Policy</a></div>' +
+    '<div><h4 class="t">ডেভেলপার|Developer</h4><a class="dev-link" href="about.html" title="Profile"><b>' + DEV.name + '</b></a><p style="margin:1px 0 4px;" class="t">' + DEV.role + '</p>' + soc + '</div></div>' +
+    '<div class="sf-note"><p class="t">⚠️ এটি একটি আন-অফিশিয়াল ওয়েবসাইট। বিশ্ববিদ্যালয়ের সাথে কোনো প্রাতিষ্ঠানিক সম্পর্ক নেই।|⚠️ Unofficial student initiative; not officially affiliated with the university.</p>' +
+    '<p>© ' + new Date().getFullYear() + ' · <span class="t">তৈরি করেছেন|Developed by</span> <a class="dev-link" href="about.html" style="color:var(--g,#e5a83b);font-weight:700;"><b>' + DEV.name + '</b></a></p></div></div>';
 
-  const overlay = document.createElement('div');
-  overlay.id = 'customModalOverlay';
-  overlay.className = 'c-modal-overlay';
-
-  overlay.innerHTML = `
-    <div class="c-modal-box">
-      <div class="c-modal-head">
-        <span class="c-modal-icon">${icon}</span>
-        <h3>${esc(title)}</h3>
-      </div>
-      ${text ? `<p class="c-modal-desc">${esc(text)}</p>` : ''}
-      ${input ? `<input type="text" id="cModalInput" class="c-modal-input" value="${esc(value)}" placeholder="${esc(placeholder)}" autocomplete="off" maxlength="60">` : ''}
-      <div class="c-modal-actions">
-        <button type="button" class="c-modal-btn cancel" id="cModalCancel">${esc(cancelText)}</button>
-        <button type="button" class="c-modal-btn confirm ${isDanger ? 'danger' : ''}" id="cModalConfirm">${esc(confirmText)}</button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-  requestAnimationFrame(() => overlay.classList.add('active'));
-
-  const inp = document.getElementById('cModalInput');
-  const confirmBtn = document.getElementById('cModalConfirm');
-  const cancelBtn = document.getElementById('cModalCancel');
-
-  if (inp) {
-    inp.focus();
-    inp.select();
-    inp.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        confirmBtn.click();
-      }
+  function applyL(l) {
+    if (l) SL = l;
+    document.documentElement.lang = SL;
+    document.querySelectorAll('.t').forEach(function (e) {
+      if (e.children.length) return;
+      var k = e.dataset.s || (e.dataset.s = e.textContent.trim());
+      e.textContent = $L(k);
     });
-  } else {
-    confirmBtn.focus();
+    document.querySelectorAll('[data-p]').forEach(function (e) { e.placeholder = $L(e.dataset.p); });
+    var b = document.getElementById('langBtn'); if (b) b.textContent = SL === 'bn' ? 'EN' : 'বাং';
+    if (window.onLang) window.onLang();
   }
+  window.$applyL = applyL;
 
-  const close = () => {
-    overlay.classList.remove('active');
-    setTimeout(() => overlay.remove(), 250);
-    document.removeEventListener('keydown', onKey);
+  function dlist(id, html) {
+    var d = document.getElementById(id);
+    if (!d) { d = document.createElement('datalist'); d.id = id; document.body.appendChild(d); }
+    d.innerHTML = html;
+  }
+  function opts(a) { return a.map(function (v) { return '<option value="' + v + '">'; }).join(''); }
+  dlist('deptList', opts(DEPTS.map(function (d) { return 'DEPARTMENT OF ' + d[0].toUpperCase(); }).concat(DEPTS.map(function (d) { return d[1] + ' বিভাগ'; }))));
+  dlist('campusList', opts(COLS.map(function (c) { return c[0].toUpperCase() + ' CAMPUS'; }).concat(COLS.map(function (c) { return c[1] + ' ক্যাম্পাস'; }))));
+  dlist('deptPlain', opts(DEPTS.map(function (d) { return d[0]; }).concat(DEPTS.map(function (d) { return d[1]; }))));
+  window.$DEPTS = DEPTS; window.$COLS = COLS; window.$RESULT = RESULT_URL;
+  var h = document.getElementById('hdr'), f = document.getElementById('ftr');
+  if (h) h.innerHTML = hd; if (f) f.innerHTML = ft;
+  var mn = document.getElementById('mn'), mt = document.getElementById('mt'), dd = document.querySelector('.dd');
+  mt.onclick = function () { var o = mn.classList.toggle('open'); mt.setAttribute('aria-expanded', o); };
+  document.getElementById('ddb').onclick = function (e) { e.stopPropagation(); dd.classList.toggle('open'); };
+  document.addEventListener('click', function (e) {
+    if (!dd.contains(e.target)) dd.classList.remove('open');
+    if (e.target.closest && e.target.closest('.ddm a')) { dd.classList.remove('open'); mn.classList.remove('open'); }
+  });
+  var u = encodeURIComponent(location.origin + '/');
+  document.getElementById('wa').href = 'https://wa.me/?text=' + u;
+  document.getElementById('fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + u;
+
+  window.toggleDark = function () {
+    var d = document.body.classList.toggle('dark');
+    document.getElementById('darkBtn').textContent = d ? '☀️' : '🌙';
+    try { localStorage.setItem('dcuDark', d ? '1' : ''); } catch (e) {}
+  };
+  try { if (localStorage.getItem('dcuDark')) window.toggleDark(); } catch (e) {}
+  document.getElementById('langBtn').onclick = function () {
+    SL = SL === 'bn' ? 'en' : 'bn';
+    try { localStorage.setItem('dcuSL', SL); } catch (e) {}
+    applyL();
   };
 
-  const onKey = e => {
-    if (e.key === 'Escape') close();
+  /* ================== প্রতিটি পেজের গাইড সিস্টেম ================== */
+  var TOURS = {
+    index: [
+      ['.gal, #templateSelector', 'টেমপ্লেট নির্বাচন|Choose Template', 'আপনার পছন্দের কভার পেজ ডিজাইন (Classic, Minimal, Executive ইত্যাদি) বেছে নিন।|Select your preferred cover page design (Classic, Minimal, Executive, etc.).'],
+      ['.themes', 'থিমের রং|Theme Colour', 'পছন্দের রঙের কম্বিনেশন বেছে নিন অথবা কাস্টম কালার পিকার দিয়ে রং দিন।|Pick a university color combination or set custom theme colors.'],
+      ['#dept, #topic, #studentName', 'তথ্য পূরণ|Enter Details', 'ডিপার্টমেন্ট, কোর্সের নাম, রোল ও শিক্ষকের তথ্য দিন; ডানপাশে সরাসরি লাইভ প্রিভিউ দেখতে পাবেন।|Enter department, course, roll and teacher details; preview updates live.'],
+      ['.btns', 'ডাউনলোড ও প্রিন্ট|Download & Print', 'সবশেষে PDF, PNG বা ওয়ার্ড (Word) ফাইল আকারে কভার পেজটি ডাউনলোড করুন।|Finally, download your ready cover page as PDF, PNG or editable Word file.']
+    ],
+    blood: [
+      ['#findSection .filter-grid, .tabs', 'রক্ত খুঁজুন|Find Blood', 'রক্তের গ্রুপ ও এলাকা দিয়ে সার্চ করে সহজে নিকটস্থ রক্তদাতাদের খুঁজুন।|Search by blood group and area to find donors quickly.'],
+      ['#urgentSection, #urgentTicker, #urgentBanner', 'জরুরি রক্তের অনুরোধ|Urgent Requests', 'জরুরি মুহূর্তে রোগীর জন্য রক্তের প্রয়োজন হলে সরাসরি অনুরোধ পোস্ট করুন।|Post an urgent blood request if blood is required for a patient.'],
+      ['#registerSection', 'ডোনার নিবন্ধন|Become a Donor', 'নিজে রক্তদাতা হিসেবে যুক্ত হতে এই ফর্মটি পূরণ করে গুগল দিয়ে সাইন ইন করুন।|Fill out this form and sign in with Google to register as a blood donor.'],
+      ['#notifySection', 'নিরাপত্তা ও নোটিফিকেশন|Safety & Notifications', 'আপনার মোবাইল নম্বর কে কে দেখেছে তা নোটিফিকেশন লগে সুরক্ষিত থাকবে।|See who viewed your phone number in secure tracking notifications.']
+    ],
+    tools: [
+      ['.tabs', 'টুলস নির্বাচন|Select Tool', 'শেয়ার কার্ড, সিভি বিল্ডার, ক্লাস রুটিন, CGPA ক্যালকুলেটরসহ যেকোনো টুলে ক্লিক করে কাজ শুরু করুন।|Switch between Share Card, CV Builder, Class Routine, CGPA Calculator, and more.'],
+      ['main section.on, .bx', 'টুলের ব্যবহার|Using the Tool', 'প্রয়োজনীয় তথ্য দিলে স্ক্রিনে সঙ্গে সঙ্গে ফলাফল, রুটিন বা প্রিভিউ তৈরি হয়ে যাবে।|Fill in the fields to generate instant results, charts, or printable previews.'],
+      ['.pv', '১০০% নিরাপদ ও গোপনীয়|100% Private & Safe', 'আপনার কোনো তথ্য সার্ভারে যায় না; সবকিছু সম্পূর্ণ আপনার ডিভাইসের ব্রাউজারেই প্রসেস হয়।|All data stays only on your device browser; nothing is sent to any server.']
+    ],
+    about: [
+      ['.hero', 'পরিচিতি|About Developer', 'সরকারি বাঙলা কলেজের শিক্ষার্থী কর্তৃক উন্মুক্ত শিক্ষা উদ্যোগ হিসেবে সাইটটি নির্মিত।|Developed by a student of Govt. Bangla College as an open student initiative.'],
+      ['.bx:nth-of-type(2)', 'প্রজেক্ট সম্পর্কে|About Project', 'শিক্ষার্থীদের প্রতিদিনের কাজ ও কভার পেজ তৈরির প্রক্রিয়া সহজ করাই এর লক্ষ্য।|The mission is to make daily study tools and cover page creation free and easy.'],
+      ['#privacy', 'গোপনীয়তা নীতি|Privacy First', 'আপনার কোনো ফাইল বা তথ্য সার্ভারে জমা হয় না, ব্রাউজারের ভেতর নিরাপদ থাকে।|Your files and data remain strictly inside your device browser.']
+    ],
+    feedback: [
+      ['#ft', 'বার্তার ধরন|Feedback Type', 'পরামর্শ, বাগ রিপোর্ট বা প্রশ্ন—সঠিক ধরনটি বেছে নিন।|Choose whether you have a suggestion, bug report, or question.'],
+      ['#fm', 'আপনার বার্তা|Your Message', 'আপনার মতামত, সমস্যা বা ধারণার কথা বিস্তারিত লিখুন।|Write your thoughts, ideas, or problems you encountered here.'],
+      ['#fb2, #ct', 'বার্তা পাঠান|Send Message', 'Gmail, WhatsApp বা GitHub-এর মাধ্যমে সরাসরি ডেভেলপারের কাছে বার্তা পাঠান।|Send your message directly via Gmail, WhatsApp, or GitHub.']
+    ],
+    photo: [
+      ['#file, #size', 'ছবি ও মাপ|Upload & Size', 'ছবি আপলোড করুন এবং পাসপোর্ট বা স্ট্যাম্প মাপ নির্বাচন করুন।|Upload any portrait photo and select Passport or Stamp photo size.'],
+      ['#rm, #bg', 'ব্যাকগ্রাউন্ড পরিবর্তন|Background Change', 'AI দিয়ে ব্যাকগ্রাউন্ড মুছে সাদা, নীল বা যেকোনো ব্যাকগ্রাউন্ড সেট করুন।|Remove background using AI and pick official white, blue, or custom color.'],
+      ['#z, #af', 'ফ্রেমিং ও টাচ-আপ|Framing & Touchup', 'মুখ স্বয়ংক্রিয়ভাবে ফ্রেমে সাজান এবং ব্রাশ দিয়ে কিনারা নিখুঁত করুন।|Auto-fit the face and use the touchup brush to perfect beard and hair edges.'],
+      ['#d1, #d2, #pr', 'ডাউনলোড ও প্রিন্ট|Download & Print', 'একটি ছবি ডাউনলোড করুন অথবা পুরো A4 শিটে সাজিয়ে প্রিন্ট করুন।|Download a single photo or arrange multiple copies on an A4 sheet for instant printing.']
+    ]
   };
-  document.addEventListener('keydown', onKey);
 
-  cancelBtn.onclick = close;
-  overlay.onclick = e => {
-    if (e.target === overlay) close();
-  };
-
-  confirmBtn.onclick = () => {
-    const enteredVal = inp ? inp.value.trim() : true;
-    if (input && !enteredVal) {
-      if (inp) {
-        inp.classList.add('shake');
-        inp.focus();
-        setTimeout(() => inp.classList.remove('shake'), 400);
-      }
-      return;
-    }
-    close();
-    if (typeof onConfirm === 'function') onConfirm(enteredVal);
-  };
-}
-
-function setTheme(p, a) {
-  document.documentElement.style.setProperty('--pri', p);
-  document.documentElement.style.setProperty('--acc', a);
-  document.documentElement.style.setProperty('--pri2', p);
-  document.documentElement.style.setProperty('--acc2', a);
-  if ($('cPri')) $('cPri').value = p;
-  if ($('cAcc')) $('cAcc').value = a;
-}
-
-function get() {
-  const f = {};
-  F.forEach(i => { const el = $(i); f[i] = el ? el.value : ''; });
-  return {
-    t: $('templateSelector') ? $('templateSelector').value : 'theme-classic',
-    m: $('mode') ? $('mode').value : 'single',
-    c: [$('cPri') ? $('cPri').value : '#0a2240', $('cAcc') ? $('cAcc').value : '#e5a83b'],
-    x: EXTRA.map(i => $(i) ? $(i).value : ''),
-    k: CHK.map(i => $(i) ? $(i).checked : false),
-    f
-  };
-}
-
-function render() {
-  const cover = $('cover-template');
-  if (!cover) return;
-
-  const grp = $('mode') && $('mode').value === 'group';
-  cover.className = 'a4-page ' + ($('templateSelector') ? $('templateSelector').value : 'theme-classic') +
-                    ' bs-' + ($('bs') ? $('bs').value : 'none') +
-                    ($('lang') && $('lang').value === 'bn' ? ' bn-lang' : '') +
-                    ' wm-' + ($('wm') ? $('wm').value : 'auto');
-
-  if ($('prev-sign')) $('prev-sign').style.display = ($('sign') && $('sign').value === 'on') ? 'flex' : 'none';
-  document.documentElement.style.setProperty('--gut', (($('gut') ? +$('gut').value : 0) || 0) + 'mm');
-  if ($('font')) cover.style.setProperty('--font', "'" + $('font').value + "'");
-
-  document.querySelectorAll('.tpl').forEach(b => b.classList.toggle('on', b.dataset.v === ($('templateSelector') ? $('templateSelector').value : '')));
-  document.body.classList.toggle('grp', grp);
-
-  for (const id in P) {
-    P[id].forEach(pid => { if ($(pid)) $(pid).textContent = val(id); });
+  var curStep = 0, activeSteps = [];
+  function closeTour() {
+    document.querySelectorAll('.dcu-tour-hl').forEach(function(e) { e.classList.remove('dcu-tour-hl'); });
+    var b = document.getElementById('dcuTourBox'); if (b) b.remove();
   }
 
-  if ($('prev-tcampus')) {
-    $('prev-tcampus').textContent = ($('campus') && $('campus').value.trim()) ? 'Dhaka Central University, ' + $('campus').value.trim() : 'Dhaka Central University';
-  }
-
-  loc();
-
-  const course = [$('courseCode') ? $('courseCode').value.trim() : '', $('courseName') ? $('courseName').value.trim() : ''].filter(Boolean).join(' — ');
-  if ($('prev-course')) {
-    $('prev-course').textContent = course ? L().course + course : '';
-    $('prev-course').style.display = course ? 'block' : 'none';
-  }
-
-  const tBox = $('prev-teachers');
-  if (tBox) {
-    tBox.textContent = '';
-    lines(val('teacherInfo')).forEach((l, i) => {
-      const p = document.createElement('p');
-      p.className = i ? 'teacher-item' : 'teacher-item lead';
-      p.textContent = l;
-      tBox.appendChild(p);
-    });
-  }
-
-  const mBox = $('prev-members');
-  if (mBox) {
-    mBox.textContent = '';
-    lines(val('members')).forEach((l, i) => {
-      const k = Math.max(l.lastIndexOf(','), l.lastIndexOf('|'));
-      const name = k > -1 ? l.slice(0, k).trim() : l;
-      const roll = k > -1 ? l.slice(k + 1).trim() : '';
-      const row = document.createElement('p');
-      row.className = 'member uppercase';
-      const a = document.createElement('span');
-      a.textContent = (i + 1) + '. ' + name;
-      const b = document.createElement('span');
-      b.textContent = roll ? L().r + roll : '';
-      row.append(a, b);
-      mBox.appendChild(row);
-    });
-  }
-
-  supRender();
-  pvTabs();
-  fit();
-  digitsPass();
-  checks();
-  pvLayout();
-
-  try { localStorage.setItem(KEY, JSON.stringify(get())); } catch(e){}
-}
-
-function apply(s) {
-  F.forEach(i => { if ($(i)) $(i).value = (s.f && s.f[i]) || ''; });
-  if ($('templateSelector')) $('templateSelector').value = s.t || 'theme-classic';
-  if ($('mode')) $('mode').value = s.m || 'single';
-  EXTRA.forEach((i, k) => {
-    if ($(i)) $(i).value = (s.x && s.x[k] !== undefined && s.x[k] !== '') ? s.x[k] : ($(i).options[0] ? $(i).options[0].value : '');
-  });
-  CHK.forEach((i, j) => { if ($(i)) $(i).checked = !!(s.k && s.k[j]); });
-  setTheme(...(s.c || ['#0a2240', '#e5a83b']));
-  render();
-}
-
-function loc() {
-  const l = L();
-  const b = ($('lang') && $('lang').value === 'bn') ? 1 : 0;
-  const docTypeVal = ($('docType') && $('docType').value) || 'assignment';
-  const ty = TY[docTypeVal];
-  const c = ($('campus') && $('campus').value.trim()) || '';
-
-  if ($('prev-uni')) $('prev-uni').textContent = l.uni;
-  if ($('prev-bylabel')) $('prev-bylabel').textContent = ($('mode') && $('mode').value === 'group') ? l.byg : l.by;
-  if ($('prev-tolabel')) $('prev-tolabel').textContent = l.to;
-  if ($('prev-doc')) $('prev-doc').textContent = ty[b];
-  if ($('prev-tlabel')) $('prev-tlabel').textContent = ty[2 + b];
-
-  document.querySelectorAll('[data-k]').forEach(e => {
-    if (l[e.dataset.k]) e.textContent = l[e.dataset.k];
-  });
-
-  if ($('prev-tcampus')) $('prev-tcampus').textContent = l.col + (c ? ', ' + c : '');
-}
-
-function digitsPass() {
-  if (!$('digits') || $('digits').value !== 'bn') return;
-  const m = '০১২৩৪৫৬৭৮৯';
-  [$('cover-template'), $('supPages')].forEach(r => {
-    if (!r) return;
-    const w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT);
-    let n;
-    while ((n = w.nextNode())) n.nodeValue = n.nodeValue.replace(/\d/g, d => m[d]);
-  });
-}
-
-function checks() {
-  const m = $('mobile') ? $('mobile').value.replace(/[\s-]/g, '') : '';
-  const c = $('cover-template');
-  if ($('mobWarn')) $('mobWarn').textContent = (!m || /^(\+?88)?01[3-9]\d{8}$/.test(m)) ? '' : T('⚠️ মোবাইল নম্বরটি সঠিক নয় (উদাহরণ: 01712345678)');
-  if ($('ovWarn') && c) $('ovWarn').textContent = c.scrollHeight > c.clientHeight + 2 ? T('⚠️ লেখা অত্যধিক হওয়ায় কভারের নিচের অংশ কেটে যেতে পারে; তথ্য সংক্ষিপ্ত করুন।') : '';
-}
-
-function fit() {
-  const c = $('cover-template');
-  if (!c) return;
-  let f = 1;
-  c.style.setProperty('--fit', 1);
-  while (c.scrollHeight > c.clientHeight + 2 && f > .55) {
-    f = Math.round((f - .05) * 100) / 100;
-    c.style.setProperty('--fit', f);
-  }
-}
-
-function supRender() {
-  const supContainer = $('supPages');
-  if (!supContainer) return;
-
-  const bn = $('lang') && $('lang').value === 'bn';
-  const S = SP[bn ? 'bn' : 'en'];
-  const docTypeVal = ($('docType') && $('docType').value) || 'assignment';
-  const ty = TY[docTypeVal];
-  const kind = bn ? ty[1] : ty[0].toLowerCase();
-  const grp = $('mode') && $('mode').value === 'group';
-  const tl = lines(val('teacherInfo'));
-  const sv = esc(tl[0] || (bn ? 'তত্ত্বাবধায়ক' : 'Supervisor'));
-  const names = esc(grp ? lines(val('members')).map(l => l.split(/[,|]/)[0].trim()).join(', ') : val('studentName'));
-  const topic = esc(val('topic'));
-  const roll = esc(val('studentRoll'));
-  const ses = esc(val('session'));
-
-  const pg = (badgeTitle, mainTitle, contentHtml) => `
-    <div class="page-sep-label">📄 ${badgeTitle}</div>
-    <div class="a4-page sup-page${bn ? ' bn-lang' : ''}">
-      <h2 class="sp-t">${mainTitle}</h2>
-      ${contentHtml}
-    </div>`;
-  const sg = (leftText, rightText) => `
-    <div class="sg">
-      <div><span class="ln"></span><p>${leftText}</p></div>
-      <div><span class="ln"></span><p>${rightText}</p></div>
-    </div>`;
-
-  let h = '';
-  let activePageCount = 1;
-
-  const isDecl = $('pgDecl') && $('pgDecl').checked;
-  if ($('declBox')) $('declBox').style.display = isDecl ? 'block' : 'none';
-  if (isDecl) {
-    activePageCount++;
-    const customDecl = $('declText') && $('declText').value.trim();
-    const declBody = customDecl ? esc(customDecl).replace(/\n/g, '<br>') : S.declT(names, topic, kind, sv);
-    h += pg(
-      bn ? 'পৃষ্ঠা ' + activePageCount + ': ঘোষণাপত্র' : 'Page ' + activePageCount + ': Declaration',
-      S.decl,
-      `<p class="sp-p">${declBody}</p>${sg(S.sig + ' — ' + names, S.date)}`
-    );
-  }
-
-  const isAppr = $('pgAppr') && $('pgAppr').checked;
-  if ($('apprBox')) $('apprBox').style.display = isAppr ? 'block' : 'none';
-  if (isAppr) {
-    activePageCount++;
-    const customAppr = $('apprText') && $('apprText').value.trim();
-    const apprBody = customAppr ? esc(customAppr).replace(/\n/g, '<br>') : S.apprT(names, roll, ses, topic, kind);
-    h += pg(
-      bn ? 'পৃষ্ঠা ' + activePageCount + ': অনুমোদনপত্র' : 'Page ' + activePageCount + ': Approval Certificate',
-      S.appr,
-      `<p class="sp-p">${apprBody}</p>${sg(S.sup + ' — ' + sv + (tl[1] ? '<br>' + esc(tl[1]) : ''), S.date)}`
-    );
-  }
-
-  const isAck = $('pgAck') && $('pgAck').checked;
-  if ($('ackBox')) $('ackBox').style.display = isAck ? 'block' : 'none';
-  if (isAck) {
-    activePageCount++;
-    const customAck = $('ackText') && $('ackText').value.trim();
-    const ackBody = (customAck ? esc(customAck) : S.ackD(sv)).replace(/\n/g, '<br>');
-    h += pg(
-      bn ? 'পৃষ্ঠা ' + activePageCount + ': কৃতজ্ঞতা স্বীকার' : 'Page ' + activePageCount + ': Acknowledgement',
-      S.ack,
-      `<p class="sp-p">${ackBody}</p><p class="sp-r">${names}</p>`
-    );
-  }
-
-  const isToc = $('pgToc') && $('pgToc').checked;
-  if ($('tocBox')) $('tocBox').style.display = isToc ? 'block' : 'none';
-  if (isToc) {
-    activePageCount++;
-    const tocRaw = ($('tocText') && $('tocText').value) || S.toc0;
-    const tocItems = lines(tocRaw).map(l => {
-      const k = l.lastIndexOf('|');
-      const a = k > -1 ? l.slice(0, k).trim() : l;
-      const b = k > -1 ? l.slice(k + 1).trim() : '';
-      return `<div class="toc"><span>${esc(a)}</span><i></i><span>${esc(b)}</span></div>`;
-    }).join('');
-    h += pg(
-      bn ? 'পৃষ্ঠা ' + activePageCount + ': সূচিপত্র' : 'Page ' + activePageCount + ': Table of Contents',
-      S.toc,
-      tocItems
-    );
-  }
-
-  supContainer.innerHTML = h;
-
-  const badge = $('pageCountBadge');
-  if (badge) {
-    badge.textContent = activePageCount > 1 
-      ? (bn ? `(মোট ${activePageCount}টি পেজ)` : `(Total ${activePageCount} Pages)`) 
-      : '';
-  }
-}
-
-function applyUI() {
-  document.documentElement.lang = SL;
-  document.querySelectorAll('.form-section label, .form-section h2, .form-section h3, .form-section button, .form-section option, .form-section small, .form-section .hint:not(.warn), .form-section .cb span, .preview-section > h2, footer span, footer a, header a, #tourBox button').forEach(e => {
-    if (e.children.length) return;
-    const k = e.dataset.bn || (e.dataset.bn = e.textContent.trim());
-    if (UI[k]) e.textContent = SL === 'en' ? UI[k] : k;
-  });
-}
-
-let inLangSync = false;
-function setSite(l, fromExternal = false) {
-  if (inLangSync) return;
-  inLangSync = true;
-  try {
-    SL = l;
-    try { localStorage.setItem('dcuSL', l); } catch(e){}
-    if ($('langBtn')) $('langBtn').textContent = l === 'bn' ? 'EN' : 'বাং';
-    applyUI();
-    if (!fromExternal && typeof window.$applyL === 'function') {
-      window.$applyL(l);
-    }
-    profList($('profSel') ? $('profSel').value : '');
-    showCnt();
-    render();
-  } finally {
-    inLangSync = false;
-  }
-}
-
-function today() {
-  const d = new Date();
-  const l = ($('lang') && $('lang').value === 'bn') ? 'bn-BD' : 'en-GB';
-  if ($('submitDate')) {
-    $('submitDate').value = ($('dateFmt') && $('dateFmt').value === 'long') ? d.toLocaleDateString(l, {day:'numeric',month:'long',year:'numeric'}) : d.toLocaleDateString('en-GB');
-  }
-  render();
-}
-
-const PK = 'dcuProfiles';
-const profs = () => { try { return JSON.parse(localStorage.getItem(PK)) || {}; } catch(e){ return {}; } };
-
-function profList(sel) {
-  const s = $('profSel');
-  if (!s) return;
-  s.innerHTML = '';
-  s.add(new Option(T('— নির্বাচন করুন —'), ''));
-  Object.keys(profs()).forEach(k => s.add(new Option(k, k)));
-  if (sel) s.value = sel;
-}
-
-function profSave() {
-  const bn = SL === 'bn';
-  showModal({
-    icon: '💾',
-    title: bn ? 'প্রোফাইল সংরক্ষণ করুন' : 'Save Profile',
-    text: bn ? 'কোর্সের নাম বা শিক্ষকের তথ্য পরবর্তীতে দ্রুত ব্যবহারের জন্য একটি নাম দিয়ে সংরক্ষণ করুন:' : 'Save your course & teacher details to quickly load them anytime:',
-    input: true,
-    placeholder: bn ? 'যেমন: CSE-101 – রহমান স্যার' : 'e.g. CSE-101 – Prof. Rahman',
-    confirmText: bn ? 'সংরক্ষণ করুন' : 'Save',
-    cancelText: bn ? 'বাতিল' : 'Cancel',
-    onConfirm: (n) => {
-      const p = profs();
-      p[n] = get();
-      localStorage.setItem(PK, JSON.stringify(p));
-      profList(n);
-      toast('প্রোফাইল সংরক্ষিত হয়েছে');
-    }
-  });
-}
-
-function profLoad() {
-  const s = profs()[$('profSel').value];
-  if (s) { apply(s); toast('প্রোফাইল লোড হয়েছে'); }
-}
-
-function profDel() {
-  const n = $('profSel').value;
-  const bn = SL === 'bn';
-  if (!n) {
-    toast(bn ? 'আগে একটি প্রোফাইল নির্বাচন করুন' : 'Please select a profile first');
-    return;
-  }
-  showModal({
-    icon: '🗑️',
-    title: bn ? 'প্রোফাইল মুছে ফেলবেন?' : 'Delete Profile?',
-    text: `"${n}" — ` + (bn ? 'এই প্রোফাইলটি আপনি কি স্থায়ীভাবে মুছে ফেলতে চান?' : 'Are you sure you want to permanently delete this profile?'),
-    confirmText: bn ? 'মুছে ফেলুন' : 'Delete',
-    cancelText: bn ? 'বাতিল' : 'Cancel',
-    isDanger: true,
-    onConfirm: () => {
-      const p = profs();
-      delete p[n];
-      localStorage.setItem(PK, JSON.stringify(p));
-      profList();
-      toast(bn ? 'প্রোফাইল মুছে ফেলা হয়েছে' : 'Profile deleted');
-    }
-  });
-}
-
-function setLogo(src) {
-  const el = document.querySelector('.dcu-logo');
-  if (el) el.src = src;
-  if ($('cover-template')) $('cover-template').style.setProperty('--wmurl', 'url(' + src + ')');
-}
-
-function logoReset() {
-  try { localStorage.removeItem('dcuLogo'); } catch(e){}
-  setLogo('./logo.png');
-  if ($('cover-template')) $('cover-template').style.removeProperty('--wmurl');
-  if ($('logoFile')) $('logoFile').value = '';
-}
-
-function showCnt() {
-  let n = 0;
-  try { n = +localStorage.getItem('dcuCnt') || 0; } catch(e){}
-  const cEl = $('cnt');
-  if (cEl) cEl.textContent = n ? (SL === 'en' ? '🎉 You have created ' + n + ' cover(s) so far' : '🎉 আপনি এ পর্যন্ত ' + n + 'টি কভার তৈরি করেছেন') : '';
-}
-
-function bump() {
-  tsave();
-  try { localStorage.setItem('dcuCnt', (+localStorage.getItem('dcuCnt') || 0) + 1); } catch(e){}
-  showCnt();
-}
-
-const TK = 'dcuTeachers';
-const tlist = () => { try { return JSON.parse(localStorage.getItem(TK)) || []; } catch(e){ return []; } };
-
-function tsave() {
-  const el = $('teacherInfo');
-  if (!el) return;
-  const v = el.value.trim();
-  if (!v) return;
-  const a = tlist().filter(x => x !== v);
-  a.unshift(v);
-  try { localStorage.setItem(TK, JSON.stringify(a.slice(0, 8))); } catch(e){}
-  tchips();
-}
-
-function tchips() {
-  const b = $('tchips'), a = tlist();
-  if (!b) return;
-  b.innerHTML = '';
-  a.forEach(v => {
-    const c = document.createElement('button');
-    c.type = 'button';
-    c.className = 'chip';
-    c.textContent = v.split('\n')[0];
-    c.title = v;
-    c.onclick = () => { if ($('teacherInfo')) $('teacherInfo').value = v; render(); };
-    b.appendChild(c);
-  });
-  if ($('tchipBox')) $('tchipBox').style.display = a.length ? 'block' : 'none';
-}
-
-function tclear() {
-  try { localStorage.removeItem(TK); } catch(e){}
-  tchips();
-}
-
-async function downloadPNG() {
-  toast('ছবি প্রস্তুত করা হচ্ছে...');
-  const target = $('cover-template');
-  if (!target) return;
-
-  try {
-    if (document.fonts && document.fonts.ready) {
-      await document.fonts.ready;
-    }
-
-    const pages = [target, ...document.querySelectorAll('#supPages .sup-page')];
-
-    for (let i = 0; i < pages.length; i++) {
-      const pg = pages[i];
-      const isCover = (i === 0);
-
-      const c = await html2canvas(pg, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-        logging: false,
-        onclone: (clonedDoc) => {
-          const el = isCover
-            ? clonedDoc.getElementById('cover-template')
-            : clonedDoc.querySelectorAll('#supPages .sup-page')[i - 1];
-          if (el) {
-            if (window.innerWidth < 900) for (let n = el.parentElement; n && n !== clonedDoc.documentElement; n = n.parentElement) {
-              n.style.transform = 'none';
-              n.style.visibility = 'visible';
-              n.style.overflow = 'visible';
-              n.style.position = 'static';
-              n.style.width = 'auto';
-              n.style.height = 'auto';
-            }
-            el.style.visibility = 'visible';
-            el.classList.remove('pv-off');
-            el.style.transform = 'none';
-            el.style.margin = '0';
-            el.style.boxShadow = 'none';
-            el.style.width = '210mm';
-            el.style.height = '297mm';
-          }
-        }
-      });
-
-      await new Promise(resolve => {
-        c.toBlob(blob => {
-          if (blob) {
-            const a = document.createElement('a');
-            const suffix = isCover ? 'cover' : `page-${i + 1}`;
-            a.download = `cover-page-${val('studentName').replace(/\s+/g, '-') || 'dcu'}-${suffix}.png`;
-            a.href = URL.createObjectURL(blob);
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-              a.remove();
-              URL.revokeObjectURL(a.href);
-            }, 1000);
-          }
-          setTimeout(resolve, 350);
-        }, 'image/png');
-      });
-    }
-
-    toast(pages.length > 1 ? `✅ ${pages.length}টি পেজের PNG ডাউনলোড সম্পন্ন` : '✅ PNG ডাউনলোড সম্পন্ন হয়েছে');
-    bump();
-  } catch (err) {
-    console.error("PNG Download Error:", err);
-    toast('❌ ছবি তৈরি করা যায়নি: ' + (err.message || 'Error'));
-  }
-}
-
-function downloadDoc() {
-  const p = $('cPri') ? $('cPri').value : '#0a2240';
-  const a = $('cAcc') ? $('cAcc').value : '#e5a83b';
-  const t = id => $(id) ? esc($(id).textContent) : '';
-  const grp = $('mode') && $('mode').value === 'group';
-  const kids = id => $(id) ? Array.from($(id).children) : [];
-
-  const by = (grp ? kids('prev-members').map(r => esc(r.children[0].textContent + '  ' + r.children[1].textContent)) : [t('prev-sname'), esc(L().roll) + ' ' + t('prev-sroll')])
-    .concat(['cls','ses','mob','dt'].map(k => {
-      const e = document.querySelector('[data-k="' + k + '"]');
-      return e && e.nextElementSibling ? esc(e.textContent) + ' ' + esc(e.nextElementSibling.textContent) : '';
-    }));
-  const to = kids('prev-teachers').map(x => esc(x.textContent)).concat([t('prev-tdept'), t('prev-tcampus')]);
-  const li = arr => arr.filter(Boolean).map(x => '<p style="margin:4pt 0;font-size:12pt">' + x + '</p>').join('');
-  const course = (!$('prev-course') || $('prev-course').style.display === 'none') ? '' : '<p style="font-size:12pt;color:' + a + '"><b>' + t('prev-course') + '</b></p>';
-
-  let extraDoc = '';
-  const pb = '<br clear="all" style="page-break-before:always;mso-break-type:section-break" />';
-  document.querySelectorAll('#supPages .sup-page').forEach(pg => {
-    const title = pg.querySelector('.sp-t') ? pg.querySelector('.sp-t').textContent : '';
-    const bodyClone = pg.cloneNode(true);
-    const tEl = bodyClone.querySelector('.sp-t');
-    if (tEl) tEl.remove();
-    extraDoc += pb + '<h2 align="center" style="color:' + p + ';font-size:20pt;margin-top:30pt;margin-bottom:15pt;border-bottom:2pt solid ' + a + ';padding-bottom:6pt">' + esc(title) + '</h2>' + bodyClone.innerHTML;
-  });
-
-  const h = '<html><head><meta charset="utf-8"><style>@page{size:21cm 29.7cm;margin:2cm 2cm 2cm ' + (2 + (($('gut') ? +$('gut').value : 0) || 0) / 10) + 'cm}body{font-family:Calibri,Arial,sans-serif;color:#111}.sg{margin-top:40pt;display:flex;justify-content:space-between}.sg div{text-align:center}.toc{margin-bottom:6pt}</style></head><body>' +
-    '<h1 align="center" style="color:' + p + ';font-size:26pt;margin:30pt 0 4pt">' + t('prev-uni') + '</h1>' +
-    '<p align="center" style="color:' + a + ';font-size:13pt"><b>' + t('prev-campus') + '</b></p>' +
-    '<p align="center" style="font-size:14pt;margin:18pt 0"><b>' + t('prev-dept') + '</b></p><hr style="color:' + p + '">' +
-    '<h1 align="center" style="color:' + p + ';font-size:34pt;letter-spacing:4pt;margin:40pt 0 10pt">' + t('prev-doc') + '</h1>' +
-    '<p align="center" style="font-size:11pt;color:' + a + '"><b>' + t('prev-tlabel') + '</b></p>' +
-    '<p align="center" style="font-size:16pt;margin-bottom:6pt"><b>' + t('prev-topic') + '</b></p><div align="center">' + course + '</div><br><br><br>' +
-    '<table width="100%" cellpadding="8"><tr><td width="50%" valign="top" style="border-top:3pt solid ' + p + '"><p style="color:' + p + ';font-size:13pt"><b>' + t('prev-bylabel') + '</b></p>' + li(by) +
-    '</td><td width="50%" valign="top" style="border-top:3pt solid ' + a + '"><p style="color:' + a + ';font-size:13pt"><b>' + t('prev-tolabel') + '</b></p>' + li(to) + '</td></tr></table>' + extraDoc + '</body></html>';
-
-  const l = document.createElement('a');
-  l.download = 'cover-page.doc';
-  l.href = URL.createObjectURL(new Blob(['\ufeff' + h], { type: 'application/msword' }));
-  l.click();
-  bump();
-  toast('Word ফাইল ডাউনলোড হয়েছে');
-}
-
-function share() {
-  const u = location.href.split('#')[0] + '#' + btoa(unescape(encodeURIComponent(JSON.stringify(get()))));
-  (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject())
-    .then(() => toast('লিংক কপি করা হয়েছে'))
-    .catch(() => prompt(T('লিংকটি কপি করুন:'), u));
-}
-
-function resetAll() {
-  const bn = SL === 'bn';
-  showModal({
-    icon: '⚠️',
-    title: bn ? 'সব তথ্য মুছে ফেলবেন?' : 'Reset All Information?',
-    text: bn ? 'আপনার কভার পেজের সমস্ত লেখা রিসেট হয়ে যাবে। আপনি কি নিশ্চিত?' : 'All the details entered will be reset. Are you sure?',
-    confirmText: bn ? 'হ্যাঁ, সব মুছুন' : 'Yes, Clear All',
-    cancelText: bn ? 'বাতিল' : 'Cancel',
-    isDanger: true,
-    onConfirm: () => {
-      try { localStorage.removeItem(KEY); } catch(e){}
-      history.replaceState(null, '', location.pathname);
-      apply({});
-      toast(bn ? 'সব তথ্য মুছে ফেলা হয়েছে' : 'All data cleared');
-    }
-  });
-}
-
-window.onLang = function(l) {
-  const targetLang = l || (typeof window.$lang === 'function' ? window.$lang() : localStorage.getItem('dcuSL')) || 'bn';
-  setSite(targetLang, true);
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  let s = null;
-  try {
-    if (location.hash.length > 1) s = JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1)))));
-  } catch(e){}
-  if (!s) {
-    try { s = JSON.parse(localStorage.getItem(KEY)); } catch(e){}
-  }
-  apply(s || {});
-
-  document.querySelectorAll('.tpl').forEach(b => b.addEventListener('click', () => {
-    if ($('templateSelector')) $('templateSelector').value = b.dataset.v;
-    render();
-  }));
-
-  if ($('logoFile')) {
-    $('logoFile').addEventListener('change', e => {
-      const f = e.target.files[0];
-      if (!f) return;
-      const r = new FileReader();
-      r.onload = () => {
-        setLogo(r.result);
-        try { localStorage.setItem('dcuLogo', r.result); } catch(x){ toast('ছবির আকার বড়, সংরক্ষণ করা যায়নি'); }
-      };
-      r.readAsDataURL(f);
-    });
-  }
-
-  try {
-    const lg = localStorage.getItem('dcuLogo');
-    if (lg) setLogo(lg);
-    if (localStorage.getItem('dcuDark')) document.body.classList.add('dark');
-  } catch(e){}
-
-  try { SL = localStorage.getItem('dcuSL') || 'bn'; } catch(e){}
-  if ($('teacherInfo')) $('teacherInfo').addEventListener('blur', tsave);
-  tchips();
-
-  setSite(SL);
-
-  try {
-    if (!localStorage.getItem('dcuTour') && !location.hash) {
-      localStorage.setItem('dcuTour', '1');
-      setTimeout(() => { if (window.startPageTour) window.startPageTour(); }, 900);
-    }
-  } catch(e){}
-
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-
-  if ($('coverForm')) {
-    $('coverForm').addEventListener('input', render);
-    $('coverForm').addEventListener('change', render);
-  }
-
-  document.querySelectorAll('.sw').forEach(b => b.addEventListener('click', () => {
-    setTheme(b.dataset.p, b.dataset.a);
-    render();
-  }));
-
-  ['cPri','cAcc'].forEach(id => {
-    if ($(id)) $(id).addEventListener('input', () => { setTheme($('cPri').value, $('cAcc').value); render(); });
-  });
-
-  ['pgDecl', 'pgAppr', 'pgAck', 'pgToc'].forEach(id => {
-    const el = $(id);
+  function showTourStep(idx) {
+    closeTour();
+    if (idx >= activeSteps.length) return;
+    curStep = idx;
+    var s = activeSteps[idx];
+    var el = document.querySelector(s[0]);
     if (el) {
-      el.addEventListener('change', () => {
-        render();
-        if (el.checked) {
-          toast('✅ নতুন পেজ প্রিভিউতে যুক্ত হয়েছে (নিচে স্ক্রল করে দেখুন)');
-        }
-      });
+      el.classList.add('dcu-tour-hl');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  });
-
-  ['declText', 'apprText', 'ackText', 'tocText'].forEach(id => {
-    const el = $(id);
-    if (el) el.addEventListener('input', render);
-  });
-});
-
-
-/* ========================================================
-   📌 লাইভ প্রিভিউ: ট্যাব + স্টিকি + অটো-ফিট
-   ======================================================== */
-let pvKey = 'cover';
-let pvZ = 1, pvS = .45, pvFit = .45;
-
-function pvTabs() {
-  const cover = $('cover-template');
-  if (!cover) return;
-  const ids = ['pgDecl', 'pgAppr', 'pgAck', 'pgToc'].filter(i => $(i) && $(i).checked);
-  const sups = [...document.querySelectorAll('#supPages .sup-page')];
-  const labels = [...document.querySelectorAll('#supPages .page-sep-label')];
-  const items = [{ key: 'cover', el: cover, name: SL === 'en' ? 'Cover' : 'কভার' }];
-  sups.forEach((p, i) => {
-    const key = ids[i] || ('p' + i);
-    p.dataset.pg = key;
-    const t = labels[i] ? labels[i].textContent.replace('📄', '').trim() : '';
-    const k = t.indexOf(':');
-    items.push({ key, el: p, name: (k > -1 ? t.slice(k + 1) : t).trim() || ('Page ' + (i + 2)) });
-    items[items.length - 1].full = items[items.length - 1].name;
-    items[items.length - 1].name = items[items.length - 1].name.replace(/\s*Certificate$/i, '').replace(/^Table of Contents$/i, 'Contents');
-  });
-  if (!items.some(x => x.key === pvKey)) pvKey = 'cover';
-  items.forEach(x => x.el.classList.toggle('pv-off', x.key !== pvKey));
-
-  let bar = $('pvTabs');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.id = 'pvTabs';
-    bar.addEventListener('click', e => {
-      const b = e.target.closest('button');
-      if (!b) return;
-      pvKey = b.dataset.k;
-      pvZ = 1;
-      pvTabs();
-      pvLayout();
-    });
-    const host = $('pvStage') || cover;
-    host.parentNode.insertBefore(bar, host);
+    var box = document.createElement('div');
+    box.id = 'dcuTourBox';
+    box.className = 'dcu-tour-box';
+    var isLast = idx === activeSteps.length - 1;
+    box.innerHTML = '<div class="dcu-tour-step">' + $L('ধাপ|Step') + ' ' + (idx + 1) + ' / ' + activeSteps.length + '</div>' +
+      '<div class="dcu-tour-title">' + $L(s[1]) + '</div>' +
+      '<div class="dcu-tour-txt">' + $L(s[2]) + '</div>' +
+      '<div class="dcu-tour-acts">' +
+      '<button type="button" class="dcu-tour-btn skip" id="dcuTourSkip">' + $L('এড়িয়ে যান|Skip') + '</button>' +
+      '<button type="button" class="dcu-tour-btn next" id="dcuTourNext">' + $L(isLast ? 'সমাপ্ত|Finish' : 'পরবর্তী|Next') + '</button>' +
+      '</div>';
+    document.body.appendChild(box);
+    document.getElementById('dcuTourSkip').onclick = closeTour;
+    document.getElementById('dcuTourNext').onclick = function () {
+      if (isLast) closeTour();
+      else showTourStep(idx + 1);
+    };
   }
-  bar.style.display = items.length > 1 ? 'flex' : 'none';
-  pvFabUpdate(items.length);
-  bar.innerHTML = items.map(x =>
-    `<button type="button" data-k="${x.key}" title="${esc(x.full || x.name)}" class="${x.key === pvKey ? 'on' : ''}">${esc(x.name)}</button>`
-  ).join('');
-}
 
-function pvLayout() {
-  const sec = document.querySelector('.preview-section');
-  if (!sec) return;
-  const wide = window.innerWidth >= 900;
+  window.startPageTour = function () {
+    var pg = document.body.dataset.page || '';
+    if (!pg) {
+      var path = location.pathname;
+      if (path.indexOf('blood') > -1) pg = 'blood';
+      else if (path.indexOf('tools') > -1) pg = 'tools';
+      else if (path.indexOf('about') > -1) pg = 'about';
+      else if (path.indexOf('feedback') > -1) pg = 'feedback';
+      else if (path.indexOf('photo') > -1) pg = 'photo';
+      else pg = 'index';
+    }
+    activeSteps = TOURS[pg] || TOURS.index;
+    showTourStep(0);
+  };
+  window.tour = window.startPageTour;
 
-  let top = 0;
-  if (wide) {
-    document.querySelectorAll('#hdr, #hdr *, header, .global-blood-ticker, .sh').forEach(el => {
-      if (sec.contains(el) || el.closest('main')) return;
-      const pos = getComputedStyle(el).position;
-      if (pos !== 'sticky' && pos !== 'fixed') return;
-      const r = el.getBoundingClientRect();
-      if (r.height > 0 && r.top < 200 && r.bottom < 400 && r.bottom > top) top = r.bottom;
-    });
-    top += 25;
-  }
-  sec.style.setProperty('--pvtop', (top || 25) + 'px');
+  document.getElementById('helpBtn').onclick = window.startPageTour;
 
-  const PW = 793.7, PH = 1122.5;
-  const px = v => parseFloat(v) || 0;
-  let s;
-  const st = $('pvStage');
-  if (!wide && st && st.clientWidth > 0) {
-    const fit = Math.max(.2, Math.min(1, (st.clientWidth - 12) / PW, (st.clientHeight - 12) / PH));
-    s = Math.min(3, fit * pvZ);
-    pvFit = fit;
-  } else {
-    const h2 = sec.querySelector(':scope > h2');
-    const bar = $('pvTabs');
-    const cs = getComputedStyle(sec);
-    const blk = el => el ? el.offsetHeight + px(getComputedStyle(el).marginBottom) : 0;
-    const used = blk(h2) + (bar && bar.style.display !== 'none' ? blk(bar) : 0);
-    const availH = sec.clientHeight - px(cs.paddingTop) - px(cs.paddingBottom) - used - 6;
-    const availW = sec.clientWidth - px(cs.paddingLeft) - px(cs.paddingRight) - 4;
-    s = Math.max(.25, Math.min(1, availW / PW, availH / PH));
-  }
-  pvS = s;
-  sec.style.setProperty('--pvs', s.toFixed(3));
-  const lb = $('pvZoomLbl');
-  if (lb) lb.textContent = pvZ <= 1.01 ? (SL === 'en' ? 'Fit' : 'ফিট') : Math.round(pvZ * 100) + '%';
-}
-
-(function pvInit() {
-  ['pgDecl', 'pgAppr', 'pgAck', 'pgToc'].forEach(id => {
-    const cb = $(id);
-    if (cb) cb.addEventListener('change', () => {
-      if (cb.checked) setTimeout(() => { pvKey = id; pvTabs(); pvLayout(); }, 0);
-    });
-  });
-  window.addEventListener('resize', pvLayout);
-  window.addEventListener('load', () => { pvLayout(); setTimeout(pvLayout, 400); setTimeout(pvLayout, 1500); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(pvLayout);
-  pvTabs();
-  pvLayout();
+  applyL();
 })();
 
+/* সব পাতায় জরুরি রক্ত নোটিশ বার দেখানো */
+(function() {
+    if (document.body.dataset.page === 'blood') return;
 
-/* ========================================================
-   📱 মোবাইল: ভাসমান প্রিভিউ বাটন + পূর্ণ-স্ক্রিন প্রিভিউ শিট
-   ✅ FIX: বাটনকে force-visible রাখা, কোনো বাইরের স্ক্রিপ্ট/CSS
-      একে লুকাতে না পারে
-   ======================================================== */
-function ensureFabVisible() {
-  const fab = $('pvFab');
-  if (!fab) return;
-  const mobile = window.innerWidth < 900;
-  const locked = document.body.classList.contains('pv-lock');
-  if (mobile && !locked) {
-    fab.style.setProperty('display', 'inline-flex', 'important');
-    fab.style.setProperty('visibility', 'visible', 'important');
-    fab.style.setProperty('opacity', '1', 'important');
-    fab.style.setProperty('position', 'fixed', 'important');
-    fab.style.setProperty('right', '14px', 'important');
-    fab.style.setProperty('bottom', 'calc(14px + env(safe-area-inset-bottom, 0px))', 'important');
-    fab.style.setProperty('z-index', '60', 'important');
-  } else if (!mobile) {
-    fab.style.removeProperty('display');
-    fab.style.removeProperty('visibility');
-    fab.style.removeProperty('opacity');
-  }
-}
+    fetch("https://firestore.googleapis.com/v1/projects/dcu-blood-bank/databases/(default)/documents/blood_requests")
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (!data.documents || !data.documents.length) return;
+            var today = new Date().toISOString().slice(0, 10);
+            var openRequests = data.documents
+                .map(function(d) {
+                    var f = d.fields || {};
+                    return {
+                        group: (f.group && f.group.stringValue) || '',
+                        hospital: (f.hospital && f.hospital.stringValue) || '',
+                        area: (f.area && f.area.stringValue) || '',
+                        status: (f.status && f.status.stringValue) || '',
+                        neededDate: (f.neededDate && f.neededDate.stringValue) || ''
+                    };
+                })
+                .filter(function(r) { return r.status === 'open' && r.neededDate >= today; });
 
-function pvOpen(on) {
-  const sec = document.querySelector('.preview-section');
-  if (!sec) return;
-  if (on) pvZ = 1;
-  sec.classList.toggle('pv-open', !!on);
-  document.body.classList.toggle('pv-lock', !!on);
-  if (on) pvLayout();
-  // প্যানেল খোলা/বন্ধ হলে বাটনের দৃশ্যমানতা নতুন করে ঠিক করি
-  setTimeout(ensureFabVisible, 0);
-  setTimeout(ensureFabVisible, 300);
-}
+            if (!openRequests.length) return;
+            var r = openRequests[0];
+            var isBn = (localStorage.getItem('dcuSL') || 'bn') === 'bn';
 
-function pvFabUpdate(n) {
-  const fab = $('pvFab');
-  if (!fab) return;
-  const label = SL === 'en' ? 'Preview' : 'প্রিভিউ';
-  fab.innerHTML = '<span aria-hidden="true">👁️</span><span>' + label + '</span>' +
-    (n > 1 ? '<span class="pvf-n">' + n + '</span>' : '');
-  fab.setAttribute('aria-label', label);
-  const cl = $('pvClose');
-  if (cl) cl.setAttribute('aria-label', SL === 'en' ? 'Close preview' : 'প্রিভিউ বন্ধ করুন');
-  ensureFabVisible();
-}
+            var bar = document.createElement('a');
+            bar.href = 'blood.html';
+            bar.className = 'global-blood-ticker';
+            bar.style.display = 'flex';
+            bar.innerHTML = '<div class="gbt-left">' +
+                '<span class="gbt-badge">' + r.group + '</span>' +
+                '<span>🚨 ' + (isBn ? 'জরুরি রক্ত প্রয়োজন:' : 'Urgent blood needed:') + ' <b>' + r.hospital + '</b> (' + r.area + ')</span>' +
+                '</div>' +
+                '<div class="gbt-btn">' + (isBn ? 'বিস্তারিত দেখুন ›' : 'Details ›') + '</div>';
 
-(function pvMobileInit() {
-  const sec = document.querySelector('.preview-section');
-  if (!sec) return;
-
-  // যদি আগে থেকেই #pvFab থাকে, প্রথমে সরিয়ে ফেলি
-  const oldFab = $('pvFab');
-  if (oldFab) oldFab.remove();
-
-  const fab = document.createElement('button');
-  fab.id = 'pvFab';
-  fab.type = 'button';
-  fab.addEventListener('click', () => pvOpen(true));
-  document.body.appendChild(fab);
-
-  const cl = document.createElement('button');
-  cl.id = 'pvClose'; cl.type = 'button'; cl.textContent = '✕';
-  cl.addEventListener('click', () => pvOpen(false));
-  sec.insertBefore(cl, sec.firstChild);
-
-  const cover = $('cover-template'), sup = $('supPages');
-  const stage = document.createElement('div'); stage.id = 'pvStage';
-  const sizer = document.createElement('div'); sizer.id = 'pvSizer';
-  sec.insertBefore(stage, cover);
-  stage.appendChild(sizer);
-  sizer.appendChild(cover);
-  if (sup) sizer.appendChild(sup);
-  const bar0 = $('pvTabs');
-  if (bar0) sec.insertBefore(bar0, stage);
-
-  const zb = document.createElement('div'); zb.id = 'pvZoom';
-  zb.innerHTML = '<button type="button" data-z="-1" aria-label="Zoom out">−</button>' +
-                 '<button type="button" class="lbl" id="pvZoomLbl" data-z="0"></button>' +
-                 '<button type="button" data-z="1" aria-label="Zoom in">+</button>';
-  zb.addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    const d = +b.dataset.z;
-    const r = stage.getBoundingClientRect();
-    pvZoomTo(d === 0 ? 1 : (d > 0 ? Math.min(4, pvZ * 1.4) : Math.max(1, pvZ / 1.4)), r.left + r.width / 2, r.top + r.height / 2);
-  });
-  sec.insertBefore(zb, stage);
-
-  let pin = null, lastTap = { t: 0, x: 0, y: 0 }, moved = false;
-  const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
-  stage.addEventListener('touchstart', e => {
-    moved = false;
-    if (e.touches.length === 2) pin = { d: dist(e.touches), z: pvZ };
-  }, { passive: true });
-  stage.addEventListener('touchmove', e => {
-    moved = true;
-    if (pin && e.touches.length === 2) {
-      e.preventDefault();
-      const t = e.touches;
-      pvZoomTo(Math.max(1, Math.min(4, pin.z * dist(t) / pin.d)),
-               (t[0].clientX + t[1].clientX) / 2, (t[0].clientY + t[1].clientY) / 2);
-    }
-  }, { passive: false });
-  stage.addEventListener('touchend', e => {
-    if (e.touches.length < 2) pin = null;
-    if (e.touches.length === 0 && e.changedTouches.length === 1 && !moved) {
-      const c = e.changedTouches[0], now = Date.now();
-      if (now - lastTap.t < 320 && Math.hypot(c.clientX - lastTap.x, c.clientY - lastTap.y) < 30) {
-        pvZoomTo(pvZ > 1.05 ? 1 : 2.5, c.clientX, c.clientY);
-        lastTap.t = 0;
-      } else {
-        lastTap = { t: now, x: c.clientX, y: c.clientY };
-      }
-    }
-  }, { passive: true });
-
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 900) pvOpen(false);
-    ensureFabVisible();
-  });
-
-  // 🛡️ সবচেয়ে গুরুত্বপূর্ণ fix:
-  // বাটনের style attribute-এ কোনো বাইরের পরিবর্তন হলে আমরা সাথে সাথে ঠিক করি
-  try {
-    const mo = new MutationObserver(() => {
-      const f = $('pvFab');
-      if (!f) return;
-      const mobile = window.innerWidth < 900;
-      const locked = document.body.classList.contains('pv-lock');
-      if (mobile && !locked) {
-        if (f.style.display !== 'inline-flex' || f.style.visibility === 'hidden' || f.style.opacity === '0') {
-          ensureFabVisible();
-        }
-      }
-    });
-    mo.observe(document.body, { attributes: true, childList: true, subtree: false });
-    const fabRef = $('pvFab');
-    if (fabRef) {
-      mo.observe(fabRef, { attributes: true, attributeFilter: ['style', 'class', 'hidden'] });
-    }
-  } catch (e) {}
-
-  // প্রাথমিকভাবে এবং পরপর কয়েকবার force-visible করি
-  ensureFabVisible();
-  setTimeout(ensureFabVisible, 100);
-  setTimeout(ensureFabVisible, 500);
-  setTimeout(ensureFabVisible, 1500);
-  setTimeout(ensureFabVisible, 3000);
-
-  // window resize আর scroll-এও চেক
-  window.addEventListener('scroll', ensureFabVisible, { passive: true });
-  window.addEventListener('orientationchange', () => setTimeout(ensureFabVisible, 200));
-
-  pvFabUpdate(1);
+            var hdr = document.getElementById('hdr');
+            if (hdr) hdr.insertAdjacentElement('afterend', bar);
+            else document.body.insertAdjacentElement('afterbegin', bar);
+        })
+        .catch(function() {});
 })();
-
-
-function pvZoomTo(z, cx, cy) {
-  const st = $('pvStage'), sz = $('pvSizer');
-  if (!st || !sz) return;
-  const r0 = sz.getBoundingClientRect(), s0 = pvS || 1;
-  const ax = (cx - r0.left) / s0, ay = (cy - r0.top) / s0;
-  pvZ = Math.max(1, Math.min(4, z));
-  pvLayout();
-  if (pvZ <= 1.01) { st.scrollLeft = 0; st.scrollTop = 0; return; }
-  const r1 = sz.getBoundingClientRect();
-  st.scrollLeft += (r1.left + ax * pvS) - cx;
-  st.scrollTop += (r1.top + ay * pvS) - cy;
-}
