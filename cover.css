@@ -585,6 +585,21 @@ body.dark .c-modal-btn.cancel {
   border-color: #b3261e !important;
 }
 
+
+/* 📌 লাইভ প্রিভিউ লক: নিচে স্ক্রল করলেও দেখা যাবে */
+@media screen and (min-width: 900px) {
+  .container { align-items: flex-start; }
+  .preview-section {
+    position: sticky;
+    top: 12px;
+    align-self: flex-start;
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+  }
+}
+
 /* রেসপনসিভ ভিউ */
 @media screen and (max-width: 700px) {
   .container { padding: 12px; }
@@ -635,6 +650,9 @@ body.dark .c-modal-btn.cancel {
   }
 
   .preview-section {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
     display: block !important;
     width: 210mm !important;
     margin: 0 !important;
