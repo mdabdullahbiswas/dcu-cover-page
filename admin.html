@@ -84,6 +84,20 @@ html[data-theme=dark] .mesh i{opacity:.4}
 .gbtn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.14)}
 .gbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .gbtn svg{width:22px;height:22px}
+
+.lf{display:grid;gap:14px;text-align:left}
+.lf label{display:grid;gap:6px;font-size:13px;font-weight:700;color:var(--ink)}
+.lf .fld{position:relative}
+.lf input{box-sizing:border-box;width:100%;height:50px;padding:0 16px;border-radius:14px;border:1px solid var(--ln);background:var(--surface);color:var(--ink);font:500 15px var(--f);transition:border-color .2s,box-shadow .2s}
+.lf input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(229,168,59,.18)}
+.lf .fld input{padding-right:52px}
+.lf .eye{all:unset;box-sizing:border-box;position:absolute;right:4px;top:3px;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;color:var(--mu);border-radius:12px}
+.lf .eye:hover{color:var(--ink)}.lf .eye:focus-visible{outline:2px solid var(--gold)}
+.lf .eye svg{width:20px;height:20px}
+.or{display:flex;align-items:center;gap:12px;margin:18px 0 14px;color:var(--mu);font-size:12.5px;font-weight:600}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--ln)}
+.lbtn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:52px;margin-top:4px;border-radius:14px;font:700 15px/1 var(--f);color:var(--gold2);background:linear-gradient(135deg,#07192f,#14386a);box-shadow:0 8px 20px rgba(10,34,64,.3);transition:transform .15s,box-shadow .2s,opacity .2s;-webkit-tap-highlight-color:transparent}
+.lbtn:hover{transform:translateY(-2px)}.lbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.lbtn[disabled]{opacity:.65;cursor:wait;transform:none}
 .msg{min-height:20px;margin-top:14px;font-size:13px;color:var(--red);font-weight:500}
 /* ===== টুলবার ===== */
 .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;animation:up .5s both}
@@ -208,11 +222,21 @@ td .acts{justify-content:flex-start;flex-wrap:nowrap}
         <p>DCU Blood Directory</p>
       </div>
       <div class="gate-body">
-        <p>এই পেজটি শুধু অনুমোদিত এডমিনের জন্য। চালিয়ে যেতে সাইন ইন করুন।</p>
-        <button id="login" class="gbtn" type="button">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-          <span>Google দিয়ে সাইন ইন</span>
-        </button>
+        <p>এই পেজটি শুধু অনুমোদিত এডমিনের জন্য। চালিয়ে যেতে আপনার আইডি ও পাসওয়ার্ড দিন।</p>
+        <form id="lf" class="lf" autocomplete="on" novalidate>
+          <label>এডমিন আইডি
+            <input id="lid" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="আপনার আইডি" required>
+          </label>
+          <label>পাসওয়ার্ড
+            <span class="fld">
+              <input id="lpw" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+              <button class="eye" id="eye" type="button" aria-label="পাসওয়ার্ড দেখান" title="পাসওয়ার্ড দেখান"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </span>
+          </label>
+          <button id="login" class="lbtn" type="submit">লগ ইন</button>
+        </form>
+        <div class="or">অথবা</div>
+        <button id="glogin" class="gbtn" type="button"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Google দিয়ে সাইন ইন</span></button>
         <p id="gmsg" class="msg"></p>
       </div>
     </div>
@@ -237,9 +261,13 @@ td .acts{justify-content:flex-start;flex-wrap:nowrap}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, getDocs, query, orderBy, limit, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-const ADMIN_EMAIL = "ojanaraja3@gmail.com";
+// এডমিন আইডি → ভেতরে ইমেইল হিসেবে কাজ করে (Firebase Console-এ একই ইমেইলে ইউজার বানাতে হবে)
+const ADMIN_ID = "admin";                         // ← আপনার পছন্দের আইডি
+const ID_DOMAIN = "dcu-blood-bank.app";           // ← আইডির পেছনে বসা ডোমেইন (আসল ইমেইল না হলেও চলবে)
+const ADMIN_EMAIL = ADMIN_ID.toLowerCase() + "@" + ID_DOMAIN;
+const GOOGLE_ADMIN_EMAIL = "ojanaraja3@gmail.com";   // Google দিয়ে সাইন ইনের জন্য অনুমোদিত ইমেইল
 const app = initializeApp({ apiKey:"AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0", authDomain:"dcu-blood-bank.firebaseapp.com", projectId:"dcu-blood-bank", storageBucket:"dcu-blood-bank.firebasestorage.app", messagingSenderId:"835221249900", appId:"1:835221249900:web:facf545941825a4efa5d49" }, "admin");
 const auth = getAuth(app), db = getFirestore(app), $ = id => document.getElementById(id);
 const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -301,12 +329,24 @@ const err = e => toast("কাজটি সম্পন্ন হয়নি: "
 
 /* ===== লগইন / অথ ===== */
 const persistReady = setPersistence(auth, browserLocalPersistence).catch(() => {});
-$("login").onclick = () => persistReady.then(() => signInWithPopup(auth, new GoogleAuthProvider())).catch(e => $("gmsg").textContent = "সাইন ইন সম্ভব হয়নি: " + e.code);
+const LERR = { "auth/invalid-credential":"আইডি বা পাসওয়ার্ড ভুল।", "auth/wrong-password":"আইডি বা পাসওয়ার্ড ভুল।", "auth/user-not-found":"আইডি বা পাসওয়ার্ড ভুল।", "auth/invalid-email":"আইডি সঠিক নয়।", "auth/too-many-requests":"অনেকবার ভুল চেষ্টা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।", "auth/network-request-failed":"ইন্টারনেট সংযোগ পরীক্ষা করুন।", "auth/operation-not-allowed":"Firebase-এ Email/Password সাইন-ইন চালু করা নেই।" };
+$("glogin").onclick = () => { $("gmsg").textContent = ""; persistReady.then(() => signInWithPopup(auth, new GoogleAuthProvider())).catch(e => $("gmsg").textContent = "সাইন ইন সম্ভব হয়নি: " + e.code); };
+$("eye").onclick = () => { const p = $("lpw"), show = p.type === "password"; p.type = show ? "text" : "password"; $("eye").setAttribute("aria-label", show ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখান"); };
+$("lf").onsubmit = async ev => {
+  ev.preventDefault();
+  const id = $("lid").value.trim().toLowerCase(), pw = $("lpw").value, msg = $("gmsg"), btn = $("login");
+  if (!id || !pw) { msg.textContent = "আইডি ও পাসওয়ার্ড দুটোই দিন।"; return; }
+  msg.textContent = ""; btn.disabled = true; btn.textContent = "যাচাই হচ্ছে...";
+  try { await persistReady; await signInWithEmailAndPassword(auth, id + "@" + ID_DOMAIN, pw); $("lpw").value = ""; }
+  catch (e) { msg.textContent = LERR[e.code] || ("লগ ইন সম্ভব হয়নি: " + e.code); }
+  finally { btn.disabled = false; btn.textContent = "লগ ইন"; }
+};
 $("out").onclick = () => signOut(auth);
 onAuthStateChanged(auth, u => {
   if (!u) { $("gate").style.display = "block"; $("app").style.display = "none"; return; }
-  if (u.email !== ADMIN_EMAIL || !u.emailVerified) { $("gmsg").textContent = "এই অ্যাকাউন্টের (" + u.email + ") প্রবেশাধিকার নেই।"; signOut(auth); return; }
-  $("gate").style.display = "none"; $("app").style.display = "block"; $("who").textContent = u.email; $("whoA").textContent = (u.email[0] || "A").toUpperCase(); load();
+  const isPw = u.email === ADMIN_EMAIL, isG = u.email === GOOGLE_ADMIN_EMAIL && u.emailVerified;
+  if (!isPw && !isG) { $("gmsg").textContent = "এই অ্যাকাউন্টের প্রবেশাধিকার নেই।"; signOut(auth); return; }
+  $("gate").style.display = "none"; $("app").style.display = "block"; const nm = isG ? u.email : ADMIN_ID; $("who").textContent = nm; $("whoA").textContent = (nm[0] || "A").toUpperCase(); load();
 });
 const skeleton = () => '<div class="card sk"><i></i><div><i></i><i></i><i></i></div></div>'.repeat(3);
 async function load() {
