@@ -107,6 +107,12 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.sf-note p{margin:2px 0}' +
     '.sf-note a{display:inline;padding:0}' +
     '@media(max-width:768px){.sf-in{grid-template-columns:1fr 1fr;gap:16px}}' +
+    /* রক্তের গ্রুপ ব্যাজ: আকার স্থির, শুধু চারপাশে নরম রিং-পালস (আকৃতি বদলায় না) */
+    '.gbt-badge{position:relative;display:inline-block;animation:none!important;transform:none!important;box-shadow:none!important;border-radius:6px;line-height:1.5}' +
+    '.gbt-badge::after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;border-radius:inherit;pointer-events:none;animation:gbtRing 1.9s ease-out infinite}' +
+    '@keyframes gbtRing{0%{box-shadow:0 0 0 0 rgba(255,255,255,.65)}70%,100%{box-shadow:0 0 0 6px rgba(255,255,255,0)}}' +
+    '.gbt-left{padding:7px 7px 7px 6px;margin:-7px 0 -7px -6px}' +
+    '@media (prefers-reduced-motion:reduce){.gbt-badge::after{animation:none}}' +
     /* মোবাইল: কমপ্যাক্ট ফুটার ও হেডার */
     '@media(max-width:600px){' +
       '.sf{margin-top:20px;font-size:12.5px}' +
