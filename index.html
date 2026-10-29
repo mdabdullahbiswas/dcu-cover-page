@@ -596,6 +596,27 @@ html[data-ui-lang="bn"] .gal-t b em.t-bn{color:#fff}
 @media(prefers-reduced-motion:reduce){.dtx-btn,.dtx-chip,.dtx-seg::before,.dtx-chev,.dp-pop{transition:none;animation:none}}
 @media print{.gal{display:none!important}}
 body.gal-open{overflow:hidden}
+
+/* ===== গ্যালারি: টেমপ্লেট বড়, বাকি সব কমপ্যাক্ট ===== */
+.gal-t small,.gi-d,.gal-thh b,.gal-cu>span{display:none!important}
+.gal-top{padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:0}
+.gal-t b{font-size:clamp(15px,2vw,18px)}
+.gal-ct{font-size:12px;padding:6px 11px}
+.gal-x{width:36px;height:36px}.gal-x svg{width:16px;height:16px}
+.gal-info{height:clamp(40px,6vh,52px);margin-top:10px}
+.gi{gap:0}.gi-n b{font-size:clamp(20px,2.6vw,26px)}.gi-n em{font-size:clamp(13px,1.6vw,16px)}
+.gal-dots{height:16px}.gd{width:6px;height:6px}.gd.on{width:24px}
+.gal-th{padding:4px clamp(14px,3vw,22px) 2px;margin-top:0}
+.gal-thh{justify-content:center;margin-bottom:6px}
+.gal #swName.gal-thn{text-align:center;font-size:12px}
+.gal .sws{gap:10px}.gal .sw{width:28px;height:28px;border-width:2px}
+.gal .sw.on{transform:scale(1.18)}
+.gal-cu{margin-top:8px;justify-content:center;gap:8px}
+.gal .cu{padding:3px 11px 3px 3px;font-size:11px}.gal .cu input[type=color]{width:22px;height:22px}
+.gal-foot{padding-top:4px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));gap:10px}
+.gal-nav{width:42px;height:42px}.gal-nav svg{width:18px;height:18px}
+.gal-pick{min-height:44px;padding:8px 20px;font-size:14px;border-radius:14px}
+.gs-badge{top:-11px;padding:5px 11px 5px 8px;font-size:11px}
 </style>
 </head>
 <body>
@@ -1398,7 +1419,7 @@ function gSetColors(p,a,flash){
 }
 function gLayout(){
   var r=gStage.getBoundingClientRect(),aw=r.width,ah=r.height;
-  gCW=Math.max(150,Math.min(ah*.94*W/H,aw*(aw<600?.76:.66),560));gCH=gCW*H/W;
+  gCW=Math.max(150,Math.min(ah*.97*W/H,aw*(aw<600?.82:.72),680));gCH=gCW*H/W;
   gStage.style.setProperty('--cw',gCW+'px');gStage.style.setProperty('--ch',gCH+'px');
   gSl.forEach(function(g){g.th.style.transform='scale('+(gCW/W)+')'});
 }
