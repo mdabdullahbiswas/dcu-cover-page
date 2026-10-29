@@ -1060,10 +1060,25 @@ function pvOpen(on) {
   const sec = document.querySelector('.preview-section');
   if (!sec) return;
   if (on) pvZ = 1;
+  const was = sec.classList.contains('pv-open');
   sec.classList.toggle('pv-open', !!on);
   document.body.classList.toggle('pv-lock', !!on);
-  if (on) pvLayout();
+  sec.setAttribute('aria-hidden', on ? 'false' : 'true');
+  if (on) {
+    pvLayout();
+    // ফোনের Back বাটনে প্রিভিউ বন্ধ হবে
+    if (!was && !(history.state && history.state.pv)) history.pushState({ pv: 1 }, '');
+    const cl = $('pvClose'); if (cl) setTimeout(() => cl.focus({ preventScroll: true }), 300);
+  } else if (was) {
+    if (history.state && history.state.pv) history.back();
+    const fab = $('pvFab'); if (fab) fab.focus({ preventScroll: true });
+  }
 }
+window.addEventListener('popstate', () => {
+  const sec = document.querySelector('.preview-section');
+  if (sec && sec.classList.contains('pv-open')) pvOpen(false);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
 
 function pvFabUpdate(n) {
   const fab = $('pvFab');
@@ -1081,6 +1096,8 @@ function pvFabUpdate(n) {
   if (!sec) return;
   const fab = document.createElement('button');
   fab.id = 'pvFab'; fab.type = 'button';
+  fab.setAttribute('aria-haspopup', 'dialog');
+  sec.setAttribute('role', 'dialog'); sec.setAttribute('aria-modal', 'true'); sec.setAttribute('aria-hidden', 'true');
   fab.addEventListener('click', () => pvOpen(true));
   document.body.appendChild(fab);
 
