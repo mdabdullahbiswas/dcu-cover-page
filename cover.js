@@ -292,7 +292,6 @@ function showModal({ icon = '💾', title, text, input = false, value = '', plac
 function setTheme(p, a) {
   document.documentElement.style.setProperty('--pri', p);
   document.documentElement.style.setProperty('--acc', a);
-  // color-mix এড়াতে সরাসরি ভ্যালু সেট
   document.documentElement.style.setProperty('--pri2', p);
   document.documentElement.style.setProperty('--acc2', a);
   if ($('cPri')) $('cPri').value = p;
@@ -477,7 +476,6 @@ function supRender() {
   let h = '';
   let activePageCount = 1;
 
-  // ১. ঘোষণাপত্র
   const isDecl = $('pgDecl') && $('pgDecl').checked;
   if ($('declBox')) $('declBox').style.display = isDecl ? 'block' : 'none';
   if (isDecl) {
@@ -491,7 +489,6 @@ function supRender() {
     );
   }
 
-  // ২. অনুমোদনপত্র
   const isAppr = $('pgAppr') && $('pgAppr').checked;
   if ($('apprBox')) $('apprBox').style.display = isAppr ? 'block' : 'none';
   if (isAppr) {
@@ -505,7 +502,6 @@ function supRender() {
     );
   }
 
-  // ৩. কৃতজ্ঞতা স্বীকার
   const isAck = $('pgAck') && $('pgAck').checked;
   if ($('ackBox')) $('ackBox').style.display = isAck ? 'block' : 'none';
   if (isAck) {
@@ -519,7 +515,6 @@ function supRender() {
     );
   }
 
-  // ৪. সূচিপত্র
   const isToc = $('pgToc') && $('pgToc').checked;
   if ($('tocBox')) $('tocBox').style.display = isToc ? 'block' : 'none';
   if (isToc) {
@@ -557,7 +552,6 @@ function applyUI() {
   });
 }
 
-// ইনফিনিট লুপ প্রতিরোধের লক
 let inLangSync = false;
 function setSite(l, fromExternal = false) {
   if (inLangSync) return;
@@ -599,13 +593,12 @@ function profList(sel) {
   if (sel) s.value = sel;
 }
 
-// ✨ স্টাইলিশ মোডাল দিয়ে প্রোফাইল সেভ
 function profSave() {
   const bn = SL === 'bn';
   showModal({
     icon: '💾',
     title: bn ? 'প্রোফাইল সংরক্ষণ করুন' : 'Save Profile',
-    text: bn ? 'কোর্সের নাম বা শিক্ষকের তথ্য পরবর্তীতে দ্রুত ব্যবহারের জন্য একটি নাম দিয়ে সংরক্ষণ করুন:' : 'Save your course & teacher details to quickly load them anytime:',
+    text: bn ? 'কোর্সের নাম বা শিক্ষকের তথ্য পরবর্তীতে দ্রুত ব্যবহারের জন্য একটি নাম দিয়ে সংরক্ষণ করুন:' : 'Save your course & teacher details to quickly load them anytime:',
     input: true,
     placeholder: bn ? 'যেমন: CSE-101 – রহমান স্যার' : 'e.g. CSE-101 – Prof. Rahman',
     confirmText: bn ? 'সংরক্ষণ করুন' : 'Save',
@@ -625,7 +618,6 @@ function profLoad() {
   if (s) { apply(s); toast('প্রোফাইল লোড হয়েছে'); }
 }
 
-// ✨ স্টাইলিশ মোডাল দিয়ে প্রোফাইল ডিলিট
 function profDel() {
   const n = $('profSel').value;
   const bn = SL === 'bn';
@@ -711,9 +703,6 @@ function tclear() {
   tchips();
 }
 
-/* ========================================================
-   🖼️ নিখুঁত PNG ডাউনলোড (কভার + সকল অতিরিক্ত পেজ সহ)
-   ======================================================== */
 async function downloadPNG() {
   toast('ছবি প্রস্তুত করা হচ্ছে...');
   const target = $('cover-template');
@@ -838,7 +827,6 @@ function share() {
     .catch(() => prompt(T('লিংকটি কপি করুন:'), u));
 }
 
-// ✨ স্টাইলিশ মোডাল দিয়ে রিসেট
 function resetAll() {
   const bn = SL === 'bn';
   showModal({
@@ -857,13 +845,11 @@ function resetAll() {
   });
 }
 
-// ন্যাভবার ভাষা পরিবর্তন হ্যান্ডলার (লুপ প্রোটেকশন সহ)
 window.onLang = function(l) {
   const targetLang = l || (typeof window.$lang === 'function' ? window.$lang() : localStorage.getItem('dcuSL')) || 'bn';
   setSite(targetLang, true);
 };
 
-// ইনিশিয়ালাইজেশন
 document.addEventListener('DOMContentLoaded', () => {
   let s = null;
   try {
@@ -927,7 +913,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if ($(id)) $(id).addEventListener('input', () => { setTheme($('cPri').value, $('cAcc').value); render(); });
   });
 
-  // অতিরিক্ত ৪টি পেজের চেকবক্স হ্যান্ডলার
   ['pgDecl', 'pgAppr', 'pgAck', 'pgToc'].forEach(id => {
     const el = $(id);
     if (el) {
@@ -940,7 +925,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // অতিরিক্ত ৪টি পেজের টেক্সটবক্স হ্যান্ডলার
   ['declText', 'apprText', 'ackText', 'tocText'].forEach(id => {
     const el = $(id);
     if (el) el.addEventListener('input', render);
@@ -949,7 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /* ========================================================
-   📌 লাইভ প্রিভিউ: ট্যাব (কভার / অতিরিক্ত পেজ) + স্টিকি + অটো-ফিট
+   📌 লাইভ প্রিভিউ: ট্যাব + স্টিকি + অটো-ফিট
    ======================================================== */
 let pvKey = 'cover';
 let pvZ = 1, pvS = .45, pvFit = .45;
@@ -1000,7 +984,6 @@ function pvLayout() {
   if (!sec) return;
   const wide = window.innerWidth >= 900;
 
-  // হেডার/টিকার যতটুকু ওপরে আটকে থাকে, তার নিচে প্রিভিউ বসবে
   let top = 0;
   if (wide) {
     document.querySelectorAll('#hdr, #hdr *, header, .global-blood-ticker, .sh').forEach(el => {
@@ -1014,7 +997,7 @@ function pvLayout() {
   }
   sec.style.setProperty('--pvtop', (top || 25) + 'px');
 
-  const PW = 793.7, PH = 1122.5;               // 210mm × 297mm (px)
+  const PW = 793.7, PH = 1122.5;
   const px = v => parseFloat(v) || 0;
   let s;
   const st = $('pvStage');
@@ -1055,30 +1038,40 @@ function pvLayout() {
 
 /* ========================================================
    📱 মোবাইল: ভাসমান প্রিভিউ বাটন + পূর্ণ-স্ক্রিন প্রিভিউ শিট
+   ✅ FIX: বাটনকে force-visible রাখা, কোনো বাইরের স্ক্রিপ্ট/CSS
+      একে লুকাতে না পারে
    ======================================================== */
+function ensureFabVisible() {
+  const fab = $('pvFab');
+  if (!fab) return;
+  const mobile = window.innerWidth < 900;
+  const locked = document.body.classList.contains('pv-lock');
+  if (mobile && !locked) {
+    fab.style.setProperty('display', 'inline-flex', 'important');
+    fab.style.setProperty('visibility', 'visible', 'important');
+    fab.style.setProperty('opacity', '1', 'important');
+    fab.style.setProperty('position', 'fixed', 'important');
+    fab.style.setProperty('right', '14px', 'important');
+    fab.style.setProperty('bottom', 'calc(14px + env(safe-area-inset-bottom, 0px))', 'important');
+    fab.style.setProperty('z-index', '60', 'important');
+  } else if (!mobile) {
+    fab.style.removeProperty('display');
+    fab.style.removeProperty('visibility');
+    fab.style.removeProperty('opacity');
+  }
+}
+
 function pvOpen(on) {
   const sec = document.querySelector('.preview-section');
   if (!sec) return;
   if (on) pvZ = 1;
-  const was = sec.classList.contains('pv-open');
   sec.classList.toggle('pv-open', !!on);
   document.body.classList.toggle('pv-lock', !!on);
-  sec.setAttribute('aria-hidden', on ? 'false' : 'true');
-  if (on) {
-    pvLayout();
-    // ফোনের Back বাটনে প্রিভিউ বন্ধ হবে
-    if (!was && !(history.state && history.state.pv)) history.pushState({ pv: 1 }, '');
-    const cl = $('pvClose'); if (cl) setTimeout(() => cl.focus({ preventScroll: true }), 300);
-  } else if (was) {
-    if (history.state && history.state.pv) history.back();
-    const fab = $('pvFab'); if (fab) fab.focus({ preventScroll: true });
-  }
+  if (on) pvLayout();
+  // প্যানেল খোলা/বন্ধ হলে বাটনের দৃশ্যমানতা নতুন করে ঠিক করি
+  setTimeout(ensureFabVisible, 0);
+  setTimeout(ensureFabVisible, 300);
 }
-window.addEventListener('popstate', () => {
-  const sec = document.querySelector('.preview-section');
-  if (sec && sec.classList.contains('pv-open')) pvOpen(false);
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
 
 function pvFabUpdate(n) {
   const fab = $('pvFab');
@@ -1089,15 +1082,20 @@ function pvFabUpdate(n) {
   fab.setAttribute('aria-label', label);
   const cl = $('pvClose');
   if (cl) cl.setAttribute('aria-label', SL === 'en' ? 'Close preview' : 'প্রিভিউ বন্ধ করুন');
+  ensureFabVisible();
 }
 
 (function pvMobileInit() {
   const sec = document.querySelector('.preview-section');
   if (!sec) return;
+
+  // যদি আগে থেকেই #pvFab থাকে, প্রথমে সরিয়ে ফেলি
+  const oldFab = $('pvFab');
+  if (oldFab) oldFab.remove();
+
   const fab = document.createElement('button');
-  fab.id = 'pvFab'; fab.type = 'button';
-  fab.setAttribute('aria-haspopup', 'dialog');
-  sec.setAttribute('role', 'dialog'); sec.setAttribute('aria-modal', 'true'); sec.setAttribute('aria-hidden', 'true');
+  fab.id = 'pvFab';
+  fab.type = 'button';
   fab.addEventListener('click', () => pvOpen(true));
   document.body.appendChild(fab);
 
@@ -1106,7 +1104,6 @@ function pvFabUpdate(n) {
   cl.addEventListener('click', () => pvOpen(false));
   sec.insertBefore(cl, sec.firstChild);
 
-  // কভার ও অতিরিক্ত পেজ একটি স্ক্রলযোগ্য স্টেজে
   const cover = $('cover-template'), sup = $('supPages');
   const stage = document.createElement('div'); stage.id = 'pvStage';
   const sizer = document.createElement('div'); sizer.id = 'pvSizer';
@@ -1117,7 +1114,6 @@ function pvFabUpdate(n) {
   const bar0 = $('pvTabs');
   if (bar0) sec.insertBefore(bar0, stage);
 
-  // জুম বার
   const zb = document.createElement('div'); zb.id = 'pvZoom';
   zb.innerHTML = '<button type="button" data-z="-1" aria-label="Zoom out">−</button>' +
                  '<button type="button" class="lbl" id="pvZoomLbl" data-z="0"></button>' +
@@ -1130,7 +1126,6 @@ function pvFabUpdate(n) {
   });
   sec.insertBefore(zb, stage);
 
-  // পিঞ্চ-জুম ও ডাবল-ট্যাপ
   let pin = null, lastTap = { t: 0, x: 0, y: 0 }, moved = false;
   const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
   stage.addEventListener('touchstart', e => {
@@ -1160,22 +1155,47 @@ function pvFabUpdate(n) {
   }, { passive: true });
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
-  window.addEventListener('resize', () => { if (window.innerWidth >= 900) pvOpen(false); });
-  pvFabUpdate(1);
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 900) pvOpen(false);
+    ensureFabVisible();
+  });
 
-  // নিরাপত্তা: অন্য কোনো স্ক্রিপ্ট বাটন সরিয়ে দিলে বা লুকালে আবার বসিয়ে দেবে
-  function pvFabGuard() {
-    const f = $('pvFab');
-    if (!f) { document.body.appendChild(fab); return; }
-    if (f.parentNode !== document.body) document.body.appendChild(f);
-  }
-  new MutationObserver(pvFabGuard).observe(document.body, { childList: true });
-  window.addEventListener('pageshow', pvFabGuard);
-  window.addEventListener('orientationchange', () => setTimeout(pvFabGuard, 300));
+  // 🛡️ সবচেয়ে গুরুত্বপূর্ণ fix:
+  // বাটনের style attribute-এ কোনো বাইরের পরিবর্তন হলে আমরা সাথে সাথে ঠিক করি
+  try {
+    const mo = new MutationObserver(() => {
+      const f = $('pvFab');
+      if (!f) return;
+      const mobile = window.innerWidth < 900;
+      const locked = document.body.classList.contains('pv-lock');
+      if (mobile && !locked) {
+        if (f.style.display !== 'inline-flex' || f.style.visibility === 'hidden' || f.style.opacity === '0') {
+          ensureFabVisible();
+        }
+      }
+    });
+    mo.observe(document.body, { attributes: true, childList: true, subtree: false });
+    const fabRef = $('pvFab');
+    if (fabRef) {
+      mo.observe(fabRef, { attributes: true, attributeFilter: ['style', 'class', 'hidden'] });
+    }
+  } catch (e) {}
+
+  // প্রাথমিকভাবে এবং পরপর কয়েকবার force-visible করি
+  ensureFabVisible();
+  setTimeout(ensureFabVisible, 100);
+  setTimeout(ensureFabVisible, 500);
+  setTimeout(ensureFabVisible, 1500);
+  setTimeout(ensureFabVisible, 3000);
+
+  // window resize আর scroll-এও চেক
+  window.addEventListener('scroll', ensureFabVisible, { passive: true });
+  window.addEventListener('orientationchange', () => setTimeout(ensureFabVisible, 200));
+
+  pvFabUpdate(1);
 })();
 
 
-/* আঙুলের নিচের বিন্দু স্থির রেখে জুম */
 function pvZoomTo(z, cx, cy) {
   const st = $('pvStage'), sz = $('pvSizer');
   if (!st || !sz) return;
