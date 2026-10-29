@@ -862,19 +862,3 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
 @media (prefers-reduced-motion: reduce) {
   .preview-section, #pvFab { transition: none !important; }
 }
-
-/* 🔒 বাটন যেন স্ক্রল/অ্যাড্রেসবার পরিবর্তনে হারিয়ে না যায় (মোবাইল রেন্ডারিং বাগ ফিক্স) */
-@media screen and (max-width: 899px) {
-  body > button#pvFab {
-    transform: translate3d(0,0,0) !important;
-    -webkit-transform: translate3d(0,0,0) !important;
-    will-change: transform;
-    backface-visibility: hidden; -webkit-backface-visibility: hidden;
-    transition: box-shadow .15s !important;
-    opacity: 1 !important; visibility: visible !important;
-    pointer-events: auto !important;
-  }
-  body > button#pvFab:active { transform: translate3d(0,0,0) scale(.95) !important; }
-  body > button#pvFab:hover { transform: translate3d(0,0,0) !important; }
-  body.pv-lock > button#pvFab { display: none !important; }
-}
