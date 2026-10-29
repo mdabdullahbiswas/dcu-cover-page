@@ -575,8 +575,8 @@ function pvLayout() {
 
 /* ========================================================
    📱 মোবাইল: ভাসমান প্রিভিউ বাটন
-   🚀 NEW FIX: বাটনকে একটি `div`-এর ভেতরে রাখা হয়েছে যাতে কোনো 
-   external CSS একে প্রভাবিত করতে না পারে। 
+   Responsive visibility is controlled only by CSS. This avoids a
+   visible-on-load flash followed by JavaScript hiding the button.
    ======================================================== */
 function pvOpen(on) {
   const sec = document.querySelector('.preview-section');
@@ -600,23 +600,20 @@ function pvFabUpdate(n) {
 (function pvMobileInit() {
   const sec = document.querySelector('.preview-section');
   if (!sec) return;
-  
-  // পুরনো বাটন থাকলে সরিয়ে ফেলি
+
+  // Avoid duplicate controls if this initializer is ever run more than once.
   const oldWrapper = document.getElementById('pvFabWrapper');
   if (oldWrapper) oldWrapper.remove();
 
-  // 🚀 নতুন পদ্ধতি: বাটনকে একটি Wrapper div-এর ভেতরে রাখা হলো
   const wrapper = document.createElement('div');
   wrapper.id = 'pvFabWrapper';
-  wrapper.style.cssText = 'position: fixed; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 999999; display: block; visibility: visible; opacity: 1; pointer-events: auto;';
-  
+  // Do not set display inline: cover.css media queries are the single source of truth.
+
   const fab = document.createElement('button');
   fab.id = 'pvFab';
   fab.type = 'button';
-  // বাটনের নিজস্ব স্টাইল (একদম নিশ্চিতভাবে দেখানোর জন্য)
-  fab.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border: 0; border-radius: 999px; background: #0a2240; color: #e5a83b; font: 700 14px/1 "Hind Siliguri", sans-serif; letter-spacing: .2px; box-shadow: 0 8px 22px rgba(10,34,64,.42), 0 0 0 1px rgba(255,255,255,.12) inset; cursor: pointer; -webkit-tap-highlight-color: transparent;';
   fab.addEventListener('click', () => pvOpen(true));
-  
+
   wrapper.appendChild(fab);
   document.body.appendChild(wrapper);
 
@@ -647,21 +644,12 @@ function pvFabUpdate(n) {
   stage.addEventListener('touchend', e => { if (e.touches.length < 2) pin = null; if (e.touches.length === 0 && e.changedTouches.length === 1 && !moved) { const c = e.changedTouches[0], now = Date.now(); if (now - lastTap.t < 320 && Math.hypot(c.clientX - lastTap.x, c.clientY - lastTap.y) < 30) { pvZoomTo(pvZ > 1.05 ? 1 : 2.5, c.clientX, c.clientY); lastTap.t = 0; } else { lastTap = { t: now, x: c.clientX, y: c.clientY }; } } }, { passive: true });
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
-  
-  // স্ক্রিন রিসাইজ হলে বাটনটি দেখাবেন কি না তা ঠিক করা
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 900) {
-      wrapper.style.display = 'none';
-      pvOpen(false);
-    } else {
-      wrapper.style.display = 'block';
-    }
-  });
-  
-  // শুরুতে মোবাইল হলে দেখাবে, ডেস্কটপ হলে লুকাবে
-  if (window.innerWidth >= 900) {
-    wrapper.style.display = 'none';
-  }
+
+  // Let CSS handle visibility; close the modal if a mobile viewport becomes desktop-sized.
+  const mobilePreview = window.matchMedia('(max-width: 899px)');
+  const handleBreakpointChange = e => { if (!e.matches) pvOpen(false); };
+  if (mobilePreview.addEventListener) mobilePreview.addEventListener('change', handleBreakpointChange);
+  else if (mobilePreview.addListener) mobilePreview.addListener(handleBreakpointChange);
 
   pvFabUpdate(1);
 })();
