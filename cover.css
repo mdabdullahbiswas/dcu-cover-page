@@ -630,30 +630,44 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
 }
 
 /* ============================================================
-   ✅ FIXED: base hide rules আগে রাখা হয়েছে,
-   যাতে মোবাইল মিডিয়া কোয়েরির display:inline-flex ঠিকমতো জেতে
+   📱 মোবাইল প্রিভিউ FAB — visibility is CSS-only to prevent flicker.
+   The wrapper is fixed; the button remains in normal flow inside it.
    ============================================================ */
+#pvFabWrapper {
+  display: none;
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  z-index: 999999;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
 #pvFab, #pvClose, #pvZoom { display: none; }
+#pvFab { width: auto !important; position: static !important; margin: 0; }
 #pvStage, #pvSizer { display: contents; }
 
 @media screen and (max-width: 899px) {
   .container { padding-bottom: 84px; }
+  #pvFabWrapper { display: block; }
   #pvFab {
-    position: fixed; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 60;
-    display: inline-flex; align-items: center; gap: 8px;
+    position: static !important; width: auto !important; min-width: 0;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     padding: 12px 18px; border: 0; border-radius: 999px; cursor: pointer;
     background: var(--n, #0a2240); color: var(--g, #e5a83b);
     font: 700 14px/1 'Hind Siliguri', sans-serif; letter-spacing: .2px;
     box-shadow: 0 8px 22px rgba(10,34,64,.42), 0 0 0 1px rgba(255,255,255,.12) inset;
     -webkit-tap-highlight-color: transparent; transition: transform .15s;
+    white-space: nowrap;
   }
-  #pvFab:active { transform: scale(.95); }
+  #pvFab:hover { transform: none; }
+  #pvFab:active { transform: scale(.97); }
   #pvFab .pvf-n {
     min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; display: inline-flex;
     align-items: center; justify-content: center; background: var(--g, #e5a83b); color: var(--n, #0a2240); font-size: 12px;
   }
   body.pv-lock { overflow: hidden; }
-  body.pv-lock #pvFab { display: none; }
+  body.pv-lock #pvFabWrapper { display: none; }
 
   .preview-section {
     position: fixed !important; top: 0; right: 0; bottom: 0; left: 0; z-index: 80;
@@ -748,7 +762,7 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     max-width: none !important;
   }
 
-  #pvTabs, #pvFab, #pvClose, #pvZoom { display: none !important; }
+  #pvTabs, #pvFabWrapper, #pvFab, #pvClose, #pvZoom { display: none !important; }
   #pvStage, #pvSizer { display: contents !important; }
   .a4-page.pv-off {
     position: static !important; visibility: visible !important;
