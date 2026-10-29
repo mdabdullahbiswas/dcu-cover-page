@@ -130,6 +130,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
       '.sh .ut{flex:none;gap:4px}' +
       '.sh .ut button{padding:7px 9px;font-size:13px}' +
       '.dcu-tour-btn{padding:9px 18px}' +
+      '.global-blood-ticker{position:static}' +
     '}' +
     /* গাইড বক্স স্টাইল */
     '.dcu-tour-box{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(94vw,420px);background:var(--cd,#fff);color:var(--ink,#1c2733);border:1.5px solid var(--ln,#d5dde6);border-radius:14px;padding:16px 18px;box-shadow:0 12px 36px rgba(0,0,0,.28);z-index:99999;font-family:inherit;animation:dcuTourIn .2s ease-out}' +
