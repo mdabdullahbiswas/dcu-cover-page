@@ -249,9 +249,9 @@ body.grp .single-only { display: none; }
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  transform: scale(.72);
+  transform: scale(var(--pvs, .72));
   transform-origin: top center;
-  margin-bottom: -78mm;
+  margin-bottom: calc(-297mm * (1 - var(--pvs, .72)));
   transition: all .3s;
   width: calc(210mm - var(--gut,0mm));
   margin-left: var(--gut,0mm);
@@ -586,26 +586,41 @@ body.dark .c-modal-btn.cancel {
 }
 
 
-/* 📌 লাইভ প্রিভিউ লক: নিচে স্ক্রল করলেও দেখা যাবে */
+/* 📌 লাইভ প্রিভিউ লক: হেডারের নিচে আটকে থাকে, পুরো A4 পেজ একসাথে দেখা যায় */
+#supPages .page-sep-label { display: none; }
+
+#pvTabs {
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+  margin: 0 0 12px; max-width: 100%;
+}
+#pvTabs button {
+  border: 1.5px solid var(--pri, #0a2240); background: #fff; color: var(--pri, #0a2240);
+  font: 600 13px 'Hind Siliguri', sans-serif; padding: 5px 13px; border-radius: 999px; cursor: pointer;
+}
+#pvTabs button.on { background: var(--pri, #0a2240); color: var(--acc, #e5a83b); }
+body.dark #pvTabs button { background: #182231; color: #d7e2ef; border-color: #3a4c63; }
+body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; border-color: var(--acc, #e5a83b); }
+
+/* যে পেজ এখন দেখানো হচ্ছে না: লুকানো, তবে মাপজোখ ঠিক থাকে */
+.a4-page.pv-off {
+  position: fixed !important; left: -10000px; top: 0;
+  visibility: hidden; pointer-events: none; transform: none !important;
+}
+
 @media screen and (min-width: 900px) {
   .container { align-items: flex-start; }
   .preview-section {
     position: sticky;
-    top: 12px;
+    top: var(--pvtop, 25px);
     align-self: flex-start;
-    max-height: calc(100vh - 24px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
+    height: calc(100vh - var(--pvtop, 25px) - 12px);
   }
 }
-
 /* রেসপনসিভ ভিউ */
 @media screen and (max-width: 700px) {
   .container { padding: 12px; }
   .form-section { padding: 20px; }
   .preview-section { min-width: 0; width: 100%; overflow: hidden; }
-  .a4-page { transform: scale(.42); margin-bottom: -170mm; }
 }
 
 /* ========================================================
@@ -649,7 +664,13 @@ body.dark .c-modal-btn.cancel {
     max-width: none !important;
   }
 
+  #pvTabs { display: none !important; }
+  .a4-page.pv-off {
+    position: static !important; visibility: visible !important;
+    left: auto !important; top: auto !important;
+  }
   .preview-section {
+    height: auto !important;
     position: static !important;
     max-height: none !important;
     overflow: visible !important;
