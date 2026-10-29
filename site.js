@@ -178,6 +178,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   function applyL(l) {
     if (l) SL = l;
     document.documentElement.lang = SL;
+    document.documentElement.setAttribute('translate', 'no'); // Chrome অটো-ট্রান্সলেট যেন ভাষা বদল নষ্ট না করে
     document.querySelectorAll('.t').forEach(function (e) {
       if (e.children.length) return;
       var k = e.dataset.s || (e.dataset.s = e.textContent.trim());
