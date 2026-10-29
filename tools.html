@@ -704,6 +704,15 @@ cvUI();
 </script>
 <script src="calculator.js"></script>
 <script>
+/* ফোনে ক্যালকুলেটরের ডিসপ্লে (sticky) যেন হেডারের নিচে আটকে থাকে, ওপরে ঢুকে না যায় */
+(function(){var r=document.documentElement;
+function set(){var h=document.getElementById('hdr'),l=document.getElementById('wlcd');
+r.style.setProperty('--stk',(h?Math.round(h.getBoundingClientRect().height):0)+'px');
+if(l)r.style.setProperty('--lcdh',l.offsetHeight+'px');}
+set();addEventListener('load',set);addEventListener('resize',set);setTimeout(set,500);setTimeout(set,1500);
+if(window.ResizeObserver){var h=document.getElementById('hdr');if(h)new ResizeObserver(set).observe(h);}})();
+</script>
+<script>
 
 /* ===== ৯. রেজাল্ট ===== */
 function resR(){$('#rl').href=$RESULT;$('#cols').innerHTML=$COLS.map(c=>`<li>${esc($lang()=='en'?c[0]:c[1])}</li>`).join('')}
