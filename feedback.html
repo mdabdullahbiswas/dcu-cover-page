@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>DCU Unofficial</title>
+<title>মতামত ও পরামর্শ — DCU Unofficial</title>
 <meta name="theme-color" content="#0a2240">
 <link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,6 +30,42 @@ textarea{min-height:130px;resize:vertical}
 .ns{font-size:13.5px;color:var(--mu);border-top:1px dashed var(--ln);margin-top:14px;padding-top:10px}
 :focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
 html{scroll-behavior:smooth;scroll-padding-top:80px}
+
+/* ===== Premium layer ===== */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,24px) scale(1.15)}}
+@keyframes shine{from{transform:translateX(-120%) skewX(-20deg)}to{transform:translateX(260%) skewX(-20deg)}}
+@keyframes pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+.ph{position:relative;overflow:hidden;margin:6px 0 4px;padding:30px 28px;border-radius:18px;background:linear-gradient(125deg,#06142a,#0a2240 55%,#15396b);box-shadow:0 18px 40px rgba(10,34,64,.28);animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+.ph::before{content:'';position:absolute;right:-60px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(229,168,59,.55),transparent 68%);animation:drift 9s ease-in-out infinite}
+.ph>*{position:relative}.ph h1{color:#f6dfa8;font-size:30px;font-weight:700}.ph p{color:#c4d3e8;max-width:620px}
+.gd .bx{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}.gd .bx:nth-child(1){animation-delay:.12s}.gd .bx:nth-child(2){animation-delay:.24s}
+.bx{border-radius:16px;box-shadow:0 1px 2px rgba(15,27,45,.05),0 14px 34px rgba(15,27,45,.07);transition:box-shadow .3s,transform .3s}
+.gd .bx:hover{box-shadow:0 18px 42px rgba(15,27,45,.12)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus{outline:0;border-color:#0a2240;box-shadow:0 0 0 4px rgba(229,168,59,.28)}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.seg button{font:inherit;font-size:13.5px;font-weight:600;padding:8px 14px;border-radius:999px;border:1.5px solid var(--ln);background:var(--cd);color:var(--ink);cursor:pointer;transition:all .2s}
+.seg button:hover{border-color:#e5a83b;transform:translateY(-1px)}
+.seg button[aria-checked=true]{background:#0a2240;color:#e5a83b;border-color:#0a2240;animation:pop .35s both}
+.mt{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:12.5px;color:var(--mu)}
+.meter{flex:1;height:6px;border-radius:6px;background:var(--ln);overflow:hidden}
+.meter i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#e5a83b,#f3c76b);transition:width .25s,background .25s}
+.meter i.hi{background:linear-gradient(90deg,#d9534f,#ef8a80)}
+.bt{position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 16px rgba(10,34,64,.22)}
+.bt:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(10,34,64,.3)}
+.bt::after{content:'';position:absolute;top:0;bottom:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-120%) skewX(-20deg)}
+.bt:not(.o):hover::after{animation:shine .8s}
+.bt.o{box-shadow:none}.bt.o:hover{border-color:#e5a83b;box-shadow:none}
+.kb{margin:10px 0 0;font-size:12.5px;color:var(--mu)}
+.ct{padding:10px;margin:8px -10px;border-radius:12px;transition:background .2s}.ct:hover{background:color-mix(in srgb,var(--ln) 45%,transparent)}
+.ct>div{flex:1;min-width:0}
+.cpy{font:inherit;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;border:1.5px solid var(--ln);background:transparent;color:var(--ink);cursor:pointer;transition:all .2s}
+.cpy:hover{border-color:#e5a83b;background:#0a2240;color:#e5a83b}
+.tst{position:fixed;left:50%;bottom:26px;z-index:50;transform:translate(-50%,30px);opacity:0;pointer-events:none;background:#0a2240;color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 14px 34px rgba(0,0,0,.3);transition:all .35s cubic-bezier(.2,.8,.2,1);display:flex;gap:8px;align-items:center}
+.tst.on{opacity:1;transform:translate(-50%,0)}.tst::before{content:'\2713';display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#e5a83b;color:#0a2240;font-size:12px}
+@media(max-width:760px){.ph{padding:24px 20px}.ph h1{font-size:24px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body data-page="feedback">
@@ -40,25 +76,24 @@ html{scroll-behavior:smooth;scroll-padding-top:80px}
 <div class="gd" id="feedback">
 <div class="bx"><h2 class="t">বার্তা পাঠান|Send a Message</h2>
 <label class="t">ধরন|Type</label>
-<select id="ft"><option value="0" class="t">পরামর্শ|Suggestion</option><option value="1" class="t">সমস্যা (Bug)|Problem (Bug)</option><option value="2" class="t">নতুন ফিচারের অনুরোধ|Feature request</option><option value="3" class="t">প্রশ্ন|Question</option></select>
-<label class="t">আপনার বার্তা|Your message</label><textarea id="fm" data-p="এখানে লিখুন...|Write here..."></textarea>
+<div class="seg" id="seg" role="radiogroup" aria-label="Type"></div><select id="ft" hidden><option value="0" class="t">পরামর্শ|Suggestion</option><option value="1" class="t">সমস্যা (Bug)|Problem (Bug)</option><option value="2" class="t">নতুন ফিচারের অনুরোধ|Feature request</option><option value="3" class="t">প্রশ্ন|Question</option></select>
+<label class="t">আপনার বার্তা|Your message</label><textarea id="fm" maxlength="1000" data-p="এখানে লিখুন...|Write here..."></textarea>
 <label class="t">নাম ও যোগাযোগ (ঐচ্ছিক)|Name & contact (optional)</label><input id="fc" data-p="উত্তর পেতে চাইলে ইমেইল বা নম্বর দিন|Add an email or number if you want a reply">
-<div class="ch" id="fb2"></div><div id="fs" aria-live="polite"></div>
+<div class="mt"><div class="meter"><i id="mbar"></i></div><span id="mcnt">0 / 1000</span></div><div class="ch" id="fb2"></div><p class="kb t">দ্রুত পাঠাতে Ctrl + Enter চাপুন।|Press Ctrl + Enter to send quickly.</p><div id="fs" aria-live="polite"></div>
 </div>
 <div class="bx"><h2 class="t">সরাসরি যোগাযোগ|Contact Directly</h2>
 <div id="ct"></div>
 <p class="ns t">আপনার লেখা বার্তা এই সাইটে জমা থাকে না। পাঠানোর বোতাম চাপলে এটি আপনার নিজের ইমেইল বা WhatsApp-এ খোলে।|Your message is not stored on this site. The send buttons open it in your own email or WhatsApp.</p></div>
 </div>
 </main>
-<div id="ftr"></div>
+<div id="ftr"></div><div class="tst" id="tst" role="status" aria-live="polite"></div>
 <script src="site.js"></script>
 <script>
 const $=s=>document.querySelector(s),D=$DEV,L=$L;
 function render(){
  const c=[];
- if(D.email)c.push(`<div class="ct">${$SOC('email','mailto:'+D.email,L('ইমেইল|Email'),false)}<div><b>${L('ইমেইল|Email')}</b><span>${D.email}</span></div></div>`);
- if(D.whatsapp)c.push(`<div class="ct"><a class="si" style="--c:#25d366" href="https://wa.me/${D.whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-4.9A8.5 8.5 0 1 1 8 19.4L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-.8.8c-.8-.3-1.7-1.2-2-2l.8-.8-1-2L9 9.5z" fill="currentColor" stroke="none"/></svg></a><div><b>WhatsApp</b><span>+${D.whatsapp}</span></div></div>`);
- c.push(`<div class="ct">${$SOC('github',D.repo+'/issues',L('GitHub Issues|GitHub Issues'))}<div><b>GitHub</b><span>${L('সমস্যা বা ফিচারের অনুরোধ|Bugs and feature requests')}</span></div></div>`);
+ if(D.email)c.push(`<div class="ct">${$SOC('email','mailto:'+D.email,L('ইমেইল|Email'),false)}<div><b>${L('ইমেইল|Email')}</b><span>${D.email}</span></div><button type="button" class="cpy" data-c="${D.email}">${L('কপি|Copy')}</button></div>`);
+ if(D.whatsapp)c.push(`<div class="ct"><a class="si" style="--c:#25d366" href="https://wa.me/${D.whatsapp}" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-4.9A8.5 8.5 0 1 1 8 19.4L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-.8.8c-.8-.3-1.7-1.2-2-2l.8-.8-1-2L9 9.5z" fill="currentColor" stroke="none"/></svg></a><div><b>WhatsApp</b><span>+${D.whatsapp}</span></div><button type="button" class="cpy" data-c="+${D.whatsapp}">${L('কপি|Copy')}</button></div>`);
  $('#ct').outerHTML='<div id="ct">'+c.join('')+'</div>';
  buttons();
 }
@@ -66,7 +101,7 @@ function msg(){const t=['পরামর্শ|Suggestion','সমস্যা|P
  return `[${L(t)}] ${$('#fm').value.trim()}`+($('#fc').value.trim()?`\n— ${$('#fc').value.trim()}`:'')}
 function buttons(){
  const b=[];if(D.email)b.push(['gm',L('Gmail-এ পাঠান|Send via Gmail')],['em',L('ইমেইল অ্যাপে পাঠান|Send via Email App')]);if(D.whatsapp)b.push(['wa',L('WhatsApp-এ পাঠান|Send on WhatsApp')]);
- b.push(['gh',L('GitHub-এ জানান|Report on GitHub')],['cp',L('বার্তা কপি করুন|Copy message')]);
+ b.push(['cp',L('বার্তা কপি করুন|Copy message')]);
  $('#fb2').innerHTML=b.map(([k,t],i)=>`<button type="button" class="bt${i>0?' o':''}" data-k="${k}">${t}</button>`).join('');
 }
 function go(url,same){
@@ -92,10 +127,22 @@ $('#fb2').onclick=async e=>{
  }
  else if(k=='em')go(`mailto:${D.email}?subject=${encodeURIComponent(SUB)}&body=${encodeURIComponent(m)}`,true);
  else if(k=='wa')go(`https://wa.me/${D.whatsapp}?text=${encodeURIComponent(m)}`);
- else if(k=='gh')go(`${D.repo}/issues/new?title=${encodeURIComponent('Feedback')}&body=${encodeURIComponent(m)}`);
+ toast(L('বার্তা প্রস্তুত, কপি করা হয়েছে|Message ready and copied'));
  s.textContent=L('আপনার বার্তা কপি করা হয়েছে। নতুন ট্যাব বা অ্যাপ না খুললে সেখানে পেস্ট করে পাঠান।|Your message was copied. If no tab or app opened, paste it there and send.');
 };
-window.onLang=render;render();
+
+const TYPES=['পরামর্শ|Suggestion','সমস্যা (Bug)|Problem (Bug)','ফিচারের অনুরোধ|Feature request','প্রশ্ন|Question'],DK='dcuFeedbackDraft',MAX=1000;
+function toast(t){const e=$('#tst');e.textContent=t;e.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove('on'),2400)}
+function chips(){$('#seg').innerHTML=TYPES.map((t,i)=>`<button type="button" role="radio" aria-checked="${$('#ft').value==i}" data-i="${i}">${L(t)}</button>`).join('')}
+function meter(){const n=$('#fm').value.length;$('#mbar').style.width=(n/MAX*100)+'%';$('#mbar').classList.toggle('hi',n>MAX*.9);$('#mcnt').textContent=n+' / '+MAX}
+function saveDraft(){try{localStorage.setItem(DK,JSON.stringify({t:$('#ft').value,m:$('#fm').value,c:$('#fc').value}))}catch(x){}}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem(DK));if(d){$('#ft').value=d.t||0;$('#fm').value=d.m||'';$('#fc').value=d.c||''}}catch(x){}}
+$('#seg').onclick=e=>{const b=e.target.closest('button[data-i]');if(!b)return;$('#ft').value=b.dataset.i;chips();saveDraft()};
+['#fm','#fc'].forEach(q=>$(q).addEventListener('input',()=>{meter();saveDraft()}));
+document.addEventListener('click',async e=>{const b=e.target.closest('.cpy');if(!b)return;toast(await copy(b.dataset.c)?L('কপি হয়েছে|Copied'):L('কপি করা যায়নি|Could not copy'))});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){const b=$('#fb2 button');if(b)b.click()}});
+loadDraft();chips();meter();
+window.onLang=()=>{render();chips()};render();
 </script>
 </body>
 </html>
