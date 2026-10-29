@@ -628,6 +628,47 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     height: calc(100vh - var(--pvtop, 25px) - 12px);
   }
 }
+
+/* 📱 মোবাইল/ছোট স্ক্রিন: ভাসমান "প্রিভিউ" বাটন → নিচ থেকে ওঠা পূর্ণ-স্ক্রিন প্রিভিউ */
+#pvFab, #pvClose { display: none; }
+@media screen and (max-width: 899px) {
+  .container { padding-bottom: 84px; }
+  #pvFab {
+    position: fixed; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 18px; border: 0; border-radius: 999px; cursor: pointer;
+    background: var(--n, #0a2240); color: var(--g, #e5a83b);
+    font: 700 14px/1 'Hind Siliguri', sans-serif; letter-spacing: .2px;
+    box-shadow: 0 8px 22px rgba(10,34,64,.42), 0 0 0 1px rgba(255,255,255,.12) inset;
+    -webkit-tap-highlight-color: transparent; transition: transform .15s;
+  }
+  #pvFab:active { transform: scale(.95); }
+  #pvFab .pvf-n {
+    min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; display: inline-flex;
+    align-items: center; justify-content: center; background: var(--g, #e5a83b); color: var(--n, #0a2240); font-size: 12px;
+  }
+  body.pv-lock { overflow: hidden; }
+  body.pv-lock #pvFab { display: none; }
+
+  .preview-section {
+    position: fixed !important; top: 0; right: 0; bottom: 0; left: 0; z-index: 80;
+    width: auto !important; min-width: 0 !important; height: auto; margin: 0 !important;
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--bg, #eef2f6); overflow: hidden !important;
+    transform: translateY(100%); visibility: hidden;
+    transition: transform .28s cubic-bezier(.2,.8,.2,1), visibility 0s linear .28s;
+  }
+  .preview-section.pv-open { transform: none; visibility: visible; transition: transform .28s cubic-bezier(.2,.8,.2,1); }
+  .preview-section > h2 { margin: 0 0 10px; padding: 0 46px; font-size: 17px; text-align: center; justify-content: center; flex-wrap: wrap; }
+  #pvClose {
+    position: absolute; top: calc(8px + env(safe-area-inset-top, 0px)); right: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+    background: var(--n, #0a2240); color: #fff; font-size: 18px; line-height: 1;
+    box-shadow: 0 3px 10px rgba(0,0,0,.25); -webkit-tap-highlight-color: transparent;
+  }
+}
+
 /* রেসপনসিভ ভিউ */
 @media screen and (max-width: 700px) {
   .container { padding: 12px; }
@@ -676,12 +717,13 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     max-width: none !important;
   }
 
-  #pvTabs { display: none !important; }
+  #pvTabs, #pvFab, #pvClose { display: none !important; }
   .a4-page.pv-off {
     position: static !important; visibility: visible !important;
     left: auto !important; top: auto !important;
   }
   .preview-section {
+    transform: none !important; visibility: visible !important; background: none !important;
     height: auto !important;
     position: static !important;
     max-height: none !important;
