@@ -122,6 +122,48 @@ input[type=checkbox]{width:20px;height:20px;min-height:0;accent-color:var(--gold
 .tm{margin-top:12px;padding-top:10px;border-top:1px dashed #cbd5e1;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:var(--p);text-transform:uppercase;line-height:1.6}
 .sg{display:flex;justify-content:space-between;gap:60px;margin-top:34px;padding:0 10px}
 .sg div{flex:1;text-align:center;border-top:1.5px solid #334155;padding-top:6px;font-size:12.5px;font-weight:600;color:#475569}
+/* ===== Premium layer ===== */
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes spin{to{--ang:360deg}}
+@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.28)}100%{transform:scale(1.15)}}
+@keyframes inup{from{opacity:0;transform:translateY(16px)}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+@keyframes track{from{opacity:0;letter-spacing:.32em}}
+@keyframes grow{from{transform:scaleX(0);opacity:0}}
+@keyframes drawf{from{clip-path:inset(0 100% 0 0);opacity:.3}to{clip-path:inset(0)}}
+@keyframes bloom{from{opacity:0;transform:scale(.55)}}
+@keyframes sweep{to{transform:translateX(130%)}}
+@keyframes paper{from{opacity:0;transform:translateY(28px) scale(.98)}}
+body{background:radial-gradient(70% 320px at 50% 0,rgba(232,196,108,.13),transparent 72%) no-repeat,#fff}
+.top{--pg:0%}
+.top::after{left:0;right:auto;width:var(--pg);opacity:1;height:3px;background:linear-gradient(90deg,#f6dc8e,var(--gold2) 60%,#8a5f0a);box-shadow:0 0 14px rgba(185,138,44,.55);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.card{position:relative}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;opacity:0;transition:opacity .5s;background:conic-gradient(from var(--ang),transparent 0 62%,#f6dc8e 78%,var(--gold2) 88%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 4.5s linear infinite}
+.card:hover::before,.card:focus-within::before{opacity:1}
+.card:focus-within{box-shadow:0 1px 2px rgba(15,23,42,.04),0 20px 44px rgba(185,138,44,.16)}
+.card h3 i{box-shadow:0 4px 12px rgba(185,138,44,.4)}
+.sw.on,.tp.on span{animation:pop .45s cubic-bezier(.2,.8,.2,1)}
+.tp.on span{animation:none;box-shadow:0 0 0 2px var(--gold2)}
+.pwrap{background:linear-gradient(145deg,#fff,#faf7ef 55%,#fff);perspective:1800px}
+.sheet{transform:perspective(1800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .45s ease-out;will-change:transform;box-shadow:0 18px 50px rgba(15,23,42,.22),0 0 0 1px #e3e8ef}
+.sheet.swap{animation:paper .9s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:linear-gradient(112deg,transparent 38%,rgba(255,255,255,.75) 50%,transparent 62%);transform:translateX(-130%)}
+.sheet.swap::after{animation:sweep 1.5s 1.9s ease-out}
+.tpl-classic i.frame::before,.tpl-classic i.frame::after,.tpl-classic i.frame2::before,.tpl-classic i.frame2::after{content:"";position:absolute;width:9px;height:9px;background:var(--a);transform:rotate(45deg)}
+.tpl-classic i.frame::before{left:-5px;top:-5px}.tpl-classic i.frame::after{right:-5px;bottom:-5px}
+.tpl-classic i.frame2::before{right:-5px;top:-5px}.tpl-classic i.frame2::after{left:-5px;bottom:-5px}
+.sheet.swap i.frame{animation:drawf 1.3s .1s cubic-bezier(.6,0,.2,1) backwards}
+.sheet.swap i.frame2{animation:drawf 1.3s .35s cubic-bezier(.6,0,.2,1) backwards}
+.sheet.swap i.wm{animation:bloom 1.8s .2s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet.swap .hd{animation:inup .9s .5s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet.swap .dept{animation:wipe 1s .8s cubic-bezier(.7,0,.2,1) backwards}
+.sheet.swap .dt{animation:track 1.2s 1s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet.swap .rule{animation:grow .9s 1.3s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet.swap .dtb,.sheet.swap .tl,.sheet.swap .tt,.sheet.swap .cs{animation:inup .8s 1.35s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet.swap .ig .ic:nth-child(1){animation:inup .9s 1.55s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet.swap .ig .ic:nth-child(2){animation:inup .9s 1.7s cubic-bezier(.2,.8,.2,1) backwards}
+.sheet.swap .sg{animation:inup .8s 1.9s cubic-bezier(.2,.8,.2,1) backwards}
+@media print{.sheet{transform:none!important;transition:none}.sheet::after,.card::before,.sheet::before{display:none!important}.sheet *,.sheet i{animation:none!important}}
 @media(min-width:961px){.pv{position:sticky;top:84px;align-self:start}}
 @media(max-width:960px){.app{grid-template-columns:minmax(0,1fr)}.pv{order:-1}}
 @media(max-width:520px){.top{padding:10px 14px}.brand small,.brand b em{display:none}.g2{grid-template-columns:minmax(0,1fr)}.card{padding:16px;border-radius:16px}.btn small{display:none}input,select,textarea{font-size:16px}.acts .btn{flex:1 1 auto}}
@@ -368,6 +410,9 @@ function render(){
   bil($('oS1'),'s1');bil($('oS2'),'s2');
 
   $('warn').textContent=warns.join(' ');
+  var req=['uni','dept','courseCode','courseName','topic','sClass','session','mobile','teachers',v.mode==='group'?'members':'sName'].concat(v.mode==='group'?[]:['sRoll']);
+  var done=req.filter(function(k){return String(v[k]).trim()}).length;
+  document.querySelector('.top').style.setProperty('--pg',Math.round(done/req.length*100)+'%');
   /* UI state */
   $('boxSingle').hidden=v.mode==='group';$('boxGroup').hidden=v.mode!=='group';
   Array.prototype.forEach.call(document.querySelectorAll('.tp'),function(b){b.classList.toggle('on',b.dataset.v===v.tpl)});
@@ -428,6 +473,11 @@ $('reset').addEventListener('click',function(){
 });
 var pr=function(){render();window.print()};
 $('printTop').addEventListener('click',pr);$('printBtn').addEventListener('click',pr);$('printBtn2').addEventListener('click',pr);
+var pw=document.querySelector('.pwrap');
+if(window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+  pw.addEventListener('pointermove',function(e){var r=pw.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5,sh=$('sheet');sh.style.setProperty('--rx',(-y*3).toFixed(2)+'deg');sh.style.setProperty('--ry',(x*3).toFixed(2)+'deg')});
+  pw.addEventListener('pointerleave',function(){var sh=$('sheet');sh.style.setProperty('--rx','0deg');sh.style.setProperty('--ry','0deg')});
+}
 window.addEventListener('resize',fit);
 window.addEventListener('load',function(){fit();setTimeout(fit,300)});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){autoFit();fit()});
