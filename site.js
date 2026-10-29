@@ -105,6 +105,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '.sf .soc a.si svg{width:15px;height:15px}' +
     '.sf-note{max-width:1160px;margin:0 auto;padding:10px 18px 14px;border-top:1px solid rgba(255,255,255,.12);text-align:center;font-size:11.5px;color:#8596a8}' +
     '.sf-note p{margin:2px 0}' +
+    '.sf-note a{display:inline;padding:0}' +
     '@media(max-width:768px){.sf-in{grid-template-columns:1fr 1fr;gap:16px}}' +
     /* মোবাইল: কমপ্যাক্ট ফুটার ও হেডার */
     '@media(max-width:600px){' +
