@@ -258,7 +258,7 @@ body.grp .single-only { display: none; }
   box-shadow: calc(-1*var(--gut,0mm)) 0 0 #d9e1ea, 0 10px 35px rgba(0,0,0,.18);
 }
 
-/* টেমপ্লেট ১: Royal Classic (color-mix সরানো হয়েছে) */
+/* টেমপ্লেট ১: Royal Classic */
 .theme-classic { padding: 16mm 18mm 14mm; }
 .theme-classic .top-accent-bar { position: absolute; top: 0; left: 0; width: 100%; height: 5mm; background: var(--pri); }
 .theme-classic .inner-border { position: absolute; inset: 7mm; border: 1px solid rgba(229, 168, 59, 0.45); pointer-events: none; z-index: 1; }
@@ -629,9 +629,13 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
   }
 }
 
-/* 📱 মোবাইল/ছোট স্ক্রিন: ভাসমান "প্রিভিউ" বাটন → নিচ থেকে ওঠা পূর্ণ-স্ক্রিন প্রিভিউ */
+/* ============================================================
+   ✅ FIXED: base hide rules আগে রাখা হয়েছে,
+   যাতে মোবাইল মিডিয়া কোয়েরির display:inline-flex ঠিকমতো জেতে
+   ============================================================ */
 #pvFab, #pvClose, #pvZoom { display: none; }
 #pvStage, #pvSizer { display: contents; }
+
 @media screen and (max-width: 899px) {
   .container { padding-bottom: 84px; }
   #pvFab {
@@ -725,7 +729,7 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     height: auto !important;
   }
 
-  /* হেডারের সব অপ্রয়োজনীয় এলিমেন্ট সম্পূর্ণ অদৃশ্য */
+  /* হেডারের সব অপ্রয়োজনীয় এলিমেন্ট সম্পূর্ণ অদৃশ্য */
   #hdr, #ftr, .sh, .sf, .global-blood-ticker, #tourBox, .toast,
   .form-section, .preview-section > h2, .page-sep-label, .pv,
   .c-modal-overlay {
@@ -762,7 +766,7 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     padding: 0 !important;
   }
 
-  /* কভার পেজ ও প্রতিটি পেজ নিখুঁতভাবে ১টি পূর্ণ পৃষ্ঠায় সীমাবদ্ধ */
+  /* কভার পেজ ও প্রতিটি পেজ নিখুঁতভাবে ১টি পূর্ণ পৃষ্ঠায় সীমাবদ্ধ */
   #cover-template,
   .a4-page {
     box-sizing: border-box !important;
@@ -788,7 +792,7 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     padding: 0 !important;
   }
 
-  /* প্রতিটি অতিরিক্ত পেজ আলাদা পূর্ণ A4 পাতায় শুরু হবে */
+  /* প্রতিটি অতিরিক্ত পেজ আলাদা পূর্ণ A4 পাতায় শুরু হবে */
   .sup-page {
     box-sizing: border-box !important;
     width: calc(210mm - var(--gut, 0mm)) !important;
@@ -802,63 +806,4 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
     break-after: auto !important;
     overflow: hidden !important;
   }
-}
-
-
-/* ========================================================
-   📱 প্রিভিউ বাটন — প্রফেশনাল ফিক্স (এই ব্লকটি ফাইলের একদম শেষে থাকতে হবে)
-   ======================================================== */
-@media screen and (max-width: 899px) {
-  /* ফর্মের শেষ ফিল্ডও যেন বাটনের নিচে ঢাকা না পড়ে */
-  .container { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
-
-  /* ভাসমান বাটন: কোণায় ছোট পিল, পুরো প্রস্থ নয় (অন্য CSS-এর button নিয়ম বাতিল) */
-  body > button#pvFab {
-    position: fixed !important; left: auto !important; top: auto !important;
-    right: 16px !important; bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
-    width: auto !important; min-width: 0 !important; max-width: calc(100vw - 32px) !important;
-    height: 52px !important; margin: 0 !important; padding: 0 22px !important;
-    display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 9px !important;
-    border: 1px solid rgba(255,255,255,.18) !important; border-radius: 999px !important;
-    background: linear-gradient(135deg, #0f2f57, #0a2240) !important; color: #f1c15d !important;
-    font: 700 15px/1 'Hind Siliguri', sans-serif !important; letter-spacing: .2px;
-    box-shadow: 0 10px 26px rgba(10,34,64,.45), 0 2px 6px rgba(0,0,0,.2) !important;
-    z-index: 70 !important; cursor: pointer; touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent; transform: none; transition: transform .15s, box-shadow .15s;
-  }
-  body > button#pvFab:active { transform: scale(.95) !important; box-shadow: 0 5px 14px rgba(10,34,64,.4) !important; }
-  body > button#pvFab:focus-visible { outline: 3px solid #f1c15d; outline-offset: 3px; }
-  body > button#pvFab span[aria-hidden] { font-size: 18px; line-height: 1; }
-  body.pv-lock > button#pvFab { display: none !important; }
-
-  /* প্রিভিউ পপ-আপ: ওপরে স্পষ্ট হেডার, নিচ থেকে স্লাইড করে ওঠে */
-  .preview-section {
-    z-index: 100 !important;
-    background: var(--bg, #eef2f6) !important;
-    box-shadow: 0 -8px 30px rgba(0,0,0,.25);
-    display: flex !important; flex-direction: column; align-items: stretch;
-    border-radius: 0 !important;
-  }
-  .preview-section > h2 {
-    flex: 0 0 auto; min-height: 44px; display: flex; align-items: center; justify-content: center;
-    margin: 0 0 8px !important; padding: 0 56px !important;
-  }
-
-  /* বন্ধ করার বাটন: বড় (৪৮px) ট্যাপ এরিয়া, সহজে ধরা যায় */
-  .preview-section > button#pvClose {
-    position: absolute !important; top: calc(6px + env(safe-area-inset-top, 0px)) !important; right: 8px !important;
-    width: 48px !important; height: 48px !important; min-width: 48px !important; margin: 0 !important; padding: 0 !important;
-    display: inline-flex !important; align-items: center; justify-content: center;
-    border: 0 !important; border-radius: 50% !important;
-    background: #0a2240 !important; color: #fff !important; font-size: 20px !important; line-height: 1;
-    box-shadow: 0 3px 10px rgba(0,0,0,.28) !important; z-index: 5; cursor: pointer;
-    touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  }
-  .preview-section > button#pvClose:active { transform: scale(.92); }
-  .preview-section > button#pvClose:focus-visible { outline: 3px solid #f1c15d; outline-offset: 2px; }
-}
-
-/* কম নড়াচড়া পছন্দ করলে অ্যানিমেশন বন্ধ */
-@media (prefers-reduced-motion: reduce) {
-  .preview-section, #pvFab { transition: none !important; }
 }
