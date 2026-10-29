@@ -318,6 +318,31 @@ input.tipf,textarea.tipf{border-color:#f59e0b!important;box-shadow:0 0 0 4px rgb
 @media(max-width:960px){.app{grid-template-columns:minmax(0,1fr)}.pv{order:-1}}
 @media(max-width:520px){.top{padding:10px 14px}.brand small,.brand b em{display:none}.g2{grid-template-columns:minmax(0,1fr)}.card{padding:16px;border-radius:16px}.btn small{display:none}input,select,textarea{font-size:16px}.acts .btn{flex:1 1 auto}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* ===== On-demand preview (mobile / tablet): floating button + full-screen sheet ===== */
+.fab,.pv-close{display:none}
+@media(max-width:960px){
+  .app{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .pv{--pg:clamp(10px,3vw,24px);position:fixed;inset:0;z-index:60;order:0;animation:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:#eef1f6;padding:0 var(--pg) calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%);visibility:hidden;transition:transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s linear .38s}
+  body.pv-open .pv{transform:none;visibility:visible;transition:transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s}
+  body.pv-open{overflow:hidden}
+  .pv .pbar{position:sticky;top:0;z-index:2;margin:0 calc(-1*var(--pg)) 12px;padding:calc(10px + env(safe-area-inset-top,0px)) var(--pg) 10px;background:rgba(238,241,246,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd)}
+  .pv-close{display:inline-block}
+  .fab{display:inline-flex;align-items:center;gap:9px;position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;border-radius:999px;padding:13px 20px;box-shadow:0 10px 28px rgba(15,23,42,.3);transition:transform .25s,opacity .25s,box-shadow .25s}
+  .fab svg{width:20px;height:20px;flex:none}
+  body.pv-open .fab{opacity:0;pointer-events:none;transform:translateY(20px)}
+  .fab small,.pv-close small{display:inline!important}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .pv .pbar{flex-wrap:wrap;gap:8px 10px}
+  .pv .pbar b{flex:1 1 auto;min-width:0;white-space:nowrap}
+  .pv .pbar .acts{order:2;flex-wrap:nowrap;margin-left:auto}
+  .pv .pbar .status{order:3;flex:1 1 100%;min-height:0;padding:7px 12px}
+}
+@media(max-width:520px){
+  .pv .pbar b{font-size:14px}.pv .pbar b em.bn{display:none}
+  .pv .pbar .acts .btn{padding:10px 14px;min-height:40px;flex:0 0 auto}
+  .pv .pbar .acts .btn small{display:none!important}
+}
+@media print{.fab,.pv-close{display:none!important}.pv{position:static!important;transform:none!important;visibility:visible!important;overflow:visible!important;padding:0!important;background:none!important}body.pv-open{overflow:visible!important}}
 @media print{
 @page{size:A4;margin:0}
 html,body{background:#fff;overflow:visible}
@@ -463,8 +488,8 @@ body::before{display:none}
   </div>
 </section>
 
-<section class="pv">
-  <div class="pbar"><b><span></span>Live preview · A4<em class="bn">লাইভ প্রিভিউ</em></b><button type="button" class="status" id="status"></button><div class="acts"><button type="button" class="btn" id="printBtn2">Print / PDF<small>প্রিন্ট</small></button></div></div>
+<section class="pv" id="pvSec">
+  <div class="pbar"><b><span></span>Live preview · A4<em class="bn">লাইভ প্রিভিউ</em></b><button type="button" class="status" id="status"></button><div class="acts"><button type="button" class="btn ghost pv-close" id="pvClose" aria-label="Close preview">✕ Close<small>বন্ধ</small></button><button type="button" class="btn" id="printBtn2">Print / PDF<small>প্রিন্ট</small></button></div></div>
   <div class="pwrap">
     <div id="stage"><div id="scaler">
       <div class="sheet tpl-classic" id="sheet">
@@ -495,6 +520,7 @@ body::before{display:none}
 
 <div class="modal" id="modal" hidden><div class="mbox" id="mbox" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mic" id="mic"></div><h4 id="mt"></h4><p id="mp"></p><ul class="ml" id="ml"></ul><div class="acts"><button type="button" class="btn ghost" id="mNo"></button><button type="button" class="btn" id="mYes"></button></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<button type="button" class="btn fab" id="pvFab" aria-controls="pvSec" aria-expanded="false" aria-label="Open live preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg><span>Preview<small>প্রিভিউ</small></span></button>
 <script>
 (function(){
 'use strict';
@@ -740,7 +766,7 @@ $('mYes').addEventListener('click',function(){var f=cb.yes;closeM();if(f)f()});
 $('mNo').addEventListener('click',function(){var f=cb.no;closeM();if(f)f()});
 modal.addEventListener('click',function(e){if(e.target===modal)closeM()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!modal.hidden)closeM()});
-function goto(id){var e=$(id);if(!e)return;e.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){try{e.focus({preventScroll:true})}catch(x){e.focus()}},350)}
+function goto(id){var e=$(id);if(!e)return;if(pvOpen)setPv(false);e.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){try{e.focus({preventScroll:true})}catch(x){e.focus()}},350)}
 $('status').addEventListener('click',function(){if(ISSUES.length)goto(ISSUES[0].id)});
 var doPrint=function(){try{window.print()}catch(e){}
   if(window.self!==window.top)toast('If the print dialog did not open, open this file in your browser and press Ctrl+P · প্রিন্ট না খুললে ফাইলটি ব্রাউজারে খুলে Ctrl+P চাপুন')};
@@ -757,6 +783,27 @@ if(window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches){
   pw.addEventListener('pointermove',function(e){var r=pw.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5,sh=$('sheet');sh.style.setProperty('--rx',(-y*3).toFixed(2)+'deg');sh.style.setProperty('--ry',(x*3).toFixed(2)+'deg')});
   pw.addEventListener('pointerleave',function(){var sh=$('sheet');sh.style.setProperty('--rx','0deg');sh.style.setProperty('--ry','0deg')});
 }
+/* ===== মোবাইল/ট্যাবলেটে প্রিভিউ: ভাসমান বাটনে চাপলেই ফুল-স্ক্রিন, ফর্মে ফিরতে Close / ব্যাক ===== */
+var pvSec=$('pvSec'),pvOpen=false;
+function setPv(on,fromPop){
+  if(on===pvOpen)return;
+  pvOpen=on;
+  document.body.classList.toggle('pv-open',on);
+  $('pvFab').setAttribute('aria-expanded',on?'true':'false');
+  if(on){
+    try{history.pushState({pv:1},'')}catch(x){}
+    fit();pvSec.scrollTop=0;
+    setTimeout(function(){try{$('pvClose').focus({preventScroll:true})}catch(x){}},380);
+  }else{
+    if(!fromPop){try{if(history.state&&history.state.pv)history.back()}catch(x){}}
+    try{$('pvFab').focus({preventScroll:true})}catch(x){}
+  }
+}
+$('pvFab').addEventListener('click',function(){setPv(true)});
+$('pvClose').addEventListener('click',function(){setPv(false)});
+window.addEventListener('popstate',function(){if(pvOpen)setPv(false,true)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&pvOpen&&modal.hidden)setPv(false)});
+window.addEventListener('resize',function(){if(pvOpen&&window.innerWidth>960){pvOpen=false;document.body.classList.remove('pv-open');$('pvFab').setAttribute('aria-expanded','false')}});
 window.addEventListener('resize',fit);
 window.addEventListener('load',function(){fit();setTimeout(fit,300)});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){autoFit();fit()});
