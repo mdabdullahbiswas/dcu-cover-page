@@ -201,13 +201,247 @@ td .acts{justify-content:flex-start;flex-wrap:nowrap}
   th,td{padding:12px}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* =====================================================
+   ✦ PREMIUM THEME — midnight navy · champagne gold · ruby
+   ===================================================== */
+:root{
+  --bg:#f4f1ea;--surface:#ffffff;--surface2:#faf7f1;--ink:#0b1626;--mu:#6b7686;--ln:#e8e1d2;
+  --navy:#08172e;--navy2:#123664;--gold:#c9a24a;--gold2:#f1d99a;--gold3:#9a741f;
+  --red:#c8263a;--red2:#8f1425;--redSoft:#fde8ea;--green:#0f9d58;--greenSoft:#dff6e9;--amberSoft:#fbf0d4;--amber:#9a6a0b;--blue:#2b8cff;
+  --shadow:0 1px 1px rgba(11,22,38,.04),0 6px 18px rgba(11,22,38,.06),0 22px 44px -24px rgba(11,22,38,.18);
+  --shadowLg:0 30px 80px rgba(8,23,46,.28);
+  --r:20px;
+  --goldGrad:linear-gradient(135deg,#f8e6b0 0%,#e0b85c 38%,#c9a24a 62%,#f1d99a 100%);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+html[data-theme=dark]{
+  --bg:#050c18;--surface:#0c182b;--surface2:#10203a;--ink:#eef2fa;--mu:#8fa0bb;--ln:#1d3050;
+  --redSoft:#3a121a;--greenSoft:#0c2c1d;--amberSoft:#33250a;--amber:#f1c76a;
+  --shadow:0 1px 1px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.4),0 30px 60px -30px rgba(0,0,0,.6);
+}
+body{background:var(--bg);letter-spacing:.005em}
+body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(1200px 600px at 85% -10%,rgba(201,162,74,.16),transparent 60%),radial-gradient(900px 600px at -10% 40%,rgba(18,54,100,.14),transparent 60%)}
+html[data-theme=dark] body:before{opacity:.9}
+.mesh i{filter:blur(90px)}
+.mesh i:nth-child(1){background:rgba(201,162,74,.30)}.mesh i:nth-child(2){background:rgba(18,54,100,.28)}.mesh i:nth-child(3){background:rgba(200,38,58,.14)}
+
+/* ইকন */
+.ic .d{fill:currentColor;fill-opacity:.16;stroke:none}
+.ic{width:19px;height:19px;transition:transform .35s var(--ease)}
+.btn:hover .ic,.tab:hover .ic{transform:scale(1.12) rotate(-4deg)}
+#ref:hover .ic{transform:rotate(180deg)}#ref .ic{transition:transform .6s var(--ease)}
+
+/* টপ বার */
+.top{background:color-mix(in srgb,var(--surface) 72%,transparent);-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);border-bottom:1px solid transparent;position:sticky}
+.top:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold2) 50%,var(--gold) 80%,transparent);opacity:.7}
+.top:before{content:"";position:absolute;left:0;top:0;height:2px;width:100%;background:var(--goldGrad);background-size:200% 100%;animation:goldflow 6s linear infinite}
+@keyframes goldflow{to{background-position:-200% 0}}
+.logo{position:relative;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;padding:3px;background:var(--goldGrad);box-shadow:0 8px 22px rgba(201,162,74,.38);text-decoration:none;animation:logoFloat 5s ease-in-out infinite}
+.logo:before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(201,162,74,.45);animation:ring 3s ease-out infinite}
+.logo img{display:block;width:100%;height:100%;border-radius:50%;object-fit:contain;background:#fff}
+@keyframes logoFloat{50%{transform:translateY(-2px)}}
+@keyframes ring{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.brand b{font-size:18px;background:linear-gradient(90deg,var(--ink),var(--navy2) 55%,var(--gold3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+html[data-theme=dark] .brand b{background:linear-gradient(90deg,#fff,#cfe0ff 55%,var(--gold2));-webkit-background-clip:text;background-clip:text}
+.brand span{background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:goldflow 5s linear infinite;letter-spacing:2.2px}
+
+/* বাটন */
+.btn,.tab,.lbtn,.gbtn{position:relative;overflow:hidden;isolation:isolate}
+.btn{border-radius:14px;height:42px;background:linear-gradient(180deg,var(--surface),var(--surface2));box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 2px 6px rgba(11,22,38,.06)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px -8px rgba(11,22,38,.28);border-color:color-mix(in srgb,var(--gold) 55%,var(--ln))}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn.ok{background:linear-gradient(135deg,#22c373,#0b8a4a);box-shadow:0 10px 22px -6px rgba(15,157,88,.55)}
+.btn.dng{background:var(--redSoft)}.btn.dng:hover{background:linear-gradient(135deg,#e0364b,#a51a2d)}
+.btn.gold{color:#2a1c02;background:var(--goldGrad);background-size:200% 100%;box-shadow:0 10px 24px -6px rgba(201,162,74,.6)}
+.btn.gold:hover{background-position:100% 0}
+.btn.pri{background:linear-gradient(135deg,var(--navy2),var(--navy))}
+.btn:after,.lbtn:after,.tab.on:after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-20deg);transition:left .7s var(--ease);pointer-events:none;z-index:-1}
+.btn:hover:after,.lbtn:hover:after{left:140%}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none;z-index:0}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+
+/* কার্ড: গ্লাস + সোনালি হেয়ারলাইন + কার্সর-আলো */
+.card{position:relative;border-radius:var(--r);border:1px solid color-mix(in srgb,var(--gold) 16%,var(--ln));background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 94%,var(--gold)))}
+.card:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(201,162,74,.16),transparent 55%)}
+.card:hover:before{opacity:1}
+
+/* গেট */
+#gate{position:relative}
+.gate-card{border-radius:28px;box-shadow:var(--shadowLg);border:1px solid color-mix(in srgb,var(--gold) 35%,transparent);backdrop-filter:blur(14px)}
+.gate-card:before{display:none}
+.gate-hero{padding:38px 24px 28px;background:radial-gradient(500px 220px at 80% -20%,rgba(201,162,74,.38),transparent 60%),linear-gradient(150deg,#050f20,#08172e 50%,#123664)}
+.gate-hero:after{height:3px;background:var(--goldGrad);background-size:200% 100%;animation:goldflow 5s linear infinite}
+.gate-ico{width:96px;height:96px;padding:4px;border:0;background:var(--goldGrad);box-shadow:0 0 0 10px rgba(241,217,154,.1),0 0 40px rgba(201,162,74,.45);animation:logoFloat 5s ease-in-out infinite}
+.gate-ico:before{content:"";position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(241,217,154,.5);animation:ring 3s ease-out infinite}
+.gate-ico img{display:block;width:100%;height:100%;border-radius:50%;object-fit:contain;background:#fff}
+.gate-hero h1{font-size:28px;background:linear-gradient(90deg,#fff,#f1d99a,#fff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:goldflow 6s linear infinite}
+.lf input{height:52px;border-radius:15px;background:var(--surface2);transition:border-color .25s,box-shadow .25s,transform .25s}
+.lf input:focus{transform:translateY(-1px);border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,74,.2),0 10px 24px -10px rgba(201,162,74,.5)}
+.lbtn{height:54px;color:#2a1c02;background:var(--goldGrad);background-size:200% 100%;box-shadow:0 14px 30px -8px rgba(201,162,74,.65);font-size:15.5px;letter-spacing:.3px}
+.lbtn:hover{background-position:100% 0;transform:translateY(-2px)}
+.lbtn:active{transform:scale(.98)}
+.gbtn{border-radius:15px;height:54px}
+.or{letter-spacing:.5px}
+
+/* টুলবার */
+.who{background:linear-gradient(180deg,var(--surface),var(--surface2));border-color:color-mix(in srgb,var(--gold) 25%,var(--ln))}
+.who i{background:var(--goldGrad);box-shadow:0 4px 12px rgba(201,162,74,.5);position:relative}
+.who i:after{content:"";position:absolute;right:-1px;bottom:-1px;width:9px;height:9px;border-radius:50%;background:#22c373;border:2px solid var(--surface);animation:live 2s ease-in-out infinite}
+@keyframes live{50%{box-shadow:0 0 0 5px rgba(34,195,115,.0);transform:scale(1.15)}0%,100%{box-shadow:0 0 0 0 rgba(34,195,115,.55)}}
+
+/* পরিসংখ্যান */
+.stat{padding:20px 20px 18px;border-radius:22px;transition:transform .4s var(--ease),box-shadow .4s}
+.stat:hover{transform:translateY(-6px);box-shadow:0 26px 50px -22px color-mix(in srgb,var(--c) 55%,transparent),var(--shadow)}
+.stat:after{width:150px;height:150px;top:-50px;right:-50px;opacity:.22;animation:pulseGlow 4.5s ease-in-out infinite}
+@keyframes pulseGlow{50%{transform:scale(1.25);opacity:.34}}
+.stat .si{width:44px;height:44px;border-radius:14px;box-shadow:0 10px 20px -6px color-mix(in srgb,var(--c) 70%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .45s var(--ease)}
+.stat:hover .si{transform:rotate(-8deg) scale(1.1)}
+.stat .si svg{width:21px;height:21px}.stat .si .d{fill-opacity:.28}
+.stat b{font-size:34px;letter-spacing:-1px;background:linear-gradient(180deg,var(--ink),color-mix(in srgb,var(--ink) 70%,var(--c)));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat span{font-weight:600;letter-spacing:.2px}
+
+/* ট্যাব */
+.tab{height:44px;border-radius:999px;background:linear-gradient(180deg,var(--surface),var(--surface2));transition:transform .25s var(--ease),box-shadow .25s,color .25s,background .25s}
+.tab:hover{transform:translateY(-2px);box-shadow:0 10px 22px -10px rgba(11,22,38,.3);color:var(--ink)}
+.tab.on{background:linear-gradient(135deg,var(--navy2),var(--navy));color:var(--gold2);box-shadow:0 14px 28px -10px rgba(8,23,46,.6),0 0 0 1px rgba(241,217,154,.35) inset;animation:tabPop .45s var(--ease)}
+.tab.on:after{left:-120%;animation:sheen 3.8s ease-in-out infinite;z-index:0}
+@keyframes sheen{0%,55%{left:-120%}100%{left:160%}}
+@keyframes tabPop{from{transform:scale(.94)}}
+.tab.on em{background:var(--goldGrad);color:#2a1c02;box-shadow:0 2px 8px rgba(201,162,74,.5)}
+
+/* সার্চ */
+.search input{height:54px;border-radius:18px;background:linear-gradient(180deg,var(--surface),var(--surface2));padding-left:50px}
+.search .ic{left:18px;transition:color .25s,transform .35s var(--ease)}
+.search:focus-within .ic{color:var(--gold);transform:translateY(-50%) scale(1.15)}
+
+/* ডোনার কার্ড */
+.dcard{border-radius:22px;transition:transform .35s var(--ease),box-shadow .35s,border-color .3s}
+.dcard:hover{transform:translateY(-4px);box-shadow:0 28px 50px -26px rgba(8,23,46,.4);border-color:color-mix(in srgb,var(--gold) 60%,var(--ln))}
+.av{background:conic-gradient(from 0deg,#f8e6b0,#c9a24a,#f1d99a,#9a741f,#f8e6b0);animation:spin 9s linear infinite}
+.av img{animation:spin 9s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bg{background:linear-gradient(135deg,#e5384f,#8f1425);box-shadow:0 6px 14px -4px rgba(200,38,58,.6);animation:bgBeat 2.4s ease-in-out infinite}
+@keyframes bgBeat{50%{transform:scale(1.07)}}
+.vt{background:linear-gradient(135deg,#4aa3ff,#1d6fe0)}
+.chip{border-radius:10px;background:var(--surface2)}
+.chip .ic{width:15px;height:15px}
+.pill{backdrop-filter:blur(4px)}
+.pill:before{animation:live2 1.8s ease-in-out infinite}
+@keyframes live2{50%{opacity:.35}}
+
+/* টেবিল */
+.tbl{border-radius:22px}
+th{background:linear-gradient(180deg,var(--surface2),var(--surface));color:var(--gold3)}
+html[data-theme=dark] th{color:var(--gold2)}
+tbody tr:hover{background:color-mix(in srgb,var(--gold) 7%,var(--surface))}
+.badge{background:linear-gradient(135deg,#e5384f,#8f1425);box-shadow:0 4px 10px -2px rgba(200,38,58,.5)}
+
+/* এন্ট্রি অ্যানিমেশন: ঝাপসা থেকে স্পষ্ট */
+@keyframes up{from{opacity:0;transform:translateY(22px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.empty .ic{width:56px;height:56px;color:var(--gold);animation:logoFloat 4s ease-in-out infinite}
+
+/* টোস্ট ও ডায়ালগ */
+.toast{border-radius:16px;background:linear-gradient(135deg,#0b1a33,#08172e);border:1px solid rgba(241,217,154,.28)}
+.toast .ic{color:var(--gold2)}
+.dlg{border-radius:26px;border:1px solid color-mix(in srgb,var(--gold) 30%,var(--ln))}
+.dlg .di{box-shadow:0 0 0 8px color-mix(in srgb,var(--red) 10%,transparent);animation:bgBeat 2.2s ease-in-out infinite}
+
+/* স্ক্রলবার */
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--gold) 45%,var(--ln));border-radius:10px;border:2px solid var(--bg)}
+::selection{background:rgba(201,162,74,.35)}
+@media(prefers-reduced-motion:reduce){.top:before,.logo,.logo:before,.av,.av img,.bg,.stat:after,.gate-ico,.gate-ico:before{animation:none!important}}
+
+/* =====================================================
+   ✦ PREMIUM v2 — obsidian navy · champagne gold · ruby
+   ===================================================== */
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+:root{--bg:#eef0f5;--surface:#fff;--surface2:#f6f7fb;--ink:#0a1222;--mu:#667085;--ln:#e1e5ee;--navy:#050c1c;--navy2:#0f2c58;--gold:#c9a54e;--gold2:#f3dea4;--gold3:#8f6a17;--ruby:#c1213b;--red:#c1213b;--redSoft:#fde8ec;
+  --shadow:0 1px 0 rgba(255,255,255,.9) inset,0 1px 2px rgba(10,18,34,.05),0 14px 32px -14px rgba(10,18,34,.18);
+  --goldGrad:linear-gradient(135deg,#f8e8b8,#dcb663 40%,#b8913a 65%,#f3dea4)}
+html[data-theme=dark]{--bg:#040810;--surface:#0b1424;--surface2:#0f1b31;--ink:#edf1fa;--mu:#8d9cb8;--ln:#1a2a47;--redSoft:#34101a;--shadow:0 1px 0 rgba(255,255,255,.04) inset,0 16px 36px -14px rgba(0,0,0,.75)}
+body:before{opacity:1;background:radial-gradient(900px 500px at 90% -10%,rgba(201,165,78,.17),transparent 60%),radial-gradient(800px 600px at -10% 30%,rgba(15,44,88,.17),transparent 60%),radial-gradient(700px 500px at 60% 112%,rgba(193,33,59,.09),transparent 60%)}
+body:after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+html[data-theme=dark] body:after{mix-blend-mode:screen;opacity:.04}
+
+/* আইকন: সোনালি ডুয়োটোন + আঁকার অ্যানিমেশন */
+.ic{stroke-width:1.6}
+.ic .d{fill:url(#gG);fill-opacity:.65}
+.si .ic .d,.bg .ic .d,.btn.ok .ic .d,.vt .ic .d{fill:#fff;fill-opacity:.34}
+.btn.dng .ic .d,.di .d{fill:currentColor;fill-opacity:.22}
+.chip .ic{color:var(--gold3)}html[data-theme=dark] .chip .ic{color:var(--gold2)}
+.draw *:not(.d){stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s .2s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* লোগো: ঘূর্ণায়মান সোনালি রিং */
+.logo{background:conic-gradient(from var(--a),#f8e8b8,#b8913a,#fff3c9,#8f6a17,#f8e8b8);animation:rotA 7s linear infinite,logoFloat 5s ease-in-out infinite}
+@keyframes rotA{to{--a:360deg}}
+
+/* হিরো প্যানেল */
+.toolbar{position:relative;isolation:isolate;overflow:hidden;align-items:flex-end;gap:14px 12px;padding:26px 24px 20px;margin-bottom:22px;border-radius:28px;color:#fff;
+  background:radial-gradient(520px 260px at 95% -40%,rgba(201,165,78,.42),transparent 62%),radial-gradient(420px 240px at 0% 130%,rgba(193,33,59,.38),transparent 62%),linear-gradient(135deg,#040a18,#0a2145 62%,#0f2c58);
+  box-shadow:0 34px 60px -30px rgba(4,10,24,.75),0 0 0 1px rgba(243,222,164,.2) inset}
+.toolbar:before{content:"";position:absolute;right:-10px;top:50%;width:210px;height:210px;margin-top:-105px;background:url(logo.png) center/contain no-repeat;opacity:.1;filter:grayscale(1) brightness(1.8);z-index:-1;animation:logoFloat 7s ease-in-out infinite}
+.toolbar:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--goldGrad);background-size:200% 100%;animation:goldflow 5s linear infinite;opacity:.85;z-index:-1}
+.hello{flex:1 1 100%}
+.hello h2{font:700 27px/1.3 var(--fh);background:linear-gradient(90deg,#fff,var(--gold2) 55%,#fff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:goldflow 7s linear infinite}
+.hello p{margin-top:2px;font-size:13px;color:rgba(255,255,255,.62)}
+.toolbar .who{background:rgba(255,255,255,.07);border-color:rgba(243,222,164,.28);box-shadow:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.toolbar .who small{color:rgba(255,255,255,.55)}.toolbar .who b{color:#fff}
+.toolbar .btn{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);box-shadow:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.toolbar .btn:hover{border-color:var(--gold2);background:rgba(255,255,255,.15);box-shadow:0 12px 26px -10px rgba(0,0,0,.6)}
+.toolbar .btn.dng{color:#ffb9c3;background:rgba(193,33,59,.24);border-color:rgba(255,120,140,.3)}
+.toolbar .btn.dng:hover{background:linear-gradient(135deg,#e0364b,#a51a2d);color:#fff}
+
+/* পরিসংখ্যান: 3D টিল্ট + গ্লো আইকন টাইল */
+.stat{padding:22px 20px 18px;border-radius:24px;background:linear-gradient(165deg,var(--surface) 55%,color-mix(in srgb,var(--surface) 88%,var(--c)))}
+.stat:hover{transform:perspective(900px) translateY(-6px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+.stat .si{width:50px;height:50px;border-radius:17px;box-shadow:0 12px 22px -8px color-mix(in srgb,var(--c) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.4),0 0 0 5px color-mix(in srgb,var(--c) 13%,transparent)}
+.stat .si svg{width:23px;height:23px}
+.stat b{font-size:38px;letter-spacing:-1.2px}
+.stat span{font-size:13px}
+
+/* ট্যাব: গোল আইকন টাইল */
+.tab{height:46px;padding:0 18px 0 8px;gap:9px}
+.tab .ic{width:30px;height:30px;padding:7px;border-radius:50%;color:var(--gold3);background:color-mix(in srgb,var(--gold) 15%,var(--surface2))}
+html[data-theme=dark] .tab .ic{color:var(--gold2)}
+.tab.on .ic{color:var(--gold2);background:rgba(243,222,164,.16)}
+.tab:hover .ic{transform:scale(1.1) rotate(-6deg)}
+
+/* সার্চ */
+.search input{height:56px;border-radius:20px;padding-left:54px}
+.search .ic{left:20px;width:20px;height:20px}
+.search:after{content:"";position:absolute;left:26px;right:26px;bottom:1px;height:2px;border-radius:2px;background:var(--goldGrad);transform:scaleX(0);transition:transform .55s var(--ease)}
+.search:focus-within:after{transform:scaleX(1)}
+
+/* ডোনার কার্ড */
+.dcard{padding:18px 20px;border-radius:24px}
+.dcard:after{content:"";position:absolute;left:0;top:20px;bottom:20px;width:3px;border-radius:0 4px 4px 0;background:linear-gradient(var(--gold),var(--ruby));opacity:0;transform:scaleY(.2);transition:opacity .4s,transform .45s var(--ease)}
+.dcard:hover:after{opacity:1;transform:none}
+.bg{position:relative;overflow:hidden;animation:none;padding:4px 11px 4px 8px;border-radius:11px;background:linear-gradient(135deg,#e8394f,#8f1425)}
+.bg .ic{width:14px;height:14px}
+.bg:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);animation:badgeShine 5s ease-in-out infinite}
+@keyframes badgeShine{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+
+/* খালি অবস্থা */
+.empty{padding:62px 20px}
+.empty .ic{width:76px;height:76px;padding:19px;border-radius:50%;color:var(--gold);background:radial-gradient(circle,color-mix(in srgb,var(--gold) 20%,transparent),transparent 70%);box-shadow:0 0 0 1px color-mix(in srgb,var(--gold) 32%,transparent),0 0 0 14px color-mix(in srgb,var(--gold) 7%,transparent);margin-bottom:18px}
+
+/* টোস্ট */
+.toast{border-left:3px solid var(--gold);background:linear-gradient(135deg,#0a1a36,#050c1c);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+
+@media(max-width:640px){.toolbar{padding:20px 16px 16px;border-radius:24px}.hello h2{font-size:22px}.stat b{font-size:30px}.toolbar:before{width:150px;height:150px;margin-top:-75px}}
+@media(prefers-reduced-motion:reduce){.draw *:not(.d){stroke-dasharray:none!important;stroke-dashoffset:0!important}.bg:after{display:none}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="gG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e8b8"/><stop offset="1" stop-color="#c9a54e"/></linearGradient></defs></svg>
 <div class="mesh" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <header class="top"><div class="top-in">
-  <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5s6.5 6.8 6.5 11.7a6.5 6.5 0 0 1-13 0C5.5 9.3 12 2.5 12 2.5z"/></svg></div>
+  <a class="logo" href="admin.html" aria-label="DCU Blood Directory"><img src="logo.png" alt="" width="44" height="44" decoding="async"></a>
   <div class="brand"><b>DCU Blood Directory</b><span>Admin Console</span></div>
   <div class="sp"></div>
   <button class="btn icon" id="theme" type="button" aria-label="Theme" title="Theme"></button>
@@ -217,7 +451,7 @@ td .acts{justify-content:flex-start;flex-wrap:nowrap}
   <div id="gate">
     <div class="card gate-card">
       <div class="gate-hero">
-        <div class="gate-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12.5l2.2 2.2L15.5 10"/></svg></div>
+        <div class="gate-ico"><img src="logo.png" alt="DCU Blood Directory" width="84" height="84" decoding="async"></div>
         <h1>এডমিন কনসোল</h1>
         <p>DCU Blood Directory</p>
       </div>
@@ -244,6 +478,7 @@ td .acts{justify-content:flex-start;flex-wrap:nowrap}
 
   <div id="app" style="display:none">
     <div class="toolbar">
+      <div class="hello"><h2>স্বাগতম, অ্যাডমিন</h2><p>ডোনার, জরুরি অনুরোধ ও রিপোর্ট — সব এক জায়গায়</p></div>
       <div class="who"><i id="whoA">A</i><div><small>সাইন ইন</small><b id="who"></b></div></div>
       <div class="tb-r">
         <button class="btn" id="ref" type="button" aria-label="রিফ্রেশ"></button>
@@ -279,27 +514,27 @@ let D = [], LG = [], RP = [], BR = [], RR = [], tab = "pending", animateNext = t
 
 /* ===== আইকন ===== */
 const ICON = {
-  refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>',
-  download:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
-  logout:'<path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9"/>',
-  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
-  shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12.5l2.2 2.2L15.5 10"/>',
-  trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
-  undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
-  pin:'<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
-  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
-  drop:'<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/>',
-  cal:'<rect x="4" y="5" width="16" height="16" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/>',
-  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-  alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.1"/>',
-  flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
-  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 20a6 6 0 0 0-3-5.2"/>',
-  eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
-  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
-  inbox:'<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/>'
+  refresh:'<path d="M20.5 12a8.5 8.5 0 1 1-2.6-6.1"/><path d="M20.5 3.8v4.7h-4.7"/>',
+  download:'<path class="d" d="M5 16h14v3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M12 3.5v11M7.5 10.5 12 15l4.5-4.5M5 16v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3"/>',
+  logout:'<path class="d" d="M4 5a1 1 0 0 1 1-1h4v16H5a1 1 0 0 1-1-1z"/><path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M15.5 7.5 20 12l-4.5 4.5M20 12H10"/>',
+  check:'<path d="M4.8 12.7 9.6 17.5 19.2 7.2"/>',
+  shield:'<path class="d" d="M12 2.8 20 6v6c0 4.7-3.2 7.8-8 9.2C7.2 19.8 4 16.7 4 12V6z"/><path d="M12 2.8 20 6v6c0 4.7-3.2 7.8-8 9.2C7.2 19.8 4 16.7 4 12V6z"/><path d="m8.8 12.2 2.4 2.4 4.2-4.6"/>',
+  trash:'<path class="d" d="M6 8h12l-1 11.2a1.5 1.5 0 0 1-1.5 1.3h-7A1.5 1.5 0 0 1 7 19.2z"/><path d="M4 7.5h16M9.5 7.5V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2.5M6 8l1 11.2a1.5 1.5 0 0 0 1.5 1.3h7a1.5 1.5 0 0 0 1.5-1.3L18 8M10 11.5v5M14 11.5v5"/>',
+  undo:'<path d="M8.5 5 4 9.5 8.5 14"/><path d="M4 9.5h9.5a5.5 5.5 0 0 1 0 11H10"/>',
+  pin:'<path class="d" d="M12 21.2s7-5.9 7-11.2a7 7 0 0 0-14 0c0 5.3 7 11.2 7 11.2z"/><path d="M12 21.2s7-5.9 7-11.2a7 7 0 0 0-14 0c0 5.3 7 11.2 7 11.2z"/><circle cx="12" cy="10" r="2.6"/>',
+  phone:'<path class="d" d="M5.2 3.8h3.3l1.8 4.6-2.3 1.5a11.5 11.5 0 0 0 5.6 5.6l1.5-2.3 4.6 1.8v3.3a1.8 1.8 0 0 1-1.9 1.8A16.5 16.5 0 0 1 3.4 5.7a1.8 1.8 0 0 1 1.8-1.9z"/><path d="M5.2 3.8h3.3l1.8 4.6-2.3 1.5a11.5 11.5 0 0 0 5.6 5.6l1.5-2.3 4.6 1.8v3.3a1.8 1.8 0 0 1-1.9 1.8A16.5 16.5 0 0 1 3.4 5.7a1.8 1.8 0 0 1 1.8-1.9z"/>',
+  drop:'<path class="d" d="M12 2.8s6.2 6.4 6.2 11a6.2 6.2 0 0 1-12.4 0c0-4.6 6.2-11 6.2-11z"/><path d="M12 2.8s6.2 6.4 6.2 11a6.2 6.2 0 0 1-12.4 0c0-4.6 6.2-11 6.2-11z"/><path d="M9 14.2a3 3 0 0 0 3 3"/>',
+  cal:'<rect class="d" x="3.8" y="5" width="16.4" height="15.4" rx="3"/><rect x="3.8" y="5" width="16.4" height="15.4" rx="3"/><path d="M3.8 10h16.4M8.5 3v4M15.5 3v4"/>',
+  clock:'<circle class="d" cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 1.9"/>',
+  alert:'<path class="d" d="M10.3 4.2a2 2 0 0 1 3.4 0l8 13.6a2 2 0 0 1-1.7 3H4a2 2 0 0 1-1.7-3z"/><path d="M10.3 4.2a2 2 0 0 1 3.4 0l8 13.6a2 2 0 0 1-1.7 3H4a2 2 0 0 1-1.7-3z"/><path d="M12 9.5v4.6M12 17.4v.1"/>',
+  flag:'<path class="d" d="M5 4.5h12.2l-2.3 4 2.3 4H5z"/><path d="M5 21V3.5M5 4.5h12.2l-2.3 4 2.3 4H5"/>',
+  users:'<circle class="d" cx="9" cy="8" r="3.6"/><circle cx="9" cy="8" r="3.6"/><path d="M2.6 20.2a6.4 6.4 0 0 1 12.8 0M16 4.6a3.6 3.6 0 0 1 0 6.8M18.2 14.6a6.2 6.2 0 0 1 3.2 5.6"/>',
+  eye:'<path class="d" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  sun:'<circle class="d" cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>',
+  moon:'<path class="d" d="M20.2 14.6A8.2 8.2 0 1 1 9.4 3.8a6.6 6.6 0 0 0 10.8 10.8z"/><path d="M20.2 14.6A8.2 8.2 0 1 1 9.4 3.8a6.6 6.6 0 0 0 10.8 10.8z"/>',
+  inbox:'<path class="d" d="M3 13.2 6.2 5.6A1.5 1.5 0 0 1 7.6 4.7h8.8a1.5 1.5 0 0 1 1.4.9L21 13.2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 13.2 6.2 5.6A1.5 1.5 0 0 1 7.6 4.7h8.8a1.5 1.5 0 0 1 1.4.9L21 13.2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 13.2h4.8l1.2 2.8h6l1.2-2.8H21"/>'
 };
-const ic = (n, c = "") => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+const ic = (n, c = "") => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
 
 /* ===== থিম ===== */
 function paintTheme() { const dk = document.documentElement.dataset.theme === "dark"; $("theme").innerHTML = ic(dk ? "sun" : "moon"); $("theme").title = dk ? "Light mode" : "Dark mode"; }
@@ -344,6 +579,19 @@ $("lf").onsubmit = async ev => {
   finally { btn.disabled = false; btn.textContent = "লগ ইন"; }
 };
 $("out").onclick = () => signOut(auth);
+
+/* ===== প্রিমিয়াম ইফেক্ট: লোগো ফলব্যাক, রিপল, কার্সর-আলো ===== */
+document.querySelectorAll(".logo img,.gate-ico img").forEach(im => im.addEventListener("error", () => { im.replaceWith(Object.assign(document.createElement("span"), { innerHTML: '<svg viewBox="0 0 24 24" width="60%" height="60%" fill="#b3261e"><path d="M12 2.5s6.5 6.8 6.5 11.7a6.5 6.5 0 0 1-13 0C5.5 9.3 12 2.5 12 2.5z"/></svg>', style: "display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#fff" })); }));
+document.addEventListener("pointerdown", e => {
+  const b = e.target.closest(".btn,.tab,.lbtn,.gbtn"); if (!b || b.disabled) return;
+  const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height), s = document.createElement("span");
+  s.className = "rip"; s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`;
+  b.appendChild(s); setTimeout(() => s.remove(), 650);
+});
+document.addEventListener("pointermove", e => {
+  const c = e.target.closest && e.target.closest(".card"); if (!c) return;
+  const r = c.getBoundingClientRect(); c.style.setProperty("--mx", (e.clientX - r.left) + "px"); c.style.setProperty("--my", (e.clientY - r.top) + "px");
+}, { passive: true });
 onAuthStateChanged(auth, u => {
   if (!u) { $("gate").style.display = "block"; $("app").style.display = "none"; return; }
   const isPw = ADMIN_LOGINS.includes((u.email || "").toLowerCase()), isG = u.email === GOOGLE_ADMIN_EMAIL && u.emailVerified;
@@ -439,5 +687,10 @@ $("csv").onclick = () => {
   const a = document.createElement("a"); a.download = "donors.csv"; a.href = URL.createObjectURL(new Blob(["\ufeff" + rows.map(r => r.map(c).join(",")).join("\n")], { type: "text/csv" })); a.click();
   toast("CSV ডাউনলোড হচ্ছে");
 };
+
+/* ===== প্রিমিয়াম: আইকন আঁকা + স্ট্যাট কার্ড টিল্ট ===== */
+const drawIc = () => document.querySelectorAll(".si svg:not(.draw),.empty svg:not(.draw)").forEach(s => { s.querySelectorAll("*:not(.d)").forEach(p => p.setAttribute("pathLength", "1")); s.classList.add("draw"); });
+new MutationObserver(drawIc).observe(document.body, { childList: true, subtree: true });
+$("stats").addEventListener("pointermove", e => { const s = e.target.closest(".stat"); if (!s) return; const r = s.getBoundingClientRect(); s.style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 10 + "deg"); s.style.setProperty("--rx", (.5 - (e.clientY - r.top) / r.height) * 8 + "deg"); });
 </script>
 </body></html>
