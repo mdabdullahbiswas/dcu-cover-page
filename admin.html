@@ -633,7 +633,7 @@ function render() {
   S.forEach(([, n, , , t], i) => { const el = $("stats").children[i]; countUp(el.querySelector("b"), n); el.classList.toggle("on", t === tab); });
   /* ট্যাব */
   const sl = $("tabs").scrollLeft;
-  $("tabs").innerHTML = [["all", "সব ডোনার", "users", D.length], ["pending", "অনুমোদনের অপেক্ষায়", "clock", pend], ["approved", "অনুমোদিত", "check", D.length - pend], ["logs", "নম্বর দেখার লগ", "phone", LG.length], ["requests", "জরুরি অনুরোধ", "alert", openN], ["rqreports", "অনুরোধ রিপোর্ট", "flag", RR.length], ["reports", "ভুল নম্বর রিপোর্ট", "flag", RP.length]]
+  $("tabs").innerHTML = [["all", "সব ডোনার", "users", D.length], ["pending", "অপেক্ষমাণ", "clock", pend], ["approved", "অনুমোদিত", "check", D.length - pend], ["logs", "নম্বর লগ", "phone", LG.length], ["requests", "জরুরি অনুরোধ", "alert", openN], ["rqreports", "অনুরোধ রিপোর্ট", "flag", RR.length], ["reports", "ভুল নম্বর", "flag", RP.length]]
     .map(([k, l, i, n]) => `<button type="button" class="tab${k === tab ? " on" : ""}" data-t="${k}" role="tab">${ic(i)}<span>${l}</span><em>${n}</em></button>`).join("");
   $("tabs").scrollLeft = sl;
   const L0 = $("list"); L0.classList.toggle("fx", animateNext); animateNext = false;
