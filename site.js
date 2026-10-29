@@ -218,11 +218,21 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     try { localStorage.setItem('dcuDark', d ? '1' : ''); } catch (e) {}
   };
   try { if (localStorage.getItem('dcuDark')) window.toggleDark(); } catch (e) {}
+  function readSL() {
+    var v = 'en';
+    try { v = localStorage.getItem('dcuSL') || 'en'; } catch (e) {}
+    return v === 'bn' ? 'bn' : 'en';
+  }
   document.getElementById('langBtn').onclick = function () {
-    SL = SL === 'bn' ? 'en' : 'bn';
+    SL = readSL() === 'bn' ? 'en' : 'bn';   // সবসময় সংরক্ষিত মান থেকে উল্টাও
     try { localStorage.setItem('dcuSL', SL); } catch (e) {}
     applyL();
   };
+  // Back/Forward (bfcache) বা অন্য ট্যাবে ভাষা বদলালে এই পেজ সিঙ্ক করো
+  function syncL() { var v = readSL(); if (v !== SL) applyL(v); }
+  window.addEventListener('pageshow', syncL);
+  window.addEventListener('storage', function (e) { if (!e.key || e.key === 'dcuSL') syncL(); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) syncL(); });
 
   /* ================== প্রতিটি পেজের গাইড সিস্টেম ================== */
   var TOURS = {
@@ -351,7 +361,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
                 .sort(function(a, b) { return a.neededDate < b.neededDate ? -1 : a.neededDate > b.neededDate ? 1 : 0; });
 
             if (!items.length) return;
-            var isBn = (localStorage.getItem('dcuSL') || 'bn') === 'bn';
+            var isBn = (localStorage.getItem('dcuSL') || 'en') === 'bn';
 
             var bar = document.createElement('a');
             bar.href = 'blood.html';
