@@ -977,6 +977,7 @@ function pvTabs() {
     cover.parentNode.insertBefore(bar, cover);
   }
   bar.style.display = items.length > 1 ? 'flex' : 'none';
+  pvFabUpdate(items.length);
   bar.innerHTML = items.map(x =>
     `<button type="button" data-k="${x.key}" title="${esc(x.full || x.name)}" class="${x.key === pvKey ? 'on' : ''}">${esc(x.name)}</button>`
   ).join('');
@@ -1004,9 +1005,12 @@ function pvLayout() {
   const PW = 793.7, PH = 1122.5;               // 210mm × 297mm (px)
   const h2 = sec.querySelector(':scope > h2');
   const bar = $('pvTabs');
-  const used = (h2 ? h2.offsetHeight + 15 : 0) + (bar && bar.style.display !== 'none' ? bar.offsetHeight + 10 : 0);
-  const availH = wide ? sec.clientHeight - used - 6 : Infinity;
-  const availW = sec.clientWidth - 4;
+  const cs = getComputedStyle(sec);
+  const px = v => parseFloat(v) || 0;
+  const blk = el => el ? el.offsetHeight + px(getComputedStyle(el).marginBottom) : 0;
+  const used = blk(h2) + (bar && bar.style.display !== 'none' ? blk(bar) : 0);
+  const availH = sec.clientHeight - px(cs.paddingTop) - px(cs.paddingBottom) - used - 6;
+  const availW = sec.clientWidth - px(cs.paddingLeft) - px(cs.paddingRight) - 4;
   const s = Math.max(.25, Math.min(1, availW / PW, availH / PH));
   sec.style.setProperty('--pvs', s.toFixed(3));
 }
@@ -1023,4 +1027,45 @@ function pvLayout() {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(pvLayout);
   pvTabs();
   pvLayout();
+})();
+
+
+/* ========================================================
+   📱 মোবাইল: ভাসমান প্রিভিউ বাটন + পূর্ণ-স্ক্রিন প্রিভিউ শিট
+   ======================================================== */
+function pvOpen(on) {
+  const sec = document.querySelector('.preview-section');
+  if (!sec) return;
+  sec.classList.toggle('pv-open', !!on);
+  document.body.classList.toggle('pv-lock', !!on);
+  if (on) pvLayout();
+}
+
+function pvFabUpdate(n) {
+  const fab = $('pvFab');
+  if (!fab) return;
+  const label = SL === 'en' ? 'Preview' : 'প্রিভিউ';
+  fab.innerHTML = '<span aria-hidden="true">👁️</span><span>' + label + '</span>' +
+    (n > 1 ? '<span class="pvf-n">' + n + '</span>' : '');
+  fab.setAttribute('aria-label', label);
+  const cl = $('pvClose');
+  if (cl) cl.setAttribute('aria-label', SL === 'en' ? 'Close preview' : 'প্রিভিউ বন্ধ করুন');
+}
+
+(function pvMobileInit() {
+  const sec = document.querySelector('.preview-section');
+  if (!sec) return;
+  const fab = document.createElement('button');
+  fab.id = 'pvFab'; fab.type = 'button';
+  fab.addEventListener('click', () => pvOpen(true));
+  document.body.appendChild(fab);
+
+  const cl = document.createElement('button');
+  cl.id = 'pvClose'; cl.type = 'button'; cl.textContent = '✕';
+  cl.addEventListener('click', () => pvOpen(false));
+  sec.insertBefore(cl, sec.firstChild);
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth >= 900) pvOpen(false); });
+  pvFabUpdate(1);
 })();
