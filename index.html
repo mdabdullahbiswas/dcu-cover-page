@@ -363,7 +363,7 @@
     var h=sc.scrollHeight*k;
     sc.parentNode.style.setProperty('--pvw-h',h+'px');
     sc.parentNode.style.setProperty('--pvw-w',(pageW()*k)+'px');
-    fit.textContent=Math.round(k*100)+'%';
+    var tx=Math.round(k*100)+'%';if(fit.textContent!==tx)fit.textContent=tx;
   }
   function step(d){
     var cur=zoom||fitScale();
@@ -419,7 +419,10 @@
     if(t){cnt.textContent=t;cnt.hidden=false}else cnt.hidden=true;
     if(isOpen)apply();
   }
-  new MutationObserver(sync).observe(sec,{childList:true,subtree:true,characterData:true});
+  var mo=new MutationObserver(sync),oc={childList:true,subtree:true,characterData:true};
+  mo.observe(badge,oc);
+  var sp=$('supPages');if(sp)mo.observe(sp,oc);
+  var ct=$('cover-template');if(ct)mo.observe(ct,oc);
   sync();
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en){
