@@ -7,6 +7,8 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#0a2240">
 <title>Admin · DCU Blood Directory</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
@@ -116,8 +118,12 @@ html[data-theme=dark] .mesh i{opacity:.4}
 .stat b{display:block;font-size:30px;font-weight:800;letter-spacing:-.5px;line-height:1.1;font-variant-numeric:tabular-nums}
 .stat span{display:block;margin-top:3px;font-size:12.5px;font-weight:600;color:var(--mu)}
 /* ===== ট্যাব ===== */
-.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;margin:0 -2px 6px;scrollbar-width:none;scroll-snap-type:x proximity}
-.tabs::-webkit-scrollbar{display:none}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;margin:0 -2px 6px;scrollbar-width:thin;scrollbar-color:var(--gold) transparent;scroll-snap-type:x proximity;cursor:grab}
+.tabs.drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.tabs::-webkit-scrollbar{height:6px}
+.tabs::-webkit-scrollbar-track{background:color-mix(in srgb,var(--gold) 14%,transparent);border-radius:99px}
+.tabs::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#c9a24a,#f1d99a);border-radius:99px}
+.tabs::-webkit-scrollbar-thumb:hover{background:#c9a24a}
 .tab{all:unset;box-sizing:border-box;cursor:pointer;flex:none;scroll-snap-align:start;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:999px;font:600 13.5px/1 var(--f);color:var(--mu);background:var(--surface);border:1px solid var(--ln);transition:all .2s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
 .tab:hover{color:var(--ink);transform:translateY(-1px)}
 .tab .ic{width:16px;height:16px}
@@ -670,6 +676,13 @@ $("tabs").onclick = e => { const b = e.target.closest("button[data-t]"); if (b) 
 const goTab = k => { tab = k; animateNext = true; render(); const on = $("tabs").querySelector(".on"); if (on && on.scrollIntoView) on.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); const l = $("list"); if (l && l.scrollIntoView) setTimeout(() => l.scrollIntoView({ behavior: "smooth", block: "start" }), 80); };
 $("stats").onclick = e => { const c = e.target.closest(".stat[data-go]"); if (c) goTab(c.dataset.go); };
 $("stats").onkeydown = e => { if (e.key !== "Enter" && e.key !== " ") return; const c = e.target.closest(".stat[data-go]"); if (c) { e.preventDefault(); goTab(c.dataset.go); } };
+(() => { const T = $("tabs"); let dn = false, sx = 0, sl = 0, mv = false;
+  T.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse") return; dn = true; mv = false; sx = e.clientX; sl = T.scrollLeft; });
+  window.addEventListener("pointermove", e => { if (!dn) return; const dx = e.clientX - sx; if (Math.abs(dx) > 4) { mv = true; T.classList.add("drag"); } if (mv) T.scrollLeft = sl - dx; });
+  window.addEventListener("pointerup", () => { if (!dn) return; dn = false; T.classList.remove("drag"); });
+  T.addEventListener("click", e => { if (mv) { e.stopImmediatePropagation(); e.preventDefault(); mv = false; } }, true);
+  T.addEventListener("wheel", e => { if (T.scrollWidth > T.clientWidth && Math.abs(e.deltaY) > Math.abs(e.deltaX)) { T.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive: false });
+})();
 $("q").oninput = render; $("ref").onclick = load;
 
 /* ===== অ্যাকশন ===== */
