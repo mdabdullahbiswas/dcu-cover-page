@@ -434,6 +434,7 @@ html[data-theme=dark] .tab .ic{color:var(--gold2)}
 
 @media(max-width:640px){.toolbar{padding:20px 16px 16px;border-radius:24px}.hello h2{font-size:22px}.stat b{font-size:30px}.toolbar:before{width:150px;height:150px;margin-top:-75px}}
 @media(prefers-reduced-motion:reduce){.draw *:not(.d){stroke-dasharray:none!important;stroke-dashoffset:0!important}.bg:after{display:none}}
+.stat[data-go]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}.stat[data-go]:active{transform:scale(.97)}.stat[data-go]:focus-visible{outline:2px solid var(--c);outline-offset:3px}.stat.on{box-shadow:0 0 0 2px var(--c),0 18px 36px -18px color-mix(in srgb,var(--c) 60%,transparent)}
 </style>
 </head>
 <body>
@@ -627,12 +628,12 @@ const tbl = (head, rows) => `<div class="card tbl"><div class="tw"><table><thead
 function render() {
   const pend = D.filter(d => d.status !== "approved").length, openN = BR.filter(r => r.status === "open").length;
   /* পরিসংখ্যান */
-  const S = [["মোট ডোনার", D.length, "users", "#14386a"], ["অপেক্ষায়", pend, "clock", "#e5a83b"], ["অনুমোদিত", D.length - pend, "shield", "#12a150"], ["নম্বর দেখা", LG.length, "eye", "#d92d20"]];
-  if ($("stats").children.length !== 4) $("stats").innerHTML = S.map(([a, , i, c]) => `<div class="card stat" style="--c:${c}"><div class="si">${ic(i)}</div><b data-v="0">0</b><span>${a}</span></div>`).join("");
-  S.forEach(([, n], i) => countUp($("stats").children[i].querySelector("b"), n));
+  const S = [["মোট ডোনার", D.length, "users", "#14386a", "all"], ["অপেক্ষায়", pend, "clock", "#e5a83b", "pending"], ["অনুমোদিত", D.length - pend, "shield", "#12a150", "approved"], ["নম্বর দেখা", LG.length, "eye", "#d92d20", "logs"]];
+  if ($("stats").children.length !== 4) $("stats").innerHTML = S.map(([a, , i, c, t]) => `<div class="card stat" data-go="${t}" role="button" tabindex="0" style="--c:${c}"><div class="si">${ic(i)}</div><b data-v="0">0</b><span>${a}</span></div>`).join("");
+  S.forEach(([, n, , , t], i) => { const el = $("stats").children[i]; countUp(el.querySelector("b"), n); el.classList.toggle("on", t === tab); });
   /* ট্যাব */
   const sl = $("tabs").scrollLeft;
-  $("tabs").innerHTML = [["pending", "অনুমোদনের অপেক্ষায়", "clock", pend], ["approved", "অনুমোদিত", "check", D.length - pend], ["logs", "নম্বর দেখার লগ", "phone", LG.length], ["requests", "জরুরি অনুরোধ", "alert", openN], ["rqreports", "অনুরোধ রিপোর্ট", "flag", RR.length], ["reports", "ভুল নম্বর রিপোর্ট", "flag", RP.length]]
+  $("tabs").innerHTML = [["all", "সব ডোনার", "users", D.length], ["pending", "অনুমোদনের অপেক্ষায়", "clock", pend], ["approved", "অনুমোদিত", "check", D.length - pend], ["logs", "নম্বর দেখার লগ", "phone", LG.length], ["requests", "জরুরি অনুরোধ", "alert", openN], ["rqreports", "অনুরোধ রিপোর্ট", "flag", RR.length], ["reports", "ভুল নম্বর রিপোর্ট", "flag", RP.length]]
     .map(([k, l, i, n]) => `<button type="button" class="tab${k === tab ? " on" : ""}" data-t="${k}" role="tab">${ic(i)}<span>${l}</span><em>${n}</em></button>`).join("");
   $("tabs").scrollLeft = sl;
   const L0 = $("list"); L0.classList.toggle("fx", animateNext); animateNext = false;
@@ -658,13 +659,16 @@ function render() {
     $("list").innerHTML = L.length ? tbl(["সময়", "ডোনার", "অনুসন্ধানকারী", "মোবাইল / ইমেইল", "ঠিকানা"], L.map(l => `<tr><td class="nm">${fd(l.timestamp)}</td><td><b>${esc(l.donorName)}</b><span class="m">${esc(l.donorPhone || (D.find(x => x.id === l.donorUid) || {}).phone || "")}</span></td><td>${esc(l.seekerName)}</td><td>${esc(l.seekerPhone)}<span class="m">${esc(l.seekerEmail)}</span></td><td>${esc(l.seekerAddress)}</td></tr>`).join("")) : empty("inbox", "কোনো লগ নেই।");
     return;
   }
-  const L = D.filter(d => (tab === "approved") === (d.status === "approved")).filter(has);
+  const L = D.filter(d => tab === "all" || (tab === "approved") === (d.status === "approved")).filter(has);
   $("list").innerHTML = L.length ? L.map(d => {
     const ph = typeof d.photo === "string" && (d.photo.startsWith("data:image/") || d.photo.startsWith("https://firebasestorage.googleapis.com/")) ? esc(d.photo) : AV, ap = d.status === "approved", vf = d.verified === true;
     return `<article class="card dcard"><div class="av"><img src="${ph}" alt="" loading="lazy"></div><div><div class="dh"><h3>${esc(d.name)}</h3>${vf ? `<span class="vt" title="ভেরিফাইড">${ic("check")}</span>` : ""}<span class="bg">${ic("drop")}${esc(d.group)}</span>${ap ? pill("অনুমোদিত", "ok") : pill("অপেক্ষায়", "warn")}</div><div class="chips"><span class="chip">${ic("pin")}${esc(d.address)}</span><a class="chip" href="tel:${esc(d.phone)}">${ic("phone")}${esc(d.phone)}</a><span class="chip">${ic("drop")}${esc(d.donationCount)} বার</span>${d.lastDonation ? `<span class="chip">${ic("cal")}সর্বশেষ: ${esc(d.lastDonation)}</span>` : ""}</div><div class="sub">নিবন্ধন: ${fd(d.createdAt)}</div></div><div class="acts">${ap ? `<button class="btn sm ${vf ? "" : "ok"}" data-a="vf" data-id="${esc(d.id)}">${ic("check")}${vf ? "ভেরিফাই বাতিল" : "ভেরিফাই করুন"}</button><button class="btn sm" data-a="pend" data-id="${esc(d.id)}">${ic("undo")}অনুমোদন প্রত্যাহার</button>` : `<button class="btn sm ok" data-a="ok" data-id="${esc(d.id)}">${ic("check")}অনুমোদন</button>`}<button class="btn sm dng" data-a="del" data-id="${esc(d.id)}">${ic("trash")}মুছুন</button></div></article>`;
   }).join("") : empty("inbox", "এই তালিকায় কিছু নেই।");
 }
 $("tabs").onclick = e => { const b = e.target.closest("button[data-t]"); if (b) { tab = b.dataset.t; animateNext = true; render(); const on = $("tabs").querySelector(".on"); if (on && on.scrollIntoView) on.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); } };
+const goTab = k => { tab = k; animateNext = true; render(); const on = $("tabs").querySelector(".on"); if (on && on.scrollIntoView) on.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); const l = $("list"); if (l && l.scrollIntoView) setTimeout(() => l.scrollIntoView({ behavior: "smooth", block: "start" }), 80); };
+$("stats").onclick = e => { const c = e.target.closest(".stat[data-go]"); if (c) goTab(c.dataset.go); };
+$("stats").onkeydown = e => { if (e.key !== "Enter" && e.key !== " ") return; const c = e.target.closest(".stat[data-go]"); if (c) { e.preventDefault(); goTab(c.dataset.go); } };
 $("q").oninput = render; $("ref").onclick = load;
 
 /* ===== অ্যাকশন ===== */
