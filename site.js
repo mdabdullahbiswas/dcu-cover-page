@@ -1,18 +1,16 @@
 /* ============ সাইট কনফিগারেশন: শুধু এই অংশটুকু নিজের তথ্য দিয়ে বদলান ============ */
 var DEV = {
   name: 'Md Abdullah Biswas',                       // আপনার নাম
-  role: 'ওয়েব ডেভেলপার|Web Developer',               // পরিচিতি (বাংলা|English)
+  role: 'ওয়েব ডেভেলপার ও ওয়েব ডিজাইনার|Web Developer & Web Designer',               // পরিচিতি (বাংলা|English)
   bio: 'শিক্ষার্থীদের প্রতিদিনের কাজ সহজ করতে এই ওয়েবসাইট ও টুলগুলো তৈরি করেছি। আপনার মতামত পেলে সাইটটিকে আরও উন্নত করতে পারব।|I built this website and its tools to make everyday student work easier. Your feedback helps me improve it.',
   email: 'abdullah84402660@gmail.com',
   whatsapp: '8801784402660',                         // দেশ কোডসহ
   links: [                                           // খালি লিংক দেখানো হবে না
-    ['GitHub', 'https://github.com/mdabdullahbiswas'],
     ['Facebook', 'https://www.facebook.com/mdabdullah.biswas.84'],
     ['LinkedIn', 'https://www.linkedin.com/in/md-abdullah-biswas/'],
     ['Instagram', 'https://www.instagram.com/mdabdullah84_biswas/']
   ],
-  skills: [],
-  repo: 'https://github.com/mdabdullahbiswas/dcu-cover-page'
+  skills: []
 };
 var RESULT_URL = 'https://result.7college.du.ac.bd/';
 var COLS = [['Dhaka College','ঢাকা কলেজ'],['Eden Mohila College','ইডেন মহিলা কলেজ'],['Government Titumir College','সরকারি তিতুমীর কলেজ'],['Government Bangla College','সরকারি বাঙলা কলেজ'],['Begum Badrunnessa Government Mohila College','বেগম বদরুন্নেসা সরকারি মহিলা কলেজ'],['Government Shaheed Suhrawardy College','সরকারি শহীদ সোহরাওয়ার্দী কলেজ'],['Kabi Nazrul Government College','কবি নজরুল সরকারি কলেজ']];
@@ -253,7 +251,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     feedback: [
       ['#ft', 'বার্তার ধরন|Feedback Type', 'পরামর্শ, বাগ রিপোর্ট বা প্রশ্ন—সঠিক ধরনটি বেছে নিন।|Choose whether you have a suggestion, bug report, or question.'],
       ['#fm', 'আপনার বার্তা|Your Message', 'আপনার মতামত, সমস্যা বা ধারণার কথা বিস্তারিত লিখুন।|Write your thoughts, ideas, or problems you encountered here.'],
-      ['#fb2, #ct', 'বার্তা পাঠান|Send Message', 'Gmail, WhatsApp বা GitHub-এর মাধ্যমে সরাসরি ডেভেলপারের কাছে বার্তা পাঠান।|Send your message directly via Gmail, WhatsApp, or GitHub.']
+      ['#fb2, #ct', 'বার্তা পাঠান|Send Message', 'Gmail বা WhatsApp-এর মাধ্যমে সরাসরি ডেভেলপারের কাছে বার্তা পাঠান।|Send your message directly via Gmail or WhatsApp.']
     ],
     photo: [
       ['#file, #size', 'ছবি ও মাপ|Upload & Size', 'ছবি আপলোড করুন এবং পাসপোর্ট বা স্ট্যাম্প মাপ নির্বাচন করুন।|Upload any portrait photo and select Passport or Stamp photo size.'],
