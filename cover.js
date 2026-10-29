@@ -978,6 +978,8 @@ function pvTabs() {
     const t = labels[i] ? labels[i].textContent.replace('📄', '').trim() : '';
     const k = t.indexOf(':');
     items.push({ key, el: p, name: (k > -1 ? t.slice(k + 1) : t).trim() || ('Page ' + (i + 2)) });
+    items[items.length - 1].full = items[items.length - 1].name;
+    items[items.length - 1].name = items[items.length - 1].name.replace(/\s*Certificate$/i, '').replace(/^Table of Contents$/i, 'Contents');
   });
   if (!items.some(x => x.key === pvKey)) pvKey = 'cover';
   items.forEach(x => x.el.classList.toggle('pv-off', x.key !== pvKey));
@@ -997,7 +999,7 @@ function pvTabs() {
   }
   bar.style.display = items.length > 1 ? 'flex' : 'none';
   bar.innerHTML = items.map(x =>
-    `<button type="button" data-k="${x.key}" class="${x.key === pvKey ? 'on' : ''}">${esc(x.name)}</button>`
+    `<button type="button" data-k="${x.key}" title="${esc(x.full || x.name)}" class="${x.key === pvKey ? 'on' : ''}">${esc(x.name)}</button>`
   ).join('');
 }
 
@@ -1023,7 +1025,7 @@ function pvLayout() {
   const PW = 793.7, PH = 1122.5;               // 210mm × 297mm (px)
   const h2 = sec.querySelector(':scope > h2');
   const bar = $('pvTabs');
-  const used = (h2 ? h2.offsetHeight + 15 : 0) + (bar && bar.style.display !== 'none' ? bar.offsetHeight + 12 : 0);
+  const used = (h2 ? h2.offsetHeight + 15 : 0) + (bar && bar.style.display !== 'none' ? bar.offsetHeight + 10 : 0);
   const availH = wide ? sec.clientHeight - used - 6 : Infinity;
   const availW = sec.clientWidth - 4;
   const s = Math.max(.25, Math.min(1, availW / PW, availH / PH));
