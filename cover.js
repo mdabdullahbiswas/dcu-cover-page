@@ -587,30 +587,6 @@ function today() {
   render();
 }
 
-const TOUR = [
-  ['.gal', '১/৪ — প্রথমে পছন্দের টেমপ্লেট নির্বাচন করুন।'],
-  ['.themes', '২/৪ — পছন্দমতো থিমের রং নির্বাচন করুন।'],
-  ['#dept', '৩/৪ — ডিপার্টমেন্ট, কোর্স ও নিজের তথ্য পূরণ করুন; ডান পাশে সরাসরি প্রিভিউ দেখা যাবে।'],
-  ['.btns .full', '৪/৪ — সবশেষে PDF, PNG বা Word আকারে ডাউনলোড করুন।']
-];
-
-function tour(i) {
-  document.querySelectorAll('.tour-hl').forEach(e => e.classList.remove('tour-hl'));
-  if (i >= TOUR.length) {
-    if ($('tourBox')) $('tourBox').style.display = 'none';
-    try { localStorage.setItem('dcuTour', '1'); } catch(e){}
-    return;
-  }
-  ti = i;
-  const el = document.querySelector(TOUR[i][0]);
-  if (!el) return;
-  el.classList.add('tour-hl');
-  el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-  if ($('tourTxt')) $('tourTxt').textContent = T(TOUR[i][1]);
-  if ($('tourNext')) $('tourNext').textContent = T(i === TOUR.length - 1 ? 'সমাপ্ত' : 'পরবর্তী');
-  if ($('tourBox')) $('tourBox').style.display = 'block';
-}
-
 const PK = 'dcuProfiles';
 const profs = () => { try { return JSON.parse(localStorage.getItem(PK)) || {}; } catch(e){ return {}; } };
 
@@ -920,7 +896,10 @@ document.addEventListener('DOMContentLoaded', () => {
   setSite(SL);
 
   try {
-    if (!localStorage.getItem('dcuTour') && !location.hash) setTimeout(() => tour(0), 900);
+    if (!localStorage.getItem('dcuTour') && !location.hash) {
+      localStorage.setItem('dcuTour', '1');
+      setTimeout(() => { if (window.startPageTour) window.startPageTour(); }, 900);
+    }
   } catch(e){}
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
