@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
    📌 লাইভ প্রিভিউ: ট্যাব + স্টিকি + অটো-ফিট
    ======================================================== */
 let pvKey = 'cover';
-let pvZ = 1, pvS = .45, pvFit = .45;
+let pvZ = 1, pvS = .45, pvFit = .45, pvItemCount = 1;
 
 function pvTabs() {
   const cover = $('cover-template');
@@ -575,8 +575,8 @@ function pvLayout() {
 
 /* ========================================================
    📱 মোবাইল: ভাসমান প্রিভিউ বাটন
-   Responsive visibility is controlled only by CSS. This avoids a
-   visible-on-load flash followed by JavaScript hiding the button.
+   🚀 NEW FIX: বাটনকে একটি `div`-এর ভেতরে রাখা হয়েছে যাতে কোনো 
+   external CSS একে প্রভাবিত করতে না পারে। 
    ======================================================== */
 function pvOpen(on) {
   const sec = document.querySelector('.preview-section');
@@ -588,6 +588,8 @@ function pvOpen(on) {
 }
 
 function pvFabUpdate(n) {
+  if (typeof n === 'number') pvItemCount = n;
+  n = pvItemCount;
   const fab = $('pvFab');
   if (!fab) return;
   const label = SL === 'en' ? 'Preview' : 'প্রিভিউ';
@@ -600,22 +602,33 @@ function pvFabUpdate(n) {
 (function pvMobileInit() {
   const sec = document.querySelector('.preview-section');
   if (!sec) return;
-
-  // Avoid duplicate controls if this initializer is ever run more than once.
-  const oldWrapper = document.getElementById('pvFabWrapper');
-  if (oldWrapper) oldWrapper.remove();
-
-  const wrapper = document.createElement('div');
-  wrapper.id = 'pvFabWrapper';
-  // Do not set display inline: cover.css media queries are the single source of truth.
-
-  const fab = document.createElement('button');
-  fab.id = 'pvFab';
-  fab.type = 'button';
-  fab.addEventListener('click', () => pvOpen(true));
-
-  wrapper.appendChild(fab);
-  document.body.appendChild(wrapper);
+  
+  // Preview button: styling and show/hide are done ONLY by the CSS media query in cover.css.
+  // JS just creates the element and puts it back if anything ever removes it.
+  function ensureFab() {
+    let wrapper = document.getElementById('pvFabWrapper');
+    let fab = document.getElementById('pvFab');
+    if (!wrapper) { wrapper = document.createElement('div'); wrapper.id = 'pvFabWrapper'; }
+    if (!fab) {
+      fab = document.createElement('button');
+      fab.id = 'pvFab';
+      fab.type = 'button';
+      fab.addEventListener('click', () => pvOpen(true));
+    }
+    if (fab.parentNode !== wrapper) wrapper.appendChild(fab);
+    if (wrapper.parentNode !== document.body) document.body.appendChild(wrapper);
+    pvFabUpdate(pvItemCount);
+    if (fabGuard) { fabGuard.observe(document.body, { childList: true }); fabGuard.observe(wrapper, { childList: true }); }
+  }
+  // if any script/extension removes the wrapper or the button, restore it immediately
+  const fabGuard = new MutationObserver(() => {
+    const w = document.getElementById('pvFabWrapper'), f = document.getElementById('pvFab');
+    if (!w || !f || w.parentNode !== document.body || f.parentNode !== w) ensureFab();
+  });
+  ensureFab();
+  // also make sure after back/forward cache restore or tab becoming visible again
+  window.addEventListener('pageshow', ensureFab);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) ensureFab(); });
 
   const cl = document.createElement('button');
   cl.id = 'pvClose'; cl.type = 'button'; cl.textContent = '✕';
@@ -644,14 +657,13 @@ function pvFabUpdate(n) {
   stage.addEventListener('touchend', e => { if (e.touches.length < 2) pin = null; if (e.touches.length === 0 && e.changedTouches.length === 1 && !moved) { const c = e.changedTouches[0], now = Date.now(); if (now - lastTap.t < 320 && Math.hypot(c.clientX - lastTap.x, c.clientY - lastTap.y) < 30) { pvZoomTo(pvZ > 1.05 ? 1 : 2.5, c.clientX, c.clientY); lastTap.t = 0; } else { lastTap = { t: now, x: c.clientX, y: c.clientY }; } } }, { passive: true });
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
+  
+  // When the screen becomes wide (>=900px) only close an open preview.
+  // Showing/hiding the button is no longer done by JS - CSS does it.
+  const mq = window.matchMedia('(min-width: 900px)');
+  const onMq = () => { if (mq.matches) pvOpen(false); };
+  if (mq.addEventListener) mq.addEventListener('change', onMq); else if (mq.addListener) mq.addListener(onMq);
 
-  // Let CSS handle visibility; close the modal if a mobile viewport becomes desktop-sized.
-  const mobilePreview = window.matchMedia('(max-width: 899px)');
-  const handleBreakpointChange = e => { if (!e.matches) pvOpen(false); };
-  if (mobilePreview.addEventListener) mobilePreview.addEventListener('change', handleBreakpointChange);
-  else if (mobilePreview.addListener) mobilePreview.addListener(handleBreakpointChange);
-
-  pvFabUpdate(1);
 })();
 
 function pvZoomTo(z, cx, cy) {

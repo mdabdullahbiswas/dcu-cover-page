@@ -630,44 +630,45 @@ body.dark #pvTabs button.on { background: var(--acc, #e5a83b); color: #0a2240; }
 }
 
 /* ============================================================
-   📱 মোবাইল প্রিভিউ FAB — visibility is CSS-only to prevent flicker.
-   The wrapper is fixed; the button remains in normal flow inside it.
+   ✅ FIXED: base hide rules আগে রাখা হয়েছে,
+   যাতে মোবাইল মিডিয়া কোয়েরির display:inline-flex ঠিকমতো জেতে
    ============================================================ */
-#pvFabWrapper {
-  display: none;
-  position: fixed;
-  right: max(14px, env(safe-area-inset-right, 0px));
-  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  z-index: 999999;
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-}
-#pvFab, #pvClose, #pvZoom { display: none; }
-#pvFab { width: auto !important; position: static !important; margin: 0; }
+#pvFabWrapper, #pvClose, #pvZoom { display: none; }
 #pvStage, #pvSizer { display: contents; }
 
 @media screen and (max-width: 899px) {
   .container { padding-bottom: 84px; }
-  #pvFabWrapper { display: block; }
-  #pvFab {
-    position: static !important; width: auto !important; min-width: 0;
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 12px 18px; border: 0; border-radius: 999px; cursor: pointer;
-    background: var(--n, #0a2240); color: var(--g, #e5a83b);
-    font: 700 14px/1 'Hind Siliguri', sans-serif; letter-spacing: .2px;
+  /* ===== ভাসমান প্রিভিউ বাটন =====
+     দেখানো/লুকানো হয় শুধু এই CSS মিডিয়া কোয়েরি দিয়ে (JS-এর উপর নির্ভর করে না),
+     তাই কোনো resize/scroll ইভেন্টে আর অদৃশ্য হবে না। */
+  #pvFabWrapper {
+    display: block !important; visibility: visible !important; opacity: 1 !important;
+    position: fixed !important; top: auto !important; left: auto !important;
+    right: 14px !important; bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+    width: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important;
+    transform: none !important; z-index: 90 !important; pointer-events: none;
+  }
+  /* টিউটোরিয়াল বক্স খোলা থাকলে বাটন তার ওপরে উঠে যাবে, যাতে ঢাকা না পড়ে */
+  body:has(#dcuTourBox) #pvFabWrapper { bottom: calc(230px + env(safe-area-inset-bottom, 0px)) !important; }
+  #pvFabWrapper #pvFab {
+    position: static !important; display: inline-flex !important; align-items: center; gap: 8px;
+    width: auto !important; min-width: 0 !important; max-width: none !important; height: auto !important;
+    margin: 0 !important; padding: 12px 18px; border: 0; border-radius: 999px; cursor: pointer;
+    pointer-events: auto; visibility: visible !important; opacity: 1 !important;
+    background: #0a2240; color: #e5a83b; letter-spacing: .2px; white-space: nowrap;
+    font: 700 14px/1 'Hind Siliguri', sans-serif;
     box-shadow: 0 8px 22px rgba(10,34,64,.42), 0 0 0 1px rgba(255,255,255,.12) inset;
     -webkit-tap-highlight-color: transparent; transition: transform .15s;
-    white-space: nowrap;
   }
-  #pvFab:hover { transform: none; }
-  #pvFab:active { transform: scale(.97); }
-  #pvFab .pvf-n {
+  #pvFabWrapper #pvFab:hover { transform: none; box-shadow: 0 8px 22px rgba(10,34,64,.42), 0 0 0 1px rgba(255,255,255,.12) inset; }
+  #pvFabWrapper #pvFab:active { transform: scale(.95); }
+  #pvFabWrapper #pvFab span { font-family: inherit; }
+  #pvFabWrapper #pvFab .pvf-n {
     min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; display: inline-flex;
-    align-items: center; justify-content: center; background: var(--g, #e5a83b); color: var(--n, #0a2240); font-size: 12px;
+    align-items: center; justify-content: center; background: #e5a83b; color: #0a2240; font-size: 12px;
   }
   body.pv-lock { overflow: hidden; }
-  body.pv-lock #pvFabWrapper { display: none; }
+  body.pv-lock #pvFabWrapper { display: none !important; }
 
   .preview-section {
     position: fixed !important; top: 0; right: 0; bottom: 0; left: 0; z-index: 80;
