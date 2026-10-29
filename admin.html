@@ -434,7 +434,7 @@ html[data-theme=dark] .tab .ic{color:var(--gold2)}
 
 @media(max-width:640px){.toolbar{padding:20px 16px 16px;border-radius:24px}.hello h2{font-size:22px}.stat b{font-size:30px}.toolbar:before{width:150px;height:150px;margin-top:-75px}}
 @media(prefers-reduced-motion:reduce){.draw *:not(.d){stroke-dasharray:none!important;stroke-dashoffset:0!important}.bg:after{display:none}}
-.stat[data-go]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}.stat[data-go]:active{transform:scale(.97)}.stat[data-go]:focus-visible{outline:2px solid var(--c);outline-offset:3px}.stat.on{box-shadow:0 0 0 2px var(--c),0 18px 36px -18px color-mix(in srgb,var(--c) 60%,transparent)}
+.stat[data-go]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}.stat[data-go]:active{transform:scale(.97)}.stat[data-go]:focus-visible{outline:2px solid var(--c);outline-offset:3px}.stat small{display:block;margin-top:9px;padding-top:9px;border-top:1px dashed color-mix(in srgb,var(--c) 28%,transparent);font-size:11.5px;font-weight:700;color:color-mix(in srgb,var(--c) 85%,#000)}
 </style>
 </head>
 <body>
@@ -628,9 +628,10 @@ const tbl = (head, rows) => `<div class="card tbl"><div class="tw"><table><thead
 function render() {
   const pend = D.filter(d => d.status !== "approved").length, openN = BR.filter(r => r.status === "open").length;
   /* পরিসংখ্যান */
-  const S = [["মোট ডোনার", D.length, "users", "#14386a", "all"], ["অপেক্ষায়", pend, "clock", "#e5a83b", "pending"], ["অনুমোদিত", D.length - pend, "shield", "#12a150", "approved"], ["নম্বর দেখা", LG.length, "eye", "#d92d20", "logs"]];
-  if ($("stats").children.length !== 4) $("stats").innerHTML = S.map(([a, , i, c, t]) => `<div class="card stat" data-go="${t}" role="button" tabindex="0" style="--c:${c}"><div class="si">${ic(i)}</div><b data-v="0">0</b><span>${a}</span></div>`).join("");
-  S.forEach(([, n, , , t], i) => { const el = $("stats").children[i]; countUp(el.querySelector("b"), n); el.classList.toggle("on", t === tab); });
+  const wk = Date.now() - 7 * 864e5, td = new Date().setHours(0, 0, 0, 0), nw = D.filter(d => ms(d.createdAt) >= wk).length, tdv = LG.filter(l => ms(l.timestamp) >= td).length, pc = D.length ? Math.round((D.length - pend) / D.length * 100) : 0;
+  const S = [["মোট নিবন্ধিত ডোনার", D.length, "users", "#14386a", "all", nw ? `এই সপ্তাহে +${nw} নতুন` : "এই সপ্তাহে নতুন নেই"], ["অনুমোদনের অপেক্ষায়", pend, "clock", "#e5a83b", "pending", pend ? "পর্যালোচনা প্রয়োজন" : "সব নিষ্পন্ন ✓"], ["অনুমোদিত ডোনার", D.length - pend, "shield", "#12a150", "approved", `মোটের ${pc}%`], ["নম্বর দেখা হয়েছে", LG.length, "eye", "#d92d20", "logs", `আজ ${tdv} বার`]];
+  if ($("stats").children.length !== 4) $("stats").innerHTML = S.map(([a, , i, c, t]) => `<div class="card stat" data-go="${t}" role="button" tabindex="0" style="--c:${c}"><div class="si">${ic(i)}</div><b data-v="0">0</b><span>${a}</span><small></small></div>`).join("");
+  S.forEach(([, n, , , , sub], i) => { const el = $("stats").children[i]; countUp(el.querySelector("b"), n); el.querySelector("small").textContent = sub; });
   /* ট্যাব */
   const sl = $("tabs").scrollLeft;
   $("tabs").innerHTML = [["all", "সব ডোনার", "users", D.length], ["pending", "অপেক্ষমাণ", "clock", pend], ["approved", "অনুমোদিত", "check", D.length - pend], ["logs", "নম্বর লগ", "phone", LG.length], ["requests", "জরুরি অনুরোধ", "alert", openN], ["rqreports", "অনুরোধ রিপোর্ট", "flag", RR.length], ["reports", "ভুল নম্বর", "flag", RP.length]]
