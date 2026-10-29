@@ -1,34 +1,240 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex,nofollow"><title>Admin · DCU Blood Directory</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0a2240">
+<title>Admin · DCU Blood Directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<script>
+/* থিম: ফ্ল্যাশ ছাড়া আগেই বসানো */
+(function(){var t=null;try{t=localStorage.getItem('adminTheme')}catch(e){}
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.dataset.theme=t;})();
+</script>
 <style>
-*{box-sizing:border-box;font-family:'Hind Siliguri',system-ui,sans-serif}body{margin:0;background:#f3f5f8;color:#222}
-.wrap{max-width:900px;margin:0 auto;padding:18px}h2{color:#b3261e;margin:0 0 12px}
-.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,.07);margin-bottom:12px}
-button{border:0;border-radius:8px;padding:9px 14px;font-size:14px;cursor:pointer;background:#b3261e;color:#fff;font-weight:600}
-button.g{background:#1b873f}button.o{background:#fff;color:#333;border:1px solid #ccd}button.d{background:#fff;color:#b3261e;border:1px solid #e0b4b0}
-.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.st{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.st div{background:#fff;border-radius:10px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}.st b{display:block;font-size:22px;color:#b3261e}
-.tabs{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}.tabs button{background:#fff;color:#333;border:1px solid #ccd}.tabs button.on{background:#b3261e;color:#fff;border-color:#b3261e}
-input{width:100%;padding:10px;border:1.5px solid #ccd;border-radius:8px;font-size:14px;margin:6px 0 10px}
-.dn{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.dn img{width:56px;height:56px;border-radius:50%;object-fit:cover;background:#eee}.dn .i{flex:1;min-width:200px}
-.vt{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;margin-left:4px;border-radius:50%;background:#1d9bf0;color:#fff;font-size:11px;font-weight:700}.badge{background:#b3261e;color:#fff;border-radius:6px;padding:1px 8px;font-size:12px}.m{font-size:13px;color:#555}
-table{width:100%;border-collapse:collapse;font-size:13px}td,th{border-bottom:1px solid #eee;padding:7px;text-align:left}
-@media(max-width:560px){.st{grid-template-columns:1fr 1fr}}
+:root{
+  --bg:#f3f6fb;--surface:#ffffff;--surface2:#f7f9fd;--ink:#0e1a2e;--mu:#64748b;--ln:#e4e9f2;
+  --navy:#0a2240;--navy2:#14386a;--gold:#e5a83b;--gold2:#f6d68f;
+  --red:#d92d20;--red2:#b3261e;--redSoft:#fee4e2;--green:#12a150;--greenSoft:#dcfae6;--amberSoft:#fef0c7;--amber:#b54708;--blue:#1d9bf0;
+  --shadow:0 1px 2px rgba(14,26,46,.05),0 8px 24px rgba(14,26,46,.06);--shadowLg:0 24px 60px rgba(14,26,46,.18);
+  --r:18px;
+  --f:'Plus Jakarta Sans','Hind Siliguri',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --fh:'Playfair Display','Noto Serif Bengali','Hind Siliguri',serif;
+}
+html[data-theme=dark]{
+  --bg:#08101e;--surface:#101b2f;--surface2:#142339;--ink:#e8eef9;--mu:#94a5bf;--ln:#213352;
+  --redSoft:#3a1612;--greenSoft:#0d2e1d;--amberSoft:#38270a;--amber:#f5b94a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);--shadowLg:0 28px 70px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);min-height:100vh;font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden}
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.mesh i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:drift 18s ease-in-out infinite alternate}
+.mesh i:nth-child(1){width:420px;height:420px;top:-140px;right:-100px;background:rgba(229,168,59,.28)}
+.mesh i:nth-child(2){width:480px;height:480px;top:30%;left:-180px;background:rgba(20,56,106,.22);animation-duration:22s}
+.mesh i:nth-child(3){width:340px;height:340px;bottom:-120px;right:15%;background:rgba(217,45,32,.12);animation-duration:26s}
+html[data-theme=dark] .mesh i{opacity:.4}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,50px) scale(1.18)}}
+.ic{width:18px;height:18px;flex:none}
+/* ===== টপ বার ===== */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--surface) 78%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);border-bottom:1px solid var(--ln)}
+.top-in{max-width:1080px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:12px;padding-top:max(10px,env(safe-area-inset-top))}
+.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:var(--gold2);background:linear-gradient(135deg,var(--navy),var(--navy2));box-shadow:0 6px 16px rgba(10,34,64,.35),inset 0 0 0 1px rgba(246,214,143,.35)}
+.logo svg{width:22px;height:22px}
+.brand b{display:block;font-family:var(--fh);font-size:17px;font-weight:700;letter-spacing:.2px;line-height:1.2}
+.brand span{display:block;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold)}
+.sp{flex:1}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:22px 18px 80px}
+/* ===== বাটন ===== */
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 15px;border-radius:12px;font:600 13.5px/1 var(--f);color:var(--ink);background:var(--surface);border:1px solid var(--ln);box-shadow:0 1px 2px rgba(14,26,46,.04);transition:transform .15s,box-shadow .2s,background .2s,border-color .2s,opacity .2s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(14,26,46,.1);border-color:color-mix(in srgb,var(--ink) 18%,var(--ln))}
+.btn:active{transform:none}
+.btn:focus-visible,.tab:focus-visible,.search input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.btn.sm{height:36px;padding:0 12px;font-size:13px;border-radius:10px}
+.btn.icon{width:40px;padding:0}
+.btn.ok{color:#fff;border-color:transparent;background:linear-gradient(135deg,#1db262,#0f8f4a);box-shadow:0 6px 16px rgba(18,161,80,.3)}
+.btn.ok:hover{box-shadow:0 10px 22px rgba(18,161,80,.4)}
+.btn.dng{color:var(--red);background:var(--redSoft);border-color:transparent}
+.btn.dng:hover{background:var(--red);color:#fff;box-shadow:0 8px 18px rgba(217,45,32,.3)}
+.btn.pri{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--navy2),var(--navy))}
+.btn.gold{color:#0a2240;border-color:transparent;background:linear-gradient(135deg,#f9dc9b,#e5a83b 60%,#d29a2e);box-shadow:0 8px 20px rgba(229,168,59,.35)}
+.btn.out{color:var(--mu)}
+/* ===== কার্ড ===== */
+.card{background:var(--surface);border:1px solid var(--ln);border-radius:var(--r);box-shadow:var(--shadow)}
+/* ===== লগইন গেট ===== */
+#gate{padding:min(9vh,70px) 0 20px}
+.gate-card{max-width:440px;margin:0 auto;overflow:hidden;animation:up .7s cubic-bezier(.2,.8,.2,1) both;text-align:center}
+.gate-hero{position:relative;padding:34px 24px 26px;color:#fff;background:linear-gradient(140deg,#07192f,#0a2240 55%,#14386a);overflow:hidden}
+.gate-hero:before{content:"";position:absolute;top:-90px;right:-70px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(229,168,59,.4),transparent 68%);animation:drift 12s ease-in-out infinite alternate}
+.gate-hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,transparent,#e5a83b 30%,#f6d68f 50%,#e5a83b 70%,transparent)}
+.gate-ico{position:relative;width:72px;height:72px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;color:var(--gold2);background:rgba(246,214,143,.1);border:1.5px solid rgba(246,214,143,.7);box-shadow:0 0 0 9px rgba(246,214,143,.08)}
+.gate-ico svg{width:34px;height:34px}
+.gate-hero h1{position:relative;font-family:var(--fh);font-size:26px;font-weight:700;letter-spacing:.2px;line-height:1.3}
+.gate-hero p{position:relative;margin-top:4px;font-size:11.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2)}
+.gate-body{padding:26px 26px 28px}
+.gate-body>p{color:var(--mu);font-size:14px;margin-bottom:20px}
+.gbtn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:52px;border-radius:14px;font:700 15px/1 var(--f);color:#1f2937;background:#fff;border:1px solid #dadce0;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .15s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.gbtn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.14)}
+.gbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.gbtn svg{width:22px;height:22px}
+.msg{min-height:20px;margin-top:14px;font-size:13px;color:var(--red);font-weight:500}
+/* ===== টুলবার ===== */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;animation:up .5s both}
+.who{display:flex;align-items:center;gap:10px;min-width:0;padding:5px 14px 5px 5px;border-radius:999px;background:var(--surface);border:1px solid var(--ln);box-shadow:var(--shadow)}
+.who i{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font:800 14px var(--f);font-style:normal;color:#0a2240;background:linear-gradient(135deg,var(--gold2),var(--gold))}
+.who small{display:block;font-size:10.5px;color:var(--mu);line-height:1.1;font-weight:600}
+.who b{display:block;font-size:13px;font-weight:600;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+.tb-r{margin-left:auto;display:flex;gap:8px}
+/* ===== পরিসংখ্যান ===== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat{position:relative;overflow:hidden;padding:18px 18px 16px;animation:up .6s both}
+.stat:nth-child(2){animation-delay:.06s}.stat:nth-child(3){animation-delay:.12s}.stat:nth-child(4){animation-delay:.18s}
+.stat:after{content:"";position:absolute;top:-30px;right:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,var(--c),transparent 70%);opacity:.16}
+.stat .si{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;margin-bottom:12px;color:#fff;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 70%,#000))}
+.stat .si svg{width:19px;height:19px}
+.stat b{display:block;font-size:30px;font-weight:800;letter-spacing:-.5px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:3px;font-size:12.5px;font-weight:600;color:var(--mu)}
+/* ===== ট্যাব ===== */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;margin:0 -2px 6px;scrollbar-width:none;scroll-snap-type:x proximity}
+.tabs::-webkit-scrollbar{display:none}
+.tab{all:unset;box-sizing:border-box;cursor:pointer;flex:none;scroll-snap-align:start;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:999px;font:600 13.5px/1 var(--f);color:var(--mu);background:var(--surface);border:1px solid var(--ln);transition:all .2s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.tab:hover{color:var(--ink);transform:translateY(-1px)}
+.tab .ic{width:16px;height:16px}
+.tab em{font-style:normal;min-width:22px;height:22px;padding:0 7px;border-radius:11px;display:inline-grid;place-items:center;font-size:11.5px;font-weight:800;background:var(--surface2);color:var(--mu);border:1px solid var(--ln)}
+.tab.on{color:var(--gold2);border-color:transparent;background:linear-gradient(135deg,var(--navy2),var(--navy));box-shadow:0 8px 20px rgba(10,34,64,.3)}
+.tab.on em{background:var(--gold);color:#0a2240;border-color:transparent}
+/* ===== সার্চ ===== */
+.search{position:relative;display:block;margin:6px 0 18px}
+.search .ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--mu);pointer-events:none}
+.search input{width:100%;height:50px;padding:0 18px 0 46px;border-radius:15px;border:1px solid var(--ln);background:var(--surface);color:var(--ink);font:500 14.5px var(--f);box-shadow:var(--shadow);transition:border-color .2s,box-shadow .2s}
+.search input::placeholder{color:var(--mu)}
+.search input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(229,168,59,.18)}
+/* ===== ডোনার কার্ড ===== */
+#list{display:grid;gap:12px}
+#list.fx>*{animation:up .55s both cubic-bezier(.2,.8,.2,1)}
+#list.fx>*:nth-child(2){animation-delay:.04s}#list.fx>*:nth-child(3){animation-delay:.08s}#list.fx>*:nth-child(4){animation-delay:.12s}#list.fx>*:nth-child(5){animation-delay:.16s}#list.fx>*:nth-child(n+6){animation-delay:.2s}
+.dcard{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 18px;transition:transform .2s,box-shadow .25s,border-color .2s}
+.dcard:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(14,26,46,.12);border-color:color-mix(in srgb,var(--gold) 45%,var(--ln))}
+.av{width:66px;height:66px;border-radius:50%;padding:3px;background:linear-gradient(135deg,var(--gold2),var(--gold) 55%,#c98a1d)}
+.av img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;background:var(--surface2);border:2px solid var(--surface)}
+.dh{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.dh h3{font-size:16.5px;font-weight:700;letter-spacing:-.1px}
+.vt{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--blue);color:#fff;box-shadow:0 0 0 3px rgba(29,155,240,.18)}
+.vt svg{width:11px;height:11px}
+.bg{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9px;font-size:12.5px;font-weight:800;letter-spacing:.3px;color:#fff;background:linear-gradient(135deg,#ec4a4f,#b3261e);box-shadow:0 4px 10px rgba(217,45,32,.3)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.pill:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.ok{color:var(--green);background:var(--greenSoft)}.pill.warn{color:var(--amber);background:var(--amberSoft)}.pill.mu{color:var(--mu);background:var(--surface2);border:1px solid var(--ln)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:9px;font-size:12.5px;font-weight:500;color:var(--mu);background:var(--surface2);border:1px solid var(--ln);text-decoration:none}
+.chip .ic{width:14px;height:14px;color:var(--gold)}
+a.chip:hover{color:var(--ink);border-color:var(--gold)}
+.sub{margin-top:8px;font-size:12px;color:var(--mu)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+/* ===== টেবিল ===== */
+.tbl{overflow:hidden;animation:up .5s both}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px}
+th{position:sticky;top:0;text-align:left;padding:13px 16px;font-size:11.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--mu);background:var(--surface2);border-bottom:1px solid var(--ln);white-space:nowrap}
+td{padding:14px 16px;border-bottom:1px solid var(--ln);vertical-align:top}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:var(--surface2)}
+tbody tr:last-child td{border-bottom:0}
+td .m{display:block;margin-top:2px;font-size:12.5px;color:var(--mu)}
+td .acts{justify-content:flex-start;flex-wrap:nowrap}
+.badge{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(135deg,#ec4a4f,#b3261e)}
+.nm{white-space:nowrap}
+/* ===== খালি/স্কেলিটন ===== */
+.empty{text-align:center;padding:54px 20px;color:var(--mu);animation:up .5s both}
+.empty .ic{width:46px;height:46px;margin-bottom:12px;color:var(--gold);opacity:.9}
+.empty p{font-size:14.5px;font-weight:500}
+.sk{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px;align-items:center}
+.sk i{display:block;border-radius:12px;background:linear-gradient(100deg,var(--surface2) 30%,color-mix(in srgb,var(--surface2) 55%,var(--ln)) 50%,var(--surface2) 70%) 0 0/250% 100%;animation:shim 1.4s linear infinite}
+.sk i:first-child{width:66px;height:66px;border-radius:50%}
+.sk div i{height:14px;margin-bottom:10px}.sk div i:first-child{width:46%;height:18px;border-radius:9px}.sk div i:last-child{width:72%;margin:0}
+@keyframes shim{to{background-position:-250% 0}}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* ===== টোস্ট ও কনফার্ম ===== */
+.toasts{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(92vw,420px);pointer-events:none}
+.toast{display:flex;align-items:center;gap:10px;padding:13px 16px;border-radius:14px;font-size:13.5px;font-weight:600;color:#fff;background:#0f1b2d;border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadowLg);animation:toastIn .4s cubic-bezier(.2,.9,.3,1.2) both}
+.toast.err{background:#7a1a12}.toast.out{animation:toastOut .3s both}
+.toast .ic{color:var(--gold2)}.toast.err .ic{color:#ffb4ab}
+@keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(10px)}}
+.ov{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:18px;background:rgba(3,10,22,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fade .25s both}
+.dlg{width:100%;max-width:400px;padding:26px 24px 22px;text-align:center;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both;box-shadow:var(--shadowLg)}
+.dlg .di{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;color:var(--red);background:var(--redSoft)}
+.dlg .di svg{width:26px;height:26px}
+.dlg p{font-size:15px;font-weight:600;line-height:1.6;margin-bottom:20px;word-break:break-word}
+.dlg .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dlg .btn{height:46px;width:100%}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.94)}}
+/* ===== মোবাইল ===== */
+@media(max-width:820px){.stats{grid-template-columns:1fr 1fr}.dcard{grid-template-columns:auto 1fr}.acts{grid-column:1/-1;justify-content:stretch}.acts .btn{flex:1 1 auto}}
+@media(max-width:640px){
+  .wrap{padding:16px 14px 80px}.top-in{padding-left:14px;padding-right:14px}
+  .brand b{font-size:15.5px}.stat{padding:15px 14px 13px}.stat b{font-size:26px}
+  .who b{max-width:150px}.tb-r{width:100%;margin-left:0}.tb-r .btn{flex:1}
+  .tb-r .btn span{display:none}.tb-r .btn{padding:0}
+  .dcard{padding:14px;gap:13px}.av{width:58px;height:58px}
+  th,td{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body><div class="wrap">
-<h2>🔐 DCU ব্লাড ডিরেক্টরি, এডমিন</h2>
-<div id="gate" class="card"><p>এই পেজটি শুধু অনুমোদিত এডমিনের জন্য। চালিয়ে যেতে সাইন ইন করুন।</p><button id="login">Google দিয়ে সাইন ইন</button><p id="gmsg" class="m"></p></div>
-<div id="app" style="display:none">
- <div class="card bar"><span>সাইন ইন: <b id="who"></b></span><span><button class="o" id="ref">🔄 রিফ্রেশ</button> <button class="o" id="csv">⬇️ CSV</button> <button class="d" id="out">সাইন আউট</button></span></div>
- <div class="st" id="stats"></div>
- <div class="tabs" id="tabs"><button data-t="pending" class="on">⏳ অনুমোদনের অপেক্ষায়</button><button data-t="approved">✅ অনুমোদিত</button><button data-t="logs">📞 নম্বর দেখার লগ</button><button data-t="requests">🚨 জরুরি অনুরোধ</button><button data-t="rqreports">🚩 অনুরোধ রিপোর্ট</button><button data-t="reports">🚩 ভুল নম্বর রিপোর্ট</button></div>
- <input id="q" placeholder="নাম, নম্বর, এলাকা বা গ্রুপ দিয়ে খুঁজুন...">
- <div id="list"></div>
-</div></div>
+<body>
+<div class="mesh" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="top"><div class="top-in">
+  <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5s6.5 6.8 6.5 11.7a6.5 6.5 0 0 1-13 0C5.5 9.3 12 2.5 12 2.5z"/></svg></div>
+  <div class="brand"><b>DCU Blood Directory</b><span>Admin Console</span></div>
+  <div class="sp"></div>
+  <button class="btn icon" id="theme" type="button" aria-label="Theme" title="Theme"></button>
+</div></header>
+
+<div class="wrap">
+  <div id="gate">
+    <div class="card gate-card">
+      <div class="gate-hero">
+        <div class="gate-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12.5l2.2 2.2L15.5 10"/></svg></div>
+        <h1>এডমিন কনসোল</h1>
+        <p>DCU Blood Directory</p>
+      </div>
+      <div class="gate-body">
+        <p>এই পেজটি শুধু অনুমোদিত এডমিনের জন্য। চালিয়ে যেতে সাইন ইন করুন।</p>
+        <button id="login" class="gbtn" type="button">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          <span>Google দিয়ে সাইন ইন</span>
+        </button>
+        <p id="gmsg" class="msg"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="toolbar">
+      <div class="who"><i id="whoA">A</i><div><small>সাইন ইন</small><b id="who"></b></div></div>
+      <div class="tb-r">
+        <button class="btn" id="ref" type="button" aria-label="রিফ্রেশ"></button>
+        <button class="btn" id="csv" type="button" aria-label="CSV"></button>
+        <button class="btn dng" id="out" type="button" aria-label="সাইন আউট"></button>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <label class="search"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" autocomplete="off" placeholder="নাম, নম্বর, এলাকা বা গ্রুপ দিয়ে খুঁজুন..."></label>
+    <div id="list"></div>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -37,20 +243,75 @@ const ADMIN_EMAIL = "ojanaraja3@gmail.com";
 const app = initializeApp({ apiKey:"AIzaSyBgaBKzAAwzHI7ahGKqzbrX9MknWWIm9j0", authDomain:"dcu-blood-bank.firebaseapp.com", projectId:"dcu-blood-bank", storageBucket:"dcu-blood-bank.firebasestorage.app", messagingSenderId:"835221249900", appId:"1:835221249900:web:facf545941825a4efa5d49" }, "admin");
 const auth = getAuth(app), db = getFirestore(app), $ = id => document.getElementById(id);
 const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const AV = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56"><rect width="56" height="56" rx="28" fill="#eee"/><circle cx="28" cy="21" r="9" fill="#bbb"/><path d="M9 50c3-13 35-13 38 0z" fill="#bbb"/></svg>');
+const AV = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="66" height="66"><rect width="66" height="66" rx="33" fill="#e8edf5"/><circle cx="33" cy="25" r="10.5" fill="#b4c0d4"/><path d="M11 60c3.5-15 40.5-15 44 0z" fill="#b4c0d4"/></svg>');
 const ms = d => d && d.toMillis ? d.toMillis() : 0, fd = d => ms(d) ? new Date(ms(d)).toLocaleString("bn-BD") : "-";
-let D = [], LG = [], RP = [], BR = [], RR = [], tab = "pending";
+let D = [], LG = [], RP = [], BR = [], RR = [], tab = "pending", animateNext = true;
 
+/* ===== আইকন ===== */
+const ICON = {
+  refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>',
+  download:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',
+  logout:'<path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12.5l2.2 2.2L15.5 10"/>',
+  trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  pin:'<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  drop:'<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/>',
+  cal:'<rect x="4" y="5" width="16" height="16" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.1"/>',
+  flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 20a6 6 0 0 0-3-5.2"/>',
+  eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+  inbox:'<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/>'
+};
+const ic = (n, c = "") => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+
+/* ===== থিম ===== */
+function paintTheme() { const dk = document.documentElement.dataset.theme === "dark"; $("theme").innerHTML = ic(dk ? "sun" : "moon"); $("theme").title = dk ? "Light mode" : "Dark mode"; }
+$("theme").onclick = () => { const t = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = t; try { localStorage.setItem("adminTheme", t); } catch (e) {} paintTheme(); };
+paintTheme();
+$("ref").innerHTML = ic("refresh") + "<span>রিফ্রেশ</span>";
+$("csv").innerHTML = ic("download") + "<span>CSV</span>";
+$("out").innerHTML = ic("logout") + "<span>সাইন আউট</span>";
+
+/* ===== টোস্ট ও কনফার্ম ===== */
+function toast(msg, type) {
+  const t = document.createElement("div"); t.className = "toast" + (type === "err" ? " err" : "");
+  t.innerHTML = ic(type === "err" ? "alert" : "check"); const s = document.createElement("span"); s.textContent = msg; t.appendChild(s);
+  $("toasts").appendChild(t);
+  setTimeout(() => { t.classList.add("out"); setTimeout(() => t.remove(), 320); }, type === "err" ? 4800 : 2600);
+}
+function ask(msg, okLabel) {
+  return new Promise(res => {
+    const o = document.createElement("div"); o.className = "ov";
+    o.innerHTML = `<div class="card dlg" role="dialog" aria-modal="true"><div class="di">${ic("trash")}</div><p></p><div class="row"><button type="button" class="btn" data-r="0">বাতিল</button><button type="button" class="btn dng" data-r="1"></button></div></div>`;
+    o.querySelector("p").textContent = msg; o.querySelector("[data-r='1']").textContent = okLabel || "হ্যাঁ, মুছুন";
+    const done = v => { document.removeEventListener("keydown", kd, true); o.remove(); res(v); };
+    const kd = e => { if (e.key === "Escape") { e.preventDefault(); done(false); } };
+    o.onclick = e => { if (e.target === o) done(false); const b = e.target.closest("[data-r]"); if (b) done(b.dataset.r === "1"); };
+    document.addEventListener("keydown", kd, true); document.body.appendChild(o); o.querySelector("[data-r='0']").focus();
+  });
+}
+const err = e => toast("কাজটি সম্পন্ন হয়নি: " + (e.code || e.message), "err");
+
+/* ===== লগইন / অথ ===== */
 const persistReady = setPersistence(auth, browserLocalPersistence).catch(() => {});
 $("login").onclick = () => persistReady.then(() => signInWithPopup(auth, new GoogleAuthProvider())).catch(e => $("gmsg").textContent = "সাইন ইন সম্ভব হয়নি: " + e.code);
 $("out").onclick = () => signOut(auth);
 onAuthStateChanged(auth, u => {
   if (!u) { $("gate").style.display = "block"; $("app").style.display = "none"; return; }
   if (u.email !== ADMIN_EMAIL || !u.emailVerified) { $("gmsg").textContent = "এই অ্যাকাউন্টের (" + u.email + ") প্রবেশাধিকার নেই।"; signOut(auth); return; }
-  $("gate").style.display = "none"; $("app").style.display = "block"; $("who").textContent = u.email; load();
+  $("gate").style.display = "none"; $("app").style.display = "block"; $("who").textContent = u.email; $("whoA").textContent = (u.email[0] || "A").toUpperCase(); load();
 });
+const skeleton = () => '<div class="card sk"><i></i><div><i></i><i></i><i></i></div></div>'.repeat(3);
 async function load() {
-  $("list").textContent = "লোড হচ্ছে...";
+  $("list").innerHTML = skeleton();
+  animateNext = true;
   try {
     D = (await getDocs(collection(db, "donors"))).docs.map(x => ({ id: x.id, ...x.data() })).sort((a, b) => ms(b.createdAt) - ms(a.createdAt));
     try { LG = (await getDocs(query(collection(db, "activity_logs"), orderBy("timestamp", "desc"), limit(300)))).docs.map(x => ({ id: x.id, ...x.data() })); } catch (e) { LG = []; }
@@ -58,57 +319,83 @@ async function load() {
     try { BR = (await getDocs(collection(db, "blood_requests"))).docs.map(x => ({ id: x.id, ...x.data() })).sort((a, b) => ms(b.createdAt) - ms(a.createdAt)); await Promise.all(BR.map(async r => { try { const p = await getDoc(doc(db, "blood_requests", r.id, "private", "contact")); if (p.exists()) { r.contactPhone = r.contactPhone || p.data().contactPhone; r.requesterEmail = r.requesterEmail || p.data().requesterEmail; } } catch (_) {} })); } catch (e) { BR = []; }
     try { RR = (await getDocs(collection(db, "request_reports"))).docs.map(x => ({ id: x.id, ...x.data() })).sort((a, b) => ms(b.timestamp) - ms(a.timestamp)); } catch (e) { RR = []; }
     render();
-  } catch (e) { $("list").textContent = "ডেটা লোড হয়নি: " + (e.code || e.message) + " (Firestore Rules ও এডমিন ইমেইল দেখুন)"; }
+  } catch (e) { $("list").innerHTML = `<div class="card empty">${ic("alert")}<p>ডেটা লোড হয়নি: ${esc(e.code || e.message)}<br><span style="font-size:12.5px">(Firestore Rules ও এডমিন ইমেইল দেখুন)</span></p></div>`; }
 }
+
+/* ===== রেন্ডার ===== */
+function countUp(el, to) {
+  const from = +el.dataset.v || 0; el.dataset.v = to;
+  if (from === to || matchMedia("(prefers-reduced-motion: reduce)").matches) { el.textContent = to; return; }
+  const t0 = performance.now(), dur = 750;
+  (function f(t) { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3); el.textContent = Math.round(from + (to - from) * e); if (p < 1) requestAnimationFrame(f); })(t0);
+}
+const pill = (t, c) => `<span class="pill ${c}">${t}</span>`;
+const stPill = open => open ? pill("চালু", "ok") : pill("পূরণ হয়েছে", "mu");
+const empty = (i, m) => `<div class="card empty">${ic(i)}<p>${m}</p></div>`;
+const tbl = (head, rows) => `<div class="card tbl"><div class="tw"><table><thead><tr>${head.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
+
 function render() {
-  const pend = D.filter(d => d.status !== "approved").length;
-  $("stats").innerHTML = [["মোট ডোনার", D.length], ["অপেক্ষায়", pend], ["অনুমোদিত", D.length - pend], ["নম্বর দেখা", LG.length]].map(([a, b]) => `<div><b>${b}</b>${a}</div>`).join("");
-  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.t === tab));
+  const pend = D.filter(d => d.status !== "approved").length, openN = BR.filter(r => r.status === "open").length;
+  /* পরিসংখ্যান */
+  const S = [["মোট ডোনার", D.length, "users", "#14386a"], ["অপেক্ষায়", pend, "clock", "#e5a83b"], ["অনুমোদিত", D.length - pend, "shield", "#12a150"], ["নম্বর দেখা", LG.length, "eye", "#d92d20"]];
+  if ($("stats").children.length !== 4) $("stats").innerHTML = S.map(([a, , i, c]) => `<div class="card stat" style="--c:${c}"><div class="si">${ic(i)}</div><b data-v="0">0</b><span>${a}</span></div>`).join("");
+  S.forEach(([, n], i) => countUp($("stats").children[i].querySelector("b"), n));
+  /* ট্যাব */
+  const sl = $("tabs").scrollLeft;
+  $("tabs").innerHTML = [["pending", "অনুমোদনের অপেক্ষায়", "clock", pend], ["approved", "অনুমোদিত", "check", D.length - pend], ["logs", "নম্বর দেখার লগ", "phone", LG.length], ["requests", "জরুরি অনুরোধ", "alert", openN], ["rqreports", "অনুরোধ রিপোর্ট", "flag", RR.length], ["reports", "ভুল নম্বর রিপোর্ট", "flag", RP.length]]
+    .map(([k, l, i, n]) => `<button type="button" class="tab${k === tab ? " on" : ""}" data-t="${k}" role="tab">${ic(i)}<span>${l}</span><em>${n}</em></button>`).join("");
+  $("tabs").scrollLeft = sl;
+  const L0 = $("list"); L0.classList.toggle("fx", animateNext); animateNext = false;
+
   const q = $("q").value.trim().toLowerCase(), has = o => Object.values(o).some(v => typeof v === "string" && v.length < 300 && v.toLowerCase().includes(q));
-  const qt = document.querySelector('#tabs [data-t="requests"]'); if (qt) qt.textContent = "🚨 জরুরি অনুরোধ (" + BR.filter(r => r.status === "open").length + ")";
-  const xt = document.querySelector('#tabs [data-t="rqreports"]'); if (xt) xt.textContent = "🚩 অনুরোধ রিপোর্ট (" + RR.length + ")";
-  const rt = document.querySelector('#tabs [data-t="reports"]'); if (rt) rt.textContent = "🚩 ভুল নম্বর রিপোর্ট (" + RP.length + ")";
   if (tab === "reports") {
     const R = RP.filter(has);
-    $("list").innerHTML = R.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>ডোনার</th><th>কারণ</th><th>রিপোর্টকারী</th><th></th></tr>${R.map(r => { const dn = D.find(x => x.id === r.donorUid) || {}; return `<tr><td>${fd(r.timestamp)}</td><td>${esc(r.donorName)}<br><span class="m">${esc(dn.phone || "")} ${dn.status === "approved" ? "· অনুমোদিত" : dn.status ? "· অপেক্ষায়" : "· (মুছে ফেলা)"}</span></td><td>${esc(r.reason)}</td><td>${esc(r.reporterEmail)}</td><td>${dn.status === "approved" ? `<button class="o" data-a="pend" data-id="${esc(r.donorUid)}">অনুমোদন প্রত্যাহার</button> ` : ""}<button class="d" data-a="rdel" data-id="${esc(r.id)}">রিপোর্ট মুছুন</button></td></tr>`; }).join("")}</table></div>` : '<p class="m">কোনো রিপোর্ট নেই।</p>';
+    $("list").innerHTML = R.length ? tbl(["সময়", "ডোনার", "কারণ", "রিপোর্টকারী", ""], R.map(r => { const dn = D.find(x => x.id === r.donorUid) || {}; return `<tr><td class="nm">${fd(r.timestamp)}</td><td><b>${esc(r.donorName)}</b><span class="m">${esc(dn.phone || "")}</span> ${dn.status === "approved" ? pill("অনুমোদিত", "ok") : dn.status ? pill("অপেক্ষায়", "warn") : pill("মুছে ফেলা", "mu")}</td><td>${esc(r.reason)}</td><td>${esc(r.reporterEmail)}</td><td><div class="acts">${dn.status === "approved" ? `<button class="btn sm" data-a="pend" data-id="${esc(r.donorUid)}">${ic("undo")}অনুমোদন প্রত্যাহার</button>` : ""}<button class="btn sm dng" data-a="rdel" data-id="${esc(r.id)}">${ic("trash")}রিপোর্ট মুছুন</button></div></td></tr>`; }).join("")) : empty("inbox", "কোনো রিপোর্ট নেই।");
     return;
   }
   if (tab === "requests") {
     const R = BR.filter(has);
-    $("list").innerHTML = R.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>গ্রুপ / ব্যাগ</th><th>হাসপাতাল / এলাকা</th><th>প্রয়োজন</th><th>যোগাযোগ</th><th>অবস্থা</th><th></th></tr>${R.map(r => `<tr><td>${fd(r.createdAt)}</td><td><b>${esc(r.group)}</b> · ${esc(r.bags)}</td><td>${esc(r.hospital)}<br><span class="m">${esc(r.area)}</span></td><td>${esc(r.neededDate)}</td><td>${esc(r.contactName)}<br><span class="m">${esc(r.contactPhone)}<br>${esc(r.requesterEmail)}</span></td><td>${r.status === "open" ? "চালু" : "পূরণ হয়েছে"}</td><td><button class="d" data-a="qdel" data-id="${esc(r.id)}">মুছুন</button></td></tr>`).join("")}</table></div>` : '<p class="m">কোনো অনুরোধ নেই।</p>';
+    $("list").innerHTML = R.length ? tbl(["সময়", "গ্রুপ / ব্যাগ", "হাসপাতাল / এলাকা", "প্রয়োজন", "যোগাযোগ", "অবস্থা", ""], R.map(r => `<tr><td class="nm">${fd(r.createdAt)}</td><td><span class="bg">${esc(r.group)}</span> <span class="m" style="display:inline">· ${esc(r.bags)}</span></td><td><b>${esc(r.hospital)}</b><span class="m">${esc(r.area)}</span></td><td class="nm">${esc(r.neededDate)}</td><td><b>${esc(r.contactName)}</b><span class="m">${esc(r.contactPhone)}</span><span class="m">${esc(r.requesterEmail)}</span></td><td>${stPill(r.status === "open")}</td><td><button class="btn sm dng" data-a="qdel" data-id="${esc(r.id)}">${ic("trash")}মুছুন</button></td></tr>`).join("")) : empty("inbox", "কোনো অনুরোধ নেই।");
     return;
   }
   if (tab === "rqreports") {
     const R = RR.filter(has), cnt = {}; RR.forEach(x => cnt[x.requestId] = (cnt[x.requestId] || 0) + 1);
-    $("list").innerHTML = R.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>অনুরোধ</th><th>কারণ</th><th>রিপোর্টকারী</th><th>মোট</th><th></th></tr>${R.map(x => { const q = BR.find(b => b.id === x.requestId); return `<tr><td>${fd(x.timestamp)}</td><td>${esc(x.requestInfo)}<br><span class="m">${q ? (q.contactPhone ? esc(q.contactPhone) + " · " : "") + (q.status === "open" ? "চালু" : "পূরণ হয়েছে") : "(মুছে ফেলা)"}</span></td><td>${esc(x.reason)}</td><td>${esc(x.reporterEmail)}</td><td><span class="badge">${cnt[x.requestId]}</span></td><td>${q ? `<button class="d" data-a="qdel" data-id="${esc(x.requestId)}">অনুরোধ মুছুন</button> ` : ""}<button class="o" data-a="rrdel" data-id="${esc(x.id)}">রিপোর্ট মুছুন</button></td></tr>`; }).join("")}</table></div>` : '<p class="m">কোনো রিপোর্ট নেই।</p>';
+    $("list").innerHTML = R.length ? tbl(["সময়", "অনুরোধ", "কারণ", "রিপোর্টকারী", "মোট", ""], R.map(x => { const qq = BR.find(b => b.id === x.requestId); return `<tr><td class="nm">${fd(x.timestamp)}</td><td><b>${esc(x.requestInfo)}</b><span class="m">${qq ? (qq.contactPhone ? esc(qq.contactPhone) + " · " : "") : ""}</span> ${qq ? stPill(qq.status === "open") : pill("মুছে ফেলা", "mu")}</td><td>${esc(x.reason)}</td><td>${esc(x.reporterEmail)}</td><td><span class="badge">${cnt[x.requestId]}</span></td><td><div class="acts">${qq ? `<button class="btn sm dng" data-a="qdel" data-id="${esc(x.requestId)}">${ic("trash")}অনুরোধ মুছুন</button>` : ""}<button class="btn sm" data-a="rrdel" data-id="${esc(x.id)}">রিপোর্ট মুছুন</button></div></td></tr>`; }).join("")) : empty("inbox", "কোনো রিপোর্ট নেই।");
     return;
   }
   if (tab === "logs") {
     const L = LG.filter(has);
-    $("list").innerHTML = L.length ? `<div class="card" style="overflow-x:auto"><table><tr><th>সময়</th><th>ডোনার</th><th>অনুসন্ধানকারী</th><th>মোবাইল / ইমেইল</th><th>ঠিকানা</th></tr>${L.map(l => `<tr><td>${fd(l.timestamp)}</td><td>${esc(l.donorName)}<br><span class="m">${esc(l.donorPhone || (D.find(x => x.id === l.donorUid) || {}).phone || "")}</span></td><td>${esc(l.seekerName)}</td><td>${esc(l.seekerPhone)}<br><span class="m">${esc(l.seekerEmail)}</span></td><td>${esc(l.seekerAddress)}</td></tr>`).join("")}</table></div>` : '<p class="m">কোনো লগ নেই।</p>';
+    $("list").innerHTML = L.length ? tbl(["সময়", "ডোনার", "অনুসন্ধানকারী", "মোবাইল / ইমেইল", "ঠিকানা"], L.map(l => `<tr><td class="nm">${fd(l.timestamp)}</td><td><b>${esc(l.donorName)}</b><span class="m">${esc(l.donorPhone || (D.find(x => x.id === l.donorUid) || {}).phone || "")}</span></td><td>${esc(l.seekerName)}</td><td>${esc(l.seekerPhone)}<span class="m">${esc(l.seekerEmail)}</span></td><td>${esc(l.seekerAddress)}</td></tr>`).join("")) : empty("inbox", "কোনো লগ নেই।");
     return;
   }
   const L = D.filter(d => (tab === "approved") === (d.status === "approved")).filter(has);
-  $("list").innerHTML = L.length ? L.map(d => `<div class="card dn"><img src="${typeof d.photo === "string" && (d.photo.startsWith("data:image/") || d.photo.startsWith("https://firebasestorage.googleapis.com/")) ? esc(d.photo) : AV}" alt=""><div class="i"><b>${esc(d.name)}</b>${d.verified === true ? '<span class="vt" title="ভেরিফাইড">✔</span>' : ""} <span class="badge">${esc(d.group)}</span><div class="m">📍 ${esc(d.address)} | 📞 ${esc(d.phone)} | 🩸 ${esc(d.donationCount)} বার${d.lastDonation ? " | 🗓️ সর্বশেষ: " + esc(d.lastDonation) : ""}</div><div class="m">নিবন্ধন: ${fd(d.createdAt)}</div></div><div>${d.status === "approved" ? `<button class="${d.verified === true ? "o" : "g"}" data-a="vf" data-id="${esc(d.id)}">${d.verified === true ? "✔ ভেরিফাই বাতিল" : "✔ ভেরিফাই করুন"}</button> <button class="o" data-a="pend" data-id="${esc(d.id)}">অনুমোদন প্রত্যাহার</button>` : `<button class="g" data-a="ok" data-id="${esc(d.id)}">✅ অনুমোদন</button>`} <button class="d" data-a="del" data-id="${esc(d.id)}">🗑️ মুছুন</button></div></div>`).join("") : '<p class="m">এই তালিকায় কিছু নেই।</p>';
+  $("list").innerHTML = L.length ? L.map(d => {
+    const ph = typeof d.photo === "string" && (d.photo.startsWith("data:image/") || d.photo.startsWith("https://firebasestorage.googleapis.com/")) ? esc(d.photo) : AV, ap = d.status === "approved", vf = d.verified === true;
+    return `<article class="card dcard"><div class="av"><img src="${ph}" alt="" loading="lazy"></div><div><div class="dh"><h3>${esc(d.name)}</h3>${vf ? `<span class="vt" title="ভেরিফাইড">${ic("check")}</span>` : ""}<span class="bg">${ic("drop")}${esc(d.group)}</span>${ap ? pill("অনুমোদিত", "ok") : pill("অপেক্ষায়", "warn")}</div><div class="chips"><span class="chip">${ic("pin")}${esc(d.address)}</span><a class="chip" href="tel:${esc(d.phone)}">${ic("phone")}${esc(d.phone)}</a><span class="chip">${ic("drop")}${esc(d.donationCount)} বার</span>${d.lastDonation ? `<span class="chip">${ic("cal")}সর্বশেষ: ${esc(d.lastDonation)}</span>` : ""}</div><div class="sub">নিবন্ধন: ${fd(d.createdAt)}</div></div><div class="acts">${ap ? `<button class="btn sm ${vf ? "" : "ok"}" data-a="vf" data-id="${esc(d.id)}">${ic("check")}${vf ? "ভেরিফাই বাতিল" : "ভেরিফাই করুন"}</button><button class="btn sm" data-a="pend" data-id="${esc(d.id)}">${ic("undo")}অনুমোদন প্রত্যাহার</button>` : `<button class="btn sm ok" data-a="ok" data-id="${esc(d.id)}">${ic("check")}অনুমোদন</button>`}<button class="btn sm dng" data-a="del" data-id="${esc(d.id)}">${ic("trash")}মুছুন</button></div></article>`;
+  }).join("") : empty("inbox", "এই তালিকায় কিছু নেই।");
 }
-$("tabs").onclick = e => { if (e.target.dataset.t) { tab = e.target.dataset.t; render(); } };
+$("tabs").onclick = e => { const b = e.target.closest("button[data-t]"); if (b) { tab = b.dataset.t; animateNext = true; render(); const on = $("tabs").querySelector(".on"); if (on && on.scrollIntoView) on.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); } };
 $("q").oninput = render; $("ref").onclick = load;
+
+/* ===== অ্যাকশন ===== */
 $("list").onclick = async e => {
   const b = e.target.closest("button[data-a]"); if (!b) return;
-  if (b.dataset.a === "rdel") { try { await deleteDoc(doc(db, "reports", b.dataset.id)); RP = RP.filter(x => x.id !== b.dataset.id); render(); } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); } return; }
-  if (b.dataset.a === "rrdel") { try { await deleteDoc(doc(db, "request_reports", b.dataset.id)); RR = RR.filter(x => x.id !== b.dataset.id); render(); } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); } return; }
-  if (b.dataset.a === "qdel") { if (!confirm("অনুরোধটি মুছে ফেলবেন?")) return; try { try { await deleteDoc(doc(db, "blood_requests", b.dataset.id, "private", "contact")); } catch (_) {} await deleteDoc(doc(db, "blood_requests", b.dataset.id)); BR = BR.filter(x => x.id !== b.dataset.id); render(); } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); } return; }
+  const a = b.dataset.a;
+  if (a === "rdel") { b.disabled = true; try { await deleteDoc(doc(db, "reports", b.dataset.id)); RP = RP.filter(x => x.id !== b.dataset.id); render(); toast("রিপোর্ট মুছে ফেলা হয়েছে"); } catch (er) { b.disabled = false; err(er); } return; }
+  if (a === "rrdel") { b.disabled = true; try { await deleteDoc(doc(db, "request_reports", b.dataset.id)); RR = RR.filter(x => x.id !== b.dataset.id); render(); toast("রিপোর্ট মুছে ফেলা হয়েছে"); } catch (er) { b.disabled = false; err(er); } return; }
+  if (a === "qdel") { if (!(await ask("অনুরোধটি মুছে ফেলবেন?"))) return; b.disabled = true; try { try { await deleteDoc(doc(db, "blood_requests", b.dataset.id, "private", "contact")); } catch (_) {} await deleteDoc(doc(db, "blood_requests", b.dataset.id)); BR = BR.filter(x => x.id !== b.dataset.id); render(); toast("অনুরোধ মুছে ফেলা হয়েছে"); } catch (er) { b.disabled = false; err(er); } return; }
   const id = b.dataset.id, d = D.find(x => x.id === id); if (!d) return;
   try {
-    if (b.dataset.a === "del") { if (!confirm(`"${d.name}"-কে স্থায়ীভাবে মুছে ফেলবেন?`)) return; await deleteDoc(doc(db, "donors", id)); try { await deleteDoc(doc(db, "phone_claims", d.phone)); } catch (_) {} D = D.filter(x => x.id !== id); }
-    else if (b.dataset.a === "vf") { const v = d.verified !== true; await updateDoc(doc(db, "donors", id), { verified: v }); d.verified = v; }
-    else { const st = b.dataset.a === "ok" ? "approved" : "pending"; const up = { status: st }; if (st === "pending" && d.verified === true) up.verified = false; await updateDoc(doc(db, "donors", id), up); d.status = st; if ("verified" in up) d.verified = false; }
+    if (a === "del") { if (!(await ask(`"${d.name}"-কে স্থায়ীভাবে মুছে ফেলবেন?`))) return; b.disabled = true; await deleteDoc(doc(db, "donors", id)); try { await deleteDoc(doc(db, "phone_claims", d.phone)); } catch (_) {} D = D.filter(x => x.id !== id); toast("ডোনার মুছে ফেলা হয়েছে"); }
+    else if (a === "vf") { b.disabled = true; const v = d.verified !== true; await updateDoc(doc(db, "donors", id), { verified: v }); d.verified = v; toast(v ? "ভেরিফাই করা হয়েছে" : "ভেরিফাই বাতিল করা হয়েছে"); }
+    else { b.disabled = true; const st = a === "ok" ? "approved" : "pending"; const up = { status: st }; if (st === "pending" && d.verified === true) up.verified = false; await updateDoc(doc(db, "donors", id), up); d.status = st; if ("verified" in up) d.verified = false; toast(st === "approved" ? "অনুমোদন করা হয়েছে" : "অনুমোদন প্রত্যাহার করা হয়েছে"); }
     render();
-  } catch (err) { alert("কাজটি সম্পন্ন হয়নি: " + (err.code || err.message)); }
+  } catch (er) { b.disabled = false; err(er); }
 };
 $("csv").onclick = () => {
   const c = v => '"' + String(v ?? "").replace(/"/g, '""') + '"', rows = [["Name","Group","Address","Phone","Donations","Status","Registered","LastDonation","Verified"]].concat(D.map(d => [d.name, d.group, d.address, d.phone, d.donationCount, d.status, ms(d.createdAt) ? new Date(ms(d.createdAt)).toISOString() : "", d.lastDonation || "", d.verified === true ? "yes" : ""]));
   const a = document.createElement("a"); a.download = "donors.csv"; a.href = URL.createObjectURL(new Blob(["\ufeff" + rows.map(r => r.map(c).join(",")).join("\n")], { type: "text/csv" })); a.click();
+  toast("CSV ডাউনলোড হচ্ছে");
 };
 </script>
 </body></html>
