@@ -113,6 +113,9 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '@keyframes gbtRing{0%{box-shadow:0 0 0 0 rgba(255,255,255,.65)}70%,100%{box-shadow:0 0 0 6px rgba(255,255,255,0)}}' +
     '.gbt-left{padding:7px 7px 7px 6px;margin:-7px 0 -7px -6px}' +
     '@media (prefers-reduced-motion:reduce){.gbt-badge::after{animation:none}}' +
+    '.gbt-left{flex:1 1 auto;min-width:0}' +
+    '.gbt-txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}' +
+    '.gbt-count{flex:none;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700;letter-spacing:.3px}' +
     /* মোবাইল: কমপ্যাক্ট ফুটার ও হেডার */
     '@media(max-width:600px){' +
       '.sf{margin-top:20px;font-size:12.5px}' +
@@ -320,37 +323,86 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
 (function() {
     if (document.body.dataset.page === 'blood') return;
 
-    fetch("https://firestore.googleapis.com/v1/projects/dcu-blood-bank/databases/(default)/documents/blood_requests")
+    fetch("https://firestore.googleapis.com/v1/projects/dcu-blood-bank/databases/(default)/documents/blood_requests?pageSize=300")
         .then(function(res) { return res.json(); })
         .then(function(data) {
             if (!data.documents || !data.documents.length) return;
             var today = new Date().toISOString().slice(0, 10);
-            var openRequests = data.documents
+            var str = function(f) { return (f && f.stringValue) || ''; };
+            var bagsOf = function(f) {
+                var ks = ['bags', 'bagsNeeded', 'units', 'quantity', 'qty', 'count'];
+                for (var i = 0; i < ks.length; i++) {
+                    var v = f[ks[i]];
+                    if (v) {
+                        var n = parseInt(v.integerValue || v.stringValue || v.doubleValue, 10);
+                        if (n > 0) return n;
+                    }
+                }
+                return 0;
+            };
+            // সব খোলা অনুরোধ, সবচেয়ে কাছের তারিখ আগে
+            var items = data.documents
                 .map(function(d) {
                     var f = d.fields || {};
                     return {
-                        group: (f.group && f.group.stringValue) || '',
-                        hospital: (f.hospital && f.hospital.stringValue) || '',
-                        area: (f.area && f.area.stringValue) || '',
-                        status: (f.status && f.status.stringValue) || '',
-                        neededDate: (f.neededDate && f.neededDate.stringValue) || ''
+                        group: str(f.group), hospital: str(f.hospital), area: str(f.area),
+                        status: str(f.status), neededDate: str(f.neededDate), bags: bagsOf(f)
                     };
                 })
-                .filter(function(r) { return r.status === 'open' && r.neededDate >= today; });
+                .filter(function(r) { return r.status === 'open' && r.neededDate >= today; })
+                .sort(function(a, b) { return a.neededDate < b.neededDate ? -1 : a.neededDate > b.neededDate ? 1 : 0; });
 
-            if (!openRequests.length) return;
-            var r = openRequests[0];
+            if (!items.length) return;
             var isBn = (localStorage.getItem('dcuSL') || 'bn') === 'bn';
 
             var bar = document.createElement('a');
             bar.href = 'blood.html';
             bar.className = 'global-blood-ticker';
             bar.style.display = 'flex';
-            bar.innerHTML = '<div class="gbt-left">' +
-                '<span class="gbt-badge">' + r.group + '</span>' +
-                '<span>🚨 ' + (isBn ? 'জরুরি রক্ত প্রয়োজন:' : 'Urgent blood needed:') + ' <b>' + r.hospital + '</b> (' + r.area + ')</span>' +
-                '</div>' +
-                '<div class="gbt-btn">' + (isBn ? 'বিস্তারিত দেখুন ›' : 'Details ›') + '</div>';
+
+            var left = document.createElement('div'); left.className = 'gbt-left';
+            var badge = document.createElement('span'); badge.className = 'gbt-badge';
+            var txt = document.createElement('span'); txt.className = 'gbt-txt';
+            left.appendChild(badge); left.appendChild(txt);
+            bar.appendChild(left);
+
+            var cnt = null;
+            if (items.length > 1) {
+                cnt = document.createElement('span'); cnt.className = 'gbt-count';
+                bar.appendChild(cnt);
+            }
+            var btn = document.createElement('div'); btn.className = 'gbt-btn';
+            btn.textContent = isBn ? 'বিস্তারিত দেখুন ›' : 'Details ›';
+            bar.appendChild(btn);
+
+            var idx = 0;
+            function paint() {
+                var r = items[idx];
+                badge.textContent = r.group;
+                txt.textContent = '';
+                txt.appendChild(document.createTextNode('\uD83D\uDEA8 ' + (isBn ? 'জরুরি রক্ত প্রয়োজন:' : 'Urgent blood needed:') + ' '));
+                var b = document.createElement('b'); b.textContent = r.hospital; txt.appendChild(b);
+                if (r.area) txt.appendChild(document.createTextNode(' (' + r.area + ')'));
+                if (r.bags) txt.appendChild(document.createTextNode(' · ' + r.bags + (isBn ? ' ব্যাগ' : (r.bags > 1 ? ' bags' : ' bag'))));
+                if (cnt) cnt.textContent = (idx + 1) + '/' + items.length;
+            }
+            paint();
+
+            if (items.length > 1) {
+                var paused = false;
+                bar.addEventListener('mouseenter', function() { paused = true; });
+                bar.addEventListener('mouseleave', function() { paused = false; });
+                left.style.transition = 'opacity .25s';
+                setInterval(function() {
+                    if (paused || document.hidden) return;
+                    left.style.opacity = '0';
+                    setTimeout(function() {
+                        idx = (idx + 1) % items.length;
+                        paint();
+                        left.style.opacity = '1';
+                    }, 260);
+                }, 4500);
+            }
 
             var hdr = document.getElementById('hdr');
             if (hdr) hdr.insertAdjacentElement('afterend', bar);
