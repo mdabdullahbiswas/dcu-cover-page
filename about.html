@@ -10,57 +10,152 @@
 <link rel="stylesheet" href="site.css">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri','Montserrat',sans-serif;line-height:1.7}
-.w{max-width:920px;margin:0 auto;padding:22px 16px 6px}
-.bx{background:var(--cd);border:1px solid var(--ln);border-radius:12px;padding:22px;margin:16px 0}
-h2{margin:0 0 10px;font-size:21px;color:var(--ink)}
-.hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-.av{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#0a2240,#1c4a85);color:#e5a83b;display:flex;align-items:center;justify-content:center;font:800 40px 'Cinzel',serif;flex:none;border:4px solid #e5a83b}
-.hero h1{margin:0;font-size:26px}.hero .r{color:var(--mu);font-weight:600}
-.av{overflow:hidden;padding:0}.av img{width:100%;height:100%;object-fit:cover;display:block}
-.pf h3{margin:14px 0 2px;font-size:16px;color:var(--ink)}.pf p{margin:0}
-.ln{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.ln a,.bt{display:inline-block;padding:8px 16px;border-radius:8px;background:#0a2240;color:#e5a83b;text-decoration:none;font-weight:700;font-size:14px;border:0;cursor:pointer;font-family:inherit}
-.bt.o{background:transparent;color:var(--ink);border:1.5px solid var(--ln)}
-.sk{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.sk span{background:var(--bg);border:1px solid var(--ln);border-radius:20px;padding:3px 14px;font-size:14px}
-ul{margin:8px 0 0;padding-left:22px}li{margin:4px 0}
-.nt{background:#fff6e0;border:1px solid #f0d28a;color:#6b4b00;border-radius:10px;padding:12px 16px;font-size:14px}
+:root{--gd:#e5a83b;--gd2:#f6d68f;--nv:#0a2240;--nv2:#1c4a85;--sh:0 18px 40px -22px rgba(10,34,64,.45)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri','Montserrat',sans-serif;line-height:1.7;overflow-x:hidden}
+.w{max-width:960px;margin:0 auto;padding:22px 16px 10px}
+.sp{position:fixed;top:0;left:0;right:0;height:3px;z-index:9999;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--gd),var(--gd2),var(--gd));pointer-events:none}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(28px) scale(.985);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.stg>*{animation:up .6s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*70ms + 120ms)}
+
+/* hero */
+.hero2{position:relative;overflow:hidden;border-radius:28px;padding:36px 30px;margin:6px 0 16px;color:#fff;display:flex;gap:28px;align-items:center;flex-wrap:wrap;background:linear-gradient(120deg,#06162b,#0a2240 40%,#1c4a85 75%,#0a2240);background-size:220% 220%;animation:bgm 14s ease-in-out infinite;box-shadow:0 30px 60px -28px rgba(10,34,64,.8),inset 0 0 0 1px rgba(246,214,143,.18)}
+@keyframes bgm{50%{background-position:100% 50%}}
+.orb{position:absolute;border-radius:50%;filter:blur(46px);opacity:.55;pointer-events:none}
+.o1{width:260px;height:260px;right:-60px;top:-80px;background:#e5a83b;animation:drift 9s ease-in-out infinite}
+.o2{width:220px;height:220px;left:-70px;bottom:-90px;background:#2f7be0;animation:drift 11s ease-in-out infinite reverse}
+@keyframes drift{50%{transform:translate(-26px,22px) scale(1.12)}}
+.hero2:after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(246,214,143,.35) 1px,transparent 1.4px);background-size:26px 26px;opacity:.12;pointer-events:none;mask-image:linear-gradient(180deg,#000,transparent 85%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.avw{position:relative;width:138px;height:138px;flex:none;z-index:1;animation:flt 5s ease-in-out infinite}
+@keyframes flt{50%{transform:translateY(-6px)}}
+.avw:before{content:"";position:absolute;inset:-7px;border-radius:50%;background:conic-gradient(#e5a83b,#fff3c9,#8f6a17,#f6d68f,#e5a83b);animation:spin 6s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px))}
+.avw:after{content:"";position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(246,214,143,.4);animation:ring 3.2s ease-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ring{from{transform:scale(.88);opacity:.9}to{transform:scale(1.12);opacity:0}}
+.av{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#0a2240,#1c4a85);color:var(--gd);display:flex;align-items:center;justify-content:center;font:800 48px 'Cinzel',serif;overflow:hidden;padding:0;border:0;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.av img{width:100%;height:100%;object-fit:cover;display:block;animation:up .8s both}
+.hi{position:relative;z-index:1;flex:1;min-width:230px}
+.eb{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.4px;color:var(--gd2);padding:3px 13px;border-radius:99px;background:rgba(246,214,143,.12);border:1px solid rgba(246,214,143,.3)}
+.hero2 h1{margin:10px 0 2px;font-size:clamp(26px,5vw,38px);line-height:1.25;font-weight:700;background:linear-gradient(90deg,#fff 20%,#f6d68f 45%,#fff 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shim 5s linear infinite}
+@keyframes shim{to{background-position:-220% 0}}
+.hero2 .r{color:#cfdcf2;font-weight:600;font-size:16px}
+.ln{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.ln a{display:inline-flex;align-items:center;gap:7px;padding:8px 17px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--gd2);text-decoration:none;font-weight:700;font-size:14px;border:1px solid rgba(246,214,143,.35);backdrop-filter:blur(6px);transition:transform .3s,background .3s,color .3s,box-shadow .3s}
+.ln a:hover{transform:translateY(-3px);background:linear-gradient(135deg,var(--gd),var(--gd2));color:#0a2240;box-shadow:0 10px 22px -8px rgba(229,168,59,.7)}
+.ln svg{width:16px;height:16px;flex:none}
+
+/* marquee */
+.mq{overflow:hidden;border-radius:14px;margin:0 0 16px;background:var(--cd);border:1px solid var(--ln);padding:11px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mt{display:flex;width:max-content;animation:mq 26s linear infinite}
+.mq:hover .mt{animation-play-state:paused}
+.mt span{padding:0 22px;font-weight:700;font-size:14px;color:var(--mu);white-space:nowrap}
+.mt span:before{content:"✦";color:var(--gd);margin-right:22px}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* stats */
+.st{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.sc{position:relative;overflow:hidden;background:var(--cd);border:1px solid var(--ln);border-radius:20px;padding:18px 12px;text-align:center;box-shadow:var(--sh);transition:transform .4s,box-shadow .4s}
+.sc:hover{transform:translateY(-6px)}
+.sc:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,var(--gd),transparent)}
+.sc b{display:block;font:800 32px/1.1 'Cinzel',serif;background:linear-gradient(180deg,#f6d68f,#c9891b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sc span{display:block;margin-top:5px;font-size:13px;font-weight:600;color:var(--mu)}
+
+/* cards */
+.bx{position:relative;overflow:hidden;background:var(--cd);border:1px solid var(--ln);border-radius:22px;padding:26px;margin:16px 0;box-shadow:var(--sh);transition:transform .4s,box-shadow .4s,border-color .4s}
+.bx:before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(229,168,59,.16),transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none}
+.bx:hover{transform:translateY(-3px);border-color:rgba(229,168,59,.55)}
+.bx:hover:before{opacity:1}
+.bx>*{position:relative}
+h2{margin:0 0 14px;font-size:22px;color:var(--ink)}
+h2:after{content:"";display:block;width:0;height:3px;margin-top:8px;border-radius:3px;background:linear-gradient(90deg,var(--gd),transparent);transition:width 1s .3s cubic-bezier(.2,.7,.2,1)}
+.in h2:after,.bx.in h2:after{width:56px}
+.pf h3{margin:18px 0 4px;font-size:16.5px;color:var(--ink)}
+.pf p{margin:0;padding-left:14px;border-left:3px solid var(--gd);color:var(--ink)}
+.sk{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:12px}
+.skc{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:16px;background:var(--bg);border:1px solid var(--ln);font-size:14.5px;line-height:1.55;transition:transform .35s,border-color .35s,box-shadow .35s}
+.skc:hover{transform:translateY(-4px) rotate(-.4deg);border-color:var(--gd);box-shadow:0 14px 26px -16px rgba(229,168,59,.7)}
+.skc i{font-style:normal;flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:linear-gradient(135deg,#0a2240,#1c4a85);box-shadow:inset 0 0 0 1px rgba(246,214,143,.35)}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+.ft{padding:18px;border-radius:18px;background:var(--bg);border:1px solid var(--ln);transition:transform .35s,border-color .35s,box-shadow .35s}
+.ft:hover{transform:translateY(-5px);border-color:var(--gd);box-shadow:0 16px 30px -18px rgba(229,168,59,.75)}
+.ft i{font-style:normal;display:grid;place-items:center;width:46px;height:46px;border-radius:14px;font-size:22px;margin-bottom:10px;background:linear-gradient(135deg,#0a2240,#1c4a85);box-shadow:inset 0 0 0 1px rgba(246,214,143,.35);animation:flt 4.5s ease-in-out infinite}
+.ft b{display:block;font-size:16px}
+.ft span{display:block;font-size:14px;color:var(--mu);margin-top:2px}
+.nt{background:#fff6e0;border:1px solid #f0d28a;color:#6b4b00;border-radius:14px;padding:14px 18px;font-size:14px;margin-top:16px;border-left:5px solid var(--gd)}
 body.dark .nt{background:#3a2d0c;border-color:#6b5320;color:#f3d48a}
-:focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
+
+/* privacy */
+.pvh{display:flex;gap:14px;align-items:center;padding:16px;border-radius:16px;margin-bottom:6px;background:linear-gradient(135deg,rgba(18,161,80,.12),rgba(18,161,80,.03));border:1px solid rgba(18,161,80,.3)}
+.pvh em{font-style:normal;flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:#12a150;position:relative}
+.pvh em:after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #12a150;animation:ring 2.4s ease-out infinite}
+.pv b{font-size:16.5px}
+.cl{list-style:none;margin:10px 0 0;padding:0}
+.cl li{position:relative;margin:8px 0;padding-left:32px}
+.cl li:before{content:"✓";position:absolute;left:0;top:3px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(135deg,#12a150,#0e7a3c)}
+
+/* cta */
+.cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#fff;border:0;background:linear-gradient(120deg,#06162b,#0a2240 50%,#1c4a85);background-size:200% 200%;animation:bgm 12s ease-in-out infinite}
+.cta h2{color:#fff}
+.cta span.s{color:#cfdcf2}
+.bt{position:relative;overflow:hidden;display:inline-block;padding:12px 26px;border-radius:99px;background:linear-gradient(135deg,var(--gd),var(--gd2));color:#0a2240;text-decoration:none;font-weight:700;font-size:15px;border:0;cursor:pointer;font-family:inherit;box-shadow:0 12px 26px -10px rgba(229,168,59,.8);transition:transform .3s}
+.bt:hover{transform:translateY(-3px) scale(1.04)}
+.bt:after{content:"";position:absolute;top:0;left:-70%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);transform:skewX(-20deg);animation:sw 3.2s ease-in-out infinite}
+@keyframes sw{60%,100%{left:140%}}
+
+:focus-visible{outline:3px solid var(--gd);outline-offset:2px}
 html{scroll-behavior:smooth;scroll-padding-top:80px}
+@media(max-width:640px){.hero2{padding:28px 20px;text-align:center;justify-content:center}.ln{justify-content:center}.st{grid-template-columns:1fr 1fr}.bx{padding:20px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}h2:after{width:56px}}
 </style>
 </head>
 <body data-page="about">
+<div class="sp" id="sp"></div>
 <div id="hdr"></div>
 <main class="w">
 
-<div class="bx hero">
- <div class="av" id="av">D</div>
- <div><h1 id="dn"></h1><div class="r" id="dr"></div><div class="ln" id="dl"></div></div>
+<section class="hero2 rv">
+ <div class="orb o1"></div><div class="orb o2"></div>
+ <div class="avw"><div class="av" id="av">D</div></div>
+ <div class="hi"><span class="eb t">শিক্ষার্থীর তৈরি, শিক্ষার্থীদের জন্য|Made by a student, for students</span><h1 id="dn"></h1><div class="r" id="dr"></div><div class="ln stg" id="dl"></div></div>
+</section>
+
+<div class="mq rv" aria-hidden="true"><div class="mt">
+ <span>Cover Page Generator</span><span>Share Card</span><span>Class Routine</span><span>CGPA Calculator</span><span>Exam Planner</span><span>PDF Toolkit</span>
+ <span>Cover Page Generator</span><span>Share Card</span><span>Class Routine</span><span>CGPA Calculator</span><span>Exam Planner</span><span>PDF Toolkit</span>
+</div></div>
+
+<div class="st">
+ <div class="sc rv" style="--d:0ms"><b data-to="100" data-sfx="%">0</b><span class="t">সম্পূর্ণ বিনামূল্যে|Completely free</span></div>
+ <div class="sc rv" style="--d:90ms"><b data-to="3">0</b><span class="t">ডাউনলোড ফরম্যাট|Download formats</span></div>
+ <div class="sc rv" style="--d:180ms"><b data-to="5" data-sfx="+">0</b><span class="t">শিক্ষা-সহায়ক টুল|Study tools</span></div>
+ <div class="sc rv" style="--d:270ms"><b data-to="0">0</b><span class="t">লগইন বা সার্ভারে আপলোড|Logins or uploads</span></div>
 </div>
 
-<div class="bx"><h2 class="t">আমার সম্পর্কে|About Me</h2><div id="db" class="pf"></div><div class="sk" id="ds"></div></div>
+<div class="bx rv"><h2 class="t">আমার সম্পর্কে|About Me</h2><div id="db" class="pf"></div><div class="sk" id="ds"></div></div>
 
-<div class="bx"><h2 class="t">এই প্রজেক্ট সম্পর্কে|About This Project</h2>
+<div class="bx rv"><h2 class="t">এই প্রজেক্ট সম্পর্কে|About This Project</h2>
 <p class="t">শিক্ষার্থীদের প্রতিদিনের কাজ সহজ করতে এই সাইটে বিনামূল্যে অ্যাসাইনমেন্ট কভার পেজ জেনারেটর এবং কয়েকটি শিক্ষা-সহায়ক টুল দেওয়া হয়েছে।|This site offers a free assignment cover page generator and several study tools to make everyday student work easier.</p>
-<ul>
-<li class="t">কভার পেজ: PDF, PNG ও Word ফাইলে ডাউনলোড|Cover pages: download as PDF, PNG or Word</li>
-<li class="t">টুলস: শেয়ার কার্ড, ক্লাস রুটিন, CGPA ক্যালকুলেটর, পরীক্ষা প্ল্যানার ও PDF টুলকিট|Tools: share card, class routine, CGPA calculator, exam planner and PDF toolkit</li>
-<li class="t">সম্পূর্ণ বিনামূল্যে, কোনো অ্যাকাউন্ট বা লগইন ছাড়াই ব্যবহার করা যায়|Completely free, with no account or login required</li>
-</ul>
-<div class="nt" style="margin-top:14px"><b class="t">আন-অফিশিয়াল সাইট|Unofficial Website</b><br><span class="t">এটি Dhaka Central University কর্তৃপক্ষের কোনো অফিশিয়াল ওয়েবসাইট নয়। শিক্ষার্থীদের সুবিধার জন্য তৈরি একটি স্বতন্ত্র উদ্যোগ; বিশ্ববিদ্যালয়ের সাথে এর কোনো সরকারি সম্পর্ক বা অনুমোদন নেই।|This is not an official website of Dhaka Central University. It is an independent student-support initiative with no official affiliation with or endorsement from the university.</span></div>
+<div class="fg">
+ <div class="ft rv" style="--d:0ms"><i>📄</i><b class="t">কভার পেজ|Cover Pages</b><span class="t">PDF, PNG ও Word ফাইলে ডাউনলোড|Download as PDF, PNG or Word</span></div>
+ <div class="ft rv" style="--d:100ms"><i>🧰</i><b class="t">টুলস|Tools</b><span class="t">শেয়ার কার্ড, ক্লাস রুটিন, CGPA ক্যালকুলেটর, পরীক্ষা প্ল্যানার ও PDF টুলকিট|Share card, class routine, CGPA calculator, exam planner and PDF toolkit</span></div>
+ <div class="ft rv" style="--d:200ms"><i>🎁</i><b class="t">সম্পূর্ণ বিনামূল্যে|Completely Free</b><span class="t">কোনো অ্যাকাউন্ট বা লগইন ছাড়াই ব্যবহার করা যায়|No account or login required</span></div>
+</div>
+<div class="nt"><b class="t">আন-অফিশিয়াল সাইট|Unofficial Website</b><br><span class="t">এটি Dhaka Central University কর্তৃপক্ষের কোনো অফিশিয়াল ওয়েবসাইট নয়। শিক্ষার্থীদের সুবিধার জন্য তৈরি একটি স্বতন্ত্র উদ্যোগ; বিশ্ববিদ্যালয়ের সাথে এর কোনো সরকারি সম্পর্ক বা অনুমোদন নেই।|This is not an official website of Dhaka Central University. It is an independent student-support initiative with no official affiliation with or endorsement from the university.</span></div>
 </div>
 
-<div class="bx" id="privacy"><h2 class="t">🔒 আপনার গোপনীয়তা|🔒 Your Privacy</h2>
-<div class="pv"><b class="t">আপনার তথ্য শুধু আপনার কাছেই থাকে।|Your information stays with you.</b><br><span class="t">আপনার দেওয়া সব তথ্য ও ফাইল শুধু আপনার ডিভাইসের ব্রাউজারেই প্রসেস ও সংরক্ষিত হয়। এগুলো কোনো সার্ভারে পাঠানো হয় না, তাই আমরা বা অন্য কেউ চাইলেও তা দেখতে পারি না।|All the information and files you enter are processed and stored only in your device\'s browser. They are never sent to a server, so neither we nor anyone else can see them.</span></div>
-<ul>
+<div class="bx rv" id="privacy"><h2 class="t">🔒 আপনার গোপনীয়তা|🔒 Your Privacy</h2>
+<div class="pvh"><em>🛡️</em><div class="pv"><b class="t">আপনার তথ্য শুধু আপনার কাছেই থাকে।|Your information stays with you.</b><br><span class="t">আপনার দেওয়া সব তথ্য ও ফাইল শুধু আপনার ডিভাইসের ব্রাউজারেই প্রসেস ও সংরক্ষিত হয়। এগুলো কোনো সার্ভারে পাঠানো হয় না, তাই আমরা বা অন্য কেউ চাইলেও তা দেখতে পারি না।|All the information and files you enter are processed and stored only in your device's browser. They are never sent to a server, so neither we nor anyone else can see them.</span></div></div>
+<ul class="cl">
 <li class="t">ব্রাউজারের ডেটা মুছে ফেললে বা অন্য ডিভাইসে গেলে সংরক্ষিত তথ্য পাওয়া যাবে না।|Clearing your browser data, or switching devices, will remove saved information.</li>
 <li class="t">সাইটে শুধু নামহীন ভিজিটর সংখ্যা (analytics) গণনা করা হয়; আপনার নাম, ছবি বা ফাইল এতে যুক্ত হয় না।|Only anonymous visit counts (analytics) are collected; your name, photos and files are never included.</li>
 <li class="t">ফন্ট ও PDF লাইব্রেরি লোড করতে ইন্টারনেট লাগে, কিন্তু আপনার ডেটা সেই সময়েও বাইরে যায় না।|Fonts and the PDF library load from the internet, but your data does not leave your device.</li>
 </ul></div>
 
-<div class="bx" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
-<div><h2 class="t" style="margin-bottom:2px">💬 মতামত বা পরামর্শ আছে?|💬 Have feedback or a suggestion?</h2><span class="t" style="color:var(--mu)">সাইটটি আরও ভালো করতে আপনার কথা জানান।|Tell us how we can make this site better.</span></div>
+<div class="bx cta rv">
+<div><h2 class="t" style="margin-bottom:2px">💬 মতামত বা পরামর্শ আছে?|💬 Have feedback or a suggestion?</h2><span class="t s">সাইটটি আরও ভালো করতে আপনার কথা জানান।|Tell us how we can make this site better.</span></div>
 <a class="bt" href="feedback.html"><span class="t">মতামত জানান|Send Feedback</span></a></div>
 
 </main>
@@ -79,17 +174,46 @@ const SKILLS=[
  'ডিজিটাল মার্কেটিং: ডিজিটাল মার্কেটিংয়ের মৌলিক ধারণা|Digital marketing: fundamentals of digital marketing',
  'ওয়েব ও অনলাইন টুলস: Google Sites, ওয়েবসাইট ব্যবস্থাপনা ও অনলাইন রিসার্চ|Web & online tools: Google Sites, website management and online research'
 ];
+const SKI=['📊','🎨','📈','🌐'];
 const esc=s=>String(s).replace(/[&<>"']/g,m=>'&#'+m.charCodeAt(0)+';');
 function render(){
  const av=$('#av');av.textContent=[...D.name][0]||'D';
  const im=new Image();im.alt=D.name;im.onload=()=>{av.textContent='';av.appendChild(im)};im.src=PHOTO;
- $('#dn').textContent=D.name;$('#dr').textContent=L(D.role);$('#db').innerHTML=PROFILE.map(([h,t])=>`<h3>${esc(L(h))}</h3><p>${esc(L(t))}</p>`).join('')+`<h3>${L('🛠️ দক্ষতার তালিকা|🛠️ Skills')}</h3><ul>${SKILLS.map(x=>`<li>${esc(L(x))}</li>`).join('')}</ul>`;
+ $('#dn').textContent=D.name;$('#dr').textContent=L(D.role);$('#db').innerHTML=PROFILE.map(([h,t])=>`<h3>${esc(L(h))}</h3><p>${esc(L(t))}</p>`).join('')+`<h3>${L('🛠️ দক্ষতার তালিকা|🛠️ Skills')}</h3>`;
  const ls=D.links.filter(l=>l[1]).map(l=>$SOC(l[0],l[1]));
  if(D.email)ls.push($SOC('email','mailto:'+D.email,L('ইমেইল|Email'),false));
  ls.push($SOC('code',D.repo,L('সোর্স কোড|Source Code')));
  $('#dl').innerHTML=ls.join('');
- $('#ds').innerHTML='';
+ [...$('#dl').children].forEach((c,i)=>c.style.setProperty('--i',i));
+ $('#ds').innerHTML=SKILLS.map((x,i)=>`<div class="skc" style="--i:${i}"><i>${SKI[i]||'✨'}</i><span>${esc(L(x))}</span></div>`).join('');
+ $('#ds').classList.add('stg');
 }
+
+/* ===== অ্যানিমেশন ===== */
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function count(el){
+ const to=+el.dataset.to,sx=el.dataset.sfx||'';
+ if(RM||!to){el.textContent=to+sx;return}
+ const t0=performance.now(),dur=1500;
+ (function f(t){const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e)+sx;if(p<1)requestAnimationFrame(f)})(t0);
+}
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{
+ if(!e.isIntersecting)return;
+ e.target.classList.add('in');
+ e.target.querySelectorAll('[data-to]').forEach(count);
+ io.unobserve(e.target);
+}),{threshold:.12,rootMargin:'0px 0px -40px 0px'}):null;
+document.querySelectorAll('.rv').forEach(el=>{
+ if(io)io.observe(el);else{el.classList.add('in');el.querySelectorAll('[data-to]').forEach(count)}
+});
+/* স্ক্রল প্রগ্রেস বার */
+const sp=$('#sp');
+addEventListener('scroll',()=>{const h=document.documentElement;sp.style.transform=`scaleX(${Math.min(1,scrollY/Math.max(1,h.scrollHeight-innerHeight))})`},{passive:true});
+/* কার্ডে মাউসের আলো */
+document.addEventListener('pointermove',e=>{
+ const b=e.target.closest&&e.target.closest('.bx');if(!b)return;
+ const r=b.getBoundingClientRect();b.style.setProperty('--mx',(e.clientX-r.left)+'px');b.style.setProperty('--my',(e.clientY-r.top)+'px');
+});
 
 window.onLang=render;render();
 </script>
