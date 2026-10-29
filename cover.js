@@ -1162,6 +1162,16 @@ function pvFabUpdate(n) {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') pvOpen(false); });
   window.addEventListener('resize', () => { if (window.innerWidth >= 900) pvOpen(false); });
   pvFabUpdate(1);
+
+  // নিরাপত্তা: অন্য কোনো স্ক্রিপ্ট বাটন সরিয়ে দিলে বা লুকালে আবার বসিয়ে দেবে
+  function pvFabGuard() {
+    const f = $('pvFab');
+    if (!f) { document.body.appendChild(fab); return; }
+    if (f.parentNode !== document.body) document.body.appendChild(f);
+  }
+  new MutationObserver(pvFabGuard).observe(document.body, { childList: true });
+  window.addEventListener('pageshow', pvFabGuard);
+  window.addEventListener('orientationchange', () => setTimeout(pvFabGuard, 300));
 })();
 
 
