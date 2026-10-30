@@ -40,7 +40,8 @@
    * links: [ ["LinkedIn", "https://..."], ... ]   email: "you@example.com"
    * (Links whose label/URL contains "github" are hidden by the About page.) */
   window.$DEV = {
-    name: "মোঃ আব্দুল্লাহ বিশ্বাস",
+    /* bilingual name: shows Bangla or English depending on the language switch */
+    get name() { return pick("মোঃ আব্দুল্লাহ বিশ্বাস|Md Abdullah Biswas"); },
     links: [],
     email: ""
   };
