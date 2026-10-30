@@ -53,6 +53,10 @@ body.gal-open .gal,body.gal-open .gal *{animation-play-state:running}
 .ct-wrap.drag .ct-tab{pointer-events:none}
 }
 @media(hover:none),(pointer:coarse){.ct-ar{display:none}}
+
+/* ===== প্রতিটি কভার টাইপের কার্ড-হেডারে টাইপ-পিল (Declaration-এর মতো) ===== */
+.form[data-cov] .card h3::after{content:var(--ty-en,"");margin-left:auto;flex:none;white-space:nowrap;font:700 10px/1 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 11px;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--navy),#17386a);box-shadow:0 6px 14px -6px rgba(10,26,51,.6),inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-ui-lang="bn"] .form[data-cov] .card h3::after{content:var(--ty-bn,"");letter-spacing:0;font-family:'Noto Sans Bengali',sans-serif;font-size:11.5px}
 </style>
 </head>
 <body>
@@ -425,10 +429,10 @@ uni:'',campus:'',dept:'',courseCode:'',courseName:'',topic:'',mode:'single',sNam
 var SAMPLE={uni:'DHAKA CENTRAL UNIVERSITY',campus:'MAIN CAMPUS',dept:'DEPARTMENT OF COMPUTER SCIENCE',cs:'CSE-101 — Programming Fundamentals',topic:'Introduction to Artificial Intelligence',sName:'ABDUL KARIM',sRoll:'101',members:'ABDUL KARIM, 101\nRAHIM UDDIN, 102',sClass:'BSc Honours 1st Year',session:'2025-26',mobile:'01700000000',teachers:'Prof. Dr. Example Name\nAssociate Professor\nCourse Instructor'};
 var T={
 en:{by:'SUBMITTED BY',to:'SUBMITTED TO',roll:'Class Roll',cls:'Class / Degree',ses:'Session',mob:'Mobile No',dt:'Submission Date',topic:'TOPIC',s1:"Student's Signature",s2:"Teacher's Signature",
-docs:{assignment:'ASSIGNMENT',lab:'LAB REPORT',presentation:'PRESENTATION',project:'PROJECT / THESIS',quiz:'QUIZ / EXAM'},
+docs:{assignment:'ASSIGNMENT',lab:'LAB REPORT',presentation:'PRESENTATION',project:'PROJECT',thesis:'THESIS',quiz:'QUIZ',exam:'EXAM'},
 mo:['January','February','March','April','May','June','July','August','September','October','November','December']},
 bn:{by:'জমাদানকারী',to:'জমাগ্রহণকারী',roll:'ক্লাস রোল',cls:'ক্লাস / ডিগ্রি',ses:'সেশন',mob:'মোবাইল নম্বর',dt:'জমাদানের তারিখ',topic:'বিষয়',s1:'শিক্ষার্থীর স্বাক্ষর',s2:'শিক্ষকের স্বাক্ষর',
-docs:{assignment:'অ্যাসাইনমেন্ট',lab:'ল্যাব রিপোর্ট',presentation:'প্রেজেন্টেশন',project:'প্রজেক্ট / থিসিস',quiz:'কুইজ / পরীক্ষা'},
+docs:{assignment:'অ্যাসাইনমেন্ট',lab:'ল্যাব রিপোর্ট',presentation:'প্রেজেন্টেশন',project:'প্রজেক্ট',thesis:'থিসিস',quiz:'কুইজ',exam:'পরীক্ষা'},
 mo:['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর']}
 };
 var FALLBACK='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 6 90 20v30c0 25-17 38-40 46C27 88 10 75 10 50V20z" fill="#0b1f3a"/><path d="M50 18 80 28v22c0 18-12 28-30 35-18-7-30-17-30-35V28z" fill="none" stroke="#d4af37" stroke-width="3"/><circle cx="50" cy="48" r="12" fill="#d4af37"/></svg>');
@@ -732,10 +736,14 @@ ic:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M1
 ic:'<path d="M9 3h6M10 3v6L5 19a2 2 0 001.8 3h10.4A2 2 0 0019 19l-5-10V3"/><path d="M7.5 15h9"/>'},
 {v:'presentation',en:'Presentation',bn:'প্রেজেন্টেশন',cover:'PRESENTATION',file:'Presentation',he:'Slides & presentation',hb:'স্লাইড ও প্রেজেন্টেশনের কভার',
 ic:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M7 12l3-3 3 2 4-4"/>'},
-{v:'project',en:'Project / Thesis',bn:'প্রজেক্ট / থিসিস',cover:'PROJECT / THESIS',file:'Project',he:'Project, thesis or dissertation',hb:'প্রজেক্ট, থিসিস বা গবেষণাপত্র',
+{v:'project',en:'Project',bn:'প্রজেক্ট',cover:'PROJECT',file:'Project',he:'Project report or submission',hb:'প্রজেক্ট রিপোর্ট বা জমার কভার',
+ic:'<path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 11h18"/>'},
+{v:'thesis',en:'Thesis',bn:'থিসিস',cover:'THESIS',file:'Thesis',he:'Thesis or dissertation',hb:'থিসিস বা গবেষণাপত্র',
 ic:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5M22 9v6"/>'},
-{v:'quiz',en:'Quiz / Exam',bn:'কুইজ / পরীক্ষা',cover:'QUIZ / EXAM',file:'Quiz',he:'Quiz, exam or test paper',hb:'কুইজ, পরীক্ষা বা টেস্টের কভার',
+{v:'quiz',en:'Quiz',bn:'কুইজ',cover:'QUIZ',file:'Quiz',he:'Class test or quiz',hb:'ক্লাস টেস্ট বা কুইজের কভার',
 ic:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.6a2.6 2.6 0 015.1.6c0 1.8-2.6 2.2-2.6 3.8M12 17.2h.01"/>'},
+{v:'exam',en:'Exam',bn:'পরীক্ষা',cover:'EXAM',file:'Exam',he:'Exam or test paper',hb:'পরীক্ষা বা টেস্ট পেপারের কভার',
+ic:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M9 13l1.8 1.8L15 11"/>'},
 {v:'declaration',en:'Declaration',bn:'ঘোষণাপত্র',cover:'DECLARATION',file:'Declaration',he:'Declaration of originality · own-work statement',hb:'মৌলিকতার ঘোষণাপত্র · নিজস্ব কাজের অঙ্গীকার',
 ic:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M8.8 12l2.4 2.4 4.2-4.6"/>'},
 {v:'approval',en:'Approval',bn:'অনুমোদনপত্র',cover:'APPROVAL',file:'Approval',he:'Certificate of approval · supervisor / department sign-off',hb:'অনুমোদনের প্রত্যয়নপত্র · তত্ত্বাবধায়ক / বিভাগের স্বাক্ষর',
@@ -771,6 +779,7 @@ function typeSync(v){
 var act=null;
 Array.prototype.forEach.call(ctTabs(),function(b){var on=b.dataset.v===v;b.setAttribute('aria-checked',on?'true':'false');b.tabIndex=on?0:-1;if(on)act=b});
 if(!act)return;
+{var f=$('form'),tx=ctType(v);if(f&&tx){f.style.setProperty('--ty-en',JSON.stringify(tx.en));f.style.setProperty('--ty-bn',JSON.stringify(tx.bn));if(v==='declaration'||v==='approval'||v==='acknowledgment'||v==='contents')f.removeAttribute('data-cov');else f.setAttribute('data-cov','1')}}
 ctPlace(act);
 if(!ctOn){ctOn=true;requestAnimationFrame(function(){ctList.classList.add('ready')})}
 if(ctCur!==v){
