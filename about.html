@@ -391,5 +391,65 @@ window.onLang=render;render();
   requestAnimationFrame(frame);
 })();
 </script>
+<script>
+/* Premium desktop wheel scrolling: eased, momentum-style glide.
+   Only for mouse wheels on fine pointers; touch, trackpad-pinch,
+   reduced-motion, and scrollable inner elements keep native behaviour. */
+(function () {
+  var root = document.documentElement;
+  var fine = window.matchMedia && matchMedia("(pointer:fine)").matches;
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!fine || reduce) return;
+
+  root.style.scrollBehavior = "auto";
+
+  var target = window.scrollY, current = window.scrollY;
+  var animating = false;
+  var EASE = 0.1;          // lower = longer, silkier glide
+  var STEP = 0.9;          // wheel distance multiplier
+
+  function maxScroll() {
+    return Math.max(0, root.scrollHeight - window.innerHeight);
+  }
+
+  function tick() {
+    var diff = target - current;
+    if (Math.abs(diff) < 0.5) {
+      current = target;
+      window.scrollTo(0, current);
+      animating = false;
+      return;
+    }
+    current += diff * EASE;
+    window.scrollTo(0, current);
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener("wheel", function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;           // zoom / shortcuts
+    var t = e.target;
+    if (t && t.closest && t.closest("textarea, select, input, [contenteditable], .mq, [data-native-scroll]")) return;
+
+    var dy = e.deltaY;
+    if (e.deltaMode === 1) dy *= 40;                           // lines -> px
+    else if (e.deltaMode === 2) dy *= window.innerHeight;      // pages -> px
+    if (!dy) return;
+    e.preventDefault();
+
+    if (!animating) {
+      current = window.scrollY;
+      target = current;
+      animating = true;
+      requestAnimationFrame(tick);
+    }
+    target = Math.max(0, Math.min(maxScroll(), target + dy * STEP));
+  }, { passive: false });
+
+  /* keep in sync when the user scrolls another way (scrollbar, keys, touch) */
+  window.addEventListener("scroll", function () {
+    if (!animating) { current = target = window.scrollY; }
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>
