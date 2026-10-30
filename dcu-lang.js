@@ -105,9 +105,14 @@
   }
 
   function setLang(lang) {
+    var changed = lang !== current;
     current = lang;
     applyLang(lang);
     try { localStorage.setItem(KEY, lang); } catch (e) { /* storage blocked */ }
+    /* let pages that render their own text (About, Feedback, Tools) redraw */
+    if (changed && typeof window.onLang === "function") {
+      try { window.onLang(); } catch (e) { /* page renderer failed; keep switch working */ }
+    }
   }
 
   function mountButton() {
