@@ -211,12 +211,13 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     if (e.target.closest && e.target.closest('.ddm a')) { dd.classList.remove('open'); mn.classList.remove('open'); }
   });
   var u = encodeURIComponent(location.origin + '/');
-  document.getElementById('wa').href = 'https://wa.me/?text=' + u;
-  document.getElementById('fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + u;
+  var wa = document.getElementById('wa'), fb = document.getElementById('fb');
+  if (wa) wa.href = 'https://wa.me/?text=' + u;
+  if (fb) fb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + u;
 
   window.toggleDark = function () {
     var d = document.body.classList.toggle('dark');
-    document.getElementById('darkBtn').textContent = d ? '☀️' : '🌙';
+    var db = document.getElementById('darkBtn'); if (db) db.textContent = d ? '☀️' : '🌙';
     try { localStorage.setItem('dcuDark', d ? '1' : ''); } catch (e) {}
   };
   try { if (localStorage.getItem('dcuDark')) window.toggleDark(); } catch (e) {}
@@ -324,7 +325,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
   };
   window.tour = window.startPageTour;
 
-  document.getElementById('helpBtn').onclick = window.startPageTour;
+  var hb = document.getElementById('helpBtn'); if (hb) hb.onclick = window.startPageTour;
 
   applyL();
 })();
