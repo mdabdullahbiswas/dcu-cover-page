@@ -439,7 +439,7 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     try { localStorage.setItem(KEY, String(Date.now() + DAYS * 864e5)); }
     catch (e) { try { sessionStorage.setItem(KEY, '1'); } catch (e2) {} }
   }
-  if (snoozed()) return;
+  return; // নোটিশ বন্ধ: ঢোকার সময় আর পপআপ দেখানো হবে না
   window.dcuNoticeOpen = true;            // গাইড-ট্যুর এর জন্য অপেক্ষা করবে
 
   // প্রিমিয়াম ফন্ট (লোড না হলে সাইটের বর্তমান ফন্টে ফিরে যাবে)
