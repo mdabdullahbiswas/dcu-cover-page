@@ -61,7 +61,6 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',
 .mt a:focus-visible{outline:2px solid var(--gd);outline-offset:2px;border-radius:8px}
 .mq:has(a:focus-visible) .mt{animation-play-state:paused}
 .mq.is-dragging{cursor:grabbing}
-.mq.is-dragging a{pointer-events:none}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* stats */
@@ -346,13 +345,12 @@ window.onLang=render;render();
     startOff = x;
     lastTs = performance.now();
     v = 0;
-    nav.classList.add("is-dragging");
   });
 
   window.addEventListener("pointermove", function (e) {
     if (!dragging) return;
     var dx = e.clientX - startX;
-    if (Math.abs(dx) > 6) moved = true;
+    if (Math.abs(dx) > 6) { moved = true; nav.classList.add("is-dragging"); }
     x = startOff + dx;
     var now = performance.now(), dtm = Math.max(1, now - lastTs);
     v = ((e.clientX - lastX) / dtm) * 1000;   // px/s
@@ -364,6 +362,7 @@ window.onLang=render;render();
     if (!dragging) return;
     dragging = false;
     nav.classList.remove("is-dragging");
+    if (!moved) return;
     v = Math.max(-2200, Math.min(2200, v));
     if (performance.now() - lastTs > 90) v = 0;   // held still before release
   }
