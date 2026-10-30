@@ -30,10 +30,13 @@ html[data-ui-lang="bn"] .pv .pbar .acts .btn > small.t-bn{display:inline!importa
   .gs::before,.gs-tint,.gs-glare{display:none!important}
   .gal-stage{will-change:auto  /* while swiping, pause painting of cards far from the centre (the main cost on phones) */
   .gal.mv .gs.far{visibility:hidden}
-  /* touch: while swiping show the pre-rendered picture of each template instead of the live sheet */
-  .gs .snap{position:absolute;left:0;top:0;width:794px;height:1122px;visibility:hidden}
-  .gal.mv .gs.snapped .sheet{visibility:hidden}
-  .gal.mv .gs.snapped .snap{visibility:visible}
+}
+/* Phone: no animations at all in the template gallery and theme pickers */
+@media (hover:none),(pointer:coarse){
+  .gal,.gal *,.gal *::before,.gal *::after{animation:none!important;transition:none!important}
+  .gal-bg{display:none!important}
+  .gs-card{box-shadow:none!important}
+  .gs .sheet::after{display:none!important}
 }
 </style>
 </head>
