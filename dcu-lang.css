@@ -1,0 +1,86 @@
+/* dcu-lang.css
+ * Styles for the Bangla / English switch added by dcu-lang.js.
+ * Load AFTER dcu-layout.css:
+ *   <link rel="stylesheet" href="dcu-lang.css">
+ */
+
+.dl-lang {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: 124px;
+  height: 40px;
+  padding: 3px;
+  flex: none;
+  border-radius: 99px;
+  border: 1px solid var(--dl-line);
+  background: var(--dl-surface);
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.dl-lang:hover {
+  border-color: var(--dl-gold);
+  box-shadow: 0 10px 22px -14px rgba(212, 175, 55, 0.9);
+  transform: translateY(-1px);
+}
+
+.dl-lang:focus-visible {
+  outline: 3px solid var(--dl-gold);
+  outline-offset: 2px;
+}
+
+.dl-lang-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 99px;
+  background: var(--dl-grad);
+  box-shadow: 0 6px 14px -6px rgba(212, 175, 55, 0.9);
+  transition: transform 0.45s var(--dl-ease);
+}
+
+:root[data-lang="en"] .dl-lang-thumb {
+  transform: translateX(100%);
+}
+
+.dl-lang-opt {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--dl-ink-2);
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+.dl-lang-opt.on {
+  color: var(--dl-navy);
+}
+
+/* the English subtitle in the tools menu is redundant in English mode */
+:root[data-lang="en"] .dl-menu small {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .dl-lang {
+    width: 112px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-lang,
+  .dl-lang-thumb,
+  .dl-lang-opt {
+    transition: none !important;
+  }
+}
