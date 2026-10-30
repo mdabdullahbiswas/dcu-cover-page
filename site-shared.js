@@ -1,7 +1,7 @@
 /* site-shared.js
  * Shared helpers used by about.html, feedback.html and tools.html.
  * Load in <head> BEFORE the page's own script:
- *   <script src="site-shared.js"></script>
+ *   (include it in the page head)
  *
  * $L(s)   : "বাংলা|English" -> text for the current language
  * L       : same as $L (short name used by the pages)
