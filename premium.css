@@ -1,0 +1,109 @@
+/* ===== DCU Premium Color & Motion layer (about / feedback / tools) ===== */
+
+/* ---- 1. Neutral + brand tokens (light) ---- */
+:root{
+  --bg:#F6F8FC;--surface:#FFFFFF;--surface-2:#F1F5F9;
+  --ink:#0F172A;--ink-2:#475569;--muted:#94A3B8;--border:#E2E8F0;
+  --navy:#0B1F3A;--navy-2:#17386A;--gold:#D4AF37;--gold-light:#E8C46C;--gold-deep:#B98A2C;
+  --brand-grad:linear-gradient(135deg,#E8C46C 0%,#D4AF37 45%,#B98A2C 100%);
+  --brand-soft:#FBF3DC;
+  --ok:#10B981;--warn:#F59E0B;--err:#EF4444;--info:#3B82F6;
+  --s1:#2563EB;--s2:#059669;
+  /* legacy names used by the shared site styles, mapped to the new tokens */
+  --cd:#FFFFFF;--ln:#E2E8F0;--mu:#475569;--gd:#D4AF37;--gd2:#E8C46C;--nv:#0B1F3A;--nv2:#17386A;
+  /* default accent (brand gold) — sector classes below override it */
+  --accent:#D4AF37;--accent-soft:#FBF3DC;--accent-deep:#7A5A14;
+  --accent-grad:linear-gradient(135deg,#E8C46C 0%,#D4AF37 45%,#B98A2C 100%);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:light;
+}
+
+/* ---- 2. Dark tokens (site toggle uses body.dark; [data-theme=dark] also works) ---- */
+body.dark,:root[data-theme=dark]{
+  --bg:#0A0F1E;--surface:#111827;--surface-2:#1A2236;
+  --ink:#F1F5F9;--ink-2:#A8B3C7;--muted:#7C8AA3;--border:#243049;
+  --cd:#111827;--ln:#243049;--mu:#A8B3C7;
+  --accent-deep:#E8C46C;--accent-soft:rgba(212,175,55,.15);
+  color-scheme:dark;
+}
+
+/* ---- 3. Sector accents (1st card = sector 1 … 8th = sector 8, then cycles) ---- */
+.sec-1{--accent:#2563EB;--accent-soft:#DBEAFE;--accent-deep:#1E40AF;--accent-grad:linear-gradient(135deg,#60A5FA,#2563EB)}
+.sec-2{--accent:#059669;--accent-soft:#D1FAE5;--accent-deep:#065F46;--accent-grad:linear-gradient(135deg,#34D399,#059669)}
+.sec-3{--accent:#7C3AED;--accent-soft:#EDE9FE;--accent-deep:#5B21B6;--accent-grad:linear-gradient(135deg,#A78BFA,#7C3AED)}
+.sec-4{--accent:#E11D48;--accent-soft:#FFE4E6;--accent-deep:#9F1239;--accent-grad:linear-gradient(135deg,#FB7185,#E11D48)}
+.sec-5{--accent:#D97706;--accent-soft:#FEF3C7;--accent-deep:#92400E;--accent-grad:linear-gradient(135deg,#FBBF24,#D97706)}
+.sec-6{--accent:#0891B2;--accent-soft:#CFFAFE;--accent-deep:#155E75;--accent-grad:linear-gradient(135deg,#22D3EE,#0891B2)}
+.sec-7{--accent:#C026D3;--accent-soft:#FAE8FF;--accent-deep:#86198F;--accent-grad:linear-gradient(135deg,#E879F9,#C026D3)}
+.sec-8{--accent:#65A30D;--accent-soft:#ECFCCB;--accent-deep:#3F6212;--accent-grad:linear-gradient(135deg,#A3E635,#65A30D)}
+body.dark .sec-1,:root[data-theme=dark] .sec-1{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#6692F1}
+body.dark .sec-2,:root[data-theme=dark] .sec-2{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#50B696}
+body.dark .sec-3,:root[data-theme=dark] .sec-3{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#A375F2}
+body.dark .sec-4,:root[data-theme=dark] .sec-4{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#EA617F}
+body.dark .sec-5,:root[data-theme=dark] .sec-5{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#E4A051}
+body.dark .sec-6,:root[data-theme=dark] .sec-6{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#52B2C9}
+body.dark .sec-7,:root[data-theme=dark] .sec-7{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#D367E0}
+body.dark .sec-8,:root[data-theme=dark] .sec-8{--accent-soft:color-mix(in srgb,var(--accent) 15%,transparent);--accent-deep:#93BF56}
+
+/* ---- 4. Background orbs ---- */
+body{position:relative;overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;width:min(520px,70vw);aspect-ratio:1;border-radius:50%;filter:blur(90px);opacity:.13;pointer-events:none;z-index:-1;animation:float 26s ease-in-out infinite}
+body::before{background:var(--accent);top:-140px;right:-160px}
+body::after{background:var(--s1);bottom:-180px;left:-160px;animation-duration:32s;animation-direction:reverse}
+body.dark::before,body.dark::after{opacity:.12}
+
+/* ---- 5. Header: white glass + gold line ---- */
+#hdr{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:color-mix(in srgb,var(--surface) 82%,transparent);animation:drop .7s var(--ease) backwards}
+#hdr::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,#D4AF37 20%,#E8C46C 50%,#D4AF37 80%,transparent);pointer-events:none}
+
+/* ---- 6. Cards ---- */
+.bx{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 30px rgba(15,23,42,.07);transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.bx::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--accent-grad);z-index:2;pointer-events:none}
+.bx:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 22px 44px -20px color-mix(in srgb,var(--accent) 45%,transparent)}
+.bx.cta::after{display:none}
+main,section{counter-reset:sec}
+.bx>h2{color:var(--accent-deep)}
+.bx>h2::before{counter-increment:sec;content:counter(sec);display:inline-grid;place-items:center;width:28px;height:28px;margin-right:10px;border-radius:50%;background:var(--accent-grad);color:#fff;font:800 14px/1 'Cinzel',serif;vertical-align:middle;text-shadow:0 1px 2px rgba(0,0,0,.25);box-shadow:0 0 0 4px var(--accent-soft)}
+.bx>h2:after{background:var(--accent-grad)}
+section.on .bx,.gd .bx{animation:rise .6s var(--ease) backwards}
+section.on .bx:nth-child(2),.gd .bx:nth-child(2){animation-delay:.12s}
+section.on .bx:nth-child(3),.gd .bx:nth-child(3){animation-delay:.24s}
+body.dark .bx{box-shadow:0 14px 34px rgba(0,0,0,.45)}
+body.dark .bx:hover{box-shadow:0 0 0 1px var(--accent),0 22px 50px -16px color-mix(in srgb,var(--accent) 55%,transparent)}
+body .bx.cta{background:linear-gradient(120deg,#06162b,var(--navy) 50%,var(--navy-2));border:0;color:#fff}
+
+/* ---- 7. Buttons ---- */
+.bt{min-height:44px;background:var(--brand-grad);color:var(--navy);border:0;box-shadow:0 12px 24px -12px rgba(185,138,44,.75);transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.bt:hover{transform:translateY(-2px);box-shadow:0 16px 30px -12px rgba(185,138,44,.85)}
+.bt:active{transform:scale(.97)}
+.bt.o,.bs{background:var(--surface);color:var(--ink);border:1.5px solid var(--border);box-shadow:none}
+.bt.o:hover,.bs:hover{border-color:var(--accent)}
+.rx,.del{background:color-mix(in srgb,var(--err) 12%,var(--surface));color:#B91C1C;border:1px solid color-mix(in srgb,var(--err) 35%,transparent)}
+body.dark .rx,body.dark .del{color:#FCA5A5}
+.rp-wave{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);opacity:.7;pointer-events:none;animation:wave .6s ease-out forwards}
+
+/* ---- 8. Inputs & focus ---- */
+input:not([type=range]):not([type=checkbox]):not([type=file]),select,textarea{background:var(--surface-2);border:1.5px solid var(--border);color:var(--ink);transition:border-color .25s,box-shadow .25s}
+input[type=range]{background:transparent;border:0;box-shadow:none}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+label:has(+ input:focus),label:has(+ select:focus),label:has(+ textarea:focus){color:var(--accent-deep)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ---- 9. Chips / tabs / segmented ---- */
+.tabs button{background:var(--brand-soft);color:var(--accent-deep);border-color:transparent}
+.tabs button.on{background:var(--navy);color:var(--gold-light);border-color:var(--navy)}
+.seg button{background:var(--brand-soft);color:var(--accent-deep);border-color:transparent}
+.seg button[aria-checked=true]{background:var(--navy);color:var(--gold-light)}
+@media(max-width:640px){.tabs button,.seg button,.ln a,.bt,.bs,.cpy{min-height:44px}}
+
+/* ---- 10. Dark card polish ---- */
+body.dark .sec-1 .bx,body.dark .bx{background:var(--surface)}
+
+/* ---- 11. Keyframes ---- */
+@keyframes drop{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,-22px) scale(1.08)}}
+@keyframes wave{to{transform:scale(1);opacity:0}}
+
+/* ---- 12. Reduced motion (required) ---- */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
