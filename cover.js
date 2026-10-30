@@ -1215,8 +1215,20 @@ var first=!n.dataset.v;n.dataset.v=t.v;
 n.textContent=t.en;$('tplNameBn').textContent=t.bn;
 if(!first){var st=$('tplSt');st.classList.remove('bump');void st.offsetWidth;st.classList.add('bump')}
 }
+var gSrc=null;
+/* ভারী A4 শিট শুধু তখনই বানানো হয়, যখন কার্ডটি দেখানোর কাছাকাছি আসে */
+function mountSheet(g){
+if(g.sh||!gSrc)return;
+var c=gSrc.cloneNode(true);
+c.removeAttribute('id');
+Array.prototype.forEach.call(c.querySelectorAll('[id]'),function(e){e.removeAttribute('id')});
+Array.prototype.forEach.call(c.querySelectorAll('.ink'),function(e){e.classList.remove('ink')});
+c.className=tplCls(TPLS[g.i].v);
+c.style.setProperty('--p',gColors[g.i].p);c.style.setProperty('--a',gColors[g.i].a);
+g.th.appendChild(c);g.sh=c;
+}
 function gBuild(){
-var src=docSrc(),cur=$('tpl').value||'classic';
+var src=docSrc(),cur=$('tpl').value||'classic';gSrc=src;
 clear(gStage);clear(gDots);clear(gInfo);gSl=[];
 var fv=get(),curI=tIndex(cur),same=function(x,y){return x[0].toLowerCase()===y[0].toLowerCase()&&x[1].toLowerCase()===y[1].toLowerCase()},used=[[fv.cPri,fv.cAcc]],fb=0;
 gColors=TPLS.map(function(t,i){
@@ -1226,13 +1238,8 @@ while(used.some(function(u){return same(u,c)})&&fb<GFALL.length)c=GFALL[fb++];
 used.push(c);return {p:c[0],a:c[1]};
 });
 TPLS.forEach(function(t,i){
-var s=el('div','gs'),card=el('div','gs-card'),th=el('div','th'),c=src.cloneNode(true);
-c.removeAttribute('id');
-Array.prototype.forEach.call(c.querySelectorAll('[id]'),function(e){e.removeAttribute('id')});
-Array.prototype.forEach.call(c.querySelectorAll('.ink'),function(e){e.classList.remove('ink')});
-c.className=tplCls(t.v);
-c.style.setProperty('--p',gColors[i].p);c.style.setProperty('--a',gColors[i].a);
-th.appendChild(c);card.appendChild(th);
+var s=el('div','gs'),card=el('div','gs-card'),th=el('div','th');
+card.appendChild(th);
 var gl=el('div','gs-glare'),vl=el('div','gs-veil'),tn=el('div','gs-tint');card.appendChild(gl);card.appendChild(tn);
 s.appendChild(card);s.appendChild(vl);
 if(t.v===cur){
@@ -1245,11 +1252,11 @@ s.setAttribute('aria-label',t.en+' · '+t.bn+' ('+(i+1)+'/'+TPLS.length+')');
 gStage.appendChild(s);
 var d=el('button','gd');d.type='button';d.tabIndex=-1;d.setAttribute('aria-label',t.en+' · '+t.bn);
 d.addEventListener('click',function(){gGo(i)});gDots.appendChild(d);
-gSl.push({el:s,gl:gl,vl:vl,th:th,sh:c,dot:d,tn:tn});
+gSl.push({i:i,el:s,gl:gl,vl:vl,th:th,sh:null,dot:d,tn:tn});
 });
 gLayout();
  /* প্রতিটি টেমপ্লেটের নিজস্ব মাপে লেখা বসানো — কাছের স্লাইডগুলো এখনই, বাকিগুলো খোলার পর ফাঁকা সময়ে */
-gSl.forEach(function(g,k){if(!g.fit&&Math.abs(k-curI)<=2){g.fit=1;fitEl(g.sh)}});
+gSl.forEach(function(g,k){if(Math.abs(k-curI)<=2){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}}});
 }
 function gScrollSw(smooth){
 var w=$('sws'),b=w.querySelector('.sw.on');if(!b)return;
@@ -1277,7 +1284,7 @@ if(scroll)gScrollSw(!!gSl.length&&gOpen&&gSp>=.99);
 function gSetColors(p,a,flash){
 var i=gShown;if(i<0)return;
 gColors[i]={p:p,a:a};
-var g=gSl[i];g.sh.style.setProperty('--p',p);g.sh.style.setProperty('--a',a);
+var g=gSl[i];mountSheet(g);g.sh.style.setProperty('--p',p);g.sh.style.setProperty('--a',a);
 gSyncTheme(true);
 if(flash&&!reduced()){g.tn.classList.remove('go');void g.tn.offsetWidth;g.tn.classList.add('go')}
 }
@@ -1297,7 +1304,7 @@ z=-(a1*130+far*70)*gSp,
 y=-(1-a1)*8+(1-Math.min(gSp,1))*36,
 sc=(1-a1*.04)*(.9+.1*Math.min(gSp,1)),
 op=ad<=2?1:clampN(1-(ad-2)*.85,0,1),st=g.el.style;
-var hid=op<.01;if(hid&&g.hid)continue;if(g.hid!==hid){g.hid=hid;st.display=hid?'none':''}if(!hid&&!g.fit){g.fit=1;fitEl(g.sh)}
+var hid=op<.01;if(hid&&g.hid)continue;if(g.hid!==hid){g.hid=hid;st.display=hid?'none':''}if(!hid){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}}
 var tf='translate3d('+x.toFixed(2)+'px,'+y.toFixed(2)+'px,'+z.toFixed(1)+'px) rotateY('+r.toFixed(2)+'deg) scale('+sc.toFixed(4)+')',o=op.toFixed(3),zi=String(100-Math.round(ad*10)),vo=(Math.min(ad,2)*.3*Math.min(gSp,1)).toFixed(3);
 if(g._tf!==tf){g._tf=tf;st.transform=tf}
 if(g._o!==o){g._o=o;st.opacity=o}
@@ -1351,7 +1358,7 @@ function gGo(i){if(!gOpen||gBusy)return;gTgt=clampN(Math.round(i),0,TPLS.length-
 function gBand(p){var m=TPLS.length-1;return p<0?p*.32:p>m?m+(p-m)*.32:p}
 function gPreFit(i){
 if(!gOpen)return;
-for(;i<gSl.length;i++){var g=gSl[i];if(!g.fit){g.fit=1;var h=g.el.style.display;g.el.style.display='';fitEl(g.sh);g.el.style.display=h;break}}
+for(;i<gSl.length;i++){var g=gSl[i];if(!g.fit&&g.sh){g.fit=1;var h=g.el.style.display;g.el.style.display='';fitEl(g.sh);g.el.style.display=h;break}}
 if(i<gSl.length-1)setTimeout(function(){gPreFit(i+1)},40)
 }
 function gShow(){
