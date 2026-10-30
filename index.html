@@ -328,6 +328,11 @@ html[data-ui-lang="bn"] .form[data-cov] .card h3::after{content:var(--ty-bn,"");
       <button type="button" class="btn" id="pdfBtn"><svg class="dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg><span class="lb t-en">Download PDF</span><small class="t-bn">পিডিএফ ডাউনলোড</small></button>
       <button type="button" class="btn red" id="reset"><span class="t-en">Clear all</span><small class="t-bn">সব তথ্য মুছুন</small></button>
     </div>
+    <div class="rcx-tip" id="rcTip">
+      <span class="rcx-tip-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16.5L12 21l9-4.5"/></svg></span>
+      <div class="rcx-tip-tx"><b><span class="t-en">Edit several pages. Download once.</span><span class="t-sep"> · </span><span class="t-bn">একাধিক পেজ এডিট করুন, একবারেই ডাউনলোড করুন।</span></b>
+      <small><span class="t-en">Prepare your cover, declaration, acknowledgment and contents, then switch on Full report PDF below to merge everything into one A4 file.</span><br class="t-sep"><span class="t-bn">কভার, ঘোষণাপত্র, কৃতজ্ঞতা স্বীকার ও সূচিপত্র সাজিয়ে নিন, তারপর নিচের “পূর্ণাঙ্গ রিপোর্ট পিডিএফ” চালু করে সব পেজ একটি A4 ফাইলে নামান।</span></small></div>
+    </div>
     <div class="rcx" id="rc" data-on="0">
       <div class="rcx-h" id="rcHd">
         <span class="rcx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16.5L12 21l9-4.5"/></svg></span>
@@ -2349,6 +2354,80 @@ html[data-ui-lang="bi"] #rc .rc-note .t-bn{display:block;margin:2px 0 0}
 #rc .rc-note svg{flex:none;width:14px;height:14px;margin-top:2px;color:var(--rc-gl)}
 #rc .rc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+/* ==========================================================
+   Light theme — উপরের কার্ডের রঙের সাথে মিল (card accent + surface)
+   ========================================================== */
+#rc{--rc-gl:var(--accent-light,#E8C46C);--rc-g:var(--accent,#D4AF37);--rc-gd:color-mix(in srgb,var(--accent,#D4AF37) 80%,#000);--rc-navy:var(--on-accent,#0B1F3A);--rc-ink:var(--ink,#0F172A);--rc-mut:var(--ink-2,#475569);--rc-line:var(--border,#E2E8F0);--rc-glass:var(--surface,#fff);--rc-ad:var(--accent-deep,#7A5A18);--rc-ag:var(--accent-grad,linear-gradient(135deg,#E8C46C,#D4AF37 45%,#B98A2C));--rc-ar:var(--ac-rgb,212,175,55);--rc-xs:color-mix(in srgb,var(--ink-2,#475569) 42%,transparent);
+  background:linear-gradient(180deg,var(--accent-soft,#FEF3C7),var(--surface,#fff) 150px);border:1px solid var(--border,#E2E8F0);color:var(--ink,#0F172A);
+  box-shadow:0 1px 2px rgba(15,23,42,.04),0 12px 28px rgba(15,23,42,.07)}
+html[data-theme="dark"] #rc{box-shadow:0 14px 34px rgba(0,0,0,.45)}
+#rc::before{opacity:1;background:var(--rc-ag)}
+#rc[data-on="1"]{border-color:var(--rc-g);box-shadow:0 1px 2px rgba(15,23,42,.04),0 18px 40px rgba(var(--rc-ar),.2),0 0 0 3px var(--accent-soft,#FEF3C7)}
+#rc .rcx-h:hover{background:rgba(var(--rc-ar),.06)}
+#rc .rcx-ic{background:var(--rc-ag);color:var(--rc-navy);box-shadow:0 10px 22px -6px rgba(var(--rc-ar),.5),inset 0 1px 0 rgba(255,255,255,.5)}
+#rc .rcx-t b{color:var(--navy,#0B1F3A)}
+#rc .rcx-t b em{color:var(--rc-ad)}
+html[data-ui-lang="bn"] #rc .rcx-t b em{color:var(--navy,#0B1F3A)}
+#rc .rcx-t small{color:var(--rc-mut)}
+#rc[data-on="1"] .rcx-t small{color:var(--rc-ad)}
+#rc .rcx-sw{color:var(--rc-mut)}
+#rc[data-on="1"] .rcx-tx{color:var(--rc-ad)}
+#rc .rcx-sw i{background:color-mix(in srgb,var(--ink-2,#475569) 30%,var(--surface,#fff));box-shadow:inset 0 1px 3px rgba(15,23,42,.25)}
+#rc .rcx-sw[aria-checked="true"] i{background:var(--rc-ag);box-shadow:0 0 16px rgba(var(--rc-ar),.45),inset 0 1px 2px rgba(255,255,255,.45)}
+#rc .rcx-in::before{background:linear-gradient(90deg,transparent,rgba(var(--rc-ar),.55),transparent)}
+#rc .rc-all{border-color:rgba(var(--rc-ar),.5);background:linear-gradient(120deg,var(--accent-soft,#FEF3C7),var(--surface,#fff) 78%);box-shadow:0 10px 24px -16px rgba(var(--rc-ar),.7)}
+#rc .rc-all:hover{border-color:var(--rc-g)}
+#rc .rc-cb{border-color:var(--rc-xs);background:var(--surface,#fff);color:var(--rc-navy)}
+#rc .rc-all[aria-checked="true"] .rc-cb,#rc .rc-all[aria-checked="mixed"] .rc-cb{background:var(--rc-ag);box-shadow:0 8px 18px -4px rgba(var(--rc-ar),.55)}
+#rc .rc-at b{color:var(--navy,#0B1F3A)}
+#rc .rc-at small{color:var(--rc-mut)}
+#rc .rc-ct b{background:linear-gradient(180deg,var(--rc-ad),var(--rc-g));-webkit-background-clip:text;background-clip:text}
+#rc .rc-ct span{color:var(--rc-mut)}
+#rc .rc-rec{border-color:var(--border,#E2E8F0);background:var(--surface,#fff);color:var(--navy,#0B1F3A)}
+#rc .rc-rec:hover{background:var(--accent-soft,#FEF3C7);border-color:var(--rc-g);color:var(--rc-ad)}
+#rc .rc-all:focus-visible,#rc .rc-rec:focus-visible,#rc .rcx-sw:focus-visible,#rc .rc-h:focus-visible,#rc .rc-e:focus-visible,#rc .rc-so:focus-visible,#rc .rc-go:focus-visible,#rc .rc-ck input:focus-visible+i{outline:2px solid var(--rc-g);outline-offset:3px}
+#rc .rc-sl b{color:var(--rc-ad)}
+#rc .rc-sl small{color:var(--rc-mut)}
+#rc .rc-r{background:var(--surface,#fff);border-color:var(--border,#E2E8F0)}
+#rc .rc-r:hover{background:var(--surface-2,#F1F5F9)}
+#rc .rc-r.cur{border-color:var(--rc-g);background:linear-gradient(120deg,var(--accent-soft,#FEF3C7),var(--surface,#fff) 70%);box-shadow:0 0 0 1px rgba(var(--rc-ar),.18),0 12px 26px -16px rgba(var(--rc-ar),.6)}
+#rc .rc-r.drag{background:var(--surface,#fff);border-color:var(--rc-g);box-shadow:0 22px 44px -14px rgba(15,23,42,.35),0 0 0 1px rgba(var(--rc-ar),.4)}
+#rc .rc-h{color:var(--rc-mut)}
+#rc .rc-h:hover,#rc .rc-h:active{color:var(--rc-ad);background:rgba(var(--rc-ar),.1)}
+#rc .rc-th{box-shadow:0 8px 16px -8px rgba(15,23,42,.45),0 0 0 1px var(--border,#E2E8F0)}
+#rc .rc-no{background:var(--rc-ag);color:var(--rc-navy);box-shadow:0 0 0 2.5px var(--surface,#fff),0 4px 10px rgba(15,23,42,.25)}
+#rc .rc-r.off .rc-no{background:var(--border,#E2E8F0);color:var(--rc-mut)}
+#rc .rc-m b{color:var(--navy,#0B1F3A)}
+#rc .rc-m small{color:var(--rc-mut)}
+#rc .rc-ed{background:var(--rc-ag);color:var(--rc-navy)}
+#rc .rc-ed .t-bn{color:var(--rc-navy)}
+#rc .rc-pl{color:var(--rc-ad);border-color:rgba(var(--rc-ar),.45);background:var(--accent-soft,#FEF3C7)}
+#rc .rc-e{border-color:var(--border,#E2E8F0);background:var(--surface,#fff);color:var(--navy,#0B1F3A)}
+#rc .rc-e:hover{background:var(--accent-soft,#FEF3C7);border-color:var(--rc-g);color:var(--rc-ad)}
+#rc .rc-ck i{border-color:var(--rc-xs);background:var(--surface,#fff)}
+#rc .rc-ck i::after{border-color:var(--rc-navy)}
+#rc .rc-ck:hover i{border-color:var(--rc-g)}
+#rc .rc-ck input:checked+i{background:var(--rc-ag);box-shadow:0 6px 16px -4px rgba(var(--rc-ar),.6)}
+#rc .rc-seg{background:var(--surface-2,#F1F5F9);border-color:var(--border,#E2E8F0);box-shadow:inset 0 1px 3px rgba(15,23,42,.08)}
+#rc .rc-seg::before{background:var(--surface,#fff);border:1px solid var(--rc-g);box-shadow:0 8px 18px -8px rgba(var(--rc-ar),.7)}
+#rc .rc-so{color:var(--rc-mut)}
+#rc .rc-so:hover,#rc .rc-so[aria-pressed="true"]{color:var(--navy,#0B1F3A)}
+#rc .rc-so[aria-pressed="true"] em{color:var(--rc-ad)}
+#rc .rc-go{background:var(--rc-ag);color:var(--rc-navy);box-shadow:0 16px 30px -12px rgba(var(--rc-ar),.65),inset 0 1px 0 rgba(255,255,255,.55)}
+#rc .rc-gi{background:#0B1F3A;color:var(--rc-gl)}
+#rc .rc-gc{background:#0B1F3A;color:var(--rc-gl)}
+#rc .rc-note{color:var(--rc-mut)}
+#rc .rc-note svg{color:var(--rc-ad)}
+
+/* ---------- Download PDF-এর নিচের নোট ---------- */
+.rcx-tip{display:flex;align-items:flex-start;gap:13px;margin-top:18px;padding:13px 15px;border-radius:16px;background:var(--accent-soft,#FEF3C7);border:1px solid rgba(var(--ac-rgb,212,175,55),.28);border-left:4px solid var(--accent,#D4AF37)}
+.rcx-tip-ic{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:var(--on-accent,#0B1F3A);background:var(--accent-grad,linear-gradient(135deg,#E8C46C,#B98A2C));box-shadow:0 8px 16px -6px rgba(var(--ac-rgb,212,175,55),.55)}
+.rcx-tip-ic svg{width:19px;height:19px}
+.rcx-tip-tx{min-width:0}
+.rcx-tip-tx b{display:block;font:600 13.5px/1.35 'Inter','Noto Sans Bengali',sans-serif;color:var(--navy,#0B1F3A)}
+.rcx-tip-tx small{display:block;margin-top:4px;font:500 12px/1.55 'Inter','Noto Sans Bengali',sans-serif;color:var(--ink-2,#475569)}
+@media print{.rcx-tip{display:none!important}}
+
 /* ---------- থাম্বনেইল (মিনি A4) ---------- */
 .rc-svg .pg{fill:#fff}.rc-svg .p{fill:var(--tp,#0b1f3a)}.rc-svg .a{fill:var(--ta,#d4af37)}
 .rc-svg .ps{stroke:var(--tp,#0b1f3a);fill:none}.rc-svg .as{stroke:var(--ta,#d4af37);fill:none}
@@ -2421,11 +2500,11 @@ html[data-ui-lang="bi"] #rc .rc-note .t-bn{display:block;margin:2px 0 0}
 </style>
 <script>
 (function(){
-var d=document,$=function(i){return d.getElementById(i)},KEY='cps-rc-v2',ALL=CPS.TYPES.map(function(x){return x.v}),EX={declaration:1,approval:1,acknowledgment:1,contents:1};
-function defInc(c){var o={};ALL.forEach(function(k){o[k]=false});[c||'assignment','declaration','acknowledgment','contents'].forEach(function(k){if(k in o)o[k]=true});return o}
+var d=document,$=function(i){return d.getElementById(i)},KEY='cps-rc-v3',ALL=CPS.TYPES.map(function(x){return x.v}),EX={declaration:1,approval:1,acknowledgment:1,contents:1};
+function defInc(){var o={};ALL.forEach(function(k){o[k]=false});return o}
 function L(a,b){return '<span class="t-en">'+a+'</span><span class="t-bn">'+b+'</span>'}
-var S={order:ALL.slice(),inc:defInc(),num:'roman',cov:'assignment',on:false},busy=false,cancel=false,drag=null,lock=false;
-try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){if(Array.isArray(sv.order)&&sv.order.length===ALL.length&&ALL.every(function(k){return sv.order.indexOf(k)>-1}))S.order=sv.order;if(sv.inc)for(var k in S.inc)if(k in sv.inc)S.inc[k]=!!sv.inc[k];if(/^(roman|num|none)$/.test(sv.num))S.num=sv.num;if(sv.cov)S.cov=sv.cov;if(typeof sv.on==='boolean')S.on=sv.on}}catch(e){}
+var S={order:ALL.slice(),inc:defInc(),ed:{},num:'roman',cov:'assignment',on:false},busy=false,cancel=false,drag=null,lock=false;
+try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv){if(Array.isArray(sv.order)&&sv.order.length===ALL.length&&ALL.every(function(k){return sv.order.indexOf(k)>-1}))S.order=sv.order;if(sv.inc)for(var k in S.inc)if(k in sv.inc)S.inc[k]=!!sv.inc[k];if(/^(roman|num|none)$/.test(sv.num))S.num=sv.num;if(sv.cov)S.cov=sv.cov;if(typeof sv.on==='boolean')S.on=sv.on;if(sv.ed&&typeof sv.ed==='object')ALL.forEach(function(k){if(sv.ed[k])S.ed[k]=true})}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function ty(v){return CPS.ctType(v)||{en:v,bn:v,ic:''}}
 function cur(){var v=$('docType').value;if(!CPS.isExtra()&&ALL.indexOf(v)<0)S.cov=v;else if(!CPS.isExtra())S.cov=v;return v}
@@ -2497,7 +2576,7 @@ function build(){
  NOPT.forEach(function(o){opts+='<button type="button" class="rc-so" data-num="'+o[0]+'" aria-pressed="false"><em data-s="'+o[0]+'">'+o[1]+'</em><span>'+o[2]+'</span></button>'});
  rc.innerHTML=
   '<div class="rc-sa"><button type="button" class="rc-all" id="rcAll" data-act="all" role="checkbox" aria-checked="false" aria-label="Select all pages · সব পেজ বাছুন"><span class="rc-cb">'+IC.tk+IC.ds+'</span><span class="rc-at"><b>'+L('Select all pages','সব পেজ বাছুন')+'</b><small id="rcSub"></small></span><span class="rc-ct" aria-hidden="true"><b id="rcN">0</b><span id="rcTot">/ '+N+'</span></span></button>'+
-   '<button type="button" class="rc-rec" data-pre="def">'+L('Recommended','প্রস্তাবিত')+'</button></div>'+
+   '<button type="button" class="rc-rec" data-pre="def">'+L('Edited only','এডিট করা পেজ')+'</button></div>'+
   '<div class="rc-sl"><div><b>'+L('Pages','পেজ সমূহ')+'</b><small>'+L('Drag to reorder · tap a page to edit it','টেনে ক্রম বদলান · এডিট করতে পেজে ট্যাপ করুন')+'</small></div></div>'+
   '<ol class="rc-l" id="rcL">'+rows+'</ol>'+
   '<div class="rc-sl"><div><b>'+L('Page numbers','পেজ নম্বর')+'</b></div></div>'+
@@ -2557,9 +2636,9 @@ function update(){
 
 /* ---------- ইভেন্ট ---------- */
 function preset(w){
- if(w==='def'){S.order=ALL.slice();S.inc=defInc(EX[$('docType').value]?'assignment':$('docType').value)}
+ if(w==='def'){S.inc=defInc();ALL.forEach(function(k){if(S.ed[k])S.inc[k]=true})}
  else ALL.forEach(function(k){S.inc[k]=true});
- save();update();CPS.toast(w==='def'?'Recommended setup applied · প্রস্তাবিত সাজানো হয়েছে':'All pages included · সব পেজ যোগ হয়েছে')}
+ save();update();CPS.toast(w==='def'?(Object.keys(S.ed).length?'Edited pages selected · এডিট করা পেজ বাছাই হয়েছে':'No edited pages yet · এখনো কোনো পেজ এডিট করা হয়নি'):'All pages included · সব পেজ যোগ হয়েছে')}
 function toggleAll(){
  if(busy||lock)return;var all=active().length===ALL.length;
  ALL.forEach(function(k){S.inc[k]=!all});save();update();
@@ -2672,7 +2751,17 @@ async function compile(){
  }catch(e){if(e!=='cancel')CPS.toast('Could not create the report. Please try again. · রিপোর্ট তৈরি করা যায়নি, আবার চেষ্টা করুন')}
  ov.hidden=true;box.classList.remove('done');CPS.setType(orig);busy=false;update();try{goEl.focus({preventScroll:true})}catch(e){}}
 
-build();bind();update();
+build();bind();
+/* ---------- এডিট ধরা: যে পেজে ইউজার কিছু লিখবে/বদলাবে সেটাই আপনাআপনি সিলেক্ট হবে ---------- */
+var ready=false;setTimeout(function(){ready=true},1500);
+function markEdit(e){
+ if(!ready||busy||lock)return;var t=e.target;if(!t||!t.closest||t.id==='docType'||t.closest('#rc')||!t.closest('#form'))return;
+ var v=$('docType').value;if(!(v in S.inc)||S.ed[v])return;
+ S.ed[v]=true;S.inc[v]=true;save();update()}
+d.addEventListener('input',markEdit,true);d.addEventListener('change',markEdit,true);
+function clearEdits(){S.ed={};S.inc=defInc();save();update()}
+if($('mYes'))$('mYes').addEventListener('click',function(){var m=$('modal');if(m&&/Clear all information/.test(m.textContent))setTimeout(clearEdits,150)});
+update();
 })();
 </script>
 </body>
