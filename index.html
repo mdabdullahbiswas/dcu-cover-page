@@ -33,6 +33,26 @@ body.gal-open .gal,body.gal-open .gal *{animation-play-state:running}
 .pwrap::before{animation:none}
 .modal,.pv .pbar{-webkit-backdrop-filter:none;backdrop-filter:none}
 }
+
+/* ===== Cover type: পিসিতে প্রিমিয়াম স্ক্রল (তীর · হুইল · ড্র্যাগ · প্রগ্রেস) ===== */
+.ct-ar{position:absolute;top:50%;z-index:4;width:36px;height:36px;display:grid;place-items:center;padding:0;border-radius:50%;cursor:pointer;color:var(--gd);background:var(--surface,#fff);border:1px solid var(--bd);box-shadow:0 6px 16px -4px rgba(10,26,51,.28),inset 0 1px 0 rgba(255,255,255,.6);opacity:0;pointer-events:none;transform:translateY(-50%) scale(.82);transition:opacity .25s,transform .35s cubic-bezier(.2,.8,.2,1),background .25s,color .25s,border-color .25s}
+.ct-ar svg{width:17px;height:17px}
+.ct-al{left:9px}.ct-arr{right:9px}
+.ct-wrap.sl .ct-al,.ct-wrap.sr .ct-arr{opacity:1;pointer-events:auto;transform:translateY(-50%) scale(1)}
+.ct-ar:hover{color:var(--bt);border-color:transparent;background:linear-gradient(135deg,var(--gl),var(--gold2));transform:translateY(-50%) scale(1.08)!important}
+.ct-ar:active{transform:translateY(-50%) scale(.92)!important}
+.ct-bar{position:absolute;left:26px;right:26px;bottom:3px;height:3px;border-radius:3px;background:rgba(100,116,139,.16);overflow:hidden;opacity:0;transition:opacity .3s;pointer-events:none;z-index:2}
+.ct-bar i{display:block;height:100%;width:30%;border-radius:3px;background:linear-gradient(90deg,var(--gl),var(--gold2));transform-origin:0 0;will-change:transform}
+.ct-wrap.ov .ct-bar{opacity:1}
+.ct-wrap.ov .ct-scroll{padding-bottom:12px}
+@media(hover:hover) and (pointer:fine){
+.ct-scroll{scroll-snap-type:none}
+.ct-wrap.ov .ct-scroll{cursor:grab}
+.ct-wrap.drag,.ct-wrap.drag *{cursor:grabbing!important}
+.ct-wrap.drag .ct-scroll{user-select:none;-webkit-user-select:none}
+.ct-wrap.drag .ct-tab{pointer-events:none}
+}
+@media(hover:none),(pointer:coarse){.ct-ar{display:none}}
 </style>
 </head>
 <body>
@@ -56,6 +76,8 @@ body.gal-open .gal,body.gal-open .gal *{animation-play-state:running}
       <div class="ct-list" id="ctList" role="radiogroup" aria-label="Cover type · কভারের ধরন"><i class="ct-ind" id="ctInd" aria-hidden="true"></i></div>
     </div>
     <i class="ct-f ct-fl" aria-hidden="true"></i><i class="ct-f ct-fr" aria-hidden="true"></i>
+    <button type="button" class="ct-ar ct-al" id="ctPrev" tabindex="-1" aria-label="Scroll left · বামে সরান"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" class="ct-ar ct-arr" id="ctNext" tabindex="-1" aria-label="Scroll right · ডানে সরান"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <span class="ct-bar" aria-hidden="true"><i id="ctThumb"></i></span>
   </div>
 </nav>
 <section class="form" id="form">
@@ -724,7 +746,7 @@ ic:'<path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0112 7.6a4.2 4.2 0 017.5 2.6c0
 ic:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>'}
 ];
 TYPES.forEach(function(x){T.en.docs[x.v]=T.en.docs[x.v]||x.cover||x.en.toUpperCase();T.bn.docs[x.v]=T.bn.docs[x.v]||x.bn});
-var ctWrap=$('ctWrap'),ctSc=$('ctScroll'),ctList=$('ctList'),ctInd=$('ctInd'),ctHint=$('ctHint'),ctOn=false,ctCur='';
+var ctThumb=$('ctThumb'),ctPrev=$('ctPrev'),ctNext=$('ctNext'),ctAnim=0,ctTgt=0,ctDrag=null,ctMoved=0,ctWrap=$('ctWrap'),ctSc=$('ctScroll'),ctList=$('ctList'),ctInd=$('ctInd'),ctHint=$('ctHint'),ctOn=false,ctCur='';
 function ctTabs(){return ctList.querySelectorAll('.ct-tab')}
 function ctBuild(){
 var h='';
@@ -737,7 +759,7 @@ ctList.insertAdjacentHTML('beforeend',h);
 }
 function ctType(v){return TYPES.filter(function(x){return x.v===v})[0]}
 function ctPlace(a){ctInd.style.setProperty('--x',a.offsetLeft+'px');ctInd.style.setProperty('--w',a.offsetWidth+'px')}
-function ctEdges(){var m=ctSc.scrollWidth-ctSc.clientWidth;ctWrap.classList.toggle('sl',ctSc.scrollLeft>2);ctWrap.classList.toggle('sr',m>2&&ctSc.scrollLeft<m-2)}
+function ctEdges(){var m=ctSc.scrollWidth-ctSc.clientWidth;ctWrap.classList.toggle('sl',ctSc.scrollLeft>2);ctWrap.classList.toggle('sr',m>2&&ctSc.scrollLeft<m-2);ctWrap.classList.toggle('ov',m>2);if(m>2){var cw=ctSc.clientWidth,sw=ctSc.scrollWidth;ctThumb.style.width=(cw/sw*100).toFixed(2)+'%';ctThumb.style.transform='translateX('+(ctSc.scrollLeft/cw*100).toFixed(2)+'%)'}}
 function ctCenter(a,smooth){
 if(ctSc.scrollWidth<=ctSc.clientWidth+1)return;
 var l=Math.max(0,a.offsetLeft-(ctSc.clientWidth-a.offsetWidth)/2);
@@ -782,6 +804,37 @@ else if(k==='Home')n=0;else if(k==='End')n=tabs.length-1;else return;
 e.preventDefault();tabs[n].focus();typePick(tabs[n].dataset.v);
 });
 ctSc.addEventListener('scroll',ctEdges,{passive:true});
+
+/* ---- পিসি: মসৃণ গ্লাইড, তীর, মাউস-হুইল, ড্র্যাগ ---- */
+function ctMax(){return Math.max(0,ctSc.scrollWidth-ctSc.clientWidth)}
+function ctStep(){var d=ctTgt-ctSc.scrollLeft;if(Math.abs(d)<1){ctSc.scrollLeft=ctTgt;ctAnim=0;return}var st=d*.18;if(Math.abs(st)<1)st=d>0?1:-1;ctSc.scrollLeft+=st;ctAnim=requestAnimationFrame(ctStep)}
+function ctGlide(t){ctTgt=Math.max(0,Math.min(ctMax(),t));if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches){ctSc.scrollLeft=ctTgt;return}if(!ctAnim)ctAnim=requestAnimationFrame(ctStep)}
+function ctStop(){if(ctAnim){cancelAnimationFrame(ctAnim);ctAnim=0}ctTgt=ctSc.scrollLeft}
+ctPrev.addEventListener('click',function(){ctGlide((ctAnim?ctTgt:ctSc.scrollLeft)-ctSc.clientWidth*.7)});
+ctNext.addEventListener('click',function(){ctGlide((ctAnim?ctTgt:ctSc.scrollLeft)+ctSc.clientWidth*.7)});
+ctSc.addEventListener('wheel',function(e){
+if(e.ctrlKey||ctMax()<=1)return;
+if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+var dy=e.deltaY;if(!dy)return;
+if(e.deltaMode!==1&&!(Math.abs(dy)>=40&&dy%1===0))return; /* ট্র্যাকপ্যাডে পেজ স্ক্রল আটকাবে না */
+var cur=ctAnim?ctTgt:ctSc.scrollLeft,m=ctMax();
+if((dy<0&&cur<=0)||(dy>0&&cur>=m))return;
+e.preventDefault();
+ctGlide(cur+dy*(e.deltaMode===1?36:1));
+},{passive:false});
+ctSc.addEventListener('pointerdown',function(e){
+if(e.pointerType!=='mouse'||e.button!==0||ctMax()<=1)return;
+ctStop();ctDrag={x:e.clientX,l:ctSc.scrollLeft,id:e.pointerId};ctMoved=0;
+});
+ctSc.addEventListener('pointermove',function(e){
+var d=ctDrag;if(!d||e.pointerId!==d.id)return;
+var dx=e.clientX-d.x;
+if(!ctMoved&&Math.abs(dx)>5){ctMoved=1;ctWrap.classList.add('drag');try{ctSc.setPointerCapture(d.id)}catch(x){}}
+if(ctMoved){ctSc.scrollLeft=d.l-dx;ctTgt=ctSc.scrollLeft}
+});
+function ctUp(e){var d=ctDrag;if(!d||e.pointerId!==d.id)return;ctDrag=null;ctWrap.classList.remove('drag');try{ctSc.releasePointerCapture(d.id)}catch(x){}if(ctMoved)setTimeout(function(){ctMoved=0},0)}
+ctSc.addEventListener('pointerup',ctUp);ctSc.addEventListener('pointercancel',ctUp);
+ctSc.addEventListener('click',function(e){if(ctMoved){e.stopPropagation();e.preventDefault()}},true);
 if(window.ResizeObserver){var ctRo=new ResizeObserver(ctRefresh);ctRo.observe(ctSc);Array.prototype.forEach.call(ctTabs(),function(b){ctRo.observe(b)})}
 else window.addEventListener('resize',ctRefresh);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(ctRefresh);
