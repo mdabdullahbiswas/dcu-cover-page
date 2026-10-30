@@ -28,7 +28,8 @@ html[data-ui-lang="bn"] .pv .pbar .acts .btn > small.t-bn{display:inline!importa
 @media (hover:none),(pointer:coarse){
   .gs-card,.gs.act .gs-card{box-shadow:0 4px 10px rgba(0,0,0,.35)!important;contain:strict}
   .gs::before,.gs-tint,.gs-glare{display:none!important}
-  .gal-stage{will-change:auto}
+  .gal-stage{will-change:auto  /* while swiping, pause painting of cards far from the centre (the main cost on phones) */
+  .gal.mv .gs.far{visibility:hidden}
 }
 </style>
 </head>
