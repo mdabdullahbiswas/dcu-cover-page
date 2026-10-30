@@ -1227,27 +1227,17 @@ c.className=tplCls(TPLS[g.i].v);
 c.style.setProperty('--p',gColors[g.i].p);c.style.setProperty('--a',gColors[g.i].a);
 g.th.appendChild(c);g.sh=c;
 }
-function fitCard(g){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}}
-/* ফোনে প্রতিটি টেমপ্লেটের একবারের ছবি (একই রেন্ডারার, লাইভ শিট নয়): সোয়াইপের সময় এটাই দেখানো হয়, তাই ভারী পেইন্ট হয় না */
-function snapCard(g){
-if(!gCoarse||g.snapped||g.snapBusy||!g.sh)return;
-g.snapBusy=true;
-snap(1.5,g.th).then(function(cv){
-g.snapBusy=false;
-if(!gOpen||g.snapped)return;
-cv.className='snap';g.th.appendChild(cv);g.snapped=1;g.el.classList.add('snapped');
-}).catch(function(){g.snapBusy=false});
-}
+function fitCard(g){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}g.el.style.visibility=''}
 var gQ=[],gQT=0;
 /* বাকি কার্ডগুলো ব্রাউজার অলস থাকলে একটি একটি করে তৈরি ও মাপা হয় — সোয়াইপ/অ্যানিমেশনের সময় কিছুই হয় না */
 function gPump(){
 if(gQT)return;
 if(!gOpen||!gQ.length)return;
-if(gRaf){gQT=setTimeout(function(){gQT=0;gPump()},150);return}
+if(gRaf||gDrag){gQT=setTimeout(function(){gQT=0;gPump()},150);return}
 var run=function(){
 gQT=0;
-if(!gOpen||gRaf){if(gOpen&&gQ.length)gPump();return}
-while(gQ.length){var g=gSl[gQ.shift()];if(g){if(!g.fit)fitCard(g);if(!g.snapped&&!g.snapBusy){snapCard(g);break}}}
+if(!gOpen||gRaf||gDrag){if(gOpen&&gQ.length)gPump();return}
+while(gQ.length){var g=gSl[gQ.shift()];if(g&&!g.fit){fitCard(g);break}}
 if(gQ.length)gPump();
 };
 if(window.requestIdleCallback)gQT=requestIdleCallback(run,{timeout:400});
@@ -1283,13 +1273,13 @@ gSl.push({i:i,el:s,gl:gl,vl:vl,th:th,sh:null,dot:d,tn:tn});
 gLayout();
 gPump();
  /* প্রতিটি টেমপ্লেটের নিজস্ব মাপে লেখা বসানো — কাছের স্লাইডগুলো এখনই, বাকিগুলো খোলার পর ফাঁকা সময়ে */
-gSl.forEach(function(g,k){if(Math.abs(k-curI)<=2)fitCard(g)});
+gSl.forEach(function(g,k){if(gCoarse?k===curI:Math.abs(k-curI)<=2)fitCard(g)});
 gQ=gSl.map(function(g,k){return k}).sort(function(a,b){return Math.abs(a-curI)-Math.abs(b-curI)});
 }
 function gScrollSw(smooth){
 var w=$('sws'),b=w.querySelector('.sw.on');if(!b)return;
 var x=b.offsetLeft-(w.clientWidth-b.offsetWidth)/2;
-try{w.scrollTo({left:x,behavior:smooth&&!reduced()?'smooth':'auto'})}catch(e){w.scrollLeft=x}
+try{w.scrollTo({left:x,behavior:smooth&&!reduced()&&!gCoarse?'smooth':'auto'})}catch(e){w.scrollLeft=x}
 }
 function gDiff(i){var v=get(),c=gColors[i],t=TPLS[i].v!==v.tpl,k=c.p.toLowerCase()!==v.cPri.toLowerCase()||c.a.toLowerCase()!==v.cAcc.toLowerCase();return {t:t,k:k}}
 function gSyncTheme(scroll){
@@ -1314,7 +1304,7 @@ var i=gShown;if(i<0)return;
 gColors[i]={p:p,a:a};
 var g=gSl[i];mountSheet(g);g.sh.style.setProperty('--p',p);g.sh.style.setProperty('--a',a);
 gSyncTheme(true);
-if(flash&&!reduced()){g.tn.classList.remove('go');void g.tn.offsetWidth;g.tn.classList.add('go')}
+if(flash&&!reduced()&&!gCoarse){g.tn.classList.remove('go');void g.tn.offsetWidth;g.tn.classList.add('go')}
 }
 function gLayout(){
 var r=gStage.getBoundingClientRect(),aw=r.width,ah=r.height;
@@ -1333,7 +1323,7 @@ z=-(a1*130+far*70)*gSp,
 y=-(1-a1)*8+(1-Math.min(gSp,1))*36,
 sc=(1-a1*.04)*(.9+.1*Math.min(gSp,1)),
 op=ad<=2?1:clampN(1-(ad-2)*.85,0,1),st=g.el.style;
-var hid=op<.01;g.el.classList.toggle('far',mv&&ad>1.5);if(hid&&g.hid)continue;if(g.hid!==hid){g.hid=hid;st.display=hid?'none':''}if(!hid&&!g.fit)fitCard(g);
+var hid=op<.01;g.el.classList.toggle('far',mv&&ad>1.5);if(hid&&g.hid)continue;if(g.hid!==hid){g.hid=hid;st.display=hid?'none':''}if(!hid&&!g.fit){if(gCoarse)st.visibility='hidden';else fitCard(g)}
 var tf='translate3d('+x.toFixed(2)+'px,'+y.toFixed(2)+'px,'+z.toFixed(1)+'px) rotateY('+r.toFixed(2)+'deg) scale('+sc.toFixed(4)+')',o=op.toFixed(3),zi=String(100-Math.round(ad*10)),vo=(Math.min(ad,2)*.3*Math.min(gSp,1)).toFixed(3);
 if(g._tf!==tf){g._tf=tf;st.transform=tf}
 if(g._o!==o){g._o=o;st.opacity=o}
@@ -1382,7 +1372,7 @@ if(Math.abs(gSpT-gSp)<.0008&&Math.abs(gSpV)<.008){gSp=gSpT;gSpV=0}
 gApply();gSync();
 if(gOpen||gSp!==gSpT){if(gDrag||gPos!==gTgt||gSp!==gSpT)gRaf=requestAnimationFrame(gTick);else gLast=0}
 }
-function gStart(){if(!gRaf){gLast=0;gRaf=requestAnimationFrame(gTick)}}
+function gStart(){if(gCoarse){gPos=gTgt;gSp=gSpT;gVel=0;gSpV=0;gApply();gSync();return}if(!gRaf){gLast=0;gRaf=requestAnimationFrame(gTick)}}
 function gGo(i){if(!gOpen||gBusy)return;gTgt=clampN(Math.round(i),0,TPLS.length-1);gStart()}
 function gBand(p){var m=TPLS.length-1;return p<0?p*.32:p>m?m+(p-m)*.32:p}
 function gPreFit(){gPump()}
@@ -1394,15 +1384,15 @@ document.body.classList.add('gal-open');
 var v=get(),cur=tIndex(v.tpl);
 gMain.style.transform='';gal.style.opacity='';gal.classList.remove('dy');
 gShown=-1;gSyn=0;gSl=[];
-gPos=gTgt=cur;gVel=0;gSp=reduced()?1:0;gSpV=0;gSpT=1;
-void gal.offsetWidth;gal.classList.add('open');
+gPos=gTgt=cur;gVel=0;gSp=(reduced()||gCoarse)?1:0;gSpV=0;gSpT=1;
+if(!gCoarse)void gal.offsetWidth;gal.classList.add('open');
 try{history.pushState({gal:1},'')}catch(x){}
 var tok=++gTok;
 requestAnimationFrame(function(){setTimeout(function(){
 if(!gOpen||tok!==gTok)return;
 gBuild();gSet(cur);gApply();gScrollSw(false);gStart();setTimeout(function(){gPreFit(0)},650);
 },0)});
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){if(gOpen){gLayout();gApply()}});
+if(!gCoarse&&document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){if(gOpen){gLayout();gApply()}});
 setTimeout(function(){try{gStage.focus({preventScroll:true})}catch(x){}},80);
 }
 function gClose(fromPop){
@@ -1429,7 +1419,7 @@ gSpT=0;gStart();
 setTimeout(function(){
 gClose();
 if(changed){$('tpl').value=t.v;$('cPri').value=c.p;$('cAcc').value=c.a;render();toast('Template: '+t.en+' · টেমপ্লেট: '+t.bn)}
-},reduced()?0:380);
+},(reduced()||gCoarse)?0:380);
 }
 /* ===== জেসচার: ড্র্যাগ + ফ্লিং, নিচে টেনে বন্ধ, হুইল, কিবোর্ড ===== */
 gStage.addEventListener('pointerdown',function(e){
