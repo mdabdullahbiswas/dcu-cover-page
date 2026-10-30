@@ -154,21 +154,54 @@ body #hdr::after {
   text-decoration: none;
 }
 
+/* current page: quiet tint only (no permanent gold line) */
 .dl-nav > a[aria-current="page"],
 .dl-dd-btn[aria-current="page"] {
   color: var(--dl-brand-ink);
+  background: color-mix(in srgb, var(--dl-gold) 9%, transparent);
 }
 
-.dl-nav > a[aria-current="page"]::after,
-.dl-dd-btn[aria-current="page"]::after {
+.dl-nav > a[aria-current="page"]:hover,
+.dl-dd-btn[aria-current="page"]:hover,
+.dl-dd.open > .dl-dd-btn[aria-current="page"] {
+  background: var(--dl-hover);
+}
+
+/* premium hover line: sweeps in from the left, exits to the right */
+.dl-nav > a::after,
+.dl-dd-btn::after {
   content: "";
   position: absolute;
   left: 14px;
   right: 14px;
-  bottom: 3px;
+  bottom: 4px;
   height: 2px;
   border-radius: 2px;
   background: var(--dl-grad);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.55);
+  transform: scaleX(0);
+  transform-origin: right center;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.45s var(--dl-ease), opacity 0.25s ease;
+}
+
+.dl-nav > a:hover::after,
+.dl-nav > a:focus-visible::after,
+.dl-dd-btn:hover::after,
+.dl-dd-btn:focus-visible::after,
+.dl-dd.open > .dl-dd-btn::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-nav > a::after,
+  .dl-dd-btn::after {
+    transition: opacity 0.15s ease;
+    transform: none;
+  }
 }
 
 .dl-dd-btn svg {
@@ -344,8 +377,8 @@ body #hdr::after {
     font-size: 1rem;
   }
 
-  .dl-nav > a[aria-current="page"]::after,
-  .dl-dd-btn[aria-current="page"]::after {
+  .dl-nav > a::after,
+  .dl-dd-btn::after {
     display: none;
   }
 
