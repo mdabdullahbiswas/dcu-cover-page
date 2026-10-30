@@ -43,7 +43,8 @@ var DEPTS = [['Bangla','বাংলা'],['English','ইংরেজি'],['Ara
     '<a class="brand" href="./" title="Home"><img src="logo.png" alt="" onerror="this.remove()">' +
     '<div class="brand-text"><span>Dhaka Central University</span><small class="t brand-sub">আন-অফিশিয়াল|Unofficial</small></div></a>' +
     '<nav class="mn" id="mn" aria-label="Main">' +
-    '<a class="t' + (isI ? ' on' : '') + '" href="./">অ্যাসাইনমেন্ট|Assignment</a>' +
+    '<a class="t' + (isI ? ' on' : '') + '" href="index.html">হোম|Home</a>' +
+    '<a class="t' + (P === 'cover' ? ' on' : '') + '" href="cover.html">পেজ স্টুডিও|Page Studio</a>' +
     '<div class="dd"><button type="button" class="t' + (P === 'tools' ? ' on' : '') + '" id="ddb">টুলস ▾|Tools ▾</button><div class="ddm">' + tl + '</div></div>' +
     '<a class="t' + (P === 'blood' ? ' on' : '') + '" href="blood.html">🩸 ডোনার ডিরেক্টরি|Donor Directory</a>' +
     '<a class="t' + (P === 'about' ? ' on' : '') + '" href="about.html">সম্পর্কে|About</a>' +
