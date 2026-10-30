@@ -46,8 +46,14 @@
   };
 
   function getSaved() {
-    try { return localStorage.getItem(KEY) === "en" ? "en" : "bn"; }
-    catch (e) { return "bn"; }
+    try {
+      var v = localStorage.getItem(KEY);
+      if (v === "en" || v === "bn") { uiSync = true; return v; }
+    } catch (e) { /* storage blocked */ }
+    /* a page that already declares its language (Cover Studio) keeps it */
+    var declared = root.getAttribute("data-ui-lang");
+    if (declared === "en" || declared === "bn") return declared;
+    return "bn";
   }
 
   function track(node, bn, en) {
@@ -87,10 +93,14 @@
     });
   }
 
+  var uiSync = false;   // true once the visitor has chosen a language
+
   function applyLang(lang) {
     var attr = lang === "en" ? "en" : "bn";
     if (root.getAttribute("lang") !== attr) root.setAttribute("lang", attr);
     if (root.getAttribute("data-lang") !== attr) root.setAttribute("data-lang", attr);
+    /* Cover Studio reads this attribute for its own labels */
+    if (uiSync && root.getAttribute("data-ui-lang") !== attr) root.setAttribute("data-ui-lang", attr);
 
     tracked = tracked.filter(function (t) {
       if (!t.node.isConnected) return false;
@@ -129,6 +139,7 @@
       '<span class="dl-lang-opt" data-l="en">English</span>';
 
     btn.addEventListener("click", function () {
+      uiSync = true;
       setLang(current === "en" ? "bn" : "en");
     });
 
