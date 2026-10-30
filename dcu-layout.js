@@ -53,9 +53,33 @@
     });
   }
 
+  /* ---------- cover types (menu under "কভার পেজ" on every page) ---------- */
+var COVER_TYPES = [{"v": "assignment", "en": "Assignment", "bn": "অ্যাসাইনমেন্ট", "ic": "<path d=\"M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z\"/><path d=\"M14 3v5h5M9 13h6M9 17h4\"/>"}, {"v": "lab", "en": "Lab Report", "bn": "ল্যাব রিপোর্ট", "ic": "<path d=\"M9 3h6M10 3v6L5 19a2 2 0 001.8 3h10.4A2 2 0 0019 19l-5-10V3\"/><path d=\"M7.5 15h9\"/>"}, {"v": "presentation", "en": "Presentation", "bn": "প্রেজেন্টেশন", "ic": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M12 16v4M8 20h8M7 12l3-3 3 2 4-4\"/>"}, {"v": "project", "en": "Project", "bn": "প্রজেক্ট", "ic": "<path d=\"M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z\"/><path d=\"M3 11h18\"/>"}, {"v": "thesis", "en": "Thesis", "bn": "থিসিস", "ic": "<path d=\"M2 9l10-5 10 5-10 5z\"/><path d=\"M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5M22 9v6\"/>"}, {"v": "quiz", "en": "Quiz", "bn": "কুইজ", "ic": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M9.5 9.6a2.6 2.6 0 015.1.6c0 1.8-2.6 2.2-2.6 3.8M12 17.2h.01\"/>"}, {"v": "exam", "en": "Exam", "bn": "পরীক্ষা", "ic": "<path d=\"M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z\"/><path d=\"M14 3v5h5\"/><path d=\"M9 13l1.8 1.8L15 11\"/>"}, {"v": "declaration", "en": "Declaration", "bn": "ঘোষণাপত্র", "ic": "<path d=\"M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z\"/><path d=\"M8.8 12l2.4 2.4 4.2-4.6\"/>"}, {"v": "approval", "en": "Approval", "bn": "অনুমোদনপত্র", "ic": "<circle cx=\"12\" cy=\"9\" r=\"5.5\"/><path d=\"M8.7 13.6L7.5 21l4.5-2.6 4.5 2.6-1.2-7.4\"/><path d=\"M9.6 9l1.7 1.7L14.5 7.4\"/>"}, {"v": "acknowledgment", "en": "Acknowledgment", "bn": "কৃতজ্ঞতা স্বীকার", "ic": "<path d=\"M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0112 7.6a4.2 4.2 0 017.5 2.6c0 5.7-7.5 10.3-7.5 10.3z\"/>"}, {"v": "contents", "en": "Contents", "bn": "সূচিপত্র", "ic": "<path d=\"M9 6h11M9 12h11M9 18h11\"/><path d=\"M4.5 6h.01M4.5 12h.01M4.5 18h.01\"/>"}];
+
+  /* ---------- cover dropdown (same behaviour as Tools) ---------- */
+  function coverDD() {
+    var active = file === "cover.html";
+    var items = COVER_TYPES.map(function (t, i) {
+      return (
+        '<a href="cover.html#' + t.v + '" role="menuitemradio" data-cvx-v="' + t.v + '" style="--i:' + i + '">' +
+        '<span class="cvx-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        t.ic + "</svg></span>" +
+        "<b><span class=\"cvx-bn\">" + esc(t.bn) + "</span><span class=\"cvx-en\">" + esc(t.en) + "</span></b></a>"
+      );
+    }).join("");
+    return (
+      '<div class="dl-dd dl-cvx" data-dl-cvd>' +
+      '<button type="button" class="dl-dd-btn"' + (active ? ' aria-current="page"' : "") +
+      ' aria-haspopup="true" aria-expanded="false"><span class="cvx-bn">কভার পেজ</span><span class="cvx-en">Cover Page</span> ' +
+      ICON_CHEVRON + "</button>" +
+      '<div class="dl-menu dl-menu-cvx" role="menu">' + items + "</div></div>"
+    );
+  }
+
   /* ---------- header markup ---------- */
   function headerHTML() {
     var links = NAV.map(function (n) {
+      if (n.href === "cover.html") return coverDD();
       var cur = isCurrent(n.href) ? ' aria-current="page"' : "";
       return '<a href="' + n.href + '"' + cur + ">" + esc(n.label) + "</a>";
     });
@@ -171,18 +195,57 @@
     var burger = host.querySelector("[data-dl-burger]");
     var dd = host.querySelector("[data-dl-dd]");
     var ddBtn = dd && dd.querySelector(".dl-dd-btn");
+    var cvd = host.querySelector("[data-dl-cvd]");
+    var cvdBtn = cvd && cvd.querySelector(".dl-dd-btn");
 
     function setMenu(open) {
       nav.classList.toggle("is-open", open);
       burger.setAttribute("aria-expanded", String(open));
       burger.setAttribute("aria-label", open ? "মেনু বন্ধ করুন" : "মেনু খুলুন");
-      if (!open && dd) setDd(false);
+      if (!open) { if (dd) setDd(false); setCvd(false); }
     }
 
     function setDd(open) {
       if (!dd) return;
+      if (open) setCvd(false);
       dd.classList.toggle("open", open);
       ddBtn.setAttribute("aria-expanded", String(open));
+    }
+
+    function markActive() {
+      var act = document.querySelector('#ctList .ct-tab[aria-checked="true"]');
+      var v = act ? act.getAttribute("data-v") : "";
+      host.querySelectorAll("[data-cvx-v]").forEach(function (a) {
+        var on = a.getAttribute("data-cvx-v") === v;
+        a.classList.toggle("on", on);
+        a.setAttribute("aria-checked", String(on));
+      });
+    }
+
+    function setCvd(open) {
+      if (!cvd) return;
+      if (open) { if (dd) setDd(false); markActive(); }
+      cvd.classList.toggle("open", open);
+      cvdBtn.setAttribute("aria-expanded", String(open));
+    }
+
+    if (cvdBtn) {
+      cvdBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        setCvd(!cvd.classList.contains("open"));
+      });
+      cvd.querySelector(".dl-menu-cvx").addEventListener("click", function (e) {
+        var a = e.target.closest("a[data-cvx-v]");
+        if (!a) return;
+        var file = (location.pathname.split("/").pop() || "").toLowerCase();
+        if (file === "cover.html" || file === "") {
+          /* already on the cover page: pick the type here without a reload */
+          e.preventDefault();
+          var t = document.querySelector('#ctList .ct-tab[data-v="' + a.getAttribute("data-cvx-v") + '"]');
+          if (t) t.click();
+          setCvd(false);
+        }
+      });
     }
 
     burger.addEventListener("click", function (e) {
@@ -201,6 +264,7 @@
       if (!host.contains(e.target)) {
         setMenu(false);
         setDd(false);
+        setCvd(false);
       }
     });
 
@@ -208,18 +272,42 @@
       if (e.key === "Escape") {
         setMenu(false);
         setDd(false);
+        setCvd(false);
       }
     });
 
     /* close the mobile menu after a real link is chosen */
     nav.addEventListener("click", function (e) {
       var a = e.target.closest("a");
-      if (a && !(dd && ddBtn === a)) setMenu(false);
+      if (a && !(dd && ddBtn === a) && !(cvdBtn === a)) setMenu(false);
     });
   }
 
   /* ---------- boot ---------- */
+  var CVX_CSS = [
+    'html:not([data-lang="en"]) .cvx-en{display:none}',
+    'html[data-lang="en"] .cvx-bn{display:none}',
+    ".dl-menu-cvx{width:min(92vw,470px)}",
+    ".dl-menu-cvx a{position:relative;flex-direction:row;align-items:center;justify-content:flex-start;text-align:left;gap:10px;padding:10px 12px}",
+    ".dl-menu-cvx a b{display:flex;flex-direction:column;gap:2px;min-width:0}",
+    ".dl-menu-cvx a b span{display:block}",
+    ".cvx-ic{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#1C4A85,#0A1A33);box-shadow:0 4px 10px rgba(10,26,51,.28);transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s}",
+    ".cvx-ic svg{width:16px;height:16px}",
+    ".dl-menu-cvx a:hover .cvx-ic{transform:scale(1.08) rotate(-4deg)}",
+    ".dl-menu-cvx a.on{background:linear-gradient(135deg,rgba(217,178,106,.22),rgba(217,178,106,.04));box-shadow:inset 0 0 0 1px rgba(184,138,62,.6)}",
+    ".dl-menu-cvx a.on .cvx-ic{background:linear-gradient(135deg,#F3E6C4,#D9B26A 50%,#B88A3E);color:#1d1400}",
+    ".dl-cvx.open .dl-menu-cvx a,.dl-cvx:hover .dl-menu-cvx a{animation:cvxIn .42s calc(var(--i,0)*30ms + 30ms) cubic-bezier(.2,.8,.2,1) both}",
+    "@keyframes cvxIn{from{opacity:0;transform:translateY(8px) scale(.96)}}",
+    "@media(prefers-reduced-motion:reduce){.dl-cvx .dl-menu-cvx a,.cvx-ic{animation:none!important;transition:none!important}}"
+  ].join("");
+
   function mount() {
+    if (!document.getElementById("dlCvxCss")) {
+      var cst = document.createElement("style");
+      cst.id = "dlCvxCss";
+      cst.textContent = CVX_CSS;
+      document.head.appendChild(cst);
+    }
     var hdr = document.getElementById("hdr");
     if (!hdr) {
       hdr = document.createElement("div");
