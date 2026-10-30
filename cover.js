@@ -1352,7 +1352,7 @@ var t=TPLS[i],old=gInfo.querySelector('.gi:not(.out-l):not(.out-r)'),n=el('div',
 var h=el('div','gi-n');h.appendChild(el('b','t-en',t.en));h.appendChild(el('em','t-bn',t.bn));
 var p=el('p','gi-d');p.appendChild(el('span','t-en',t.de));p.appendChild(el('span','t-bn',t.db));
 n.appendChild(h);n.appendChild(p);
-if(old){old.className='gi '+(dir>0?'out-l':'out-r');setTimeout(function(){if(old.parentNode)old.parentNode.removeChild(old)},460)}
+if(old){old.className='gi '+(dir>0?'out-l':'out-r');if(gCoarse){if(old.parentNode)old.parentNode.removeChild(old)}else setTimeout(function(){if(old.parentNode)old.parentNode.removeChild(old)},460)}
 gInfo.appendChild(n);
 }
 /* স্প্রিং: স্লাইডের পজিশন আর খোলার "ছড়িয়ে পড়া" — দুটোই নরম ওভারশুটসহ থিতু হয় */
