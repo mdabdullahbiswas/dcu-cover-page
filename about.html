@@ -370,6 +370,10 @@ window.onLang=render;render();
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", endDrag);
 
+  /* stop the browser's own link drag, which swallows the mouse movement */
+  nav.addEventListener("dragstart", function (e) { e.preventDefault(); });
+  nav.querySelectorAll("a, img").forEach(function (el) { el.setAttribute("draggable", "false"); });
+
   /* a drag should not open a link */
   nav.addEventListener("click", function (e) {
     if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
@@ -392,11 +396,8 @@ window.onLang=render;render();
 })();
 </script>
 <script>
-/* Premium desktop scrolling for mouse users:
-   - wheel: eased glide, works both up and down
-   - hold left button on empty page space and drag to move the page,
-     then it keeps a little momentum on release
-   Touch, text selection, links, buttons, inputs and the menu bar keep their own behaviour. */
+/* Premium desktop wheel scrolling: eased glide, works both up and down.
+   Touch, inner scrollable areas and the menu bar keep their own behaviour. */
 (function () {
   var root = document.documentElement;
   if (!(window.matchMedia && matchMedia("(pointer:fine)").matches)) return;
@@ -406,14 +407,10 @@ window.onLang=render;render();
   var STEP = 0.9;
   var se = document.scrollingElement || root;
 
-  var style = document.createElement("style");
-  style.textContent = ".dl-grabbing,.dl-grabbing *{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important}";
-  document.head.appendChild(style);
 
   root.style.scrollBehavior = "auto";
 
   var target = 0, current = 0, running = false;
-  var dragging = false, dragY0 = 0, dragStart = 0, lastY = 0, lastT = 0, vel = 0;
 
   function pos() { return window.pageYOffset || se.scrollTop || 0; }
   function setPos(y) { window.scrollTo(0, y); }
@@ -443,12 +440,12 @@ window.onLang=render;render();
 
   /* keep in sync when the user scrolls another way (scrollbar, keys) */
   window.addEventListener("scroll", function () {
-    if (!running && !dragging) { current = target = pos(); }
+    if (!running) { current = target = pos(); }
   }, { passive: true });
 
   /* ----- wheel ----- */
   window.addEventListener("wheel", function (e) {
-    if (dragging || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     var t = e.target;
     if (t && t.closest && t.closest("textarea, select, input, [contenteditable], .mq, [data-native-scroll]")) return;
 
@@ -463,47 +460,6 @@ window.onLang=render;render();
     kick();
   }, { passive: false });
 
-  /* ----- hold and drag ----- */
-  var NO_DRAG = "a, button, input, textarea, select, label, .mq, [contenteditable], [data-native-scroll]";
-
-  window.addEventListener("pointerdown", function (e) {
-    if (e.pointerType !== "mouse" || e.button !== 0) return;
-    if (e.target.closest && e.target.closest(NO_DRAG)) return;
-    dragging = true;
-    running = false;
-    dragY0 = lastY = e.clientY;
-    dragStart = pos();
-    current = target = dragStart;
-    lastT = performance.now();
-    vel = 0;
-    root.classList.add("dl-grabbing");
-    e.preventDefault();
-  });
-
-  window.addEventListener("pointermove", function (e) {
-    if (!dragging) return;
-    var y = dragStart - (e.clientY - dragY0);
-    current = target = Math.max(0, y);
-    setPos(current);
-    var now = performance.now(), dt = Math.max(1, now - lastT);
-    vel = ((lastY - e.clientY) / dt) * 1000;
-    lastY = e.clientY;
-    lastT = now;
-  });
-
-  function endDrag() {
-    if (!dragging) return;
-    dragging = false;
-    root.classList.remove("dl-grabbing");
-    if (performance.now() - lastT > 100) vel = 0;
-    vel = Math.max(-3000, Math.min(3000, vel));
-    if (vel) {
-      target = Math.max(0, current + vel * 0.35);
-      kick();
-    }
-  }
-  window.addEventListener("pointerup", endDrag);
-  window.addEventListener("pointercancel", endDrag);
 })();
 </script>
 </body>
