@@ -15,7 +15,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',
 h2{margin:0 0 6px;font-size:20px}
 .tabs{display:flex;gap:8px;overflow-x:auto;margin:14px 0;padding-bottom:4px;scrollbar-width:thin}
 .tabs button{flex:none;border:1.5px solid var(--ln);background:var(--cd);color:var(--ink);border-radius:22px;padding:8px 16px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer}
-.tabs button.on{background:#0a2240;color:#e5a83b;border-color:#0a2240}
+.tabs button.on{background:var(--navy);color:var(--gold);border-color:var(--navy)}
 section{display:none}section.on{display:block}
 .bx{background:var(--cd);border:1px solid var(--ln);border-radius:12px;padding:16px;margin-bottom:14px}
 .g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
@@ -23,16 +23,16 @@ section{display:none}section.on{display:block}
 @media(max-width:760px){.g2{grid-template-columns:1fr}}
 label{display:block;font-size:13.5px;font-weight:600;margin-top:10px}
 input,select,textarea{width:100%;padding:9px 11px;border:1.5px solid var(--ln);border-radius:8px;background:var(--cd);color:var(--ink);font:inherit;margin-top:4px}
-input[type=range]{padding:0;accent-color:#0a2240}input[type=checkbox]{width:auto;margin:0 6px 0 0}
+input[type=range]{padding:0;accent-color:var(--navy)}input[type=checkbox]{width:auto;margin:0 6px 0 0}
 textarea{min-height:80px;resize:vertical}
-.bt{background:#0a2240;color:#e5a83b;border:0;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin:12px 8px 0 0}
+.bt{background:var(--navy);color:var(--gold);border:0;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin:12px 8px 0 0}
 .bs{background:transparent;color:var(--ink);border:1.5px solid var(--ln);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer}
 .ic{background:transparent;border:1.5px solid var(--ln);color:var(--ink);border-radius:6px;padding:4px 9px;cursor:pointer;font:inherit}
-:focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .hint{font-size:13px;color:var(--mu);margin-top:6px}
-.hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}.hd b{font-size:16px}.hd .gp{margin-left:auto;font-weight:700;color:#0a2240}
-body.dark .hd .gp{color:#e5a83b}
-.big{font-size:34px;font-weight:800;color:#0a2240;line-height:1.2}body.dark .big{color:#e5a83b}
+.hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}.hd b{font-size:16px}.hd .gp{margin-left:auto;font-weight:700;color:var(--navy)}
+body.dark .hd .gp{color:var(--gold)}
+.big{font-size:34px;font-weight:800;color:var(--navy);line-height:1.2}body.dark .big{color:var(--gold)}
 .cvw{text-align:center}.pad{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:10px}
 .pg{display:grid;grid-template-columns:repeat(3,46px);grid-auto-rows:42px;gap:4px}
 .pg i{display:block}
@@ -44,18 +44,18 @@ canvas{max-width:100%;height:auto;border-radius:10px;box-shadow:0 8px 28px rgba(
 .sc{overflow-x:auto}.sc canvas{width:100%;min-width:760px;box-shadow:none;border:1px solid var(--ln);border-radius:8px}
 .dy{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.dy label{margin:0;font-weight:500;border:1.5px solid var(--ln);border-radius:20px;padding:3px 12px;cursor:pointer;display:flex;align-items:center}
 .rw{display:grid;grid-template-columns:2fr .8fr .9fr 1fr auto;gap:6px;align-items:center;margin-top:6px}.rw input,.rw select{margin:0}
-.tvb{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(229,168,59,.12);border:1px dashed #e5a83b;font-weight:600;line-height:1.7}
-.gd{display:grid;grid-template-columns:48px 1fr 28px;gap:8px;align-items:center;margin-top:6px;font-size:13px}.gd i{display:block;height:10px;border-radius:5px;background:linear-gradient(90deg,#e5a83b,#0a2240)}
+.tvb{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(212,175,55,.12);border:1px dashed var(--gold);font-weight:600;line-height:1.7}
+.gd{display:grid;grid-template-columns:48px 1fr 28px;gap:8px;align-items:center;margin-top:6px;font-size:13px}.gd i{display:block;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--gold),var(--navy))}
 @media(max-width:760px){#cgl .rw{grid-template-columns:1fr 1fr 1fr auto;gap:8px}#cgl .rw>:first-child{grid-column:1/-1}#cgpa input,#cgpa select{font-size:16px;min-height:46px}#cgl .ic{min-height:46px;min-width:46px}#cgpa .bs,#cgpa .bt{min-height:44px}}
 .chart{display:flex;gap:8px;align-items:flex-end;height:130px;margin-top:10px;overflow-x:auto}
 .cb{flex:1;min-width:46px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:12px}
 .cb small{white-space:nowrap}
-.cb i{display:block;width:70%;background:linear-gradient(#e5a83b,#0a2240);border-radius:6px 6px 0 0;min-height:2px}
+.cb i{display:block;width:70%;background:linear-gradient(var(--gold),var(--navy));border-radius:6px 6px 0 0;min-height:2px}
 .pb{height:8px;background:var(--ln);border-radius:5px;overflow:hidden;margin:6px 0}.pb i{display:block;height:100%;background:#2e9e5b}
 .ck{display:flex;align-items:center;margin:3px 0;font-weight:400;font-size:14px}
-table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px solid var(--ln);padding:6px;text-align:center}th{background:#0a2240;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px solid var(--ln);padding:6px;text-align:center}th{background:var(--navy);color:#fff}
 .fi{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--ln);border-radius:8px;padding:6px 10px;margin-top:6px;font-size:14px}.fi>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tmd{font:800 54px 'Montserrat',sans-serif;text-align:center;color:#0a2240}body.dark .tmd{color:#e5a83b}
+.tmd{font:800 54px 'Montserrat',sans-serif;text-align:center;color:var(--navy)}body.dark .tmd{color:var(--gold)}
 #pm{font-weight:600}
 @media print{.np,.tabs{display:none!important}body{background:#fff}.bx{border:0}}
 .kh{cursor:pointer;display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed var(--ln);font-size:14px}
@@ -65,12 +65,12 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 #cvp .sc{margin-bottom:12px}#cvp .jt{font-size:15px;font-weight:600;margin-top:3px}
 #cvp .it{margin-bottom:9px;break-inside:avoid}#cvp .r1{display:flex;justify-content:space-between;gap:10px}#cvp .r1 span{color:#5d6b7a;font-size:12.5px;white-space:nowrap}#cvp .r2{color:#5d6b7a;font-style:italic}
 #cvp .chs{display:flex;flex-wrap:wrap;gap:6px}#cvp .ch{border:1px solid #cfd7e0;border-radius:14px;padding:1px 10px;font-size:12.5px}
-#cvp .ph{width:112px;height:112px;object-fit:cover;border-radius:50%;border:3px solid #e5a83b}
-.cv1{padding:44px 52px}.cv1 h1{color:#0a2240}.cv1 .hd1{border-bottom:3px solid #e5a83b;padding-bottom:14px;margin-bottom:14px;overflow:hidden}.cv1 .ph{float:right;margin-left:14px}
-.cv1 h3{color:#0a2240;border-bottom:1.5px solid #cfd7e0;padding-bottom:3px;text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px}.cv1 .ct{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:12.5px;color:#4b5a6a;margin-top:6px}
-#cvp.cv2{display:grid;grid-template-columns:250px 1fr;background:linear-gradient(90deg,#0a2240 0 250px,#fff 250px);align-items:start}
-.cv2 aside{padding:36px 22px;color:#e8eef7;min-width:0}.cv2 aside .ph{display:block;margin:0 auto 18px;width:150px;height:150px}.cv2 aside h3{color:#e5a83b;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #ffffff40;padding-bottom:3px;margin-top:16px}
-.cv2 aside .ci{font-size:12.5px;margin-bottom:5px;word-break:break-word}.cv2 .ch{border-color:#ffffff66;color:#fff}.cv2 main{padding:40px 34px;min-width:0}.cv2 h1{color:#0a2240}.cv2 .jt{color:#a8741a;margin-bottom:14px}.cv2 main h3{color:#0a2240;border-bottom:2px solid #e5a83b;padding-bottom:3px;text-transform:uppercase;letter-spacing:1px;margin-top:14px}
+#cvp .ph{width:112px;height:112px;object-fit:cover;border-radius:50%;border:3px solid var(--gold)}
+.cv1{padding:44px 52px}.cv1 h1{color:var(--navy)}.cv1 .hd1{border-bottom:3px solid var(--gold);padding-bottom:14px;margin-bottom:14px;overflow:hidden}.cv1 .ph{float:right;margin-left:14px}
+.cv1 h3{color:var(--navy);border-bottom:1.5px solid #cfd7e0;padding-bottom:3px;text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px}.cv1 .ct{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:12.5px;color:#4b5a6a;margin-top:6px}
+#cvp.cv2{display:grid;grid-template-columns:250px 1fr;background:linear-gradient(90deg,var(--navy) 0 250px,#fff 250px);align-items:start}
+.cv2 aside{padding:36px 22px;color:#e8eef7;min-width:0}.cv2 aside .ph{display:block;margin:0 auto 18px;width:150px;height:150px}.cv2 aside h3{color:var(--gold);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #ffffff40;padding-bottom:3px;margin-top:16px}
+.cv2 aside .ci{font-size:12.5px;margin-bottom:5px;word-break:break-word}.cv2 .ch{border-color:#ffffff66;color:#fff}.cv2 main{padding:40px 34px;min-width:0}.cv2 h1{color:var(--navy)}.cv2 .jt{color:#a8741a;margin-bottom:14px}.cv2 main h3{color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:3px;text-transform:uppercase;letter-spacing:1px;margin-top:14px}
 .cv3{padding:46px 58px;text-align:center}.cv3 .hd1{border-bottom:1px solid #a8741a;padding-bottom:16px;margin-bottom:6px;position:relative}.cv3 .hd1:after{content:'';display:block;height:1px;background:#a8741a;margin-top:3px}.cv3 .ph{margin:0 auto 10px;display:block}
 .cv3 h1{letter-spacing:3px;text-transform:uppercase;color:#1c2733}.cv3 .jt{color:#a8741a}.cv3 .ct{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 14px;font-size:12.5px;margin-top:6px;color:#4b5a6a}
 .cv3 h3{color:#a8741a;letter-spacing:2px;text-transform:uppercase;margin:16px 0 8px;font-size:13px}.cv3 .sc{text-align:left}.cv3 .chs{justify-content:center}.cv3 .sc:has(.chs){text-align:center}
@@ -86,14 +86,15 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{border:1px soli
 .rc textarea{min-height:56px}.rc select{margin-top:4px;font-size:12.5px}
 .sgc{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.sgc b{width:100%;font-size:12px;opacity:.75;margin-top:5px}
 .sgb{width:auto;padding:4px 11px;font-size:12px;border-radius:999px;border:1px solid rgba(128,128,128,.55);background:transparent;color:inherit;cursor:pointer;margin:0;box-shadow:none}
-.sgb.on{background:#0a2240;color:#e5a83b;border-color:#0a2240}
+.sgb.on{background:var(--navy);color:var(--gold);border-color:var(--navy)}
 #sgd{position:fixed;display:none;z-index:99999;max-height:240px;overflow-y:auto;background:#fff;color:#222;border:1px solid #cfd8dc;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.22);font-size:14px;line-height:1.4}
 .sgi{padding:9px 12px;cursor:pointer;border-bottom:1px solid rgba(128,128,128,.15);white-space:normal;overflow-wrap:anywhere}.sgi:last-child{border-bottom:0}
-.sgi:hover,.sgi.on{background:#0a2240;color:#e5a83b}
+.sgi:hover,.sgi.on{background:var(--navy);color:var(--gold)}
 body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 .sgp{width:auto;margin:6px 0 0;padding:6px 12px;font-size:12.5px;border-radius:8px;cursor:pointer}
 @media(max-width:560px){.rg{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="premium.css">
 </head>
 <body data-page="tools">
 <div id="hdr"></div>
@@ -104,7 +105,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 </div>
 
 <!-- ============ শেয়ার কার্ড ============ -->
-<section id="card"><div class="g2">
+<section id="card" class="sec-1"><div class="g2">
 <div class="bx"><h2 class="t">শেয়ার কার্ড তৈরি করুন|Create Your Share Card</h2>
 <p class="hint t">নিজের পরিচয়ের একটি সুন্দর কার্ড বানিয়ে ফেসবুক, ইনস্টাগ্রাম বা হোয়াটসঅ্যাপে শেয়ার করুন।|Make a polished card and share it on Facebook, Instagram or WhatsApp.</p>
 <label class="t">নাম|Name</label><input id="cn" data-p="আপনার নাম|Your name" maxlength="60">
@@ -129,7 +130,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 </div></section>
 
 <!-- ============ ক্লাস রুটিন ============ -->
-<section id="routine">
+<section id="routine" class="sec-2">
 <div class="bx" id="rtoday"></div>
 <div class="bx np"><h2 class="t">ক্লাস যোগ করুন|Add a Class</h2>
 <div class="g3"><div><label class="t">কোর্স|Course</label><input id="rc" data-p="যেমন: CSE-101|e.g. CSE-101" maxlength="40"></div><div><label class="t">শিক্ষক (ঐচ্ছিক)|Teacher (optional)</label><input id="rt" maxlength="40"></div><div><label class="t">রুম (ঐচ্ছিক)|Room (optional)</label><input id="rr" maxlength="20"></div>
@@ -142,7 +143,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 </section>
 
 <!-- ============ CGPA ============ -->
-<section id="cgpa">
+<section id="cgpa" class="sec-3">
 <div class="g2"><div class="bx"><div class="hint t">মোট CGPA|Cumulative CGPA</div><div class="big" id="cgv">—</div><div id="cgcl" style="font-weight:700"></div><div class="hint"><span class="t">মোট ক্রেডিট|Total credits</span>: <b id="cgc">0</b> · <span class="t">সেরা ইয়ার|Best year</span>: <b id="cgb">—</b></div>
 <div class="chart" id="cgch" aria-label="GPA chart"></div><div id="cgd"></div>
 <label class="t" style="display:none">গ্রেড স্কেল|Grade scale</label><select id="cgs" style="display:none"><option value="ugc" class="t">UGC স্কেল (A+ = ৪.০০)|UGC scale (A+ = 4.00)</option><option value="alt" class="t">বিকল্প ৪.০০ স্কেল (A = ৪.০০)|Alternative 4.00 scale (A = 4.00)</option></select>
@@ -177,7 +178,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 </section>
 
 <!-- ============ পরীক্ষা প্ল্যানার ============ -->
-<section id="exam">
+<section id="exam" class="sec-4">
 <div class="g2"><div class="bx np"><h2 class="t">পরীক্ষা যোগ করুন|Add an Exam</h2>
 <label class="t">কোর্স / পরীক্ষার নাম|Course / exam name</label><input id="xc" data-p="যেমন: CSE-101 মিডটার্ম|e.g. CSE-101 Midterm" maxlength="50">
 <div class="g3"><div><label class="t">তারিখ|Date</label><input id="xd" type="date"></div><div><label class="t">সময় (ঐচ্ছিক)|Time (optional)</label><input id="xt" type="time"></div><div><label class="t">কাঠিন্য|Difficulty</label><select id="xf"><option value="1" class="t">সহজ|Easy</option><option value="2" selected class="t">মধ্যম|Medium</option><option value="3" class="t">কঠিন|Hard</option></select></div></div>
@@ -191,7 +192,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 </section>
 
 <!-- ============ PDF ============ -->
-<section id="pdf"><p class="hint" id="pm" aria-live="polite"></p>
+<section id="pdf" class="sec-5"><p class="hint" id="pm" aria-live="polite"></p>
 <div class="g2">
 <div class="bx"><h2 class="t">ছবি থেকে PDF|Images to PDF</h2><label class="t">ছবি যোগ করুন (একাধিক)|Add images (multiple)</label><input id="pif" type="file" accept="image/*" multiple><div id="imgl"></div>
 <div class="g3"><div><label class="t">পেজ সাইজ|Page size</label><select id="psz"><option value="a4">A4</option><option value="let">Letter</option><option value="fit" class="t">ছবির মাপ|Fit to image</option></select></div><div><label class="t">মার্জিন|Margin</label><select id="pmg"><option value="0" class="t">নেই|None</option><option value="20" selected class="t">ছোট|Small</option><option value="40" class="t">বড়|Large</option></select></div><div><label class="t">মান|Quality</label><select id="pq"><option value="60" class="t">ছোট ফাইল|Small file</option><option value="80" selected class="t">সুষম|Balanced</option><option value="92" class="t">সেরা মান|Best quality</option></select></div></div>
@@ -210,7 +211,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 </section>
 
 <!-- ============ প্রোফাইল ফ্রেম ============ -->
-<section id="frame"><div class="g2">
+<section id="frame" class="sec-6"><div class="g2">
 <div class="bx"><h2 class="t">প্রোফাইল ছবির ফ্রেম|Profile Photo Frame</h2>
 <p class="hint t">ফেসবুক, ইনস্টাগ্রাম বা হোয়াটসঅ্যাপের প্রোফাইল ছবির জন্য গোল ফ্রেম বানান। ফ্রেমের লেখা বাঁকানো রিংয়ের ওপর বসে।|Make a round frame for your Facebook, Instagram or WhatsApp profile picture. The text curves along the ring.</p>
 <label class="t">ছবি|Photo</label><input id="ff" type="file" accept="image/*">
@@ -225,7 +226,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <div class="cvw"><div class="cw"><canvas id="fcv" width="1080" height="1080"></canvas><div class="hit" id="fhit" style="left:10%;top:10%;width:80%;height:80%" title="ছবি টেনে সরান | Drag the photo"></div></div></div></div></section>
 
 <!-- ============ সিভি বিল্ডার ============ -->
-<section id="cv"><div class="g2">
+<section id="cv" class="sec-7"><div class="g2">
 <div class="bx np"><h2 class="t">সিভি বিল্ডার|CV Builder</h2>
 <p class="hint t">তথ্য পূরণ করলে পাশে সরাসরি A4 আকারের সিভি প্রস্তুত হবে। আপনার তথ্য কেবল এই ব্রাউজারেই সংরক্ষিত থাকে।|Your A4 résumé is generated live beside the form. Your information is stored only in this browser.</p>
 <div class="g3"><div><label class="t">টেমপ্লেট নির্বাচন|Select Template</label><select id="cvt"><option value="1" class="t">ক্লাসিক|Classic</option><option value="2" class="t">মডার্ন (সাইডবার)|Modern (Sidebar)</option><option value="3" class="t">এলিগ্যান্ট|Elegant</option></select></div>
@@ -249,7 +250,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <div id="cvw"><div id="cvp"></div></div></div></section>
 
 <!-- ============ সায়েন্টিফিক ক্যালকুলেটর ============ -->
-<section id="calc"><div class="g2"><div class="bx wmx">
+<section id="calc" class="sec-8"><div class="g2"><div class="bx wmx">
 <div class="wm" id="wm">
 <div class="wtop"><div class="wbr"><b>DCU Calculator</b><small class="t">ঢাকা সেন্ট্রাল ইউনিভার্সিটি|Dhaka Central University</small><small class="t">সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator</small></div><div class="wsr"><i class="sol"></i><span>DCU Unofficial</span></div></div>
 <div class="wlcd" id="wlcd"><div id="wst"></div><div id="wl1"></div><div id="wl2">0</div></div>
@@ -263,7 +264,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <div class="bx"><h2 class="t">ইতিহাস|History</h2><div id="kh"></div><button class="bs t" id="khc" style="margin-top:10px">ইতিহাস মুছুন|Clear History</button></div></div></section>
 
 <!-- ============ রেজাল্ট ============ -->
-<section id="result"><div class="bx"><h2 class="t">📊 রেজাল্ট দেখুন|📊 Check Your Result</h2>
+<section id="result" class="sec-1"><div class="bx"><h2 class="t">📊 রেজাল্ট দেখুন|📊 Check Your Result</h2>
 <p class="t">নিচের বাটনে চাপলে অফিশিয়াল রেজাল্ট পোর্টাল নতুন ট্যাবে খুলবে। পোর্টালে চাওয়া তথ্য (যেমন রোল বা রেজিস্ট্রেশন নম্বর) হাতের কাছে রাখুন।|The button opens the result portal in a new tab. Keep the details the portal asks for (such as roll or registration number) ready.</p>
 <a class="bt" id="rl" href="#" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none"><span class="t">রেজাল্ট পোর্টালে যান|Go to Result Portal</span> ↗</a>
 <button class="bs t" id="rcp" style="margin-left:6px">লিংক কপি করুন|Copy Link</button>
@@ -722,5 +723,6 @@ $('#rcp').onclick=async()=>{try{await navigator.clipboard.writeText($RESULT)}cat
 window.onLang=()=>{$$('textarea[data-p]').forEach(e=>e.placeholder=L(e.dataset.p));card();frame();rtR();cgR();exR();fl('img');fl('mrg');tstop();cvR();cvUI();khR();resR();rend()};
 window.onLang();tdraw();$('#cvl').dispatchEvent(new Event('change'));
 </script>
+<script src="premium.js"></script>
 </body>
 </html>
