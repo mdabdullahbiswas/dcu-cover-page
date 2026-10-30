@@ -1228,6 +1228,16 @@ c.style.setProperty('--p',gColors[g.i].p);c.style.setProperty('--a',gColors[g.i]
 g.th.appendChild(c);g.sh=c;
 }
 function fitCard(g){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}}
+/* ফোনে প্রতিটি টেমপ্লেটের একবারের ছবি (একই রেন্ডারার, লাইভ শিট নয়): সোয়াইপের সময় এটাই দেখানো হয়, তাই ভারী পেইন্ট হয় না */
+function snapCard(g){
+if(!gCoarse||g.snapped||g.snapBusy||!g.sh)return;
+g.snapBusy=true;
+snap(1.5,g.th).then(function(cv){
+g.snapBusy=false;
+if(!gOpen||g.snapped)return;
+cv.className='snap';g.th.appendChild(cv);g.snapped=1;g.el.classList.add('snapped');
+}).catch(function(){g.snapBusy=false});
+}
 var gQ=[],gQT=0;
 /* বাকি কার্ডগুলো ব্রাউজার অলস থাকলে একটি একটি করে তৈরি ও মাপা হয় — সোয়াইপ/অ্যানিমেশনের সময় কিছুই হয় না */
 function gPump(){
@@ -1237,7 +1247,7 @@ if(gRaf){gQT=setTimeout(function(){gQT=0;gPump()},150);return}
 var run=function(){
 gQT=0;
 if(!gOpen||gRaf){if(gOpen&&gQ.length)gPump();return}
-while(gQ.length){var g=gSl[gQ.shift()];if(g&&!g.fit){fitCard(g);break}}
+while(gQ.length){var g=gSl[gQ.shift()];if(g){if(!g.fit)fitCard(g);if(!g.snapped&&!g.snapBusy){snapCard(g);break}}}
 if(gQ.length)gPump();
 };
 if(window.requestIdleCallback)gQT=requestIdleCallback(run,{timeout:400});
