@@ -7,6 +7,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#0A1A33">
 <script>(function(){var t=null;try{t=localStorage.getItem('cps-theme')}catch(e){}if(t!=='dark'&&t!=='light')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.setAttribute('data-theme',t)})();</script>
+<script>(function(){try{var n=navigator,m=n.deviceMemory||8,c=n.hardwareConcurrency||8,co=window.matchMedia&&matchMedia('(pointer:coarse)').matches,sd=n.connection&&n.connection.saveData;if(m<=4||c<=4||sd||co)document.documentElement.classList.add('lite')}catch(e){}})();</script>
 <title>Cover Page Studio · কভার পেজ স্টুডিও</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1425,8 +1426,11 @@ try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
 var init=Object.assign({},DEF,saved||{});
 set(init);
 try{var lg=localStorage.getItem(LKEY);if(lg)setLogo(lg);else setLogo('./logo.png')}catch(e){setLogo('./logo.png')}
-$('form').addEventListener('input',render);
-$('form').addEventListener('change',render);
+var rT=0,rLite=document.documentElement.classList.contains('lite')||(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
+function renderSoon(){clearTimeout(rT);rT=setTimeout(function(){rT=0;requestAnimationFrame(render)},rLite?110:45)}
+function renderNow(){if(rT){clearTimeout(rT);rT=0}render()}
+$('form').addEventListener('input',renderSoon);
+$('form').addEventListener('change',renderNow);
 $('sws').addEventListener('click',function(e){var b=e.target.closest('.sw');if(!b||!gOpen)return;gSetColors(b.dataset.p,b.dataset.a,true)});
 function gCust(){if(gOpen)gSetColors($('gcPri').value,$('gcAcc').value,false)}
 $('gcPri').addEventListener('input',gCust);$('gcAcc').addEventListener('input',gCust);
@@ -2858,5 +2862,36 @@ update();
  fill();
 })();
 </script>
+<style id="perf">
+/* ===== Performance layer: কম কাজ = বেশি স্মুথ ===== */
+html{-webkit-tap-highlight-color:transparent;scroll-behavior:auto}
+button,.btn,.bt,.sw,.ui,.ct-tab,.dtx-btn,.dtx-chip,.dp-d,.dp-m,select,input,textarea,label{touch-action:manipulation}
+.sheet,.page{contain:layout paint;transform:translateZ(0)}
+.th,.gs-card{contain:strict}
+.dp-pop,.mbox,.toast{will-change:auto}
+@media(hover:none),(pointer:coarse),(max-width:960px){
+ html.lite *,html.lite *::before,html.lite *::after{animation-iteration-count:1!important}
+ body::before{display:none!important}
+ .top,.modal,.mbox,.pv .pbar,.gal-ct,.gal-x,.gal-nav,.gal .sws{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+ .top{background:var(--surface,#fff)!important}
+ .modal{background:rgba(10,15,30,.72)!important}
+ .pv .pbar{background:var(--bg,#eef1f6)!important}
+ .card,.card>*{animation:none!important}
+ html.js .card.rv{opacity:1!important;transform:none!important}
+ .card::before,.card::after{animation:none!important;transition:none!important}
+ .card:hover{transform:none!important}
+ .hero h1{animation:none!important;background-size:100% 100%!important}
+ .pwrap::before,.mark::after,.ct-ind::after,.btn::after,.sheet::after{animation:none!important}
+ .fab .fab-go::before,.fab .fab-go .eye,.btn.fab::after{animation:none!important}
+ .sheet .ink{animation:none!important}
+ .sheet.swap,.sheet.swap *{animation-duration:.01ms!important;animation-delay:0s!important}
+ .chip,.ct-tab{animation:none!important}
+ .card{box-shadow:0 6px 16px rgba(15,23,42,.08)!important}
+ .pwrap{box-shadow:0 6px 18px rgba(10,26,51,.1)!important}
+ .gal-bg{animation:none!important}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html.lite .sheet{box-shadow:0 6px 18px rgba(10,26,51,.18),0 0 0 1px #e3e8ef!important}
+</style>
 </body>
 </html>
