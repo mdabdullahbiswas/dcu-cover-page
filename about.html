@@ -49,9 +49,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',
 .ln svg{width:16px;height:16px;flex:none}
 
 /* marquee */
-.mq{overflow:hidden;border-radius:14px;margin:0 0 16px;background:var(--cd);border:1px solid var(--ln);padding:11px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.mt{display:flex;width:max-content;animation:mq 26s linear infinite}
-@media (hover:hover) and (pointer:fine){.mq:hover .mt{animation-play-state:paused}}
+.mq{overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:14px;margin:0 0 16px;background:var(--cd);border:1px solid var(--ln);padding:11px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mt{display:flex;width:max-content;animation:none;will-change:transform}
+@media (hover:hover) and (pointer:fine){}
 .mt a{position:relative;padding:4px 22px;font-weight:700;font-size:14px;color:var(--mu);white-space:nowrap;text-decoration:none;cursor:pointer;transition:color .2s,transform .2s}
 .mt a:before{content:"✦";color:var(--gd);margin-right:22px;display:inline-block;transition:transform .4s}
 .mt a:after{content:"";position:absolute;left:44px;right:22px;bottom:0;height:2px;border-radius:2px;background:var(--gd);transform:scaleX(0);transform-origin:left;transition:transform .25s}
@@ -60,6 +60,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',
 .mt a:hover:after,.mt a:focus-visible:after{transform:scaleX(1)}
 .mt a:focus-visible{outline:2px solid var(--gd);outline-offset:2px;border-radius:8px}
 .mq:has(a:focus-visible) .mt{animation-play-state:paused}
+.mq.is-dragging{cursor:grabbing}
+.mq.is-dragging a{pointer-events:none}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* stats */
@@ -122,7 +124,63 @@ html{scroll-behavior:smooth;scroll-padding-top:80px}
 <link rel="stylesheet" href="dcu-lang.css">
 <script src="dcu-layout.js" defer></script>
 <script src="dcu-lang.js" defer></script>
-<script src="site-shared.js"></script>
+<script>
+/* site-shared.js
+ * Shared helpers used by about.html, feedback.html and tools.html.
+ * Load in <head> BEFORE the page's own script:
+ *   (include it in the page head)
+ *
+ * $L(s)   : "বাংলা|English" -> text for the current language
+ * L       : same as $L (short name used by the pages)
+ * $DEV    : developer profile used by About and Feedback
+ * $SOC    : builds a link chip HTML string
+ */
+(function () {
+  "use strict";
+
+  var KEY = "dcu-lang";
+
+  function currentLang() {
+    var l = document.documentElement.getAttribute("data-lang");
+    if (l === "en" || l === "bn") return l;
+    try { return localStorage.getItem(KEY) === "en" ? "en" : "bn"; }
+    catch (e) { return "bn"; }
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function pick(s) {
+    var str = String(s == null ? "" : s);
+    var i = str.indexOf("|");
+    if (i < 0) return str;
+    return currentLang() === "en" ? str.slice(i + 1) : str.slice(0, i);
+  }
+
+  window.$L = pick;
+  window.L = pick;
+
+  /* developer profile — add your links/email here when you want them shown.
+   * links: [ ["LinkedIn", "https://..."], ... ]   email: "you@example.com"
+   * (Links whose label/URL contains "github" are hidden by the About page.) */
+  window.$DEV = {
+    /* bilingual name: shows Bangla or English depending on the language switch */
+    get name() { return pick("মোঃ আব্দুল্লাহ বিশ্বাস|Md Abdullah Biswas"); },
+    links: [],
+    email: ""
+  };
+
+  window.$SOC = function (key, href, label, external) {
+    var text = label || key;
+    var target = external === false ? "" : ' target="_blank" rel="noopener"';
+    return '<a href="' + esc(href) + '"' + target + ">" + esc(text) + "</a>";
+  };
+})();
+
+</script>
 </head>
 <body data-page="about">
 <div class="sp" id="sp"></div>
@@ -241,5 +299,97 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)kickMarque
 window.onLang=render;render();
 </script>
 <script src="premium.js"></script>
+<script>
+/* Premium marquee: drifts on its own, can be dragged / swiped / scrolled,
+   keeps momentum after release, and pauses on hover or keyboard focus. */
+(function () {
+  var nav = document.querySelector("nav.mq");
+  var track = nav && nav.querySelector(".mt");
+  if (!track) return;
+
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SPEED = reduce ? 0 : 38;          // px per second while idle
+  var x = 0, v = 0, lastT = 0;
+  var dragging = false, moved = false, startX = 0, startOff = 0, lastX = 0, lastTs = 0;
+  var hovering = false, focused = false;
+
+  function half() { return track.scrollWidth / 2 || 1; }
+  function wrap() {
+    var h = half();
+    while (x <= -h) x += h;
+    while (x > 0) x -= h;
+  }
+  function draw() { track.style.transform = "translate3d(" + x.toFixed(2) + "px,0,0)"; }
+
+  function frame(t) {
+    if (!lastT) lastT = t;
+    var dt = Math.min(64, t - lastT) / 1000;
+    lastT = t;
+    if (!dragging) {
+      if (Math.abs(v) > 4) {
+        x += v * dt;
+        v *= Math.pow(0.05, dt);           // momentum decays smoothly
+      } else {
+        v = 0;
+        if (!hovering && !focused) x -= SPEED * dt;
+      }
+    }
+    wrap();
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  nav.addEventListener("pointerdown", function (e) {
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    dragging = true; moved = false;
+    startX = lastX = e.clientX;
+    startOff = x;
+    lastTs = performance.now();
+    v = 0;
+    nav.classList.add("is-dragging");
+  });
+
+  window.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    var dx = e.clientX - startX;
+    if (Math.abs(dx) > 6) moved = true;
+    x = startOff + dx;
+    var now = performance.now(), dtm = Math.max(1, now - lastTs);
+    v = ((e.clientX - lastX) / dtm) * 1000;   // px/s
+    lastX = e.clientX; lastTs = now;
+    wrap(); draw();
+  });
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    nav.classList.remove("is-dragging");
+    v = Math.max(-2200, Math.min(2200, v));
+    if (performance.now() - lastTs > 90) v = 0;   // held still before release
+  }
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
+
+  /* a drag should not open a link */
+  nav.addEventListener("click", function (e) {
+    if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+  }, true);
+
+  /* trackpad / shift+wheel moves it too */
+  nav.addEventListener("wheel", function (e) {
+    var dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.6;
+    x -= dx; v = 0; wrap(); draw();
+  }, { passive: true });
+
+  if (window.matchMedia("(hover:hover) and (pointer:fine)").matches) {
+    nav.addEventListener("mouseenter", function () { hovering = true; });
+    nav.addEventListener("mouseleave", function () { hovering = false; });
+  }
+  nav.addEventListener("focusin", function () { focused = true; });
+  nav.addEventListener("focusout", function () { focused = false; });
+
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
