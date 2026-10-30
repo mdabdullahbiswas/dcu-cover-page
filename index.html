@@ -257,8 +257,8 @@ html[data-ui-lang="bn"] .form[data-cov] .card h3::after{content:var(--ty-bn,"");
     <datalist id="deptList">
     </datalist>
     <div class="g2 tc-hide">
-      <div><label for="courseCode"><span class="t-en">Course code</span><em class="t-bn">কোর্স কোড</em></label><input id="courseCode" type="text" placeholder="e.g. CSE-101" autocomplete="off"></div>
-      <div><label for="courseName"><span class="t-en">Course name</span><em class="t-bn">কোর্সের নাম</em></label><input id="courseName" type="text" placeholder="e.g. Programming" autocomplete="off"></div>
+      <div><label for="courseCode"><span class="t-en">Course code</span><em class="t-bn">কোর্স কোড</em></label><input id="courseCode" type="text" list="courseCodeList" placeholder="e.g. CSE-101" autocomplete="off"><datalist id="courseCodeList"></datalist></div>
+      <div><label for="courseName"><span class="t-en">Course name</span><em class="t-bn">কোর্সের নাম</em></label><input id="courseName" type="text" list="courseNameList" placeholder="e.g. Programming" autocomplete="off"><datalist id="courseNameList"></datalist></div>
     </div>
     <label for="topic"><span class="t-en" data-d="Title of the work" data-a="Title of the work" data-ak="Title of the work" data-tc="Title of the work">Topic</span><em class="t-bn" data-d="কাজের শিরোনাম" data-a="কাজের শিরোনাম" data-ak="কাজের শিরোনাম" data-tc="কাজের শিরোনাম">বিষয়</em></label>
     <input id="topic" type="text" placeholder="e.g. Introduction to Artificial Intelligence" autocomplete="off">
@@ -692,7 +692,7 @@ var RULES={
 uni:function(x){if(x.length<3)return M('err','Name is too short','নামটি খুব ছোট',1);if(!HAS.test(x))return M('err','Use letters, not only numbers or symbols','শুধু সংখ্যা বা চিহ্ন নয়, অক্ষর ব্যবহার করুন');if(DIGR.test(x))return M('tip','University names rarely contain numbers','বিশ্ববিদ্যালয়ের নামে সাধারণত সংখ্যা থাকে না');if(x.length>70)return M('tip','Very long name — the text will shrink on the cover','নাম খুব লম্বা — কভারে লেখা ছোট হবে')},
 campus:function(x){if(x.length<2)return M('err','Too short','খুব ছোট',1);if(x.length>40)return M('tip','Long campus name may wrap','ক্যাম্পাসের নাম লম্বা, লাইন ভাঙতে পারে')},
 dept:function(x){if(x.length<3)return M('err','Name is too short','নামটি খুব ছোট',1);if(!HAS.test(x))return M('err','Use letters, not only numbers or symbols','শুধু সংখ্যা বা চিহ্ন নয়, অক্ষর ব্যবহার করুন');if(!/^(department|dept|school|faculty|institute|centre|center|বিভাগ|ডিপার্টমেন্ট)/i.test(x))return M('tip','Usually written as "DEPARTMENT OF …"','সাধারণত "DEPARTMENT OF …" আকারে লেখা হয়',1)},
-courseCode:function(x){if(!/^[A-Za-z]{2,6}[\s-]?\d{2,4}[A-Za-z]?$/.test(nd(x)))return M('tip','Course codes look like CSE-101 or ENG 201','কোর্স কোড হয় CSE-101 বা ENG 201 এর মতো',1)},
+courseCode:function(x){if(!/^(\d{3,8}(\/\d{3,8})?|[A-Za-z]{2,6}[\s-]?\d{2,6}[A-Za-z]?(\/\d{2,6})?)$/.test(nd(x).trim()))return M('tip','Course codes look like CSE-101, ENG 201 or 457845','কোর্স কোড হয় CSE-101, ENG 201 বা 457845 এর মতো',1)},
 courseName:function(x){if(x.length<2)return M('err','Name is too short','নামটি খুব ছোট',1);if(!HAS.test(x))return M('err','Course name needs letters','কোর্সের নামে অক্ষর থাকতে হবে')},
 topic:function(x){if(x.length<3)return M('err','Topic is too short','বিষয়টি খুব ছোট',1);if(!HAS.test(x))return M('err','Topic needs letters','বিষয়ে অক্ষর থাকতে হবে');if(x.length>120)return M('tip','Very long topic — the text will shrink','বিষয় খুব লম্বা — লেখা ছোট হবে')},
 sName:function(x){if(DIGR.test(x))return M('err','A name should not contain numbers','নামে সংখ্যা থাকবে না');if(/[^A-Za-z\u0980-\u09FF\s.\-']/.test(x))return M('err','Remove special characters','বিশেষ চিহ্ন বাদ দিন');if(x.length<3)return M('err','Name is too short','নামটি খুব ছোট',1);if(x.split(/\s+/).length<2)return M('tip','Add your full name (first and last)','পূর্ণ নাম লিখুন (প্রথম ও শেষ অংশ)',1)},
@@ -2821,6 +2821,41 @@ update();
  }
  fill();
  var lg=$('lang');if(lg)lg.addEventListener('change',fill);
+})();
+</script>
+<script>
+/* ===== বিভাগভিত্তিক কোর্স তালিকা (কোড + নাম) — ডিপার্টমেন্ট বাছলে কোর্স সাজেশন আসে ===== */
+/* সূত্র: ঢাবি অধিভুক্ত ৭ কলেজের এনইউ-ভিত্তিক অনার্স ২য় বর্ষের পেপার কোড। ডিসিইউর অফিশিয়াল তালিকা পেলে শুধু এই COURSES অবজেক্টে যোগ/সংশোধন করুন। */
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ var ENG=['221109','English (Compulsory)'],POL=['221909','Political Organization and Political System of UK and USA'],SOC=['222009','Sociology of Bangladesh'],BSC=['222115','Bangladesh Society and Culture'];
+ var COURSES={
+  'BANGLA':[['221001','History of Bengali Literature-1 (Ancient and Medieval)'],['221003','Poetry of Medieval Age'],['221005','Bengali Poetry-2'],['221007','Bengali Drama-1'],SOC,BSC,POL,ENG],
+  'ENGLISH':[['221101','Introduction to Drama'],['221103','Romantic Poetry'],['221105','Advanced Reading and Writing'],['221107','History of English Literature'],SOC,BSC,POL],
+  'ARABIC':[['221201','Classical Poetry'],['221203','Communicative Arabic-2'],['221205','Arabic Grammar (Nahu)'],['221207','History of Arabic Literature (750-1258 A.D)'],['221209','Islamic Ideology-2'],POL,ENG],
+  'ECONOMICS':[['222201','Intermediate Microeconomics'],['222203','Mathematical Economics'],['222205','Introduction to Business'],['222207','Computer and Information Technology'],POL,SOC,BSC,ENG],
+  'CHEMISTRY':[['222801','Physical Chemistry-II'],['222803','Organic Chemistry'],['222805','Chemistry of the Representative Elements'],['222806','Quantitative Inorganic Analysis (Practical)'],['222707','Physics-III (Electricity and Modern Physics)'],['222708','Physics-IV (Physics Practical)'],['223707','Calculus-II'],['223708','Math Lab (Practical)'],ENG],
+  'BOTANY':[['223001','Higher Cryptogams'],['223003','Taxonomy of Angiosperms'],['223005','Plant Anatomy and Embryology'],['223006','Practical-II'],['222807','General Chemistry-II'],['222809','Environmental Chemistry'],['223107','Zoology-II'],['223108','Zoology Practical-II'],ENG],
+  'GEOGRAPHY & ENVIRONMENT':[['223201','Geomorphology'],['223203','Climatology'],['223205','Economic Geography'],['223206','Practical-II'],['222807','General Chemistry-II'],['222809','Environmental Chemistry'],['223707','Calculus-II'],ENG],
+  'ACCOUNTING':[['222501','Computer and Information Technology (Accounting)'],['222503','Taxation in Bangladesh'],['222505','Intermediate Accounting'],['222507','Business Mathematics'],['222509','Business Statistics'],['222511','Macro Economics'],['222513','Business Communication and Report Writing']],
+  'FINANCE & BANKING':[['222401','Business Statistics'],['222403','Macro Economics'],['222405','Business Mathematics'],['222407','Law and Practices of Banking and Insurance'],['222409','Computer and Information Technology'],['222411','Legal Aspects of Business'],['222413','Business Communication and Report Writing']]
+ };
+ /* ডিপার্টমেন্ট ইনপুট (ইংরেজি/বাংলা) → COURSES-এর কী */
+ var BN={'বাংলা':'BANGLA','ইংরেজি':'ENGLISH','আরবি':'ARABIC','অর্থনীতি':'ECONOMICS','রসায়ন':'CHEMISTRY','উদ্ভিদবিজ্ঞান':'BOTANY','ভূগোল ও পরিবেশ':'GEOGRAPHY & ENVIRONMENT','হিসাববিজ্ঞান':'ACCOUNTING','ফিন্যান্স অ্যান্ড ব্যাংকিং':'FINANCE & BANKING'};
+ function key(v){v=String(v||'').replace(/&amp;/g,'&').trim();if(!v)return '';var u=v.toUpperCase().replace(/^DEPARTMENT OF\s+/,'');if(COURSES[u])return u;u=v.replace(/\s*বিভাগ$/,'').trim();return BN[u]||''}
+ function esc(t){return String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
+ function fire(el){el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))}
+ function list(){return COURSES[key(($('dept')||{}).value)]||[]}
+ function fill(){
+  var L=list(),cl=$('courseCodeList'),nl=$('courseNameList');
+  if(cl)cl.innerHTML=L.map(function(c){return '<option value="'+esc(c[0])+'" label="'+esc(c[1])+'"></option>'}).join('');
+  if(nl)nl.innerHTML=L.map(function(c){return '<option value="'+esc(c[1])+'" label="'+esc(c[0])+'"></option>'}).join('');
+ }
+ var d=$('dept'),cc=$('courseCode'),cn=$('courseName');
+ if(d){d.addEventListener('input',fill);d.addEventListener('change',fill)}
+ if(cc)cc.addEventListener('change',function(){var m=list().filter(function(c){return c[0]===cc.value.trim()})[0];if(m&&cn&&!cn.value.trim()){cn.value=m[1];fire(cn)}});
+ if(cn)cn.addEventListener('change',function(){var m=list().filter(function(c){return c[1]===cn.value.trim()})[0];if(m&&cc&&!cc.value.trim()){cc.value=m[0];fire(cc)}});
+ fill();
 })();
 </script>
 </body>
