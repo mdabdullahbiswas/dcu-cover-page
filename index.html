@@ -158,9 +158,9 @@ body.dark .sh .mn{background:transparent}
 .hp-chip{display:table;margin:14px auto 0;padding:5px 12px;border-radius:99px;background:var(--navy);color:var(--gold-light);font-size:11px;font-weight:700;letter-spacing:1px}
 
 /* ---------- marquee ---------- */
-.hp-band{margin:28px auto 0;max-width:1200px;overflow:hidden;border-block:1px solid var(--border);background:var(--surface);position:relative;z-index:1;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.hp-track{display:flex;width:max-content;animation:hpMq 40s linear infinite;will-change:transform}
-.hp-band:hover .hp-track{animation-play-state:paused}
+.hp-band{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;margin:28px auto 0;max-width:1200px;overflow:hidden;border-block:1px solid var(--border);background:var(--surface);position:relative;z-index:1;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.hp-track{display:flex;width:max-content;animation:none;will-change:transform}
+
 .hp-grp{display:flex;flex:none}
 .hp-grp span{white-space:nowrap;padding:16px 26px;font-weight:700;font-size:15px;color:var(--ink-2)}
 .hp-grp span:before{content:"✦";color:var(--gold);margin-right:12px}
@@ -261,6 +261,8 @@ body.dark .sh .mn{background:transparent}
   .rv,.hp-in{opacity:1!important;transform:none!important}
   html{scroll-behavior:auto}
 }
+.hp-band.is-dragging{cursor:grabbing}
+.hp-band.is-dragging span{pointer-events:none}
 </style>
 <link rel="stylesheet" href="dcu-layout.css">
 <link rel="stylesheet" href="dcu-lang.css">
@@ -499,6 +501,90 @@ body.dark .sh .mn{background:transparent}
       });
     });
   }
+})();
+</script>
+<script>
+/* Premium band: drifts on its own, can be dragged / swiped / scrolled
+   with the wheel, keeps momentum after release, pauses on hover. */
+(function () {
+  var band = document.querySelector(".hp-band");
+  var track = band && band.querySelector(".hp-track");
+  if (!track) return;
+
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SPEED = reduce ? 0 : 42;               // px per second while idle
+  var x = 0, v = 0, lastT = 0;
+  var dragging = false, startX = 0, startOff = 0, lastX = 0, lastTs = 0;
+  var hovering = false, focused = false;
+
+  function half() { return track.scrollWidth / 2 || 1; }
+  function wrap() {
+    var h = half();
+    while (x <= -h) x += h;
+    while (x > 0) x -= h;
+  }
+  function draw() { track.style.transform = "translate3d(" + x.toFixed(2) + "px,0,0)"; }
+
+  function frame(t) {
+    if (!lastT) lastT = t;
+    var dt = Math.min(64, t - lastT) / 1000;
+    lastT = t;
+    if (!dragging) {
+      if (Math.abs(v) > 4) {
+        x += v * dt;
+        v *= Math.pow(0.05, dt);
+      } else {
+        v = 0;
+        if (!hovering && !focused) x -= SPEED * dt;
+      }
+    }
+    wrap();
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  band.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragging = true;
+    startX = lastX = e.clientX;
+    startOff = x;
+    lastTs = performance.now();
+    v = 0;
+    band.classList.add("is-dragging");
+  });
+
+  window.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    x = startOff + (e.clientX - startX);
+    var now = performance.now(), dtm = Math.max(1, now - lastTs);
+    v = ((e.clientX - lastX) / dtm) * 1000;
+    lastX = e.clientX; lastTs = now;
+    wrap(); draw();
+  });
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    band.classList.remove("is-dragging");
+    v = Math.max(-2200, Math.min(2200, v));
+    if (performance.now() - lastTs > 90) v = 0;
+  }
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
+  band.addEventListener("dragstart", function (e) { e.preventDefault(); });
+
+  /* trackpad / shift+wheel moves it too */
+  band.addEventListener("wheel", function (e) {
+    var dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.6;
+    x -= dx; v = 0; wrap(); draw();
+  }, { passive: true });
+
+  if (window.matchMedia("(hover:hover) and (pointer:fine)").matches) {
+    band.addEventListener("mouseenter", function () { hovering = true; });
+    band.addEventListener("mouseleave", function () { hovering = false; });
+  }
+
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>
