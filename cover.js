@@ -2074,87 +2074,14 @@ update();
  fill();
 })();
 
-/* ===== "কভার পেজ" in the header becomes a premium dropdown of all cover types (same behaviour as Tools) ===== */
+/* Header menu links look like cover.html#lab: open that cover type (on load and on hash change) */
 ;(function(){
 "use strict";
-var CSS=
-".dl-menu.cvd-menu{width:min(92vw,470px)}" +
-".dl-menu.cvd-menu a{position:relative;flex-direction:row;align-items:center;justify-content:flex-start;text-align:left;gap:10px;padding:10px 12px}" +
-".dl-menu.cvd-menu .cvd-tx{align-items:flex-start;text-align:left;flex:1 1 auto}" +
-".dl-menu.cvd-menu a small{display:block}" +
-".cvd-ic{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#1C4A85,#0A1A33);box-shadow:0 4px 10px rgba(10,26,51,.28);transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s}" +
-".cvd-ic svg{width:16px;height:16px}" +
-".cvd-tx{display:flex;flex-direction:column;gap:2px;min-width:0}" +
-".dl-menu.cvd-menu a:hover .cvd-ic{transform:scale(1.08) rotate(-4deg)}" +
-".dl-menu.cvd-menu a[aria-checked=true]{background:linear-gradient(135deg,rgba(217,178,106,.22),rgba(217,178,106,.04));box-shadow:inset 0 0 0 1px rgba(184,138,62,.6)}" +
-".dl-menu.cvd-menu a[aria-checked=true] .cvd-ic{background:linear-gradient(135deg,#F3E6C4,#D9B26A 50%,#B88A3E);color:#1d1400}" +
-".cvd-ok{position:absolute;top:7px;right:7px;width:16px;height:16px;border-radius:50%;background:#B88A3E;color:#fff;display:grid;place-items:center}" +
-".cvd-ok svg{width:10px;height:10px}" +
-".dl-dd.cvd.open .dl-menu a,.dl-dd.cvd:hover .dl-menu a{animation:cvdIn .42s calc(var(--i,0)*30ms + 30ms) cubic-bezier(.2,.8,.2,1) both}" +
-"@keyframes cvdIn{from{opacity:0;transform:translateY(8px) scale(.96)}}" +
-".dl-dd.cvd>.dl-dd-btn svg{width:14px;height:14px}" +
-"@media(prefers-reduced-motion:reduce){.dl-dd.cvd .dl-menu a,.cvd-ic{animation:none!important;transition:none!important}}";
-var CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
-var CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-var wrap=null,btn=null;
-
-function tabs(){return Array.prototype.slice.call(document.querySelectorAll('#ctList .ct-tab'))}
-function onCoverPage(){var f=(location.pathname.split('/').pop()||'').toLowerCase();return f===''||f==='cover.html'}
-
-function fill(menu){
-  menu.textContent='';
-  tabs().forEach(function(t,i){
-    var on=t.getAttribute('aria-checked')==='true';
-    var a=document.createElement('a');
-    a.href='cover.html';a.setAttribute('role','menuitemradio');a.setAttribute('aria-checked',on?'true':'false');
-    a.dataset.v=t.dataset.v;a.style.setProperty('--i',i);
-    var chip=document.createElement('span');chip.className='cvd-ic';
-    var src=t.querySelector('.ct-ic svg');if(src)chip.appendChild(src.cloneNode(true));
-    var tx=document.createElement('span');tx.className='cvd-tx';
-    var bn=document.createElement('b');var bnSrc=t.querySelector('.t-bn');bn.textContent=bnSrc?bnSrc.textContent:t.dataset.v;
-    var en=document.createElement('small');var enSrc=t.querySelector('.t-en');en.textContent=enSrc?enSrc.textContent:'';
-    tx.appendChild(bn);tx.appendChild(en);
-    a.appendChild(chip);a.appendChild(tx);
-    if(on){var k=document.createElement('span');k.className='cvd-ok';k.innerHTML=CHECK;a.appendChild(k)}
-    menu.appendChild(a);
-  });
-}
-function setOpen(open){
-  if(!wrap)return;
-  wrap.classList.toggle('open',open);
-  btn.setAttribute('aria-expanded',open?'true':'false');
-}
-function pick(v){
+function fromHash(){
+  var v=(location.hash||'').slice(1);if(!v)return;
   var t=document.querySelector('#ctList .ct-tab[data-v="'+v+'"]');
-  if(t)t.click();
-  setOpen(false);
+  if(t&&t.getAttribute('aria-checked')!=='true')t.click();
 }
-function build(){
-  var nav=document.getElementById('dlNav');
-  if(!nav||nav.querySelector('.cvd'))return;
-  var link=nav.querySelector('a[href="cover.html"]');
-  if(!link)return;
-  var st=document.createElement('style');st.id='cvdCss';st.textContent=CSS;document.head.appendChild(st);
-
-  wrap=document.createElement('div');wrap.className='dl-dd cvd';
-  btn=document.createElement('button');btn.type='button';btn.className='dl-dd-btn';
-  btn.setAttribute('aria-current','page');btn.setAttribute('aria-haspopup','true');btn.setAttribute('aria-expanded','false');
-  btn.innerHTML='কভার পেজ '+CHEV;
-  var menu=document.createElement('div');menu.className='dl-menu cvd-menu';menu.setAttribute('role','menu');
-  fill(menu);
-  wrap.appendChild(btn);wrap.appendChild(menu);
-  nav.replaceChild(wrap,link);
-
-  btn.addEventListener('click',function(e){e.stopPropagation();setOpen(!wrap.classList.contains('open'))});
-  menu.addEventListener('click',function(e){
-    var a=e.target.closest&&e.target.closest('a[data-v]');if(!a)return;
-    if(onCoverPage()){e.preventDefault();pick(a.dataset.v)}
-    else setOpen(false);
-  });
-  document.addEventListener('pointerdown',function(e){
-    if(wrap.classList.contains('open')&&!wrap.contains(e.target))setOpen(false);
-  },true);
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false)});
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+window.addEventListener('hashchange',fromHash);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fromHash);else fromHash();
 })();
