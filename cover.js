@@ -1227,6 +1227,22 @@ c.className=tplCls(TPLS[g.i].v);
 c.style.setProperty('--p',gColors[g.i].p);c.style.setProperty('--a',gColors[g.i].a);
 g.th.appendChild(c);g.sh=c;
 }
+function fitCard(g){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}}
+var gQ=[],gQT=0;
+/* বাকি কার্ডগুলো ব্রাউজার অলস থাকলে একটি একটি করে তৈরি ও মাপা হয় — সোয়াইপ/অ্যানিমেশনের সময় কিছুই হয় না */
+function gPump(){
+if(gQT)return;
+if(!gOpen||!gQ.length)return;
+if(gRaf){gQT=setTimeout(function(){gQT=0;gPump()},150);return}
+var run=function(){
+gQT=0;
+if(!gOpen||gRaf){if(gOpen&&gQ.length)gPump();return}
+while(gQ.length){var g=gSl[gQ.shift()];if(g&&!g.fit){fitCard(g);break}}
+if(gQ.length)gPump();
+};
+if(window.requestIdleCallback)gQT=requestIdleCallback(run,{timeout:400});
+else gQT=setTimeout(run,16);
+}
 function gBuild(){
 var src=docSrc(),cur=$('tpl').value||'classic';gSrc=src;
 clear(gStage);clear(gDots);clear(gInfo);gSl=[];
@@ -1255,8 +1271,10 @@ d.addEventListener('click',function(){gGo(i)});gDots.appendChild(d);
 gSl.push({i:i,el:s,gl:gl,vl:vl,th:th,sh:null,dot:d,tn:tn});
 });
 gLayout();
+gPump();
  /* প্রতিটি টেমপ্লেটের নিজস্ব মাপে লেখা বসানো — কাছের স্লাইডগুলো এখনই, বাকিগুলো খোলার পর ফাঁকা সময়ে */
-gSl.forEach(function(g,k){if(Math.abs(k-curI)<=2){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}}});
+gSl.forEach(function(g,k){if(Math.abs(k-curI)<=2)fitCard(g)});
+gQ=gSl.map(function(g,k){return k}).sort(function(a,b){return Math.abs(a-curI)-Math.abs(b-curI)});
 }
 function gScrollSw(smooth){
 var w=$('sws'),b=w.querySelector('.sw.on');if(!b)return;
@@ -1296,6 +1314,7 @@ gSl.forEach(function(g){g.th.style.transform='scale('+(gCW/W)+')'});
 }
 /* প্রতিটি ফ্রেমে: কার্ডের জায়গা, ঘূর্ণন, গভীরতা, ছায়া, আলোর ঝলক */
 function gApply(){
+var mv=!!(gDrag||gPos!==gTgt||gSp!==gSpT);gal.classList.toggle('mv',mv);
 for(var i=0;i<gSl.length;i++){
 var g=gSl[i],d=i-gPos,ad=Math.abs(d),s=d<0?-1:1,a1=Math.min(ad,1),a3=Math.min(ad,3),far=Math.max(a3-1,0),
 x=s*(a1*gCW*.8+far*gCW*.3)*gSp,
@@ -1304,7 +1323,7 @@ z=-(a1*130+far*70)*gSp,
 y=-(1-a1)*8+(1-Math.min(gSp,1))*36,
 sc=(1-a1*.04)*(.9+.1*Math.min(gSp,1)),
 op=ad<=2?1:clampN(1-(ad-2)*.85,0,1),st=g.el.style;
-var hid=op<.01;if(hid&&g.hid)continue;if(g.hid!==hid){g.hid=hid;st.display=hid?'none':''}if(!hid){mountSheet(g);if(!g.fit){g.fit=1;fitEl(g.sh)}}
+var hid=op<.01;g.el.classList.toggle('far',mv&&ad>1.5);if(hid&&g.hid)continue;if(g.hid!==hid){g.hid=hid;st.display=hid?'none':''}if(!hid&&!g.fit)fitCard(g);
 var tf='translate3d('+x.toFixed(2)+'px,'+y.toFixed(2)+'px,'+z.toFixed(1)+'px) rotateY('+r.toFixed(2)+'deg) scale('+sc.toFixed(4)+')',o=op.toFixed(3),zi=String(100-Math.round(ad*10)),vo=(Math.min(ad,2)*.3*Math.min(gSp,1)).toFixed(3);
 if(g._tf!==tf){g._tf=tf;st.transform=tf}
 if(g._o!==o){g._o=o;st.opacity=o}
@@ -1356,11 +1375,7 @@ if(gOpen||gSp!==gSpT){if(gDrag||gPos!==gTgt||gSp!==gSpT)gRaf=requestAnimationFra
 function gStart(){if(!gRaf){gLast=0;gRaf=requestAnimationFrame(gTick)}}
 function gGo(i){if(!gOpen||gBusy)return;gTgt=clampN(Math.round(i),0,TPLS.length-1);gStart()}
 function gBand(p){var m=TPLS.length-1;return p<0?p*.32:p>m?m+(p-m)*.32:p}
-function gPreFit(i){
-if(!gOpen)return;
-for(;i<gSl.length;i++){var g=gSl[i];if(!g.fit&&g.sh){g.fit=1;var h=g.el.style.display;g.el.style.display='';fitEl(g.sh);g.el.style.display=h;break}}
-if(i<gSl.length-1)setTimeout(function(){gPreFit(i+1)},40)
-}
+function gPreFit(){gPump()}
 function gShow(){
 if(gOpen)return;
 clearTimeout(gHide);
