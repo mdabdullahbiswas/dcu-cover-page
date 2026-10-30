@@ -162,8 +162,9 @@ body.dark .sh .mn{background:transparent}
 .hp-track{display:flex;width:max-content;animation:none;will-change:transform}
 
 .hp-grp{display:flex;flex:none}
-.hp-grp span{white-space:nowrap;padding:16px 26px;font-weight:700;font-size:15px;color:var(--ink-2)}
-.hp-grp span:before{content:"✦";color:var(--gold);margin-right:12px}
+.hp-grp > a,.hp-grp > span{white-space:nowrap;padding:16px 26px;font-weight:700;font-size:15px;color:var(--ink-2);text-decoration:none;transition:color .2s}
+.hp-grp > a:hover,.hp-grp > a:focus-visible{color:var(--gold-deep,#B98A2C);text-decoration:none}
+.hp-grp > a:before,.hp-grp > span:before{content:"✦";color:var(--gold);margin-right:12px}
 @keyframes hpMq{to{transform:translateX(-50%)}}
 
 /* ---------- sections ---------- */
@@ -262,7 +263,6 @@ body.dark .sh .mn{background:transparent}
   html{scroll-behavior:auto}
 }
 .hp-band.is-dragging{cursor:grabbing}
-.hp-band.is-dragging span{pointer-events:none}
 </style>
 <link rel="stylesheet" href="dcu-layout.css">
 <link rel="stylesheet" href="dcu-lang.css">
@@ -317,10 +317,10 @@ body.dark .sh .mn{background:transparent}
 <div class="hp-band" aria-hidden="true">
   <div class="hp-track">
     <div class="hp-grp">
-      <span class="t">কভার পেজ|Cover Page</span><span class="t">সিভি বিল্ডার|CV Builder</span><span class="t">ক্লাস রুটিন|Class Routine</span><span class="t">CGPA ক্যালকুলেটর|CGPA Calculator</span><span class="t">সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator</span><span class="t">ডোনার ডিরেক্টরি|Donor Directory</span>
+      <a class="t" href="cover.html">কভার পেজ|Cover Page</a><a class="t" href="tools.html#cv">সিভি বিল্ডার|CV Builder</a><a class="t" href="tools.html#routine">ক্লাস রুটিন|Class Routine</a><a class="t" href="tools.html#cgpa">CGPA ক্যালকুলেটর|CGPA Calculator</a><a class="t" href="tools.html#calc">সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator</a><a class="t" href="blood.html">ডোনার ডিরেক্টরি|Donor Directory</a>
     </div>
     <div class="hp-grp">
-      <span class="t">কভার পেজ|Cover Page</span><span class="t">সিভি বিল্ডার|CV Builder</span><span class="t">ক্লাস রুটিন|Class Routine</span><span class="t">CGPA ক্যালকুলেটর|CGPA Calculator</span><span class="t">সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator</span><span class="t">ডোনার ডিরেক্টরি|Donor Directory</span>
+      <a class="t" href="cover.html">কভার পেজ|Cover Page</a><a class="t" href="tools.html#cv">সিভি বিল্ডার|CV Builder</a><a class="t" href="tools.html#routine">ক্লাস রুটিন|Class Routine</a><a class="t" href="tools.html#cgpa">CGPA ক্যালকুলেটর|CGPA Calculator</a><a class="t" href="tools.html#calc">সায়েন্টিফিক ক্যালকুলেটর|Scientific Calculator</a><a class="t" href="blood.html">ডোনার ডিরেক্টরি|Donor Directory</a>
     </div>
   </div>
 </div>
@@ -514,7 +514,7 @@ body.dark .sh .mn{background:transparent}
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var SPEED = reduce ? 0 : 42;               // px per second while idle
   var x = 0, v = 0, lastT = 0;
-  var dragging = false, startX = 0, startOff = 0, lastX = 0, lastTs = 0;
+  var dragging = false, moved = false, startX = 0, startOff = 0, lastX = 0, lastTs = 0;
   var hovering = false, focused = false;
 
   function half() { return track.scrollWidth / 2 || 1; }
@@ -545,16 +545,16 @@ body.dark .sh .mn{background:transparent}
 
   band.addEventListener("pointerdown", function (e) {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    dragging = true;
+    dragging = true; moved = false;
     startX = lastX = e.clientX;
     startOff = x;
     lastTs = performance.now();
     v = 0;
-    band.classList.add("is-dragging");
   });
 
   window.addEventListener("pointermove", function (e) {
     if (!dragging) return;
+    if (Math.abs(e.clientX - startX) > 6) { moved = true; band.classList.add("is-dragging"); }
     x = startOff + (e.clientX - startX);
     var now = performance.now(), dtm = Math.max(1, now - lastTs);
     v = ((e.clientX - lastX) / dtm) * 1000;
@@ -566,12 +566,17 @@ body.dark .sh .mn{background:transparent}
     if (!dragging) return;
     dragging = false;
     band.classList.remove("is-dragging");
+    if (!moved) return;
     v = Math.max(-2200, Math.min(2200, v));
     if (performance.now() - lastTs > 90) v = 0;
   }
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", endDrag);
   band.addEventListener("dragstart", function (e) { e.preventDefault(); });
+  /* a drag should not open a link; a plain click should */
+  band.addEventListener("click", function (e) {
+    if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+  }, true);
 
   /* trackpad / shift+wheel moves it too */
   band.addEventListener("wheel", function (e) {
