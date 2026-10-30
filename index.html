@@ -770,6 +770,155 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
 .card:nth-child(5){animation-delay:.63s}
 @media(max-width:520px){.ct-head{margin:0 4px 9px}.ct-wrap{border-radius:18px}.ct-scroll{padding:5px}.ct-tab{min-height:52px;padding:8px 16px 8px 10px;gap:9px}.ct-ic{width:32px;height:32px}.ct-ic svg{width:17px;height:17px}.ct-tx b{font-size:13.5px}}
 @media print{.ctabs{display:none!important}}
+
+/* ===== Declaration page (ঘোষণাপত্র) ===== */
+#scaler{position:relative}
+#page2{position:absolute;left:0;top:0}
+#scaler .page{transition:opacity .55s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1),visibility .7s}
+#scaler[data-view=cover] #page2,#scaler[data-view=decl] #page{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(22px) scale(.985)}
+.pgsw{display:flex;justify-content:center;margin:0 0 14px}
+.pgsw[hidden]{display:none}
+.pgsw-in{position:relative;display:inline-grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:16px;background:#eef2f7;border:1px solid var(--bd);box-shadow:inset 0 1px 3px rgba(15,23,42,.08);animation:ctin .6s cubic-bezier(.2,.8,.2,1) both}
+.pgsw-in::before{content:"";position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:12px;background:linear-gradient(135deg,var(--navy),#17386a);box-shadow:0 6px 14px -5px rgba(11,31,58,.6),inset 0 1px 0 rgba(255,255,255,.22);transition:transform .55s cubic-bezier(.3,1.2,.4,1)}
+.pgsw-in[data-v=decl]::before{transform:translateX(100%)}
+.pgsw-b{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:9px;min-height:42px;padding:8px 20px;border:0;border-radius:12px;background:none;cursor:pointer;white-space:nowrap;font:600 13px/1.2 'Inter','Noto Sans Bengali',sans-serif;color:#52627a;transition:color .35s}
+.pgsw-b svg{width:17px;height:17px;flex:none}
+.pgsw-b .t-bn{margin-left:6px;font-weight:500;opacity:.85}
+.pgsw-b i{font:700 10px/1 'Inter',sans-serif;font-style:normal;min-width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:rgba(var(--gr),.14);color:var(--gd);transition:background .35s,color .35s}
+.pgsw-b[aria-pressed=true]{color:#fff}
+.pgsw-b[aria-pressed=true] i{background:linear-gradient(135deg,var(--gl),var(--gold2));color:var(--bt)}
+.pgsw-b:focus-visible{outline:2px solid var(--gold2);outline-offset:-2px}
+.dcl .bnd-in{gap:0}
+.dcl-f{margin-top:14px}
+.dcl-f:first-child{margin-top:0}
+.dcl-f>label{margin-top:0}
+.dcl .chk{margin-top:14px}
+.dcl textarea{min-height:92px}
+#dsGrid .bt:last-child:nth-child(odd){grid-column:1/-1}
+.dcl-note{margin-top:12px;padding:10px 12px;border-radius:12px;border-left:3px solid var(--gold2);background:rgba(var(--gr2),.12);font:500 12px/1.55 'Inter','Noto Sans Bengali',sans-serif;color:var(--ink)}
+/* declaration sheet */
+.dcs .dc-body,.dcs .dc-foot{zoom:var(--z,1)}
+.dcs .dc-body{flex:none}
+.dcs .dc-foot{margin-top:auto;padding-top:22px}
+.dc-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin-top:26px}
+.dc-seal{position:relative;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:var(--p);background:radial-gradient(circle at 30% 25%,#fff,color-mix(in srgb,var(--a) 16%,#fff));box-shadow:0 0 0 2px var(--a),0 0 0 6px #fff,0 0 0 7.5px color-mix(in srgb,var(--a) 50%,transparent),0 10px 22px rgba(15,23,42,.14);margin-bottom:10px}
+.dc-seal svg{width:29px;height:29px}
+.dcs .dt{font-size:calc(var(--dtf,52px)*.74);letter-spacing:.16em}
+.dcs .rule{margin:10px 0 0}
+.dc-meta{display:grid;grid-template-columns:1fr 1fr;margin-top:24px;border-top:3px solid var(--p);background:linear-gradient(180deg,#f8fafc,#f1f5f9);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.dc-m{min-width:0;padding:10px 16px;border-bottom:1px solid #e2e8f0}
+.dc-m:nth-child(even){border-left:1px solid #e2e8f0}
+.dc-m.w{grid-column:1/-1;border-left:0}
+.dc-m:nth-last-child(-n+2):nth-child(odd),.dc-m:last-child{border-bottom:0}
+.dc-m .k{display:block;font:700 10.5px/1.2 'Inter',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--p)}
+.dc-m .k .bn{letter-spacing:0;text-transform:none;font-family:'Noto Sans Bengali',sans-serif;margin-left:8px;font-size:11.5px;font-weight:600}
+.dc-m .v{display:block;margin-top:4px;font-size:14px;font-weight:600;color:#111827;overflow-wrap:anywhere;line-height:1.4}
+.dc-st{margin-top:24px;color:#1f2937;font-size:15.5px;line-height:1.72;text-align:justify}
+.dc-st p{margin:0 0 10px}
+.dc-st .dv{font-weight:700;color:var(--p);border-bottom:1.5px solid color-mix(in srgb,var(--a) 75%,transparent);padding:0 2px}
+.dc-pts{list-style:none;padding:0;margin:12px 0 0;counter-reset:dcp}
+.dc-pts li{position:relative;padding-left:42px;margin-bottom:10px;counter-increment:dcp}
+.dc-pts li::before{content:counter(dcp);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 12.5px/1 'Inter',sans-serif;color:var(--p);background:color-mix(in srgb,var(--a) 22%,#fff);box-shadow:inset 0 0 0 1.5px var(--a)}
+.dc-pts.bd li::before{content:counter(dcp,bengali);font-family:'Noto Sans Bengali',sans-serif}
+.dc-bn{margin-top:14px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--a) 60%,transparent);font-family:'Noto Sans Bengali','Noto Serif Bengali',sans-serif;font-size:14px;line-height:1.75;color:#334155}
+.dcs.bi .dc-st{font-size:14px;line-height:1.62}
+.dcs.bi .dc-bn{font-size:13px;line-height:1.65}
+.dc-pd{display:flex;flex-wrap:wrap;gap:12px 38px;font-size:13.5px;color:#334155}
+.dc-pd b{font-weight:700;color:var(--p)}
+.dc-pd b .bn{font-weight:600;font-family:'Noto Sans Bengali',sans-serif;margin-left:5px;font-size:12px}
+.dc-pd u{display:inline-block;min-width:150px;text-decoration:none;border-bottom:1.5px solid #334155;padding:0 6px 2px;margin-left:8px;font-weight:600;color:#111827}
+.dcs .dc-sg .sg{margin-top:26px}
+.sg.solo{justify-content:flex-start}.sg.solo div{flex:0 0 46%}
+.sg.solo.r{justify-content:flex-end}
+.sg .sn{display:block;font-weight:700;color:#111827;text-transform:uppercase;font-size:13px}
+.sg .sl{display:block;margin-top:2px;font-size:11.5px;letter-spacing:.06em}
+.dc-sgg{display:grid;grid-template-columns:1fr 1fr;gap:30px 50px;margin-top:26px;padding:0 10px}
+.dc-sgg div{border-top:1.5px solid #334155;padding-top:6px;text-align:center;font-size:12.5px;font-weight:600;color:#475569}
+.dc-sgg .sn,.dc-sgg .sl{display:block}.dc-sgg .sn{font-size:12.5px;text-transform:uppercase;color:#111827}.dc-sgg .sl{margin-top:2px;font-size:11.5px;font-weight:600;letter-spacing:.04em}
+.pdf-host .sheet .dv.ph,.pdf-host .sheet .dc-pd u.ph{visibility:visible;color:transparent}
+@media print{.pgsw{display:none!important}#scaler .page{opacity:1!important;visibility:visible!important;transform:none!important;position:static!important}#page2{break-before:page;page-break-before:always}#page2[hidden]{display:none!important}.sheet .dv.ph{visibility:visible!important;color:transparent!important}}
+@media(max-width:520px){.pgsw-b{padding:8px 14px}}
+.card:nth-child(6){animation-delay:.75s}
+.dcl .bnd-sw{display:none}
+.dcl .bnd-h{cursor:default}
+.dcl.dc-in{animation:ctin .7s cubic-bezier(.2,.8,.2,1) both}
+.dm-r .card>*{animation:none!important}
+[data-doc=declaration] .cov-only{display:none!important}
+[data-doc=declaration] .card h3::after{content:"Declaration";margin-left:auto;flex:none;font:700 10px/1 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 11px;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--navy),#17386a);box-shadow:0 6px 14px -6px rgba(11,31,58,.6),inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-ui-lang="bn"] [data-doc=declaration] .card h3::after{content:"ঘোষণাপত্র";letter-spacing:0;font-family:'Noto Sans Bengali',sans-serif;font-size:11.5px}
+.tpl-prestige .dc-st{background:#fff;border-radius:6px;padding:20px 24px 12px;box-shadow:0 14px 34px rgba(0,0,0,.3)}
+.tpl-prestige .dc-pd{color:rgba(255,255,255,.88)}
+.tpl-prestige .dc-pd b{color:var(--a)}
+.tpl-prestige .dc-pd u{border-bottom-color:rgba(255,255,255,.65);color:#fff}
+.tpl-prestige .sg .sn,.tpl-prestige .dc-sgg .sn{color:#fff}
+.tpl-prestige .dc-sgg div{border-top-color:rgba(255,255,255,.6);color:rgba(255,255,255,.85)}
+.tpl-prestige .dc-sgg .sl,.tpl-prestige .sg .sl{color:rgba(255,255,255,.8)}
+.tpl-prestige .dc-pts li:last-child{margin-bottom:6px}
+.apr .dcl-f:first-child{margin-top:0}
+#asGrid .bt:last-child:nth-child(odd){grid-column:1/-1}
+.dc-stamp{margin-left:auto;display:inline-flex;flex-direction:column;align-items:center;gap:3px;padding:8px 22px;margin-top:-8px;border:3px double var(--a);border-radius:10px;color:var(--p);transform:rotate(-7deg);font:800 17px/1 'Inter','Noto Sans Bengali',sans-serif;letter-spacing:.24em;text-transform:uppercase;background:color-mix(in srgb,var(--a) 9%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a) 35%,transparent)}
+.dc-stamp small{font:700 11px/1.2 'Noto Sans Bengali',sans-serif;letter-spacing:.04em;text-transform:none}
+.tpl-prestige .dc-stamp{color:var(--a);background:rgba(255,255,255,.06)}
+.sg .sn:empty{min-height:1em}
+[data-doc=approval] .cov-only{display:none!important}
+[data-doc=approval] .card h3::after{content:"Approval";margin-left:auto;flex:none;font:700 10px/1 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 11px;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--navy),#17386a);box-shadow:0 6px 14px -6px rgba(11,31,58,.6),inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-ui-lang="bn"] [data-doc=approval] .card h3::after{content:"অনুমোদন";letter-spacing:0;font-family:'Noto Sans Bengali',sans-serif;font-size:11.5px}
+/* ===== Acknowledgment (কৃতজ্ঞতা স্বীকার) ===== */
+[data-doc=acknowledgment] .cov-only{display:none!important}
+[data-doc=acknowledgment] .card h3::after{content:"Acknowledgment";margin-left:auto;flex:none;font:700 10px/1 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 11px;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--navy),#17386a);box-shadow:0 6px 14px -6px rgba(11,31,58,.6),inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-ui-lang="bn"] [data-doc=acknowledgment] .card h3::after{content:"কৃতজ্ঞতা";letter-spacing:0;font-family:'Noto Sans Bengali',sans-serif;font-size:11.5px}
+#akGrid .bt small{display:block}
+.dcs.ack .dt{font-size:calc(var(--dtf,52px)*.56);letter-spacing:.1em}
+.dcs.ack .dc-st{margin-top:22px;text-align:justify}
+.dcs.ack .dc-st p{margin:0 0 12px}
+.dcs.ack .ak-lead{padding:3px 0 3px 18px;border-left:3px solid var(--a);font-size:1.04em;font-weight:600;line-height:1.7;color:var(--p);margin-bottom:14px}
+.dcs.ack .ak-p{position:relative;padding-left:30px}
+.dcs.ack .ak-p::before{content:"";position:absolute;left:6px;top:.66em;width:8px;height:8px;transform:rotate(45deg);background:var(--a);box-shadow:0 0 0 3px color-mix(in srgb,var(--a) 24%,#fff)}
+.dcs.ack .ak-th{margin-top:14px;padding:10px 16px;border-radius:10px;background:color-mix(in srgb,var(--a) 13%,#fff);border:1px solid color-mix(in srgb,var(--a) 50%,transparent);font-size:.95em;line-height:1.6;color:#1f2937}
+.dcs.ack .ak-th b{color:var(--p)}
+.dcs.ack .ak-close{text-align:right;font-style:italic;font-weight:600;color:var(--p);margin:16px 0 0}
+.dcs.ack .ak-close small{font-family:'Noto Sans Bengali',sans-serif;font-style:normal;font-size:.92em;margin-left:6px}
+.dcs.ack.bi .ak-lead{font-size:1em}
+.tpl-prestige.ack .ak-th{background:color-mix(in srgb,var(--a) 14%,#fff)}
+
+/* ===== Table of contents (সূচিপত্র) ===== */
+[data-doc=contents] .cov-only,[data-doc=contents] .tc-hide{display:none!important}
+[data-doc=contents] .card h3::after{content:"Contents";margin-left:auto;flex:none;font:700 10px/1 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 11px;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--navy),#17386a);box-shadow:0 6px 14px -6px rgba(11,31,58,.6),inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-ui-lang="bn"] [data-doc=contents] .card h3::after{content:"সূচিপত্র";letter-spacing:0;font-family:'Noto Sans Bengali',sans-serif;font-size:11.5px}
+#tcGrid .bt:last-child:nth-child(odd){grid-column:1/-1}
+.dcs.toc .dt{font-size:calc(var(--dtf,52px)*.5);letter-spacing:.1em}
+.dcs.toc .dc-st{margin-top:18px;text-align:left}
+.dcs.toc .tc-sub{margin:0 0 14px;text-align:center;font-style:italic;font-size:14px;color:#475569;line-height:1.5}
+.dcs.toc .tc-hd{display:flex;justify-content:flex-end;padding:0 2px 7px;border-bottom:2px solid var(--p);font:700 10.5px/1.2 'Inter',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--p)}
+.dcs.toc .tc-hd .bn{letter-spacing:0;text-transform:none;font-family:'Noto Sans Bengali',sans-serif;font-size:11.5px;margin-left:8px}
+.dcs.toc .tc-r{display:flex;align-items:baseline;gap:10px;padding:var(--rp,7px) 2px;font:400 15px/1.4 'Inter','Noto Sans Bengali',sans-serif;text-transform:none;letter-spacing:0;color:#111827}
+.dcs.toc .tc-r>span{font:inherit;text-transform:none;letter-spacing:0}
+.dcs.toc .tc-r .tt{flex:0 1 auto;font-weight:600;font-size:15px;overflow-wrap:anywhere}
+.dcs.toc .tc-r .dd{flex:1 1 24px;min-width:24px;border-bottom:2px dotted var(--a);transform:translateY(-3px)}
+.dcs.toc .tc-r .pg{flex:none;min-width:26px;text-align:right;font-weight:700;font-size:14.5px;color:var(--p);font-variant-numeric:tabular-nums}
+.dcs.toc .tc-r.s{padding:calc(var(--rp,7px)*.4) 2px calc(var(--rp,7px)*.4) 34px}
+.dcs.toc .tc-r.s .tt{font-size:13.5px}
+.dcs.toc .tc-r.s .pg{font-size:13px}
+.dcs.toc .tc-r.s .tt{font-weight:500;color:#334155}
+.dcs.toc .tc-r.s .pg{font-weight:600;color:#475569}
+.dcs.toc .tc-r.h{margin-top:12px;padding:6px 14px;border-left:3px solid var(--a);background:color-mix(in srgb,var(--p) 8%,#fff);font:700 11.5px/1.3 'Inter','Noto Sans Bengali',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--p)}
+.dcs.toc .tc-r.h .tt{font-weight:700;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase}
+.dcs.toc .tc-r.h{letter-spacing:.16em}
+.dcs.toc .tc-r.ph{opacity:.5}
+.dcs.toc .tc-n .tc-r:not(.h):not(.s){padding:var(--rp,8px) 2px}
+.dcs.toc .tc-n .nm{flex:none;align-self:center;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:700 12.5px/1 'Inter','Noto Sans Bengali',sans-serif;color:var(--p);background:color-mix(in srgb,var(--a) 22%,#fff);box-shadow:inset 0 0 0 1.5px var(--a)}
+.dcs.toc .tc-n .tc-r.s .nm{width:auto;height:auto;border-radius:0;background:none;box-shadow:none;font-size:12px;color:var(--p);align-self:baseline}
+.dcs.toc .tc-n .dd{border-bottom:1px solid #e2e8f0;transform:none;align-self:center}
+.dcs.toc .tc-n .tc-r:not(.h):not(.s) .pg{align-self:center;padding:4px 11px;border-radius:999px;background:var(--p);color:#fff;min-width:0}
+.dcs.toc .tc-m .tc-r:not(.h){border-bottom:1px solid #e2e8f0}
+.dcs.toc .tc-m .dd{display:none}
+.dcs.toc .tc-m .tt{flex:1 1 auto}
+.dcs.toc .tc-end{position:relative;height:1px;width:46%;margin:20px auto 4px;background:linear-gradient(90deg,transparent,var(--a),transparent)}
+.dcs.toc .tc-end::after{content:"";position:absolute;left:50%;top:-4px;width:8px;height:8px;transform:translateX(-50%) rotate(45deg);background:var(--a);box-shadow:0 0 0 3px #fff}
+.dcs.toc .tc-sub{font-size:15px;letter-spacing:.02em}
+.pdf-host .sheet .tc-r.ph{visibility:hidden}
+@media print{.sheet .tc-r.ph{visibility:hidden!important}}
+
 </style>
 </head>
 <body>
@@ -798,14 +947,108 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
 
   <div class="card">
     <h3><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 100 18c1.1 0 1.6-.8 1.3-1.7-.3-1 .3-2.3 1.7-2.3H17a4 4 0 004-4c0-5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/></svg></i><span><span class="t-en">Design</span><em class="t-bn">ডিজাইন</em></span></h3>
+    <div class="bnd dcl" id="dcl" style="display:none">
+      <div class="bnd-h">
+        <span class="bnd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M8.8 12l2.4 2.4 4.2-4.6"/></svg></span>
+        <span class="bnd-t"><span class="t-en">Declaration settings</span><em class="t-bn">ঘোষণাপত্রের সেটিংস</em></span>
+        <label class="bnd-sw"><input type="checkbox" id="dclOn" aria-label="Declaration page · ঘোষণাপত্র"><i></i></label>
+      </div>
+      <div class="bnd-body"><div class="bnd-in">
+        <div class="dcl-f"><div class="bt-h"><span class="t-en">Statement style</span><em class="t-bn">ঘোষণার ধরন</em></div>
+          <div class="bt-grid" id="dsGrid">
+            <button type="button" class="bt" data-k="original"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M9 14l2 2 4-4"/></svg><span><b><span class="t-en">Originality</span><span class="t-bn">মৌলিকতা</span></b><small><span class="t-en">Own work</span><span class="t-bn">নিজস্ব কাজ</span></small></span></button>
+            <button type="button" class="bt" data-k="integrity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M7 20h10M5 7h14"/><path d="M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0z"/></svg><span><b><span class="t-en">Academic Integrity</span><span class="t-bn">একাডেমিক সততা</span></b><small><span class="t-en">Honesty &amp; sources</span><span class="t-bn">সততা ও উৎস</span></small></span></button>
+            <button type="button" class="bt" data-k="thesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5M22 9v6"/></svg><span><b><span class="t-en">Project / Thesis</span><span class="t-bn">প্রজেক্ট / থিসিস</span></b><small><span class="t-en">With supervisor</span><span class="t-bn">তত্ত্বাবধায়কসহ</span></small></span></button>
+          </div>
+        </div>
+        <div class="dcl-f"><label for="dclPlace"><span class="t-en">Place (optional)</span><em class="t-bn">স্থান (ঐচ্ছিক)</em></label>
+          <input type="text" id="dclPlace" placeholder="Dhaka · ঢাকা" autocomplete="off"></div>
+        <label class="chk"><input type="checkbox" id="dclSup"><span class="t-en"> Add teacher signature line </span><em class="t-bn bn">শিক্ষকের স্বাক্ষরের স্থান যোগ করুন</em></label>
+        <div class="dcl-f"><label for="dclText"><span class="t-en">Custom statement (optional)</span><em class="t-bn">নিজের ঘোষণা (ঐচ্ছিক)</em></label>
+          <textarea id="dclText" rows="4" placeholder="Leave empty to use the ready-made statement · ফাঁকা রাখলে তৈরি করা ঘোষণা ব্যবহার হবে"></textarea></div>
+        <div class="dcl-note"><span class="t-en">Name, roll, class, course, topic and date are filled in automatically from your form.</span><span class="t-sep"> · </span><span class="t-bn">নাম, রোল, ক্লাস, কোর্স, বিষয় ও তারিখ ফর্ম থেকে নিজে নিজে বসে যায়।</span></div>
+      </div></div>
+      <input type="hidden" id="dclStyle" value="original">
+    </div>
+
+    <div class="bnd dcl apr" id="apr" style="display:none">
+      <div class="bnd-h">
+        <span class="bnd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.7 13.6L7.5 21l4.5-2.6 4.5 2.6-1.2-7.4"/><path d="M9.6 9l1.7 1.7L14.5 7.4"/></svg></span>
+        <span class="bnd-t"><span class="t-en">Approval settings</span><em class="t-bn">অনুমোদনপত্রের সেটিংস</em></span>
+      </div>
+      <div class="bnd-body"><div class="bnd-in">
+        <div class="dcl-f"><div class="bt-h"><span class="t-en">Approved by</span><em class="t-bn">অনুমোদনকারী</em></div>
+          <div class="bt-grid" id="asGrid">
+            <button type="button" class="bt" data-k="supervisor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5M22 9v6"/></svg><span><b><span class="t-en">Supervisor</span><span class="t-bn">তত্ত্বাবধায়ক</span></b><small><span class="t-en">+ Head of Dept.</span><span class="t-bn">+ বিভাগীয় প্রধান</span></small></span></button>
+            <button type="button" class="bt" data-k="teacher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M9 14l2 2 4-4"/></svg><span><b><span class="t-en">Course Teacher</span><span class="t-bn">কোর্স শিক্ষক</span></b><small><span class="t-en">+ Head of Dept.</span><span class="t-bn">+ বিভাগীয় প্রধান</span></small></span></button>
+            <button type="button" class="bt" data-k="department"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg><span><b><span class="t-en">Department</span><span class="t-bn">বিভাগ</span></b><small><span class="t-en">Head + Dean</span><span class="t-bn">প্রধান + ডিন</span></small></span></button>
+          </div>
+        </div>
+        <div class="dcl-f"><label for="aprPlace"><span class="t-en">Place (optional)</span><em class="t-bn">স্থান (ঐচ্ছিক)</em></label>
+          <input type="text" id="aprPlace" placeholder="Dhaka · ঢাকা" autocomplete="off"></div>
+        <label class="chk"><input type="checkbox" id="aprStamp"><span class="t-en"> Show “APPROVED” stamp </span><em class="t-bn bn">“অনুমোদিত” সিল দেখান</em></label>
+        <label class="chk"><input type="checkbox" id="aprExam"><span class="t-en"> Add external examiner signature </span><em class="t-bn bn">বহিঃপরীক্ষকের স্বাক্ষরের স্থান যোগ করুন</em></label>
+        <div class="dcl-f"><label for="aprText"><span class="t-en">Custom statement (optional)</span><em class="t-bn">নিজের লেখা (ঐচ্ছিক)</em></label>
+          <textarea id="aprText" rows="4" placeholder="Leave empty to use the ready-made statement · ফাঁকা রাখলে তৈরি করা লেখা ব্যবহার হবে"></textarea></div>
+        <div class="dcl-note"><span class="t-en">Student details come from your form. The first line of “Approved by” is the first signatory; other signatories are left blank to sign by hand.</span><span class="t-sep"> · </span><span class="t-bn">শিক্ষার্থীর তথ্য ফর্ম থেকে বসে। “অনুমোদনকারী”-র প্রথম লাইন প্রথম স্বাক্ষরকারীর নাম; বাকিদের স্থান হাতে সইয়ের জন্য ফাঁকা থাকে।</span></div>
+      </div></div>
+      <input type="hidden" id="aprStyle" value="supervisor">
+    </div>
+
+    <div class="bnd dcl apr" id="ack" style="display:none">
+      <div class="bnd-h">
+        <span class="bnd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0112 7.6a4.2 4.2 0 017.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/></svg></span>
+        <span class="bnd-t"><span class="t-en">Acknowledgment settings</span><em class="t-bn">কৃতজ্ঞতা স্বীকারের সেটিংস</em></span>
+      </div>
+      <div class="bnd-body"><div class="bnd-in">
+        <div class="dcl-f"><div class="bt-h"><span class="t-en">Thank mainly</span><em class="t-bn">কাদের ধন্যবাদ জানাবেন</em></div>
+          <div class="bt-grid" id="akGrid">
+            <button type="button" class="bt" data-k="supervisor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5M22 9v6"/></svg><span><b><span class="t-en">Supervisor</span><span class="t-bn">তত্ত্বাবধায়ক</span></b><small><span class="t-en">Teacher, dept, family</span><span class="t-bn">শিক্ষক, বিভাগ, পরিবার</span></small></span></button>
+            <button type="button" class="bt" data-k="family"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9.5 20v-6h5v6"/></svg><span><b><span class="t-en">Family</span><span class="t-bn">পরিবার</span></b><small><span class="t-en">Parents &amp; well-wishers</span><span class="t-bn">বাবা-মা ও শুভানুধ্যায়ী</span></small></span></button>
+            <button type="button" class="bt" data-k="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M17 14c2.5 0 4 1.8 4 4.5"/></svg><span><b><span class="t-en">Team</span><span class="t-bn">দল</span></b><small><span class="t-en">Members &amp; classmates</span><span class="t-bn">সদস্য ও সহপাঠী</span></small></span></button>
+            <button type="button" class="bt" data-k="institution"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg><span><b><span class="t-en">Institution</span><span class="t-bn">প্রতিষ্ঠান</span></b><small><span class="t-en">Dept, library, staff</span><span class="t-bn">বিভাগ, গ্রন্থাগার, কর্মী</span></small></span></button>
+          </div>
+        </div>
+        <div class="dcl-f"><label for="ackThanks"><span class="t-en">Special thanks (optional, one per line)</span><em class="t-bn">বিশেষ কৃতজ্ঞতা (ঐচ্ছিক, প্রতি লাইনে একজন)</em></label>
+          <textarea id="ackThanks" rows="3" placeholder="e.g. Rahim Sir · Central Library · যেমন: রহিম স্যার, কেন্দ্রীয় গ্রন্থাগার"></textarea></div>
+        <div class="dcl-f"><label for="ackPlace"><span class="t-en">Place (optional)</span><em class="t-bn">স্থান (ঐচ্ছিক)</em></label>
+          <input type="text" id="ackPlace" placeholder="Dhaka · ঢাকা" autocomplete="off"></div>
+        <label class="chk"><input type="checkbox" id="ackClose"><span class="t-en"> Show closing line “With sincere gratitude” </span><em class="t-bn bn">“আন্তরিক কৃতজ্ঞতাসহ” সমাপনী লাইন দেখান</em></label>
+        <div class="dcl-f"><label for="ackText"><span class="t-en">Custom statement (optional)</span><em class="t-bn">নিজের লেখা (ঐচ্ছিক)</em></label>
+          <textarea id="ackText" rows="4" placeholder="Leave empty to use the ready-made statement · ফাঁকা রাখলে তৈরি করা লেখা ব্যবহার হবে"></textarea></div>
+        <div class="dcl-note"><span class="t-en">Student and course details come from your form. The teacher’s name (first line) is used where the statement thanks your teacher.</span><span class="t-sep"> · </span><span class="t-bn">শিক্ষার্থী ও কোর্সের তথ্য ফর্ম থেকে বসে। শিক্ষকের নাম (প্রথম লাইন) যেখানে শিক্ষককে ধন্যবাদ জানানো হয় সেখানে ব্যবহৃত হয়।</span></div>
+      </div></div>
+      <input type="hidden" id="ackStyle" value="supervisor">
+    </div>
+
+    <div class="bnd dcl apr" id="tcp" style="display:none">
+      <div class="bnd-h">
+        <span class="bnd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg></span>
+        <span class="bnd-t"><span class="t-en">Contents settings</span><em class="t-bn">সূচিপত্রের সেটিংস</em></span>
+      </div>
+      <div class="bnd-body"><div class="bnd-in">
+        <div class="dcl-f"><div class="bt-h"><span class="t-en">Layout style</span><em class="t-bn">লেআউটের ধরন</em></div>
+          <div class="bt-grid" id="tcGrid">
+            <button type="button" class="bt" data-k="classic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 12h5M13 12h7M4 17h11M19 17h1"/></svg><span><b><span class="t-en">Classic</span><span class="t-bn">ক্লাসিক</span></b><small><span class="t-en">Dotted leaders</span><span class="t-bn">ডট লাইনসহ</span></small></span></button>
+            <button type="button" class="bt" data-k="numbered"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="2.2"/><circle cx="6" cy="17" r="2.2"/><path d="M11 7h9M11 17h9"/></svg><span><b><span class="t-en">Numbered</span><span class="t-bn">ক্রমিক</span></b><small><span class="t-en">Chapter badges</span><span class="t-bn">অধ্যায়ের ব্যাজ</span></small></span></button>
+            <button type="button" class="bt" data-k="modern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span><b><span class="t-en">Clean lines</span><span class="t-bn">পরিচ্ছন্ন</span></b><small><span class="t-en">Minimal rows</span><span class="t-bn">সরল সারি</span></small></span></button>
+          </div>
+        </div>
+        <div class="dcl-f"><label for="tocEntries"><span class="t-en">Entries (one per line)</span><em class="t-bn">সূচি (প্রতি লাইনে একটি)</em></label>
+          <textarea id="tocEntries" rows="9" placeholder="Acknowledgment, i&#10;Chapter 1: Introduction, 1&#10;  Background, 2&#10;  Objectives, 4&#10;# Part II&#10;Chapter 2: Methodology, 9&#10;References, 21"></textarea></div>
+        <div class="dcl-note"><span class="t-en">Write “Title, page” on each line. Indent with two spaces (or start with “-”) for a sub-entry, and start with # for a part heading. Leave empty to preview a sample. Only the institution, department and topic are used from the form.</span><span class="t-sep"> · </span><span class="t-bn">প্রতি লাইনে “শিরোনাম, পৃষ্ঠা” লিখুন। উপ-শিরোনামের জন্য দুটি স্পেস (বা “-”) দিয়ে শুরু করুন, আর অংশের শিরোনামের জন্য # দিয়ে। ফাঁকা রাখলে নমুনা দেখা যাবে। ফর্ম থেকে শুধু প্রতিষ্ঠান, বিভাগ ও বিষয় নেওয়া হয়।</span></div>
+      </div></div>
+      <input type="hidden" id="tocStyle" value="classic">
+    </div>
+
     <label for="tplOpen"><span class="t-en">Template</span><em class="t-bn">টেমপ্লেট</em></label>
     <input type="hidden" id="tpl"><input type="hidden" id="cPri"><input type="hidden" id="cAcc"><input type="hidden" id="docType" value="assignment">
     <button type="button" class="tsel" id="tplOpen" aria-haspopup="dialog" aria-controls="gal">
       <span class="tsel-st" id="tplSt"><span class="tsel-pg" id="tplTh"></span></span>
       <span class="tsel-tx">
         <b><span id="tplName" class="t-en">Classic</span><em id="tplNameBn" class="t-bn">ক্লাসিক</em></b>
-        <small class="t-en">8 designs + color themes · tap to browse</small>
-        <small class="bn t-bn">৮টি ডিজাইন ও রঙের থিম · ট্যাপ করে দেখুন</small>
+        <small class="t-en" data-d="Your declaration in 8 designs + color themes · tap to browse" data-a="Your approval letter in 8 designs + color themes · tap to browse" data-ak="Your acknowledgment in 8 designs + color themes · tap to browse" data-tc="Your table of contents in 8 designs + color themes · tap to browse">8 designs + color themes · tap to browse</small>
+        <small class="bn t-bn" data-d="৮টি ডিজাইন ও রঙের থিমে আপনার ঘোষণাপত্র · ট্যাপ করে দেখুন" data-a="৮টি ডিজাইন ও রঙের থিমে আপনার অনুমোদনপত্র · ট্যাপ করে দেখুন" data-ak="৮টি ডিজাইন ও রঙের থিমে আপনার কৃতজ্ঞতা স্বীকার · ট্যাপ করে দেখুন" data-tc="৮টি ডিজাইন ও রঙের থিমে আপনার সূচিপত্র · ট্যাপ করে দেখুন">৮টি ডিজাইন ও রঙের থিম · ট্যাপ করে দেখুন</small>
         <small class="tsel-thm"><span class="tsel-dot" id="tselDot"></span><span id="tselThName"></span></small>
       </span>
       <span class="tsel-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg><span class="t"><span class="t-en">Browse</span><span class="t-bo">দেখুন</span></span></span>
@@ -813,7 +1056,7 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
     <div class="g2">
       <div style="grid-column:1/-1"><label><span class="t-en">Title font</span><em class="t-bn">শিরোনামের ফন্ট</em></label>
         <select id="font"><option>Cinzel</option><option>Playfair Display</option><option>Noto Serif Bengali</option><option>Montserrat</option></select></div>
-      <div><label><span class="t-en">Cover language</span><em class="t-bn">কভারের ভাষা</em></label>
+      <div><label><span class="t-en" data-d="Declaration language" data-a="Approval language" data-ak="Acknowledgment language" data-tc="Contents language">Cover language</span><em class="t-bn" data-d="ঘোষণাপত্রের ভাষা" data-a="অনুমোদনপত্রের ভাষা" data-ak="কৃতজ্ঞতা স্বীকারের ভাষা" data-tc="সূচিপত্রের ভাষা">কভারের ভাষা</em></label>
         <select id="lang"><option value="bi" data-en="English + Bangla" data-bn="ইংরেজি + বাংলা">English + Bangla</option><option value="en" data-en="English" data-bn="ইংরেজি">English</option><option value="bn" data-en="Bangla" data-bn="বাংলা">Bangla</option></select></div>
       <div><label><span class="t-en">Digits</span><em class="t-bn">সংখ্যা</em></label>
         <select id="digits"><option value="en">1 2 3</option><option value="bn">১ ২ ৩</option></select></div>
@@ -821,7 +1064,7 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
     <label><span class="t-en">Custom logo (optional)</span><em class="t-bn">নিজস্ব লোগো (ঐচ্ছিক)</em></label>
     <input type="file" id="logoFile" accept="image/*">
     <div class="acts" style="margin-top:10px"><button type="button" class="btn ghost" id="logoReset"><span class="t-en">Restore default logo</span><small class="t-bn">মূল লোগো ফিরিয়ে আনুন</small></button></div>
-    <label class="chk"><input type="checkbox" id="sign"><span class="t-en"> Add signature area </span><em class="t-bn bn">স্বাক্ষরের স্থান যোগ করুন</em></label>
+    <label class="chk cov-only"><input type="checkbox" id="sign"><span class="t-en"> Add signature area </span><em class="t-bn bn">স্বাক্ষরের স্থান যোগ করুন</em></label>
   
     <div class="bnd" id="bnd">
       <div class="bnd-h">
@@ -841,10 +1084,11 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
       </div></div></div>
       <input type="hidden" id="bindSide" value="left"><input type="hidden" id="bindType" value="">
     </div>
+
   </div>
 
   <div class="card">
-    <h3><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg></i><span><span class="t-en">Institution &amp; Course</span><em class="t-bn">প্রতিষ্ঠান ও কোর্স</em></span></h3>
+    <h3><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg></i><span><span class="t-en" data-d="Institution &amp; Course" data-a="Institution &amp; Course" data-ak="Institution &amp; Course" data-tc="Institution &amp; Topic">Institution &amp; Course</span><em class="t-bn" data-d="প্রতিষ্ঠান ও কোর্স" data-a="প্রতিষ্ঠান ও কোর্স" data-ak="প্রতিষ্ঠান ও কোর্স" data-tc="প্রতিষ্ঠান ও বিষয়">প্রতিষ্ঠান ও কোর্স</em></span></h3>
     <label for="uni"><span class="t-en">University name</span><em class="t-bn">বিশ্ববিদ্যালয়ের নাম</em></label>
     <input id="uni" type="text" placeholder="e.g. DHAKA CENTRAL UNIVERSITY" autocomplete="off">
     <label for="campus"><span class="t-en">Campus (optional)</span><em class="t-bn">ক্যাম্পাস (ঐচ্ছিক)</em></label>
@@ -854,17 +1098,17 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
     <datalist id="deptList">
       <option value="DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING"><option value="DEPARTMENT OF COMPUTER SCIENCE"><option value="DEPARTMENT OF ELECTRICAL &amp; ELECTRONIC ENGINEERING"><option value="DEPARTMENT OF BUSINESS ADMINISTRATION"><option value="DEPARTMENT OF ACCOUNTING"><option value="DEPARTMENT OF FINANCE &amp; BANKING"><option value="DEPARTMENT OF MARKETING"><option value="DEPARTMENT OF MANAGEMENT"><option value="DEPARTMENT OF ENGLISH"><option value="DEPARTMENT OF BANGLA"><option value="DEPARTMENT OF ECONOMICS"><option value="DEPARTMENT OF LAW"><option value="DEPARTMENT OF MATHEMATICS"><option value="DEPARTMENT OF PHYSICS"><option value="DEPARTMENT OF CHEMISTRY"><option value="DEPARTMENT OF SOCIOLOGY"><option value="DEPARTMENT OF POLITICAL SCIENCE"><option value="DEPARTMENT OF HISTORY"><option value="DEPARTMENT OF ISLAMIC STUDIES"><option value="DEPARTMENT OF PUBLIC HEALTH">
     </datalist>
-    <div class="g2">
+    <div class="g2 tc-hide">
       <div><label for="courseCode"><span class="t-en">Course code</span><em class="t-bn">কোর্স কোড</em></label><input id="courseCode" type="text" placeholder="e.g. CSE-101" autocomplete="off"></div>
       <div><label for="courseName"><span class="t-en">Course name</span><em class="t-bn">কোর্সের নাম</em></label><input id="courseName" type="text" placeholder="e.g. Programming" autocomplete="off"></div>
     </div>
-    <label for="topic"><span class="t-en">Topic</span><em class="t-bn">বিষয়</em></label>
+    <label for="topic"><span class="t-en" data-d="Title of the work" data-a="Title of the work" data-ak="Title of the work" data-tc="Title of the work">Topic</span><em class="t-bn" data-d="কাজের শিরোনাম" data-a="কাজের শিরোনাম" data-ak="কাজের শিরোনাম" data-tc="কাজের শিরোনাম">বিষয়</em></label>
     <input id="topic" type="text" placeholder="e.g. Introduction to Artificial Intelligence" autocomplete="off">
   </div>
 
-  <div class="card">
-    <h3><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></i><span><span class="t-en">Submitted by</span><em class="t-bn">শিক্ষার্থী</em></span></h3>
-    <label for="mode"><span class="t-en">Submission type</span><em class="t-bn">জমাদানের ধরন</em></label>
+  <div class="card tc-hide">
+    <h3><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></i><span><span class="t-en" data-d="Declarant">Submitted by</span><em class="t-bn" data-d="ঘোষণাকারী">শিক্ষার্থী</em></span></h3>
+    <label for="mode"><span class="t-en" data-d="Declaration type">Submission type</span><em class="t-bn" data-d="ঘোষণার ধরন">জমাদানের ধরন</em></label>
     <select id="mode"><option value="single" data-en="Individual" data-bn="একক">Individual · একক</option><option value="group" data-en="Group" data-bn="গ্রুপ">Group · গ্রুপ</option></select>
     <div id="boxSingle">
       <div class="g2">
@@ -875,14 +1119,14 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
     <div id="boxGroup" hidden>
       <label for="members"><span class="t-en">Group members (Name, Roll per line)</span><em class="t-bn">গ্রুপ সদস্য (প্রতি লাইনে: নাম, রোল)</em></label>
       <textarea id="members" rows="5" placeholder="ABDUL KARIM, 101&#10;RAHIM UDDIN, 102"></textarea>
-      <p class="hint"><span class="t-en">Up to 8 members are shown on the cover.</span><span class="t-sep"> · </span><span class="t-bn">সর্বোচ্চ ৮ জন সদস্য কভারে দেখানো হয়।</span></p>
+      <p class="hint"><span class="t-en" data-d="Up to 8 members are shown on the declaration." data-a="Up to 8 members are shown on the approval letter." data-ak="Up to 8 members are shown on the acknowledgment." data-tc="Student details appear only when “Show student &amp; course details” is on.">Up to 8 members are shown on the cover.</span><span class="t-sep"> · </span><span class="t-bn" data-d="সর্বোচ্চ ৮ জন সদস্য ঘোষণাপত্রে দেখানো হয়।" data-a="সর্বোচ্চ ৮ জন সদস্য অনুমোদনপত্রে দেখানো হয়।" data-ak="সর্বোচ্চ ৮ জন সদস্য কৃতজ্ঞতা স্বীকারে দেখানো হয়।" data-tc="“শিক্ষার্থী ও কোর্সের তথ্য দেখান” চালু থাকলে তবেই শিক্ষার্থীর তথ্য আসে।">সর্বোচ্চ ৮ জন সদস্য কভারে দেখানো হয়।</span></p>
     </div>
     <div class="g2">
       <div><label for="sClass"><span class="t-en">Class / Degree</span><em class="t-bn">ক্লাস / ডিগ্রি</em></label><input id="sClass" type="text" placeholder="e.g. BSc Honours 1st Year" autocomplete="off"></div>
       <div><label for="session"><span class="t-en">Session</span><em class="t-bn">সেশন</em></label><input id="session" type="text" placeholder="e.g. 2025-26" autocomplete="off"></div>
-      <div style="grid-column:1/-1"><label for="mobile"><span class="t-en">Mobile number</span><em class="t-bn">মোবাইল নম্বর</em></label><input id="mobile" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" autocomplete="off"></div>
+      <div class="cov-only" style="grid-column:1/-1"><label for="mobile"><span class="t-en">Mobile number</span><em class="t-bn">মোবাইল নম্বর</em></label><input id="mobile" type="tel" inputmode="numeric" placeholder="01XXXXXXXXX" autocomplete="off"></div>
       <div class="dtx" id="dateBox" style="grid-column:1/-1">
-        <label for="date"><span class="t-en">Submission date</span><em class="t-bn">জমাদানের তারিখ</em></label>
+        <label for="date"><span class="t-en" data-d="Date of declaration" data-a="Date of approval" data-ak="Date of acknowledgment" data-tc="Date of submission">Submission date</span><em class="t-bn" data-d="ঘোষণার তারিখ" data-a="অনুমোদনের তারিখ" data-ak="কৃতজ্ঞতা স্বীকারের তারিখ" data-tc="জমাদানের তারিখ">জমাদানের তারিখ</em></label>
         <div class="dtx-tile" id="dtTile">
           <button type="button" class="dtx-btn" id="dtBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="dpPop">
             <span class="dtx-cal" aria-hidden="true"><b id="dtMon">---</b><span id="dtDay">--</span></span>
@@ -918,9 +1162,9 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
   </div>
 
   <div class="card">
-    <h3><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5C5 5 8 5 12 7c4-2 7-2 9-.5V19c-2-1.5-5-1.5-9 .5-4-2-7-2-9-.5z"/><path d="M12 7v12.5"/></svg></i><span><span class="t-en">Submitted to</span><em class="t-bn">শিক্ষক</em></span></h3>
-    <label for="teachers"><span class="t-en">Name &amp; designation (one per line)</span><em class="t-bn">নাম ও পদবি (প্রতি লাইনে একটি)</em></label>
-    <textarea id="teachers" rows="4" placeholder="Prof. Dr. X&#10;Associate Professor&#10;Course Instructor"></textarea>
+    <h3 class="tc-hide"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5C5 5 8 5 12 7c4-2 7-2 9-.5V19c-2-1.5-5-1.5-9 .5-4-2-7-2-9-.5z"/><path d="M12 7v12.5"/></svg></i><span><span class="t-en" data-d="Teacher / Supervisor" data-a="Approved by" data-ak="Teacher / Supervisor" data-tc="Submitted to">Submitted to</span><em class="t-bn" data-d="শিক্ষক / তত্ত্বাবধায়ক" data-a="অনুমোদনকারী" data-ak="শিক্ষক / তত্ত্বাবধায়ক" data-tc="শিক্ষক">শিক্ষক</em></span></h3>
+    <label for="teachers" class="tc-hide"><span class="t-en" data-d="Teacher / supervisor (first line is used)" data-a="Approver name &amp; designation (first line is used)" data-ak="Teacher / supervisor to thank (first line is used)" data-tc="Name &amp; designation (one per line)">Name &amp; designation (one per line)</span><em class="t-bn" data-d="শিক্ষক / তত্ত্বাবধায়ক (প্রথম লাইনটি ব্যবহৃত হয়)" data-a="অনুমোদনকারীর নাম ও পদবি (প্রথম লাইনটি ব্যবহৃত হয়)" data-ak="যাঁকে ধন্যবাদ জানাবেন সেই শিক্ষক / তত্ত্বাবধায়ক (প্রথম লাইনটি ব্যবহৃত হয়)" data-tc="নাম ও পদবি (প্রতি লাইনে একটি)">নাম ও পদবি (প্রতি লাইনে একটি)</em></label>
+    <textarea id="teachers" class="tc-hide" rows="4" placeholder="Prof. Dr. X&#10;Associate Professor&#10;Course Instructor"></textarea>
     <div class="acts" style="margin-top:16px">
       <button type="button" class="btn" id="pdfBtn"><svg class="dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg><span class="lb t-en">Download PDF</span><small class="t-bn">পিডিএফ ডাউনলোড</small></button>
       <button type="button" class="btn red" id="reset"><span class="t-en">Clear all</span><small class="t-bn">সব তথ্য মুছুন</small></button>
@@ -932,7 +1176,13 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
 <section class="pv" id="pvSec">
   <div class="pbar"><b><span></span><span class="t-en">Live preview · A4</span><em class="t-bn bn">লাইভ প্রিভিউ</em></b><button type="button" class="status" id="status"></button><div class="acts"><button type="button" class="btn ghost pv-close" id="pvClose" aria-label="Close preview"><span class="t-en">✕ Close</span><small class="t-bn">বন্ধ</small></button><button type="button" class="btn" id="pdfBtn2"><svg class="dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg><span class="lb t-en">Download PDF</span><small class="t-bn">পিডিএফ ডাউনলোড</small></button></div></div>
   <div class="pwrap">
-    <div id="stage"><div id="scaler">
+    <div class="pgsw" id="pgsw" hidden>
+      <div class="pgsw-in" id="pgswIn" data-v="cover" role="group" aria-label="Preview page · প্রিভিউ পৃষ্ঠা">
+        <button type="button" class="pgsw-b" data-view="cover" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span><span class="t-en">Cover</span><span class="t-bn">কভার</span></span><i>1</i></button>
+        <button type="button" class="pgsw-b" data-view="decl" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M8.8 12l2.4 2.4 4.2-4.6"/></svg><span><span class="t-en">Declaration</span><span class="t-bn">ঘোষণাপত্র</span></span><i>2</i></button>
+      </div>
+    </div>
+    <div id="stage"><div id="scaler" data-view="cover">
       <div class="page" id="page"><div class="sheet tpl-classic" id="sheet">
         <i class="wm"></i><i class="bar t"></i><i class="bar b"></i><i class="frame"></i><i class="frame2"></i><i class="band"></i><i class="d1"></i><i class="d2"></i><i class="d3"></i><i class="d4"></i>
         <div class="hd">
@@ -954,6 +1204,20 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
         </div>
         <div class="sg" id="oSign"><div id="oS1"></div><div id="oS2"></div></div>
       </div><div class="bind-guide" id="bGuide" hidden aria-hidden="true"><span id="bTag"></span></div></div>
+      <div class="page" id="page2" hidden><div class="sheet dcs tpl-classic" id="sheet2">
+        <i class="wm"></i><i class="bar t"></i><i class="bar b"></i><i class="frame"></i><i class="frame2"></i><i class="band"></i><i class="d1"></i><i class="d2"></i><i class="d3"></i><i class="d4"></i>
+        <div class="hd">
+          <img id="logo2" src="./logo.png" alt="Logo">
+          <div><div class="uni" id="dUni"></div><div class="campus" id="dCampus"></div></div>
+        </div>
+        <div class="dept" id="dDept"></div>
+        <div class="dc-body">
+          <div class="dc-head"><div class="dc-seal" id="dSeal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M8.8 12l2.4 2.4 4.2-4.6"/></svg></div><div class="dt" id="dTitle"></div><div class="dtb" id="dTitleBn"></div><div class="rule"></div></div>
+          <div class="dc-meta" id="dMeta"></div>
+          <div class="dc-st" id="dText"></div>
+        </div>
+        <div class="dc-foot"><div class="dc-pd" id="dPD"></div><div class="dc-sg" id="dSign"></div></div>
+      </div></div>
     </div></div>
   </div>
 </section>
@@ -963,7 +1227,7 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
 <div class="gal" id="gal" hidden role="dialog" aria-modal="true" aria-labelledby="galT">
   <div class="gal-bg" aria-hidden="true"></div>
   <header class="gal-top">
-    <div class="gal-t"><b id="galT"><span class="t-en">Template &amp; theme</span><em class="t-bn">টেমপ্লেট ও থিম</em></b><small><span class="t-en">Swipe or drag to explore</span><span class="t-sep"> · </span><span class="t-bn">সোয়াইপ করে দেখুন</span></small></div>
+    <div class="gal-t"><b id="galT"><span class="t-en" data-d="Declaration template &amp; theme" data-a="Approval template &amp; theme" data-ak="Acknowledgment template &amp; theme" data-tc="Contents template &amp; theme">Template &amp; theme</span><em class="t-bn" data-d="ঘোষণাপত্রের টেমপ্লেট ও থিম" data-a="অনুমোদনপত্রের টেমপ্লেট ও থিম" data-ak="কৃতজ্ঞতা স্বীকারের টেমপ্লেট ও থিম" data-tc="সূচিপত্রের টেমপ্লেট ও থিম">টেমপ্লেট ও থিম</em></b><small><span class="t-en">Swipe or drag to explore</span><span class="t-sep"> · </span><span class="t-bn">সোয়াইপ করে দেখুন</span></small></div>
     <div class="gal-r"><span class="gal-ct" id="galCount" aria-hidden="true"></span><button type="button" class="gal-x" id="galX" aria-label="Close · বন্ধ করুন"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   </header>
   <div class="gal-main" id="galMain">
@@ -1018,9 +1282,9 @@ html[data-ui-lang="bn"] .ct-tx .t-bn{margin-top:0;font-size:14.5px;font-weight:6
 'use strict';
 var $=function(i){return document.getElementById(i)};
 var KEY='cover-studio-v3',LKEY='cover-studio-logo-v2',W=794,H=1122;
-var FIELDS=['tpl','cPri','cAcc','docType','font','lang','digits','sign','uni','campus','dept','courseCode','courseName','topic','mode','sName','sRoll','members','sClass','session','mobile','date','dateFmt','bindOn','bindSide','bindMm','bindType','teachers'];
+var FIELDS=['tpl','cPri','cAcc','docType','font','lang','digits','sign','uni','campus','dept','courseCode','courseName','topic','mode','sName','sRoll','members','sClass','session','mobile','date','dateFmt','bindOn','bindSide','bindMm','bindType','teachers','dclOn','dclStyle','dclText','dclPlace','dclSup','aprStyle','aprText','aprPlace','aprExam','aprStamp','ackStyle','ackText','ackPlace','ackThanks','ackClose','tocStyle','tocEntries'];
 var DEF={tpl:'classic',cPri:'#0b1f3a',cAcc:'#d4af37',docType:'assignment',font:'Cinzel',lang:'en',digits:'en',sign:false,
- uni:'',campus:'',dept:'',courseCode:'',courseName:'',topic:'',mode:'single',sName:'',sRoll:'',members:'',sClass:'',session:'',mobile:'',date:'',dateFmt:'long',bindOn:false,bindSide:'left',bindMm:'15',bindType:'',teachers:''};
+ uni:'',campus:'',dept:'',courseCode:'',courseName:'',topic:'',mode:'single',sName:'',sRoll:'',members:'',sClass:'',session:'',mobile:'',date:'',dateFmt:'long',bindOn:false,bindSide:'left',bindMm:'15',bindType:'',teachers:'',dclOn:false,dclStyle:'original',dclText:'',dclPlace:'',dclSup:false,aprStyle:'supervisor',aprText:'',aprPlace:'',aprExam:false,aprStamp:true,ackStyle:'supervisor',ackText:'',ackPlace:'',ackThanks:'',ackClose:true,tocStyle:'classic',tocEntries:''};
 /* ফাঁকা থাকলে প্রিভিউতে হালকা নমুনা লেখা দেখায় (PDF-এ আসে না) */
 var SAMPLE={uni:'DHAKA CENTRAL UNIVERSITY',campus:'MAIN CAMPUS',dept:'DEPARTMENT OF COMPUTER SCIENCE',cs:'CSE-101 — Programming Fundamentals',topic:'Introduction to Artificial Intelligence',sName:'ABDUL KARIM',sRoll:'101',members:'ABDUL KARIM, 101\nRAHIM UDDIN, 102',sClass:'BSc Honours 1st Year',session:'2025-26',mobile:'01700000000',teachers:'Prof. Dr. Example Name\nAssociate Professor\nCourse Instructor'};
 var T={
@@ -1198,20 +1462,21 @@ function render(){try{typeSync($('docType').value)}catch(e){}
   var swT=themeName(v.cPri,v.cAcc);$('tselThName').textContent=ui(swT);var td=$('tselDot');td.style.setProperty('--p0',v.cPri);td.style.setProperty('--a0',v.cAcc);
   try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}
   validate(v);
+  try{dclRender(v)}catch(e){}
   autoFit();fit();schedThumbs();
 }
 
 function fit(){
   var st=$('stage'),w=st.clientWidth;if(!w)return;
   var k=w/W;
-  if(window.innerWidth>960)k=Math.min(k,(window.innerHeight-215)/H);
+  if(window.innerWidth>960)k=Math.min(k,(window.innerHeight-215-(($('pgsw')&&!$('pgsw').hidden)?58:0))/H);
   k=Math.max(.2,Math.min(1.6,k));
   $('scaler').style.transform='scale('+k+')';
   $('scaler').style.marginLeft=Math.max(0,Math.round((w-W*k)/2))+'px';
   st.style.height=Math.round(H*k)+'px';
 }
 /* লেখা বেশি হলে নিজে নিজে ছোট হয়, যাতে ওভারল্যাপ বা কাটা না পড়ে */
-function autoFit(){fitEl($('sheet'))}
+function autoFit(){fitEl($('sheet'));var p2=$('page2');if(p2&&!p2.hidden)fitEl($('sheet2'))}
 function fitEl(sh){
   for(var m=1;m>=.4;m-=.04){
     sh.style.setProperty('--un',Math.round(31*m)+'px');sh.style.setProperty('--dtf',Math.round(52*m)+'px');
@@ -1303,13 +1568,15 @@ function paint(id,m){var b=msgBox[id],inp=$(id);if(!b||!inp)return;var key=m?m.t
    if(m.t==='err'&&lastMsg[id]!==key){inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake')}}
   if(m&&m.t==='err')inp.classList.remove('ok');lastMsg[id]=key}
 function validate(v){
-  var grp=v.mode==='group',miss=[];
+  var grp=v.mode==='group',miss=[],dec=v.docType==='declaration';
   var need=function(id,ok){if(!ok)miss.push(id)};
   need('uni',v.uni.trim());need('dept',v.dept.trim());need('courseName',v.courseCode.trim()||v.courseName.trim());need('topic',v.topic.trim());
   if(grp)need('members',v.members.trim());else{need('sName',v.sName.trim());need('sRoll',v.sRoll.trim())}
-  need('sClass',v.sClass.trim());need('session',v.session.trim());need('date',v.date);need('teachers',v.teachers.trim());
+  need('sClass',v.sClass.trim());need('session',v.session.trim());var ack=v.docType==='acknowledgment';if(!dec&&v.docType!=='approval'&&!ack)need('date',v.date);if(ack||!dec||v.dclStyle==='thesis'||v.dclSup)need('teachers',v.teachers.trim());
+  if(v.docType==='contents'){miss=[];need('uni',v.uni.trim());need('dept',v.dept.trim());need('topic',v.topic.trim())}
   ISSUES=[];var tips=0,filled=0;
   IDS.forEach(function(id){
+    if(v.docType==='contents'&&['uni','campus','dept','topic'].indexOf(id)<0){paint(id,null);return}
     if((id==='sName'||id==='sRoll')&&grp||id==='members'&&!grp){paint(id,null);return}
     var x=id==='date'?v.date:(id==='members'||id==='teachers'?v[id]:String(v[id]).trim());
     if(String(x).trim())filled++;
@@ -1343,7 +1610,15 @@ var TYPES=[
  {v:'project',en:'Project / Thesis',bn:'প্রজেক্ট / থিসিস',cover:'PROJECT / THESIS',file:'Project',he:'Project, thesis or dissertation',hb:'প্রজেক্ট, থিসিস বা গবেষণাপত্র',
   ic:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5M22 9v6"/>'},
  {v:'quiz',en:'Quiz / Exam',bn:'কুইজ / পরীক্ষা',cover:'QUIZ / EXAM',file:'Quiz',he:'Quiz, exam or test paper',hb:'কুইজ, পরীক্ষা বা টেস্টের কভার',
-  ic:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.6a2.6 2.6 0 015.1.6c0 1.8-2.6 2.2-2.6 3.8M12 17.2h.01"/>'}
+  ic:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.6a2.6 2.6 0 015.1.6c0 1.8-2.6 2.2-2.6 3.8M12 17.2h.01"/>'},
+ {v:'declaration',en:'Declaration',bn:'ঘোষণাপত্র',cover:'DECLARATION',file:'Declaration',he:'Declaration of originality · own-work statement',hb:'মৌলিকতার ঘোষণাপত্র · নিজস্ব কাজের অঙ্গীকার',
+  ic:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M8.8 12l2.4 2.4 4.2-4.6"/>'},
+ {v:'approval',en:'Approval',bn:'অনুমোদনপত্র',cover:'APPROVAL',file:'Approval',he:'Certificate of approval · supervisor / department sign-off',hb:'অনুমোদনের প্রত্যয়নপত্র · তত্ত্বাবধায়ক / বিভাগের স্বাক্ষর',
+  ic:'<circle cx="12" cy="9" r="5.5"/><path d="M8.7 13.6L7.5 21l4.5-2.6 4.5 2.6-1.2-7.4"/><path d="M9.6 9l1.7 1.7L14.5 7.4"/>'},
+ {v:'acknowledgment',en:'Acknowledgment',bn:'কৃতজ্ঞতা স্বীকার',cover:'ACKNOWLEDGMENT',file:'Acknowledgment',he:'Acknowledgment · thanks to supervisor, family & well-wishers',hb:'কৃতজ্ঞতা স্বীকার · শিক্ষক, পরিবার ও শুভানুধ্যায়ীদের ধন্যবাদ',
+  ic:'<path d="M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0112 7.6a4.2 4.2 0 017.5 2.6c0 5.7-7.5 10.3-7.5 10.3z"/>'},
+ {v:'contents',en:'Contents',bn:'সূচিপত্র',cover:'TABLE OF CONTENTS',file:'Contents',he:'Table of contents · chapters & page numbers',hb:'সূচিপত্র · অধ্যায় ও পৃষ্ঠা নম্বর',
+  ic:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>'}
 ];
 TYPES.forEach(function(x){T.en.docs[x.v]=T.en.docs[x.v]||x.cover||x.en.toUpperCase();T.bn.docs[x.v]=T.bn.docs[x.v]||x.bn});
 var ctWrap=$('ctWrap'),ctSc=$('ctScroll'),ctList=$('ctList'),ctInd=$('ctInd'),ctHint=$('ctHint'),ctOn=false,ctCur='';
@@ -1408,6 +1683,549 @@ if(window.ResizeObserver){var ctRo=new ResizeObserver(ctRefresh);ctRo.observe(ct
 else window.addEventListener('resize',ctRefresh);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(ctRefresh);
 
+/* ===== Declaration page (ঘোষণাপত্র) — প্রিভিউ + PDF-এর দ্বিতীয় পৃষ্ঠা ===== */
+var DC={en:{title:'DECLARATION',stu:'Student',mem:'Group members',course:'Course',topic:'Topic',cs:'Class / Session',roll:'Class Roll',place:'Place',date:'Date'},
+        bn:{title:'ঘোষণাপত্র',stu:'শিক্ষার্থী',mem:'দলের সদস্য',course:'কোর্স',topic:'বিষয়',cs:'ক্লাস / সেশন',roll:'ক্লাস রোল',place:'স্থান',date:'তারিখ'}};
+var DPR={en:{I:['I','We'],my:['my','our'],me:['me','us']},bn:{I:['আমি','আমরা'],my:['আমার','আমাদের']}};
+var DWHO={en:{s:'{name}, Class Roll {roll}, {class}',g:'the undersigned members of this group'},bn:{s:'{name}, ক্লাস রোল {roll}, {class}',g:'নিচে স্বাক্ষরকারী দলের সদস্যরা'}};
+/* নতুন ঘোষণার ধরন যোগ করতে এখানে একটি এন্ট্রি দিন (আর কিছু বদলাতে হবে না) */
+var DS={
+ original:{
+  en:{i:'{I}, {who}, hereby solemnly declare, in respect of the {doc} titled “{topic}” prepared for the course {course}, that:',
+      p:['The work presented here is original and was prepared by {me} solely for the stated course.',
+         'Wherever the ideas, data, words or figures of others have been used, they are clearly acknowledged and properly cited.',
+         'It has not been copied from any other student, publication or online source, and has not been submitted earlier for any other course, degree or publication.',
+         '{I} understand that any breach of academic integrity may lead to disciplinary action under the rules of the university.']},
+  bn:{i:'{I}, {who}, “{topic}” শিরোনামের এবং {course} কোর্সের জন্য প্রস্তুত এই {doc} সম্পর্কে সম্পূর্ণ সততার সাথে ঘোষণা করছি যে:',
+      p:['এখানে উপস্থাপিত কাজটি মৌলিক এবং শুধু উল্লিখিত কোর্সের জন্য {my} দ্বারা প্রস্তুত করা হয়েছে।',
+         'অন্যের ধারণা, তথ্য, লেখা বা চিত্র ব্যবহার করা হলে তা স্পষ্টভাবে স্বীকার করা হয়েছে এবং যথাযথভাবে উদ্ধৃত করা হয়েছে।',
+         'কাজটি অন্য কোনো শিক্ষার্থী, প্রকাশনা বা অনলাইন উৎস থেকে নকল করা হয়নি এবং এর আগে অন্য কোনো কোর্স, ডিগ্রি বা প্রকাশনার জন্য জমা দেওয়া হয়নি।',
+         '{I} অবগত যে একাডেমিক সততা লঙ্ঘন করলে বিশ্ববিদ্যালয়ের বিধি অনুযায়ী শৃঙ্খলামূলক ব্যবস্থা নেওয়া হতে পারে।']}},
+ integrity:{
+  en:{i:'{I}, {who}, affirm {my} commitment to academic honesty and declare, regarding the {doc} titled “{topic}” for the course {course}, that:',
+      p:['This work is {my} own, completed independently and in good faith.',
+         'Every source consulted — books, articles, websites, datasets and tools — has been credited and referenced.',
+         '{I} have neither given nor received unauthorised help, and any use of AI tools has been disclosed where required.',
+         '{I} accept that violations may result in penalties as set out by the university and the department.']},
+  bn:{i:'{I}, {who}, একাডেমিক সততার প্রতি {my} অঙ্গীকার জানিয়ে {course} কোর্সের “{topic}” বিষয়ক এই {doc} সম্পর্কে ঘোষণা করছি যে:',
+      p:['কাজটি সম্পূর্ণ {my} নিজস্ব; স্বাধীনভাবে ও সততার সাথে সম্পন্ন করা হয়েছে।',
+         'পরামর্শ নেওয়া প্রতিটি উৎস — বই, প্রবন্ধ, ওয়েবসাইট, ডেটাসেট ও টুল — যথাযথভাবে উল্লেখ ও রেফারেন্স করা হয়েছে।',
+         '{I} কারও কাছ থেকে অনুমোদনহীন সহায়তা নিইনি বা দিইনি; প্রয়োজনে এআই টুল ব্যবহারের কথা প্রকাশ করা হয়েছে।',
+         'নিয়ম ভঙ্গ করলে বিশ্ববিদ্যালয় ও বিভাগের বিধি অনুযায়ী শাস্তি হতে পারে — {I} তা মেনে নিচ্ছি।']}},
+ thesis:{
+  en:{i:'{I}, {who}, declare that the {doc} titled “{topic}” for the course {course} was carried out under the guidance of {teacher}, and that:',
+      p:['The findings and the write-up are the result of {my} own research and effort.',
+         'Contributions from others, including supervisory advice, are acknowledged where relevant.',
+         'No part of this work has been submitted for any other degree or qualification.',
+         '{I} grant the department permission to keep a copy for academic and archival purposes.']},
+  bn:{i:'{I}, {who}, ঘোষণা করছি যে {course} কোর্সের জন্য “{topic}” শিরোনামের এই {doc} {teacher}-এর তত্ত্বাবধানে সম্পন্ন করা হয়েছে এবং:',
+      p:['গবেষণার ফলাফল ও লেখা সম্পূর্ণ {my} নিজস্ব গবেষণা ও পরিশ্রমের ফল।',
+         'তত্ত্বাবধায়কের পরামর্শসহ অন্যদের অবদান যথাস্থানে স্বীকার করা হয়েছে।',
+         'এই কাজের কোনো অংশ অন্য কোনো ডিগ্রি বা যোগ্যতার জন্য জমা দেওয়া হয়নি।',
+         'একাডেমিক ও সংরক্ষণের উদ্দেশ্যে বিভাগকে এর একটি কপি রাখার অনুমতি {I} দিচ্ছি।']}}
+};
+/* থাম্বনেইল ও টেমপ্লেট গ্যালারি: ঘোষণাপত্র ট্যাবে কভারের বদলে ঘোষণাপত্রের পাতা দেখায় */
+function isExtra(){var d=$('docType').value;return d==='declaration'||d==='approval'||d==='acknowledgment'||d==='contents'}
+function docSrc(){return isExtra()?$('sheet2'):$('sheet')}
+function tplCls(tpl){return isExtra()?'sheet dcs'+({acknowledgment:' ack',contents:' toc'}[$('docType').value]||'')+' tpl-'+tpl+($('sheet2').classList.contains('bi')?' bi':''):'sheet tpl-'+tpl}
+var dmCur=null;
+/* ঘোষণাপত্র/অনুমোদনপত্র ট্যাবে ফর্মের লেবেল ও ঘর সেই ডকুমেন্টের উপযোগী করে */
+function docMode(mode){
+  if(dmCur===mode)return;
+  var first=dmCur===null,f=$('form');dmCur=mode;
+  f.setAttribute('data-doc',mode);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-d]:not(.sw),[data-a]:not(.sw)'),function(n){
+    if(n.dataset.o===undefined)n.dataset.o=n.textContent;
+    var x=mode==='declaration'?n.dataset.d:(mode==='approval'?n.dataset.a:(mode==='acknowledgment'?n.dataset.ak:(mode==='contents'?n.dataset.tc:undefined)));
+    n.textContent=x!==undefined?x:n.dataset.o;
+  });
+  if(!first){f.classList.add('dm-r');void f.offsetWidth;f.classList.remove('dm-r')}
+}
+function panelShow(dc,show){
+  if(!dc)return;
+  var was=dc.dataset.shown==='1';
+  dc.style.display=show?'':'none';dc.classList.add('on');dc.dataset.shown=show?'1':'0';
+  if(show&&!was){dc.classList.remove('dc-in');void dc.offsetWidth;dc.classList.add('dc-in')}
+}
+var SEAL_D='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M8.8 12l2.4 2.4 4.2-4.6"/></svg>',SEAL_A='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.7 13.6L7.5 21l4.5-2.6 4.5 2.6-1.2-7.4"/><path d="M9.6 9l1.7 1.7L14.5 7.4"/></svg>';
+var SEAL_K='<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 20.5s-7.5-4.6-7.5-10.3A4.2 4.2 0 0112 7.6a4.2 4.2 0 017.5 2.6c0 5.7-7.5 10.3-7.5 10.3z\"/><path d=\"M8.6 10.4c.4-1 1.3-1.6 2.4-1.5\"/></svg>';
+var SEAL_T='<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M9 6h11M9 12h11M9 18h11\"/><path d=\"M4.5 6h.01M4.5 12h.01M4.5 18h.01\"/></svg>';
+var dclView='cover';
+function dclShow(view){
+  dclView=view;
+  $('scaler').setAttribute('data-view',view);
+  $('pgswIn').setAttribute('data-v',view);
+  Array.prototype.forEach.call($('pgswIn').querySelectorAll('.pgsw-b'),function(b){b.setAttribute('aria-pressed',b.dataset.view===view?'true':'false')});
+}
+function dclFill(tpl,ctx,plural,lang){
+  var df=document.createDocumentFragment();
+  tpl.split(/(\{\w+\})/).forEach(function(s){
+    var m=/^\{(\w+)\}$/.exec(s);
+    if(!m){if(s)df.appendChild(document.createTextNode(s));return}
+    var k=m[1],pr=DPR[lang][k];
+    if(pr){df.appendChild(document.createTextNode(plural?pr[1]:pr[0]));return}
+    var c=ctx[k];
+    if(!c){df.appendChild(document.createTextNode(s));return}
+    df.appendChild(el('span','dv'+(c.ph?' ph':''),c.t));
+  });
+  return df;
+}
+function dclRender(v){
+  var mode=v.docType==='declaration'?'declaration':(v.docType==='approval'?'approval':(v.docType==='acknowledgment'?'acknowledgment':(v.docType==='contents'?'contents':'cover'))),on=mode!=='cover',p2=$('page2');
+  docMode(mode);
+  $('dclOn').checked=(mode==='declaration');$('pgsw').hidden=true;
+  panelShow($('dcl'),mode==='declaration');panelShow($('apr'),mode==='approval');panelShow($('ack'),mode==='acknowledgment');panelShow($('tcp'),mode==='contents');
+  if(!on){
+    dclShow('cover');
+    setTimeout(function(){if(!isExtra())p2.hidden=true},800);
+    return;
+  }
+  if(p2.hidden){p2.hidden=false;void p2.offsetWidth}
+  dclShow('decl');
+  $('dSeal').innerHTML=mode==='approval'?SEAL_A:(mode==='acknowledgment'?SEAL_K:(mode==='contents'?SEAL_T:SEAL_D));
+  $('dMeta').style.display='';
+  if(mode==='approval'){aprRender(v);return}
+  if(mode==='contents'){tocRender(v);return}
+  if(mode==='acknowledgment'){ackRender(v);return}
+  var bi=v.lang==='bi',lang=v.lang==='bn'?'bn':'en',Lp=T[lang],B=T.bn,plural=v.mode==='group';
+  var D=function(s){s=String(s);return v.digits==='bn'?s.replace(/[0-9]/g,function(c){return '০১২৩৪৫৬৭৮৯'.charAt(+c)}):s};
+  var sh=$('sheet2');
+  sh.className='sheet dcs tpl-'+v.tpl+(bi?' bi':'');
+  sh.style.setProperty('--p',v.cPri);sh.style.setProperty('--a',v.cAcc);
+  sh.style.setProperty('--hf',"'"+v.font+"','Noto Serif Bengali',serif");
+  /* header: কভারের লেখা থেকেই কপি */
+  [['oUni','dUni'],['oCampus','dCampus'],['oDept','dDept']].forEach(function(a){
+    var s=$(a[0]),d=$(a[1]);d.textContent=s.textContent;d.className=s.className.replace(/\bink\b/,'').trim();d.style.display=s.style.display;
+  });
+  $('logo2').src=$('logo').src;
+  $('dTitle').textContent=DC[lang].title;
+  $('dTitleBn').textContent=bi?DC.bn.title:'';$('dTitleBn').style.display=bi?'':'none';
+  /* তথ্য */
+  var tx=function(k,s){var f=String(s==null?'':s).trim();return {t:f?D(f):D(SAMPLE[k]||''),ph:!f}};
+  var tl=v.teachers.split('\n').map(function(x){return x.trim()}).filter(Boolean);
+  var courseT=[v.courseCode.trim(),v.courseName.trim()].filter(Boolean).join(' — ');
+  var mem=v.members.split('\n').map(function(x){return x.trim()}).filter(Boolean),memPh=!mem.length;
+  if(memPh)mem=SAMPLE.members.split('\n');
+  var csT=[v.sClass.trim(),v.session.trim()].filter(Boolean).join(' · ');
+  var ty=ctType(v.docType),docEn='work',docBn='কাজ';
+  var ctx={
+   name:tx('sName',v.sName),roll:tx('sRoll',v.sRoll),class:tx('sClass',v.sClass),topic:tx('topic',v.topic),
+   course:courseT?{t:D(courseT),ph:false}:{t:D(SAMPLE.cs),ph:true},
+   teacher:tl.length?{t:tl[0],ph:false}:{t:SAMPLE.teachers.split('\n')[0],ph:true}
+  };
+  /* তথ্য-সারণি */
+  var meta=$('dMeta');clear(meta);
+  var cell=function(key,val,ph,wide){
+    var c=el('div','dc-m'+(wide?' w':'')),k=el('span','k',DC[lang][key]);
+    if(bi)k.appendChild(el('span','bn',DC.bn[key]));
+    c.appendChild(k);c.appendChild(el('span','v'+(ph?' ph':''),val));meta.appendChild(c);
+  };
+  cell('topic',ctx.topic.t,ctx.topic.ph,true);
+  cell('course',ctx.course.t,ctx.course.ph);
+  cell('cs',csT?D(csT):D(SAMPLE.sClass+' · '+SAMPLE.session),!csT);
+  if(plural){
+    cell('mem',mem.slice(0,8).map(function(l){var i=l.lastIndexOf(',');return i>-1?l.slice(0,i).trim()+' ('+D(l.slice(i+1).trim())+')':l}).join('  ·  '),memPh,true);
+  }else{
+    cell('stu',ctx.name.t,ctx.name.ph);
+    cell('roll',ctx.roll.t,ctx.roll.ph);
+  }
+  /* ঘোষণার লেখা */
+  var st=$('dText');clear(st);
+  var custom=v.dclText.trim();
+  if(custom){
+    lines(custom).forEach(function(l){st.appendChild(el('p','',l))});
+  }else{
+    var ds=DS[v.dclStyle]||DS.original;
+    var blk=function(lg,cls){
+      var wrap=el('div',cls||''),who=DWHO[lg][plural?'g':'s'];
+      var pi=el('p','');pi.appendChild(dclFill(ds[lg].i.replace('{who}',who),Object.assign({doc:{t:lg==='bn'?docBn:docEn,ph:false}},ctx),plural,lg));
+      var cx=Object.assign({doc:{t:lg==='bn'?docBn:docEn,ph:false}},ctx);
+      wrap.appendChild(pi);
+      var ol=el('ol','dc-pts'+(v.digits==='bn'?' bd':''));
+      ds[lg].p.forEach(function(s){var li=el('li','');li.appendChild(dclFill(s,cx,plural,lg));ol.appendChild(li)});
+      wrap.appendChild(ol);return wrap;
+    };
+    st.appendChild(blk(lang));
+    if(bi)st.appendChild(blk('bn','dc-bn'));
+  }
+  /* স্থান ও তারিখ */
+  var pd=$('dPD');clear(pd);
+  var dp=(v.date||'').split('-'),dtT='';
+  var dfm=function(iso){var q=(iso||'').split('-');if(q.length!==3)return '';var y=+q[0],m=+q[1],d=+q[2];return v.dateFmt==='long'?D(d)+' '+Lp.mo[m-1]+' '+D(y):D(pad(d)+'/'+pad(m)+'/'+y)};
+  dtT=dfm(v.date);
+  var pdi=function(key,val,ph){
+    var s=el('span',''),b=el('b','',DC[lang][key]);if(bi)b.appendChild(el('span','bn',DC.bn[key]));
+    s.appendChild(b);s.appendChild(el('u',ph?'ph':'',val));pd.appendChild(s);
+  };
+  pdi('place',v.dclPlace.trim(),false);
+  pdi('date',dtT||dfm(todayISO()),!dtT);
+  /* স্বাক্ষর */
+  var sg=$('dSign');clear(sg);
+  var lbl=function(n,key){n.appendChild(document.createTextNode(Lp[key]));if(bi)n.appendChild(el('span','bn',B[key]))};
+  var tBlock=function(){
+    var b=el('div',''),nm=tl.length?tl[0]:SAMPLE.teachers.split('\n')[0];
+    b.appendChild(el('span','sn'+(tl.length?'':' ph'),nm));var l=el('span','sl');lbl(l,'s2');b.appendChild(l);return b;
+  };
+  if(plural){
+    var g=el('div','dc-sgg');
+    mem.slice(0,8).forEach(function(ln){
+      var i=ln.lastIndexOf(','),nm=ln,rl='';if(i>-1){nm=ln.slice(0,i).trim();rl=ln.slice(i+1).trim()}
+      var b=el('div','');b.appendChild(el('span','sn'+(memPh?' ph':''),nm));if(rl)b.appendChild(el('span','sl'+(memPh?' ph':''),Lp.roll+': '+D(rl)));g.appendChild(b);
+    });
+    sg.appendChild(g);
+    if(v.dclSup){var r=el('div','sg solo r');r.appendChild(tBlock());sg.appendChild(r)}
+  }else{
+    var row=el('div','sg'+(v.dclSup?'':' solo')),a=el('div',''),sn=v.sName.trim();
+    a.appendChild(el('span','sn'+(sn?'':' ph'),sn||SAMPLE.sName));var l1=el('span','sl');lbl(l1,'s1');a.appendChild(l1);
+    row.appendChild(a);if(v.dclSup)row.appendChild(tBlock());sg.appendChild(row);
+  }
+  /* স্টাইল বাটন */
+  Array.prototype.forEach.call($('dsGrid').querySelectorAll('.bt'),function(b){b.classList.toggle('on',b.dataset.k===v.dclStyle)});
+}
+/* ===== অনুমোদনপত্র (Approval) ===== */
+DPR.en.students=['student','students'];DPR.bn.stg=['শিক্ষার্থীর','শিক্ষার্থীদের'];
+var APL={en:{title:'APPROVAL',sup:'Supervisor',ct:'Course Teacher',hod:'Head of Department',dean:'Dean of Faculty',ext:'External Examiner',stamp:'Approved',aby:'Approved by'},
+         bn:{title:'অনুমোদনপত্র',sup:'তত্ত্বাবধায়ক',ct:'কোর্স শিক্ষক',hod:'বিভাগীয় প্রধান',dean:'অনুষদের ডিন',ext:'বহিঃপরীক্ষক',stamp:'অনুমোদিত',aby:'অনুমোদনকারী'}};
+var AWHO={en:{s:'{name} (Class Roll {roll}, {class})',g:'the group members listed above'},bn:{s:'{name} (ক্লাস রোল {roll}, {class})',g:'উপরে উল্লিখিত দলের সদস্যগণ'}};
+/* নতুন অনুমোদনের ধরন যোগ করতে এখানে একটি এন্ট্রি দিন */
+var AS={
+ supervisor:{sig:['sup','hod'],
+  en:{i:'This is to certify that the {doc} titled “{topic}”, submitted by {who} to {dept}, {uni}, for the course {course}, has been carried out under the supervision of {teacher}.',
+      p:['The work was prepared under the guidance of the undersigned and reflects the sincere effort of the {students}.',
+         'It meets the academic and formatting requirements set by the department.',
+         'It is hereby approved and recommended for evaluation.']},
+  bn:{i:'এই মর্মে প্রত্যয়ন করা যাচ্ছে যে {who} কর্তৃক {uni}-এর {dept}-এ {course} কোর্সের জন্য জমা দেওয়া “{topic}” শিরোনামের {doc} {teacher}-এর তত্ত্বাবধানে সম্পন্ন হয়েছে।',
+      p:['কাজটি নিম্নস্বাক্ষরকারীর নির্দেশনায় প্রস্তুত হয়েছে এবং {stg} আন্তরিক পরিশ্রমের প্রতিফলন।',
+         'এটি বিভাগ নির্ধারিত একাডেমিক ও বিন্যাসগত শর্ত পূরণ করেছে।',
+         'এতদ্বারা এটি অনুমোদন করা হলো এবং মূল্যায়নের জন্য সুপারিশ করা হলো।']}},
+ teacher:{sig:['ct','hod'],
+  en:{i:'This is to certify that the {doc} titled “{topic}”, submitted by {who} for the course {course} at {dept}, {uni}, has been received and reviewed by {teacher}.',
+      p:['The submission is complete and follows the instructions given for the course.',
+         'The content has been assessed as satisfactory for the level of the course.',
+         'It is hereby accepted for assessment and record.']},
+  bn:{i:'এই মর্মে প্রত্যয়ন করা যাচ্ছে যে {who} কর্তৃক {uni}-এর {dept}-এ {course} কোর্সের জন্য জমা দেওয়া “{topic}” শিরোনামের {doc} {teacher} গ্রহণ ও পর্যালোচনা করেছেন।',
+      p:['জমাদানটি সম্পূর্ণ এবং কোর্সের জন্য দেওয়া নির্দেশনা অনুসরণ করা হয়েছে।',
+         'বিষয়বস্তু কোর্সের স্তর অনুযায়ী সন্তোষজনক বলে মূল্যায়িত হয়েছে।',
+         'এতদ্বারা এটি মূল্যায়ন ও সংরক্ষণের জন্য গৃহীত হলো।']}},
+ department:{sig:['hod','dean'],
+  en:{i:'This is to certify that the {doc} titled “{topic}”, submitted by {who} for the course {course}, has been examined and approved by {dept}, {uni}.',
+      p:['The work conforms to the academic standards and regulations of the university.',
+         'It has been completed within the requirements of the course and the department.',
+         'The department approves it for the record, and no objection is raised to its submission.']},
+  bn:{i:'এই মর্মে প্রত্যয়ন করা যাচ্ছে যে {who} কর্তৃক {course} কোর্সের জন্য জমা দেওয়া “{topic}” শিরোনামের {doc} {uni}-এর {dept} পরীক্ষা করে অনুমোদন করেছে।',
+      p:['কাজটি বিশ্ববিদ্যালয়ের একাডেমিক মান ও বিধি মেনে প্রস্তুত করা হয়েছে।',
+         'এটি কোর্স ও বিভাগের প্রয়োজনীয়তার মধ্যে সম্পন্ন হয়েছে।',
+         'বিভাগ এটি নথিভুক্তির জন্য অনুমোদন করছে এবং জমাদানে কোনো আপত্তি নেই।']}}
+};
+function aprRender(v){
+  var bi=v.lang==='bi',lang=v.lang==='bn'?'bn':'en',Lp=T[lang],B=T.bn,plural=v.mode==='group',AP=APL[lang];
+  var D=function(s){s=String(s);return v.digits==='bn'?s.replace(/[0-9]/g,function(c){return '০১২৩৪৫৬৭৮৯'.charAt(+c)}):s};
+  var sh=$('sheet2');
+  sh.className='sheet dcs tpl-'+v.tpl+(bi?' bi':'');
+  sh.style.setProperty('--p',v.cPri);sh.style.setProperty('--a',v.cAcc);
+  sh.style.setProperty('--hf',"'"+v.font+"','Noto Serif Bengali',serif");
+  [['oUni','dUni'],['oCampus','dCampus'],['oDept','dDept']].forEach(function(a){
+    var s=$(a[0]),d=$(a[1]);d.textContent=s.textContent;d.className=s.className.replace(/\bink\b/,'').trim();d.style.display=s.style.display;
+  });
+  $('logo2').src=$('logo').src;
+  $('dTitle').textContent=AP.title;
+  $('dTitleBn').textContent=bi?APL.bn.title:'';$('dTitleBn').style.display=bi?'':'none';
+  var tx=function(k,s){var f=String(s==null?'':s).trim();return {t:f?D(f):D(SAMPLE[k]||''),ph:!f}};
+  var tl=v.teachers.split('\n').map(function(x){return x.trim()}).filter(Boolean);
+  var courseT=[v.courseCode.trim(),v.courseName.trim()].filter(Boolean).join(' — ');
+  var mem=v.members.split('\n').map(function(x){return x.trim()}).filter(Boolean),memPh=!mem.length;
+  if(memPh)mem=SAMPLE.members.split('\n');
+  var csT=[v.sClass.trim(),v.session.trim()].filter(Boolean).join(' · ');
+  var style=AS[v.aprStyle]?v.aprStyle:'supervisor',ds=AS[style];
+  var ctx={
+   name:tx('sName',v.sName),roll:tx('sRoll',v.sRoll),class:tx('sClass',v.sClass),topic:tx('topic',v.topic),
+   dept:tx('dept',v.dept),uni:tx('uni',v.uni),
+   course:courseT?{t:D(courseT),ph:false}:{t:D(SAMPLE.cs),ph:true},
+   teacher:tl.length?{t:tl[0],ph:false}:{t:SAMPLE.teachers.split('\n')[0],ph:true}
+  };
+  /* তথ্য-সারণি */
+  var meta=$('dMeta');clear(meta);
+  var cell=function(key,val,ph,wide,label){
+    var c=el('div','dc-m'+(wide?' w':'')),k=el('span','k',label||DC[lang][key]);
+    if(bi&&!label)k.appendChild(el('span','bn',DC.bn[key]));
+    c.appendChild(k);c.appendChild(el('span','v'+(ph?' ph':''),val));meta.appendChild(c);
+  };
+  cell('topic',ctx.topic.t,ctx.topic.ph,true);
+  cell('course',ctx.course.t,ctx.course.ph);
+  cell('cs',csT?D(csT):D(SAMPLE.sClass+' · '+SAMPLE.session),!csT);
+  if(plural){
+    cell('mem',mem.slice(0,8).map(function(l){var i=l.lastIndexOf(',');return i>-1?l.slice(0,i).trim()+' ('+D(l.slice(i+1).trim())+')':l}).join('  ·  '),memPh,true);
+  }else{
+    cell('stu',ctx.name.t,ctx.name.ph);
+    cell('roll',ctx.roll.t,ctx.roll.ph);
+  }
+  var role=ds.sig[0],rl=el('span','k',AP[role]);
+  var apv=el('div','dc-m w');if(bi)rl.appendChild(el('span','bn',APL.bn[role]));
+  apv.appendChild(rl);apv.appendChild(el('span','v'+(tl.length?'':' ph'),tl.length?tl[0]:SAMPLE.teachers.split('\n')[0]));meta.appendChild(apv);
+  /* অনুমোদনের লেখা */
+  var st=$('dText');clear(st);
+  var custom=v.aprText.trim();
+  if(custom){lines(custom).forEach(function(l){st.appendChild(el('p','',l))})}
+  else{
+    var blk=function(lg,cls){
+      var wrap=el('div',cls||''),who=AWHO[lg][plural?'g':'s'],cx=Object.assign({doc:{t:lg==='bn'?'কাজ':'work',ph:false}},ctx);
+      var pi=el('p','');pi.appendChild(dclFill(ds[lg].i.replace('{who}',who),cx,plural,lg));wrap.appendChild(pi);
+      var ol=el('ol','dc-pts'+(v.digits==='bn'?' bd':''));
+      ds[lg].p.forEach(function(s){var li=el('li','');li.appendChild(dclFill(s,cx,plural,lg));ol.appendChild(li)});
+      wrap.appendChild(ol);return wrap;
+    };
+    st.appendChild(blk(lang));
+    if(bi)st.appendChild(blk('bn','dc-bn'));
+  }
+  /* স্থান, তারিখ ও সিল */
+  var pd=$('dPD');clear(pd);
+  var dfm=function(iso){var q=(iso||'').split('-');if(q.length!==3)return '';var y=+q[0],m=+q[1],d=+q[2];return v.dateFmt==='long'?D(d)+' '+Lp.mo[m-1]+' '+D(y):D(pad(d)+'/'+pad(m)+'/'+y)};
+  var dtT=dfm(v.date);
+  var pdi=function(key,val,ph){
+    var s=el('span',''),b=el('b','',DC[lang][key]);if(bi)b.appendChild(el('span','bn',DC.bn[key]));
+    s.appendChild(b);s.appendChild(el('u',ph?'ph':'',val));pd.appendChild(s);
+  };
+  pdi('place',v.aprPlace.trim(),false);
+  pdi('date',dtT||dfm(todayISO()),!dtT);
+  if(v.aprStamp){
+    var sp=el('span','dc-stamp',AP.stamp);
+    if(bi)sp.appendChild(el('small','',APL.bn.stamp));
+    pd.appendChild(sp);
+  }
+  /* স্বাক্ষর */
+  var sg=$('dSign');clear(sg);
+  var roles=ds.sig.slice();if(v.aprExam)roles.push('ext');
+  var row=el('div','sg');
+  roles.forEach(function(r,i){
+    var b=el('div',''),nm=el('span','sn'+(i===0&&!tl.length?' ph':''));
+    nm.textContent=i===0?(tl.length?tl[0]:SAMPLE.teachers.split('\n')[0]):'\u00a0';
+    b.appendChild(nm);
+    var l=el('span','sl');l.appendChild(document.createTextNode(AP[r]));if(bi)l.appendChild(el('span','bn',APL.bn[r]));
+    b.appendChild(l);row.appendChild(b);
+  });
+  sg.appendChild(row);
+  Array.prototype.forEach.call($('asGrid').querySelectorAll('.bt'),function(b){b.classList.toggle('on',b.dataset.k===style)});
+}
+/* ===== কৃতজ্ঞতা স্বীকার (Acknowledgment) ===== */
+var ACL={en:{title:'ACKNOWLEDGMENT',close:'With sincere gratitude,',sp:'Special thanks'},
+         bn:{title:'কৃতজ্ঞতা স্বীকার',close:'আন্তরিক কৃতজ্ঞতাসহ,',sp:'বিশেষ কৃতজ্ঞতা'}};
+var AKI={en:'First and foremost, all praise and thanks belong to the Almighty for the strength, health and patience to complete this {doc} on “{topic}” for the course {course}.',
+         bn:'প্রথমেই সর্বশক্তিমান সৃষ্টিকর্তার প্রতি অশেষ কৃতজ্ঞতা, যাঁর অনুগ্রহে {course} কোর্সের “{topic}” শিরোনামের এই {doc} সম্পন্ন করার শক্তি, সুস্বাস্থ্য ও ধৈর্য পেয়েছি।'};
+/* নতুন ধরন যোগ করতে এখানে একটি এন্ট্রি দিন */
+var AKS={
+ supervisor:{
+  en:{i:AKI.en,p:['Special gratitude is due to {teacher}, whose guidance, encouragement and valuable feedback shaped {my} work at every stage.',
+     'Sincere thanks also go to the faculty members and staff of {dept}, {uni}, for the knowledge and support that made this work possible.',
+     'Finally, {my} family and friends deserve heartfelt thanks for their constant support, patience and inspiration.']},
+  bn:{i:AKI.bn,p:['{teacher}-এর প্রতি {my} আন্তরিক কৃতজ্ঞতা, যাঁর নির্দেশনা, উৎসাহ ও মূল্যবান মতামত প্রতিটি ধাপে {my} কাজকে সমৃদ্ধ করেছে।',
+     '{uni}-এর {dept}-এর সম্মানিত শিক্ষক ও কর্মকর্তাদের প্রতিও কৃতজ্ঞতা, যাঁদের জ্ঞান ও সহযোগিতায় এই কাজ সম্ভব হয়েছে।',
+     'সবশেষে {my} পরিবার ও বন্ধুদের প্রতি অশেষ ধন্যবাদ, তাঁদের নিরন্তর সহযোগিতা, ধৈর্য ও অনুপ্রেরণার জন্য।']}},
+ family:{
+  en:{i:'First and foremost, all praise and thanks belong to the Almighty, whose grace made it possible to complete this {doc} on “{topic}” for the course {course}.',
+     p:['Heartfelt gratitude goes to {my} parents, whose sacrifices, prayers and unconditional love made every step of this journey possible.',
+     'Warm thanks to {my} siblings, relatives and well-wishers for their encouragement and for believing in {my} efforts.',
+     'Thanks are also due to {teacher} and the teachers of {dept}, {uni}, whose lessons laid the foundation of this work.',
+     'Finally, {my} friends deserve thanks for their company, ideas and cheerful support along the way.']},
+  bn:{i:'প্রথমেই সর্বশক্তিমান সৃষ্টিকর্তার প্রতি অশেষ কৃতজ্ঞতা, যাঁর করুণায় {course} কোর্সের “{topic}” শিরোনামের এই {doc} সম্পন্ন করা সম্ভব হয়েছে।',
+     p:['{my} বাবা-মায়ের প্রতি আন্তরিক কৃতজ্ঞতা, যাঁদের ত্যাগ, দোয়া ও নিঃশর্ত ভালোবাসায় এই পথচলার প্রতিটি ধাপ সহজ হয়েছে।',
+     'ভাইবোন, আত্মীয়স্বজন ও শুভানুধ্যায়ীদের প্রতি ধন্যবাদ, উৎসাহ দেওয়া এবং {my} চেষ্টার ওপর আস্থা রাখার জন্য।',
+     '{teacher} এবং {uni}-এর {dept}-এর শিক্ষকদের প্রতিও কৃতজ্ঞতা, যাঁদের পাঠদান এই কাজের ভিত্তি গড়ে দিয়েছে।',
+     'সবশেষে {my} বন্ধুদের ধন্যবাদ তাঁদের সঙ্গ, ভাবনা ও প্রাণবন্ত সহযোগিতার জন্য।']}},
+ team:{
+  en:{i:'First and foremost, all praise and thanks belong to the Almighty for the strength and unity to complete this {doc} on “{topic}” for the course {course}.',
+     p:['Every member of the team deserves thanks for the dedication, time and cooperation that brought this work together.',
+     'Sincere thanks to {teacher} for clear guidance and timely feedback throughout the course {course}.',
+     'Classmates and friends who shared ideas, resources and encouragement have {my} appreciation as well.',
+     'Last but not least, thanks to everyone at home for their patience and support.']},
+  bn:{i:'প্রথমেই সর্বশক্তিমান সৃষ্টিকর্তার প্রতি অশেষ কৃতজ্ঞতা, যাঁর দয়ায় {course} কোর্সের “{topic}” শিরোনামের এই {doc} সম্পন্ন করার শক্তি ও ঐক্য পেয়েছি।',
+     p:['দলের প্রত্যেক সদস্যকে ধন্যবাদ, তাঁদের নিষ্ঠা, সময় ও সহযোগিতায় এই কাজ পূর্ণতা পেয়েছে।',
+     '{course} কোর্সজুড়ে স্পষ্ট নির্দেশনা ও সময়মতো মতামত দেওয়ার জন্য {teacher}-এর প্রতি আন্তরিক ধন্যবাদ।',
+     'যে সহপাঠী ও বন্ধুরা ভাবনা, তথ্য ও উৎসাহ দিয়ে পাশে ছিলেন, তাঁদের প্রতিও {my} কৃতজ্ঞতা।',
+     'সবশেষে পরিবারের সবাইকে ধন্যবাদ তাঁদের ধৈর্য ও সহযোগিতার জন্য।']}},
+ institution:{
+  en:{i:AKI.en,p:['Sincere thanks to the Head and faculty members of {dept}, {uni}, for fostering an environment that encourages learning and inquiry.',
+     'Appreciation is also due to the library, laboratory and administrative staff, whose cooperation kept information and resources within easy reach.',
+     'Finally, gratitude to {teacher}, whose guidance for the course {course} gave direction to this work.']},
+  bn:{i:AKI.bn,p:['{uni}-এর {dept}-এর বিভাগীয় প্রধান ও শিক্ষকমণ্ডলীকে আন্তরিক ধন্যবাদ, শেখা ও অনুসন্ধানের অনুকূল পরিবেশ গড়ে তোলার জন্য।',
+     'গ্রন্থাগার, গবেষণাগার ও প্রশাসনিক কর্মীদের প্রতিও কৃতজ্ঞতা, যাঁদের সহযোগিতায় প্রয়োজনীয় তথ্য ও উপকরণ সহজে পাওয়া গেছে।',
+     'সবশেষে {teacher}-এর প্রতি কৃতজ্ঞতা, {course} কোর্সে যাঁর নির্দেশনা এই কাজকে দিক দেখিয়েছে।']}}
+};
+function ackRender(v){
+  var bi=v.lang==='bi',lang=v.lang==='bn'?'bn':'en',Lp=T[lang],B=T.bn,plural=v.mode==='group',AC=ACL[lang];
+  var D=function(s){s=String(s);return v.digits==='bn'?s.replace(/[0-9]/g,function(c){return '০১২৩৪৫৬৭৮৯'.charAt(+c)}):s};
+  var sh=$('sheet2');
+  sh.className='sheet dcs ack tpl-'+v.tpl+(bi?' bi':'');
+  sh.style.setProperty('--p',v.cPri);sh.style.setProperty('--a',v.cAcc);
+  sh.style.setProperty('--hf',"'"+v.font+"','Noto Serif Bengali',serif");
+  [['oUni','dUni'],['oCampus','dCampus'],['oDept','dDept']].forEach(function(a){
+    var s=$(a[0]),d=$(a[1]);d.textContent=s.textContent;d.className=s.className.replace(/\bink\b/,'').trim();d.style.display=s.style.display;
+  });
+  $('logo2').src=$('logo').src;
+  $('dTitle').textContent=AC.title;
+  $('dTitleBn').textContent=bi?ACL.bn.title:'';$('dTitleBn').style.display=bi?'':'none';
+  var tx=function(k,s){var f=String(s==null?'':s).trim();return {t:f?D(f):D(SAMPLE[k]||''),ph:!f}};
+  var tl=v.teachers.split('\n').map(function(x){return x.trim()}).filter(Boolean);
+  var courseT=[v.courseCode.trim(),v.courseName.trim()].filter(Boolean).join(' — ');
+  var mem=v.members.split('\n').map(function(x){return x.trim()}).filter(Boolean),memPh=!mem.length;
+  if(memPh)mem=SAMPLE.members.split('\n');
+  var csT=[v.sClass.trim(),v.session.trim()].filter(Boolean).join(' · ');
+  var style=AKS[v.ackStyle]?v.ackStyle:'supervisor',ds=AKS[style];
+  var ctx={
+   name:tx('sName',v.sName),roll:tx('sRoll',v.sRoll),class:tx('sClass',v.sClass),topic:tx('topic',v.topic),
+   dept:tx('dept',v.dept),uni:tx('uni',v.uni),
+   course:courseT?{t:D(courseT),ph:false}:{t:D(SAMPLE.cs),ph:true},
+   teacher:tl.length?{t:tl[0],ph:false}:{t:SAMPLE.teachers.split('\n')[0],ph:true}
+  };
+  /* তথ্য-সারণি */
+  var meta=$('dMeta');clear(meta);
+  var cell=function(key,val,ph,wide){
+    var c=el('div','dc-m'+(wide?' w':'')),k=el('span','k',DC[lang][key]);
+    if(bi)k.appendChild(el('span','bn',DC.bn[key]));
+    c.appendChild(k);c.appendChild(el('span','v'+(ph?' ph':''),val));meta.appendChild(c);
+  };
+  cell('topic',ctx.topic.t,ctx.topic.ph,true);
+  cell('course',ctx.course.t,ctx.course.ph);
+  cell('cs',csT?D(csT):D(SAMPLE.sClass+' · '+SAMPLE.session),!csT);
+  if(plural){
+    cell('mem',mem.slice(0,8).map(function(l){var i=l.lastIndexOf(',');return i>-1?l.slice(0,i).trim()+' ('+D(l.slice(i+1).trim())+')':l}).join('  ·  '),memPh,true);
+  }else{
+    cell('stu',ctx.name.t,ctx.name.ph);
+    cell('roll',ctx.roll.t,ctx.roll.ph);
+  }
+  /* কৃতজ্ঞতার লেখা */
+  var st=$('dText');clear(st);
+  var custom=v.ackText.trim();
+  if(custom){
+    lines(custom).forEach(function(l,i){st.appendChild(el('p',i?'ak-p':'ak-lead',l))});
+  }else{
+    var blk=function(lg,cls){
+      var wrap=el('div',cls||''),cx=Object.assign({doc:{t:lg==='bn'?'কাজ':'work',ph:false}},ctx);
+      var pi=el('p','ak-lead');pi.appendChild(dclFill(ds[lg].i,cx,plural,lg));wrap.appendChild(pi);
+      ds[lg].p.forEach(function(s){var p=el('p','ak-p');p.appendChild(dclFill(s,cx,plural,lg));wrap.appendChild(p)});
+      return wrap;
+    };
+    st.appendChild(blk(lang));
+    if(bi)st.appendChild(blk('bn','dc-bn'));
+  }
+  var thanks=v.ackThanks.split('\n').map(function(x){return x.trim()}).filter(Boolean).slice(0,6);
+  if(thanks.length){
+    var th=el('p','ak-th');th.appendChild(el('b','',AC.sp+': '));
+    if(bi)th.appendChild(el('b','',ACL.bn.sp+' · '));
+    th.appendChild(document.createTextNode(thanks.join(', ')));st.appendChild(th);
+  }
+  if(v.ackClose){
+    var cl=el('p','ak-close',AC.close);
+    if(bi)cl.appendChild(el('small','',ACL.bn.close));
+    st.appendChild(cl);
+  }
+  /* স্থান ও তারিখ */
+  var pd=$('dPD');clear(pd);
+  var dfm=function(iso){var q=(iso||'').split('-');if(q.length!==3)return '';var y=+q[0],m=+q[1],d=+q[2];return v.dateFmt==='long'?D(d)+' '+Lp.mo[m-1]+' '+D(y):D(pad(d)+'/'+pad(m)+'/'+y)};
+  var dtT=dfm(v.date);
+  var pdi=function(key,val,ph){
+    var s=el('span',''),b=el('b','',DC[lang][key]);if(bi)b.appendChild(el('span','bn',DC.bn[key]));
+    s.appendChild(b);s.appendChild(el('u',ph?'ph':'',val));pd.appendChild(s);
+  };
+  pdi('place',v.ackPlace.trim(),false);
+  pdi('date',dtT||dfm(todayISO()),!dtT);
+  /* স্বাক্ষর */
+  var sg=$('dSign');clear(sg);
+  var lbl=function(n,key){n.appendChild(document.createTextNode(Lp[key]));if(bi)n.appendChild(el('span','bn',B[key]))};
+  if(plural){
+    var g=el('div','dc-sgg');
+    mem.slice(0,8).forEach(function(ln){
+      var i=ln.lastIndexOf(','),nm=ln,rl='';if(i>-1){nm=ln.slice(0,i).trim();rl=ln.slice(i+1).trim()}
+      var b=el('div','');b.appendChild(el('span','sn'+(memPh?' ph':''),nm));if(rl)b.appendChild(el('span','sl'+(memPh?' ph':''),Lp.roll+': '+D(rl)));g.appendChild(b);
+    });
+    sg.appendChild(g);
+  }else{
+    var row=el('div','sg solo r'),a=el('div',''),sn=v.sName.trim();
+    a.appendChild(el('span','sn'+(sn?'':' ph'),sn||SAMPLE.sName));var l1=el('span','sl');lbl(l1,'s1');a.appendChild(l1);
+    row.appendChild(a);sg.appendChild(row);
+  }
+  Array.prototype.forEach.call($('akGrid').querySelectorAll('.bt'),function(b){b.classList.toggle('on',b.dataset.k===style)});
+}
+/* ===== সূচিপত্র (Table of contents) ===== */
+var TCL={en:{title:'TABLE OF CONTENTS',pg:'Page'},bn:{title:'সূচিপত্র',pg:'পৃষ্ঠা'}};
+var TCS={en:'Acknowledgment, i\nAbstract, ii\n# Part I\nChapter 1: Introduction, 1\n  Background of the Study, 2\n  Objectives, 4\nChapter 2: Literature Review, 6\nChapter 3: Methodology, 12\nChapter 4: Results and Discussion, 18\nChapter 5: Conclusion, 25\nReferences, 27',
+         bn:'কৃতজ্ঞতা স্বীকার, i\nসারসংক্ষেপ, ii\n# প্রথম খণ্ড\nঅধ্যায় ১: ভূমিকা, ১\n  গবেষণার প্রেক্ষাপট, ২\n  উদ্দেশ্য, ৪\nঅধ্যায় ২: সাহিত্য পর্যালোচনা, ৬\nঅধ্যায় ৩: পদ্ধতি, ১২\nঅধ্যায় ৪: ফলাফল ও আলোচনা, ১৮\nঅধ্যায় ৫: উপসংহার, ২৫\nগ্রন্থপঞ্জি, ২৭'};
+function tocParse(txt){
+  return String(txt||'').split('\n').map(function(r){return r.replace(/\s+$/,'')}).filter(function(r){return r.trim()}).slice(0,26).map(function(r){
+    var h=/^\s*#\s*(.*)$/.exec(r);if(h)return {k:'h',t:h[1].trim()};
+    var sub=/^(\s{2,}|\t|[-–•]\s)/.test(r),b=r.replace(/^(\s+|[-–•]\s*)+/,'');
+    var m=/^(.*?)(?:\s*\|\s*|\s*,\s*|\s{2,}|\t)((?:\d+|[ivxlcdm]+|[০-৯]+)(?:\s*[-–]\s*(?:\d+|[০-৯]+))?)\s*$/i.exec(b);
+    return m&&m[1].trim()?{k:sub?'s':'e',t:m[1].trim(),p:m[2].trim()}:{k:sub?'s':'e',t:b.trim(),p:''};
+  });
+}
+function tocRender(v){
+  var bi=v.lang==='bi',lang=v.lang==='bn'?'bn':'en',Lp=T[lang],TL=TCL[lang];
+  var D=function(s){s=String(s);return v.digits==='bn'?s.replace(/[0-9]/g,function(c){return '০১২৩৪৫৬৭৮৯'.charAt(+c)}):s};
+  var sh=$('sheet2');
+  sh.className='sheet dcs toc tpl-'+v.tpl+(bi?' bi':'');
+  sh.style.setProperty('--p',v.cPri);sh.style.setProperty('--a',v.cAcc);
+  sh.style.setProperty('--hf',"'"+v.font+"','Noto Serif Bengali',serif");
+  [['oUni','dUni'],['oCampus','dCampus'],['oDept','dDept']].forEach(function(a){
+    var s=$(a[0]),d=$(a[1]);d.textContent=s.textContent;d.className=s.className.replace(/\bink\b/,'').trim();d.style.display=s.style.display;
+  });
+  $('logo2').src=$('logo').src;
+  $('dTitle').textContent=TL.title;
+  $('dTitleBn').textContent=bi?TCL.bn.title:'';$('dTitleBn').style.display=bi?'':'none';
+  var tx=function(k,s){var f=String(s==null?'':s).trim();return {t:f?D(f):D(SAMPLE[k]||''),ph:!f}};
+  var style=({classic:'c',numbered:'n',modern:'m'})[v.tocStyle]||'c';
+  var topic=tx('topic',v.topic);
+  var meta=$('dMeta');clear(meta);meta.style.display='none';
+  /* সূচির তালিকা */
+  var st=$('dText');clear(st);
+  var sp=el('p','tc-sub');sp.appendChild(el('span','dv'+(topic.ph?' ph':''),topic.t));st.appendChild(sp);
+  var raw=String(v.tocEntries||'').trim(),ph=!raw,ents=tocParse(ph?TCS[lang]:raw);
+  var hd=el('div','tc-hd',TL.pg);if(bi)hd.appendChild(el('span','bn',TCL.bn.pg));st.appendChild(hd);
+  var list=el('div','tc-list tc-'+style),n1=0,n2=0,nn=ents.length;
+  list.style.setProperty('--rp',nn<=8?'14px':nn<=11?'11px':nn<=14?'9px':nn<=18?'7px':'5px');
+  ents.forEach(function(e){
+    var r=el('div','tc-r'+(e.k==='s'?' s':'')+(e.k==='h'?' h':'')+(ph?' ph':''));
+    if(e.k==='h'){r.appendChild(el('span','tt',e.t));list.appendChild(r);n2=0;return}
+    if(e.k==='e'){n1++;n2=0}else{if(!n1)n1=1;n2++}
+    if(style==='n')r.appendChild(el('span','nm',D(e.k==='e'?n1:n1+'.'+n2)));
+    r.appendChild(el('span','tt',e.t));
+    if(e.p){r.appendChild(el('span','dd'));r.appendChild(el('span','pg',D(e.p)))}
+    list.appendChild(r);
+  });
+  st.appendChild(list);st.appendChild(el('div','tc-end'));
+  clear($('dPD'));clear($('dSign'));
+  Array.prototype.forEach.call($('tcGrid').querySelectorAll('.bt'),function(b){b.classList.toggle('on',b.dataset.k===v.tocStyle)});
+}
+function snapAll(r){
+  var src=isExtra()?$('page2'):$('page');
+  return snap(r,src).then(function(a){return [a]});
+}
+/* এক বা একাধিক JPEG থেকে A4 PDF */
+function jpegPdfN(items){
+  var parts=[],off=0,xr=[],n=items.length,i;
+  function put(x){if(typeof x==='string'){var u=new Uint8Array(x.length);for(var k=0;k<x.length;k++)u[k]=x.charCodeAt(k)&255;x=u}parts.push(x);off+=x.length}
+  function obj(k,body){xr[k]=off;put(k+' 0 obj\n'+body+'\nendobj\n')}
+  var PW='595.28',PH='841.89';
+  put('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2,'<< /Type /Pages /Kids ['+items.map(function(_,j){return (3+3*j)+' 0 R'}).join(' ')+'] /Count '+n+' >>');
+  items.forEach(function(it,j){
+    var pg=3+3*j,im=pg+1,ct=pg+2,bin=atob(it.d.split(',')[1]),img=new Uint8Array(bin.length),q;
+    for(q=0;q<bin.length;q++)img[q]=bin.charCodeAt(q);
+    obj(pg,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im'+j+' '+im+' 0 R >> >> /Contents '+ct+' 0 R >>');
+    xr[im]=off;put(im+' 0 obj\n<< /Type /XObject /Subtype /Image /Width '+it.w+' /Height '+it.h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+img.length+' >>\nstream\n');put(img);put('\nendstream\nendobj\n');
+    var cs='q '+PW+' 0 0 '+PH+' 0 0 cm /Im'+j+' Do Q';
+    obj(ct,'<< /Length '+cs.length+' >>\nstream\n'+cs+'\nendstream');
+  });
+  var tot=3+3*n,xo=off,pd=function(k){return ('0000000000'+k).slice(-10)};
+  var s='xref\n0 '+tot+'\n0000000000 65535 f \n';for(i=1;i<tot;i++)s+=pd(xr[i])+' 00000 n \n';
+  put(s+'trailer\n<< /Size '+tot+' /Root 1 0 R >>\nstartxref\n'+xo+'\n%%EOF');
+  return new Blob(parts,{type:'application/pdf'});
+}
+$('tcGrid').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.bt');if(!b)return;$('tocStyle').value=b.dataset.k;render()});
+$('akGrid').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.bt');if(!b)return;$('ackStyle').value=b.dataset.k;render()});
+$('asGrid').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.bt');if(!b)return;$('aprStyle').value=b.dataset.k;render()});
+$('dsGrid').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.bt');if(!b)return;$('dclStyle').value=b.dataset.k;render()});
+$('pgswIn').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.pgsw-b');if(b)dclShow(b.dataset.view)});
+
 /* init */
 var saved=null;
 try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
@@ -1429,6 +2247,7 @@ function bindApply(v){
   var g=mm*W/210,k,x=0,y=0,B=UL==='bn'?bnum:String,val=B((mm/10).toFixed(1))+' '+(UL==='bn'?'সেমি':'cm');
   if(sd==='top'){k=(H-g)/H;x=(W-W*k)/2;y=g}else{k=(W-g)/W;x=sd==='left'?g:0;y=(H-H*k)/2}
   var pg=$('page');pg.classList.toggle('bind',on);
+  var p2=$('page2');if(p2){p2.classList.toggle('bind',on);p2.style.setProperty('--bk',k.toFixed(4));p2.style.setProperty('--bx',x.toFixed(1)+'px');p2.style.setProperty('--by',y.toFixed(1)+'px')}
   pg.style.setProperty('--bk',k.toFixed(4));pg.style.setProperty('--bx',x.toFixed(1)+'px');pg.style.setProperty('--by',y.toFixed(1)+'px');
   var gd=$('bGuide');gd.hidden=!on;gd.dataset.side=sd;gd.style.setProperty('--gw',g.toFixed(1)+'px');
   $('bTag').textContent=U('Binding','বাইন্ডিং')+' · '+val;
@@ -1511,12 +2330,12 @@ function setBusy(on){
 function pdfName(){
   var v=get(),x=ctType(v.docType),t=(x&&x.file)||'Cover';
   var n=String(v.sName||'').replace(/[\\\/:*?"<>|\u0000-\u001f]+/g,'').trim().replace(/\s+/g,'-').slice(0,40);
-  return 'Cover-Page_'+t+(n?'_'+n:'')+'.pdf';
+  return (v.docType==='declaration'?'Declaration':v.docType==='approval'?'Approval':v.docType==='acknowledgment'?'Acknowledgment':v.docType==='contents'?'Contents':'Cover-Page_'+t)+(n?'_'+n:'')+'.pdf';
 }
 /* স্ক্রিনের প্রিভিউ না ছুঁয়ে, আলাদা কপি থেকে ছবি তোলা হয় (নমুনা লেখা বাদ, অ্যানিমেশন বন্ধ) */
-function snap(ratio){
+function snap(ratio,src){src=src||$('page');
   var host=document.createElement('div');host.className='pdf-host';
-  var c=$('page').cloneNode(true);c.removeAttribute('id');Array.prototype.forEach.call(c.querySelectorAll('.bind-guide'),function(n){n.remove()});var cs=c.querySelector('.sheet');cs.removeAttribute('id');cs.classList.remove('swap');c.classList.remove('hot');if(c.classList.contains('bind')){var ps=$('page').style;cs.style.scale='none';cs.style.translate='none';cs.style.transformOrigin='0 0';cs.style.transform='translate('+ps.getPropertyValue('--bx')+','+ps.getPropertyValue('--by')+') scale('+ps.getPropertyValue('--bk')+')'}
+  var c=src.cloneNode(true);c.removeAttribute('id');Array.prototype.forEach.call(c.querySelectorAll('.bind-guide'),function(n){n.remove()});var cs=c.querySelector('.sheet');cs.removeAttribute('id');cs.classList.remove('swap');c.classList.remove('hot');if(c.classList.contains('bind')){var ps=src.style;cs.style.scale='none';cs.style.translate='none';cs.style.transformOrigin='0 0';cs.style.transform='translate('+ps.getPropertyValue('--bx')+','+ps.getPropertyValue('--by')+') scale('+ps.getPropertyValue('--bk')+')'}
   host.appendChild(c);document.body.appendChild(host);
   var opt={pixelRatio:ratio,backgroundColor:'#ffffff',width:W,height:H,style:{transform:'none',margin:'0'}};
   var fonts=fontCSS?Promise.resolve(fontCSS):window.htmlToImage.getFontEmbedCSS(c,opt).catch(function(){return ''});
@@ -1557,10 +2376,10 @@ function makePdf(){
   if(!window.htmlToImage){toast('PDF tool did not load. Please reload the page. · পিডিএফ টুল লোড হয়নি, পেজ রিলোড করুন');return}
   pdfBusy=true;setBusy(true);
   var ready=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
-  ready.then(function(){return snap(3)})
-  .catch(function(){return snap(2)}) /* কম মেমরির ফোনে ছোট রেজোলিউশনে আবার চেষ্টা */
+  ready.then(function(){return snapAll(3)})
+  .catch(function(){return snapAll(2)}) /* কম মেমরির ফোনে ছোট রেজোলিউশনে আবার চেষ্টা */
   .then(function(cv){
-    saveBlob(jpegPdf(cv.toDataURL('image/jpeg',.95),cv.width,cv.height),pdfName());
+    saveBlob(jpegPdfN(cv.map(function(c){return {d:c.toDataURL('image/jpeg',.95),w:c.width,h:c.height}})),pdfName());
     toast('PDF downloaded · পিডিএফ ডাউনলোড হয়েছে');
   })
   .catch(function(){toast('Could not create the PDF. Please try again. · পিডিএফ তৈরি করা যায়নি, আবার চেষ্টা করুন')})
@@ -1599,14 +2418,14 @@ window.addEventListener('resize',function(){if(pvOpen&&window.innerWidth>960){pv
 var thT=0;
 function schedThumbs(){clearTimeout(thT);thT=setTimeout(thumbs,140)}
 function thumbs(){
-  var src=$('sheet');
+  var src=docSrc();
   function mk(tpl,box){
     var w=box.clientWidth;if(!w)return;
     var c=src.cloneNode(true);
     c.removeAttribute('id');
     Array.prototype.forEach.call(c.querySelectorAll('[id]'),function(e){e.removeAttribute('id')}); /* ডুপ্লিকেট id চলবে না */
     Array.prototype.forEach.call(c.querySelectorAll('.ink'),function(e){e.classList.remove('ink')});
-    c.className='sheet tpl-'+tpl;
+    c.className=tplCls(tpl);
     var th=document.createElement('div');th.className='th';th.style.transform='scale('+(w/W)+')';th.appendChild(c);
     while(box.firstChild)box.removeChild(box.firstChild);
     box.appendChild(th);
@@ -1646,7 +2465,7 @@ function updTpl(v){
 }
 
 function gBuild(){
-  var src=$('sheet'),cur=$('tpl').value||'classic';
+  var src=docSrc(),cur=$('tpl').value||'classic';
   clear(gStage);clear(gDots);clear(gInfo);gSl=[];
   var fv=get(),curI=tIndex(cur),same=function(x,y){return x[0].toLowerCase()===y[0].toLowerCase()&&x[1].toLowerCase()===y[1].toLowerCase()},used=[[fv.cPri,fv.cAcc]],fb=0;
   gColors=TPLS.map(function(t,i){
@@ -1660,7 +2479,7 @@ function gBuild(){
     c.removeAttribute('id');
     Array.prototype.forEach.call(c.querySelectorAll('[id]'),function(e){e.removeAttribute('id')});
     Array.prototype.forEach.call(c.querySelectorAll('.ink'),function(e){e.classList.remove('ink')});
-    c.className='sheet tpl-'+t.v;
+    c.className=tplCls(t.v);
     c.style.setProperty('--p',gColors[i].p);c.style.setProperty('--a',gColors[i].a);
     th.appendChild(c);card.appendChild(th);
     var gl=el('div','gs-glare'),vl=el('div','gs-veil'),tn=el('div','gs-tint');card.appendChild(gl);card.appendChild(vl);card.appendChild(tn);
