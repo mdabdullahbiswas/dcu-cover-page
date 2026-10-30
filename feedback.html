@@ -18,7 +18,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',
 .bx{background:var(--cd);border:1px solid var(--ln);border-radius:12px;padding:22px;margin:16px 0}
 .gd .bx{margin:12px 0}
 h2{margin:0 0 10px;font-size:20px;color:var(--ink)}
-.bt{display:inline-block;padding:9px 18px;border-radius:8px;background:#0a2240;color:#e5a83b;text-decoration:none;font-weight:700;font-size:14px;border:0;cursor:pointer;font-family:inherit}
+.bt{display:inline-block;padding:9px 18px;border-radius:8px;background:var(--navy);color:var(--gold);text-decoration:none;font-weight:700;font-size:14px;border:0;cursor:pointer;font-family:inherit}
 .bt.o{background:transparent;color:var(--ink);border:1.5px solid var(--ln)}
 label{display:block;font-weight:600;font-size:14px;margin-top:12px}
 input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--ln);border-radius:8px;background:var(--cd);color:var(--ink);font:inherit;margin-top:4px}
@@ -28,7 +28,7 @@ textarea{min-height:130px;resize:vertical}
 .ct{display:flex;align-items:center;gap:12px;margin:12px 0}
 .ct b{display:block;font-size:14px;color:var(--ink)}.ct span{font-size:14px;color:var(--mu);word-break:break-all}
 .ns{font-size:13.5px;color:var(--mu);border-top:1px dashed var(--ln);margin-top:14px;padding-top:10px}
-:focus-visible{outline:3px solid #e5a83b;outline-offset:2px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 html{scroll-behavior:smooth;scroll-padding-top:80px}
 
 /* ===== Premium layer ===== */
@@ -36,37 +36,38 @@ html{scroll-behavior:smooth;scroll-padding-top:80px}
 @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,24px) scale(1.15)}}
 @keyframes shine{from{transform:translateX(-120%) skewX(-20deg)}to{transform:translateX(260%) skewX(-20deg)}}
 @keyframes pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
-.ph{position:relative;overflow:hidden;margin:6px 0 4px;padding:30px 28px;border-radius:18px;background:linear-gradient(125deg,#06142a,#0a2240 55%,#15396b);box-shadow:0 18px 40px rgba(10,34,64,.28);animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
-.ph::before{content:'';position:absolute;right:-60px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(229,168,59,.55),transparent 68%);animation:drift 9s ease-in-out infinite}
+.ph{position:relative;overflow:hidden;margin:6px 0 4px;padding:30px 28px;border-radius:18px;background:linear-gradient(125deg,#06142a,var(--navy) 55%,#15396b);box-shadow:0 18px 40px rgba(10,34,64,.28);animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+.ph::before{content:'';position:absolute;right:-60px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.55),transparent 68%);animation:drift 9s ease-in-out infinite}
 .ph>*{position:relative}.ph h1{color:#f6dfa8;font-size:30px;font-weight:700}.ph p{color:#c4d3e8;max-width:620px}
 .gd .bx{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}.gd .bx:nth-child(1){animation-delay:.12s}.gd .bx:nth-child(2){animation-delay:.24s}
 .bx{border-radius:16px;box-shadow:0 1px 2px rgba(15,27,45,.05),0 14px 34px rgba(15,27,45,.07);transition:box-shadow .3s,transform .3s}
 .gd .bx:hover{box-shadow:0 18px 42px rgba(15,27,45,.12)}
 input,select,textarea{transition:border-color .2s,box-shadow .2s}
-input:focus,textarea:focus{outline:0;border-color:#0a2240;box-shadow:0 0 0 4px rgba(229,168,59,.28)}
+input:focus,textarea:focus{outline:0;border-color:var(--navy);box-shadow:0 0 0 4px rgba(212,175,55,.28)}
 .seg{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .seg button{font:inherit;font-size:13.5px;font-weight:600;padding:8px 14px;border-radius:999px;border:1.5px solid var(--ln);background:var(--cd);color:var(--ink);cursor:pointer;transition:all .2s}
-.seg button:hover{border-color:#e5a83b;transform:translateY(-1px)}
-.seg button[aria-checked=true]{background:#0a2240;color:#e5a83b;border-color:#0a2240;animation:pop .35s both}
+.seg button:hover{border-color:var(--gold);transform:translateY(-1px)}
+.seg button[aria-checked=true]{background:var(--navy);color:var(--gold);border-color:var(--navy);animation:pop .35s both}
 .mt{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:12.5px;color:var(--mu)}
 .meter{flex:1;height:6px;border-radius:6px;background:var(--ln);overflow:hidden}
-.meter i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,#e5a83b,#f3c76b);transition:width .25s,background .25s}
+.meter i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--gold),#f3c76b);transition:width .25s,background .25s}
 .meter i.hi{background:linear-gradient(90deg,#d9534f,#ef8a80)}
 .bt{position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 16px rgba(10,34,64,.22)}
 .bt:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(10,34,64,.3)}
 .bt::after{content:'';position:absolute;top:0;bottom:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-120%) skewX(-20deg)}
 .bt:not(.o):hover::after{animation:shine .8s}
-.bt.o{box-shadow:none}.bt.o:hover{border-color:#e5a83b;box-shadow:none}
+.bt.o{box-shadow:none}.bt.o:hover{border-color:var(--gold);box-shadow:none}
 .kb{margin:10px 0 0;font-size:12.5px;color:var(--mu)}
 .ct{padding:10px;margin:8px -10px;border-radius:12px;transition:background .2s}.ct:hover{background:color-mix(in srgb,var(--ln) 45%,transparent)}
 .ct>div{flex:1;min-width:0}
 .cpy{font:inherit;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;border:1.5px solid var(--ln);background:transparent;color:var(--ink);cursor:pointer;transition:all .2s}
-.cpy:hover{border-color:#e5a83b;background:#0a2240;color:#e5a83b}
-.tst{position:fixed;left:50%;bottom:26px;z-index:50;transform:translate(-50%,30px);opacity:0;pointer-events:none;background:#0a2240;color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 14px 34px rgba(0,0,0,.3);transition:all .35s cubic-bezier(.2,.8,.2,1);display:flex;gap:8px;align-items:center}
-.tst.on{opacity:1;transform:translate(-50%,0)}.tst::before{content:'\2713';display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#e5a83b;color:#0a2240;font-size:12px}
+.cpy:hover{border-color:var(--gold);background:var(--navy);color:var(--gold)}
+.tst{position:fixed;left:50%;bottom:26px;z-index:50;transform:translate(-50%,30px);opacity:0;pointer-events:none;background:var(--navy);color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 14px 34px rgba(0,0,0,.3);transition:all .35s cubic-bezier(.2,.8,.2,1);display:flex;gap:8px;align-items:center}
+.tst.on{opacity:1;transform:translate(-50%,0)}.tst::before{content:'\2713';display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:12px}
 @media(max-width:760px){.ph{padding:24px 20px}.ph h1{font-size:24px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="premium.css">
 </head>
 <body data-page="feedback">
 <div id="hdr"></div>
@@ -74,14 +75,14 @@ input:focus,textarea:focus{outline:0;border-color:#0a2240;box-shadow:0 0 0 4px r
 <div class="ph"><h1 class="t">💬 মতামত ও পরামর্শ|💬 Feedback & Suggestions</h1>
 <p class="t">কোনো সমস্যা, নতুন ফিচারের ধারণা বা প্রশ্ন থাকলে জানান। প্রতিটি মতামত গুরুত্বের সাথে দেখা হয়।|Share a problem, a feature idea or a question. Every message is read carefully.</p></div>
 <div class="gd" id="feedback">
-<div class="bx"><h2 class="t">বার্তা পাঠান|Send a Message</h2>
+<div class="bx sec-1"><h2 class="t">বার্তা পাঠান|Send a Message</h2>
 <label class="t">ধরন|Type</label>
 <div class="seg" id="seg" role="radiogroup" aria-label="Type"></div><select id="ft" hidden><option value="0" class="t">পরামর্শ|Suggestion</option><option value="1" class="t">সমস্যা (Bug)|Problem (Bug)</option><option value="2" class="t">নতুন ফিচারের অনুরোধ|Feature request</option><option value="3" class="t">প্রশ্ন|Question</option></select>
 <label class="t">আপনার বার্তা|Your message</label><textarea id="fm" maxlength="1000" data-p="এখানে লিখুন...|Write here..."></textarea>
 <label class="t">নাম ও যোগাযোগ (ঐচ্ছিক)|Name & contact (optional)</label><input id="fc" data-p="উত্তর পেতে চাইলে ইমেইল বা নম্বর দিন|Add an email or number if you want a reply">
 <div class="mt"><div class="meter"><i id="mbar"></i></div><span id="mcnt">0 / 1000</span></div><div class="ch" id="fb2"></div><p class="kb t">দ্রুত পাঠাতে Ctrl + Enter চাপুন।|Press Ctrl + Enter to send quickly.</p><div id="fs" aria-live="polite"></div>
 </div>
-<div class="bx"><h2 class="t">সরাসরি যোগাযোগ|Contact Directly</h2>
+<div class="bx sec-2"><h2 class="t">সরাসরি যোগাযোগ|Contact Directly</h2>
 <div id="ct"></div>
 <p class="ns t">আপনার লেখা বার্তা এই সাইটে জমা থাকে না। পাঠানোর বোতাম চাপলে এটি আপনার নিজের ইমেইল বা WhatsApp-এ খোলে।|Your message is not stored on this site. The send buttons open it in your own email or WhatsApp.</p></div>
 </div>
@@ -144,5 +145,6 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Ente
 loadDraft();chips();meter();
 window.onLang=()=>{render();chips()};render();
 </script>
+<script src="premium.js"></script>
 </body>
 </html>
