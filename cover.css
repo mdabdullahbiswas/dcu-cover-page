@@ -430,3 +430,8 @@ button,.btn,.bt,.sw,.ui,.ct-tab,.dtx-btn,.dtx-chip,.dp-d,.dp-m,select,input,text
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 html.lite .sheet{box-shadow:0 6px 18px rgba(10,26,51,.18),0 0 0 1px #e3e8ef!important}
+
+/* ===== শব্দ মাঝখানে ভাঙা বন্ধ (যেমন EXA|M) — আগে ছোট করে আঁটানো হয়, শেষ উপায় হিসেবেই ভাঙে ===== */
+.sheet .uni,.sheet .campus,.sheet .dept,.sheet .dt,.sheet .dtb,.sheet .tt,.sheet .cs,.sheet .nm,.sheet .tn,.sheet .tr,.sheet .tm,.sheet .rw .v,.sheet .mb b,.sheet .mb span,.sheet .dc-m .v,.sheet .sg .sn{overflow-wrap:normal;word-break:normal;hyphens:manual}
+.sheet .mid>.dt,.sheet .mid>.dtb,.sheet .mid>.tt,.sheet .mid>.cs{width:100%}
+.sheet[data-wrap] .uni,.sheet[data-wrap] .campus,.sheet[data-wrap] .dept,.sheet[data-wrap] .dt,.sheet[data-wrap] .dtb,.sheet[data-wrap] .tt,.sheet[data-wrap] .cs,.sheet[data-wrap] .nm,.sheet[data-wrap] .tn,.sheet[data-wrap] .tr,.sheet[data-wrap] .tm,.sheet[data-wrap] .rw .v,.sheet[data-wrap] .mb b,.sheet[data-wrap] .mb span,.sheet[data-wrap] .dc-m .v,.sheet[data-wrap] .sg .sn{overflow-wrap:anywhere}

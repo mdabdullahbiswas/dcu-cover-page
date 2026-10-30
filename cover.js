@@ -191,13 +191,18 @@ st.style.height=Math.round(H*k)+'px';
 }
 /* লেখা বেশি হলে নিজে নিজে ছোট হয়, যাতে ওভারল্যাপ বা কাটা না পড়ে */
 function autoFit(){fitEl($('sheet'));var p2=$('page2');if(p2&&!p2.hidden)fitEl($('sheet2'))}
+var HSEL='.uni,.campus,.dept,.dt,.dtb,.tt,.cs,.nm,.tn,.tr,.tm,.rw .v,.mb b,.mb span,.dc-m .v,.sg .sn';
+/* কোনো শব্দ তার বাক্সের চেয়ে চওড়া হলে true (অর্থাৎ শব্দ ভাঙতে হতো) */
+function hOver(sh){var l=sh.querySelectorAll(HSEL);for(var i=0;i<l.length;i++){var e=l[i];if(e.scrollWidth>e.clientWidth+1)return true}return false}
 function fitEl(sh){
-var s=sh.style;
-function ap(k){var m=Math.round((1-k*.04)*100)/100;s.setProperty('--un',Math.round(31*m)+'px');s.setProperty('--dtf',Math.round(52*m)+'px');s.setProperty('--tt',Math.round(27*m)+'px');s.setProperty('--ich',Math.round(240*m*m)+'px');s.setProperty('--z',m.toFixed(2));return sh.scrollHeight<=sh.clientHeight+1}
+var s=sh.style;sh.removeAttribute('data-wrap');
+function ap(k){var m=Math.round((1-k*.04)*100)/100;s.setProperty('--un',Math.round(31*m)+'px');s.setProperty('--dtf',Math.round(52*m)+'px');s.setProperty('--tt',Math.round(27*m)+'px');s.setProperty('--ich',Math.round(240*m*m)+'px');s.setProperty('--z',m.toFixed(2));return sh.scrollHeight<=sh.clientHeight+1&&!hOver(sh)}
 if(ap(0))return;
 var lo=1,hi=15,mid;
 while(lo<hi){mid=(lo+hi)>>1;if(ap(mid))hi=mid;else lo=mid+1}
 ap(lo);
+/* সবচেয়ে ছোট মাপেও না ধরলে (অতি লম্বা একটাই শব্দ) তখনই কেবল শব্দ ভেঙে দেওয়া হবে */
+if(hOver(sh)){sh.setAttribute('data-wrap','1');ap(lo)}
 }
 function setLogo(src){var im=$('logo');im.onerror=function(){im.onerror=null;im.src=FALLBACK};im.src=src}
 /* ===== Validation ===== */
