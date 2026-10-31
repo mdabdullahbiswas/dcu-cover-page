@@ -317,6 +317,46 @@ body.dark .sh .mn{background:transparent}
 
 @media(max-width:900px){.hp-float{display:none}.hp-tilt:before{inset:-6%}}
 @media(hover:none){.hp-panel.is-hover .hp-spot{display:none}}
+
+/* =========================================================
+   PREMIUM HERO LAYER v3 — cinematic entrance, sparks, foil
+   ========================================================= */
+.hp-panel{animation:hpPanelIn 1.3s var(--ease) both}
+@keyframes hpPanelIn{from{opacity:0;transform:translate3d(0,46px,0) scale(.965);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+
+/* rising gold sparks */
+.hp-spark{position:absolute;z-index:0;left:var(--x);bottom:-12px;width:var(--s);height:var(--s);border-radius:50%;pointer-events:none;background:radial-gradient(circle,#FFF6D6 0%,#E8C46C 45%,rgba(232,196,108,0) 72%);box-shadow:0 0 10px rgba(232,196,108,.7);opacity:0;animation:hpRise var(--t) linear var(--dl) infinite}
+@keyframes hpRise{0%{transform:translate3d(0,0,0) scale(.6);opacity:0}12%{opacity:.95}70%{opacity:.6}100%{transform:translate3d(var(--dx),-112vh,0) scale(1.1);opacity:0}}
+
+/* cover: skeleton lines draw in, then breathe */
+.hp-mock .hp-sk{transform-origin:left center;animation:hpSkDraw 1.4s var(--ease) both,hpSk 1.8s linear infinite;animation-delay:calc(.5s + var(--i,0) * .18s),calc(.5s + var(--i,0) * .18s)}
+.hp-mock .hp-sk:nth-of-type(1){--i:0}
+.hp-mock .hp-sk:nth-of-type(2){--i:1}
+.hp-mock .hp-sk:nth-of-type(3){--i:2}
+@keyframes hpSkDraw{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* seal: living gold halo */
+.hp-ring{animation:hpSeal 4.5s ease-in-out infinite}
+.hp-ring i{box-shadow:inset 0 0 0 1px rgba(232,196,108,.35),0 0 26px rgba(232,196,108,.35)}
+@keyframes hpSeal{0%,100%{filter:drop-shadow(0 0 0 rgba(232,196,108,0))}50%{filter:drop-shadow(0 0 14px rgba(232,196,108,.55))}}
+
+/* cover chip: metallic sweep */
+.hp-chip{position:relative;overflow:hidden}
+.hp-chip::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,243,201,.7) 50%,transparent 65%);transform:translateX(-120%);animation:hpChipSweep 3.8s var(--ease) 1.4s infinite}
+@keyframes hpChipSweep{0%{transform:translateX(-120%)}40%,100%{transform:translateX(120%)}}
+
+/* glass badges: soft shine on the edge */
+.hp-float{overflow:hidden}
+.hp-float::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.22) 50%,transparent 60%);transform:translateX(-120%);animation:hpChipSweep 4.6s var(--ease) infinite;pointer-events:none}
+
+/* headline: letters "breathe" glow on the gold part */
+.hp-h1.t{text-shadow:0 0 28px rgba(232,196,108,.18)}
+
+/* lead text: soft rise after the headline */
+.hp-lead{animation:hpUp 1s var(--ease) .5s both}
+
+@media(max-width:900px){.hp-spark:nth-child(n+9){display:none}}
+@media(prefers-reduced-motion:reduce){.hp-spark{display:none}}
 </style>
 <link rel="stylesheet" href="dcu-layout.css">
 <link rel="stylesheet" href="dcu-lang.css">
@@ -700,6 +740,59 @@ body.dark .sh .mn{background:transparent}
     });
     b.addEventListener('pointerleave', function () { b.style.translate = ''; });
   });
+})();
+</script>
+
+<script>
+/* Premium v3: sparks, scroll parallax on the cover, headline depth on hover. */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var panel = document.querySelector('.hp-panel');
+  if (!panel || reduce) return;
+
+  /* rising sparks inside the hero */
+  var n = window.innerWidth < 700 ? 8 : 16;
+  for (var i = 0; i < n; i++) {
+    var sp = document.createElement('span');
+    sp.className = 'hp-spark';
+    sp.setAttribute('aria-hidden', 'true');
+    var size = 2 + Math.random() * 4;
+    sp.style.setProperty('--x', (4 + Math.random() * 92).toFixed(1) + '%');
+    sp.style.setProperty('--s', size.toFixed(1) + 'px');
+    sp.style.setProperty('--t', (7 + Math.random() * 7).toFixed(1) + 's');
+    sp.style.setProperty('--dl', (-Math.random() * 12).toFixed(1) + 's');
+    sp.style.setProperty('--dx', ((Math.random() - 0.5) * 80).toFixed(0) + 'px');
+    panel.appendChild(sp);
+  }
+
+  /* scroll parallax: cover drifts slightly slower than the page */
+  var wrap = document.querySelector('.hp-mockwrap');
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (wrap && fine) {
+    var ticking = false;
+    function par() {
+      var r = panel.getBoundingClientRect();
+      var off = Math.max(-40, Math.min(40, -r.top * 0.08));
+      wrap.style.translate = '0 ' + off.toFixed(1) + 'px';
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(par); }
+    }, { passive: true });
+    par();
+  }
+
+  /* headline depth: text shifts a few px with the cursor */
+  var h1 = panel.querySelector('.hp-h1');
+  if (h1 && fine) {
+    panel.addEventListener('pointermove', function (e) {
+      var r = panel.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      h1.style.translate = (x * -10).toFixed(1) + 'px ' + (y * -6).toFixed(1) + 'px';
+    });
+    panel.addEventListener('pointerleave', function () { h1.style.translate = ''; });
+  }
 })();
 </script>
 </body>
