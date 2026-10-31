@@ -105,17 +105,31 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <link rel="manifest" href="manifest.json">
 
 <style>
-/* রেজাল্ট সেকশন: কলেজ তালিকা ও প্রয়োজনীয় তথ্য */
-.clg{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;counter-reset:none}
-.clg li{position:relative;display:flex;flex-direction:column;gap:10px;padding:14px 16px 14px;border-radius:16px;background:linear-gradient(160deg,#FFFFFF,#FBF6E6);border:1px solid rgba(184,140,40,.28);box-shadow:0 10px 24px -14px rgba(11,31,58,.35);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;overflow:hidden}
-.clg li::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#F3D98A,#B8862B)}
-.clg li:hover{transform:translateY(-3px);box-shadow:0 18px 34px -16px rgba(11,31,58,.45);border-color:rgba(184,140,40,.55)}
-.clg-no{font-size:11px;font-weight:800;letter-spacing:1.5px;color:#8F6A17}
-.clg-name{display:flex;flex-direction:column;gap:3px}
-.clg-name b{font-size:15px;line-height:1.35;color:#0B1F3A}
-.clg-name small{font-size:11.5px;color:#6B7280;line-height:1.35}
-.clg-map{align-self:flex-start;font-size:12px;font-weight:800;text-decoration:none;color:#0B1F3A;padding:7px 12px;border-radius:99px;background:linear-gradient(135deg,#F3D98A,#B8862B);box-shadow:0 8px 18px -10px rgba(184,134,43,.8);transition:transform .25s,box-shadow .25s}
-.clg-map:hover{transform:translateY(-1px);box-shadow:0 12px 22px -10px rgba(184,134,43,.9)}
+/* রেজাল্ট সেকশন: প্রিমিয়াম কলেজ তালিকা */
+.cx-wrap{position:relative;overflow:hidden}
+.cx-search{display:flex;align-items:center;gap:10px;margin:14px 0 6px;padding:11px 14px;border-radius:14px;background:#F7F4EA;border:1px solid rgba(184,140,40,.3);transition:border-color .3s,box-shadow .3s}
+.cx-search:focus-within{border-color:#B8862B;box-shadow:0 0 0 4px rgba(184,140,40,.15)}
+.cx-search svg{width:18px;height:18px;fill:none;stroke:#8F6A17;stroke-width:2;stroke-linecap:round;flex:0 0 18px}
+.cx-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:14px;color:#0B1F3A}
+.cx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:12px;perspective:1000px}
+.cx-card{position:relative;padding:18px 18px 16px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#0F2747,#0B1F3A 60%,#0E2446);color:#F1F5F9;border:1px solid rgba(232,196,108,.25);box-shadow:0 20px 40px -22px rgba(11,31,58,.7);transform-style:preserve-3d;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translate3d(0,var(--ty,14px),0);opacity:0;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .7s,box-shadow .5s,border-color .4s}
+.cx-card.cx-in{opacity:1;--ty:0px}
+.cx-card::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(243,217,138,.22),transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none}
+.cx-card:hover{box-shadow:0 30px 56px -22px rgba(0,0,0,.75),0 0 40px -12px rgba(232,196,108,.35);border-color:rgba(232,196,108,.55)}
+.cx-card:hover::before{opacity:1}
+.cx-card.cx-hide{display:none}
+.cx-top{display:flex;justify-content:space-between;align-items:center}
+.cx-no{font-size:44px;font-weight:800;line-height:1;background:linear-gradient(180deg,#FFF3C9,#E8C46C 55%,#B8862B);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.cx-pin{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(232,196,108,.12);border:1px solid rgba(232,196,108,.3)}
+.cx-pin svg{width:18px;height:18px;fill:none;stroke:#F3D98A;stroke-width:2}
+.cx-card .cx-bn{margin:16px 0 4px;font-size:16px;line-height:1.4;color:#FFF7DC;font-weight:800}
+.cx-en{margin:0;font-size:12px;line-height:1.45;color:#94A3B8}
+.cx-map{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:9px 14px;border-radius:99px;font-size:12.5px;font-weight:800;text-decoration:none;color:#0B1F3A;background:linear-gradient(135deg,#F3D98A,#B8862B);box-shadow:0 10px 22px -12px rgba(232,196,108,.9);transition:transform .3s,box-shadow .3s}
+.cx-map i{font-style:normal;transition:transform .3s}
+.cx-map:hover{transform:translateY(-2px);box-shadow:0 16px 28px -12px rgba(232,196,108,1)}
+.cx-map:hover i{transform:translate(2px,-2px)}
+.cx-empty{margin:14px 0 0;color:#6B7280;text-align:center}
+@media (prefers-reduced-motion:reduce){.cx-card{opacity:1;transform:none;transition:none}}
 .need{margin:0;padding-left:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 18px;font-size:14px;line-height:1.6}
 .need li::marker{color:#B8862B;font-weight:800}
 @media (max-width:520px){.clg{grid-template-columns:1fr}}
@@ -298,7 +312,56 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <div class="pv" style="margin-top:12px"><span class="t">রেজাল্ট সরাসরি ইউনিভার্সিটির পোর্টাল থেকে আসে। এই সাইট রেজাল্ট সংরক্ষণ বা পরিবর্তন করে না।|Results come directly from the university portal. This site does not store or alter results.</span></div>
 <p class="hint t" style="margin-top:14px">নিচে পোর্টালটি সরাসরি দেখানো হলো। ফর্ম না এলে উপরের বাটনে চেপে নতুন ট্যাবে খুলুন।|The portal is shown directly below. If the form does not appear, open it in a new tab with the button above.</p>
 <iframe id="rf" src="https://resapi.eco.du.ac.bd/" title="রেজাল্ট পোর্টাল|Result Portal" loading="lazy" referrerpolicy="no-referrer" style="display:block;width:100%;height:640px;border:1px solid rgba(0,0,0,.12);border-radius:14px;margin-top:8px;background:#fff"></iframe></div>
-<div class="bx"><h2 class="t">সাতটি কলেজ|The Seven Colleges</h2><p class="hint t">ঢাকা বিশ্ববিদ্যালয়ের অধিভুক্ত সাতটি কলেজ। প্রতিটির অবস্থান মানচিত্রে দেখতে নিচের লিংকে চাপুন।|The seven colleges affiliated with the University of Dhaka. Tap a link to see each college on the map.</p><ol class="clg"><li><span class="clg-no">01</span><span class="clg-name"><b class="t">ঢাকা কলেজ</b><small>Dhaka College</small></span><a class="clg-map" href="https://www.google.com/maps/search/?api=1&amp;query=Dhaka+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span> ↗</a></li><li><span class="clg-no">02</span><span class="clg-name"><b class="t">ইডেন মহিলা কলেজ</b><small>Eden Mohila College</small></span><a class="clg-map" href="https://www.google.com/maps/search/?api=1&amp;query=Eden+Mohila+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span> ↗</a></li><li><span class="clg-no">03</span><span class="clg-name"><b class="t">বেগম বদরুন্নেসা সরকারি মহিলা কলেজ</b><small>Begum Badrunnesa Govt. Girls College</small></span><a class="clg-map" href="https://www.google.com/maps/search/?api=1&amp;query=Begum+Badrunnesa+Govt.+Girls+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span> ↗</a></li><li><span class="clg-no">04</span><span class="clg-name"><b class="t">কবি নজরুল সরকারি কলেজ</b><small>Kabi Nazrul Govt. College</small></span><a class="clg-map" href="https://www.google.com/maps/search/?api=1&amp;query=Kabi+Nazrul+Govt.+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span> ↗</a></li><li><span class="clg-no">05</span><span class="clg-name"><b class="t">শহীদ সোহরাওয়ার্দী সরকারি কলেজ</b><small>Government Shaheed Suhrawardy College</small></span><a class="clg-map" href="https://www.google.com/maps/search/?api=1&amp;query=Government+Shaheed+Suhrawardy+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span> ↗</a></li><li><span class="clg-no">06</span><span class="clg-name"><b class="t">সরকারি বাংলা কলেজ</b><small>Govt. Bangla College</small></span><a class="clg-map" href="https://www.google.com/maps/search/?api=1&amp;query=Govt.+Bangla+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span> ↗</a></li><li><span class="clg-no">07</span><span class="clg-name"><b class="t">সরকারি তিতুমীর কলেজ</b><small>Govt. Titumir College</small></span><a class="clg-map" href="https://www.google.com/maps/search/?api=1&amp;query=Govt.+Titumir+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span> ↗</a></li></ol></div></section>
+<div class="bx cx-wrap">
+  <h2 class="t">সাতটি কলেজ|The Seven Colleges</h2>
+  <p class="hint t">ঢাকা বিশ্ববিদ্যালয়ের অধিভুক্ত সাতটি কলেজ। নাম লিখে খুঁজুন, বা কার্ডে চাপ দিয়ে মানচিত্রে দেখুন।|The seven colleges affiliated with the University of Dhaka. Search by name, or open a card on the map.</p>
+  <label class="cx-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="cxq" type="search" placeholder="কলেজের নাম খুঁজুন | Search a college" aria-label="Search colleges"></label>
+  <div class="cx-grid" id="cxGrid">
+<article class="cx-card" data-s="ঢাকা কলেজ Dhaka College">
+  <div class="cx-top"><span class="cx-no">01</span><span class="cx-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span></div>
+  <h3 class="cx-bn t">ঢাকা কলেজ</h3>
+  <p class="cx-en">Dhaka College</p>
+  <a class="cx-map" href="https://www.google.com/maps/search/?api=1&amp;query=Dhaka+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span><i aria-hidden="true">↗</i></a>
+</article>
+<article class="cx-card" data-s="ইডেন মহিলা কলেজ Eden Mohila College">
+  <div class="cx-top"><span class="cx-no">02</span><span class="cx-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span></div>
+  <h3 class="cx-bn t">ইডেন মহিলা কলেজ</h3>
+  <p class="cx-en">Eden Mohila College</p>
+  <a class="cx-map" href="https://www.google.com/maps/search/?api=1&amp;query=Eden+Mohila+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span><i aria-hidden="true">↗</i></a>
+</article>
+<article class="cx-card" data-s="বেগম বদরুন্নেসা সরকারি মহিলা কলেজ Begum Badrunnesa Govt. Girls College">
+  <div class="cx-top"><span class="cx-no">03</span><span class="cx-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span></div>
+  <h3 class="cx-bn t">বেগম বদরুন্নেসা সরকারি মহিলা কলেজ</h3>
+  <p class="cx-en">Begum Badrunnesa Govt. Girls College</p>
+  <a class="cx-map" href="https://www.google.com/maps/search/?api=1&amp;query=Begum+Badrunnesa+Govt.+Girls+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span><i aria-hidden="true">↗</i></a>
+</article>
+<article class="cx-card" data-s="কবি নজরুল সরকারি কলেজ Kabi Nazrul Govt. College">
+  <div class="cx-top"><span class="cx-no">04</span><span class="cx-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span></div>
+  <h3 class="cx-bn t">কবি নজরুল সরকারি কলেজ</h3>
+  <p class="cx-en">Kabi Nazrul Govt. College</p>
+  <a class="cx-map" href="https://www.google.com/maps/search/?api=1&amp;query=Kabi+Nazrul+Govt.+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span><i aria-hidden="true">↗</i></a>
+</article>
+<article class="cx-card" data-s="শহীদ সোহরাওয়ার্দী সরকারি কলেজ Government Shaheed Suhrawardy College">
+  <div class="cx-top"><span class="cx-no">05</span><span class="cx-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span></div>
+  <h3 class="cx-bn t">শহীদ সোহরাওয়ার্দী সরকারি কলেজ</h3>
+  <p class="cx-en">Government Shaheed Suhrawardy College</p>
+  <a class="cx-map" href="https://www.google.com/maps/search/?api=1&amp;query=Government+Shaheed+Suhrawardy+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span><i aria-hidden="true">↗</i></a>
+</article>
+<article class="cx-card" data-s="সরকারি বাংলা কলেজ Govt. Bangla College">
+  <div class="cx-top"><span class="cx-no">06</span><span class="cx-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span></div>
+  <h3 class="cx-bn t">সরকারি বাংলা কলেজ</h3>
+  <p class="cx-en">Govt. Bangla College</p>
+  <a class="cx-map" href="https://www.google.com/maps/search/?api=1&amp;query=Govt.+Bangla+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span><i aria-hidden="true">↗</i></a>
+</article>
+<article class="cx-card" data-s="সরকারি তিতুমীর কলেজ Govt. Titumir College">
+  <div class="cx-top"><span class="cx-no">07</span><span class="cx-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span></div>
+  <h3 class="cx-bn t">সরকারি তিতুমীর কলেজ</h3>
+  <p class="cx-en">Govt. Titumir College</p>
+  <a class="cx-map" href="https://www.google.com/maps/search/?api=1&amp;query=Govt.+Titumir+College+Dhaka" target="_blank" rel="noopener noreferrer"><span class="t">অবস্থান দেখুন|View location</span><i aria-hidden="true">↗</i></a>
+</article>
+  </div>
+  <p class="cx-empty t" id="cxEmpty" hidden>কোনো কলেজ পাওয়া যায়নি।|No college found.</p>
+</div></section>
 </main>
 <div id="ftr"></div>
 <script src="site.js"></script>
@@ -755,5 +818,38 @@ window.onLang=()=>{$$('textarea[data-p]').forEach(e=>e.placeholder=L(e.dataset.p
 window.onLang();tdraw();$('#cvl').dispatchEvent(new Event('change'));
 </script>
 <script src="premium.js"></script>
+<script>
+/* College cards: live search, spotlight + tilt on hover, staggered reveal. */
+(function(){
+  var grid=document.getElementById('cxGrid'); if(!grid) return;
+  var cards=[].slice.call(grid.querySelectorAll('.cx-card'));
+  var q=document.getElementById('cxq'), empty=document.getElementById('cxEmpty');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  q && q.addEventListener('input',function(){
+    var v=q.value.trim().toLowerCase(), shown=0;
+    cards.forEach(function(c){
+      var hit=!v||c.getAttribute('data-s').toLowerCase().indexOf(v)>-1;
+      c.classList.toggle('cx-hide',!hit); if(hit) shown++;
+    });
+    if(empty) empty.hidden=shown>0;
+  });
+  if(!reduce && window.IntersectionObserver){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ var i=cards.indexOf(e.target); e.target.style.transitionDelay=(i%4)*90+'ms'; e.target.classList.add('cx-in'); io.unobserve(e.target);} });
+    },{threshold:.15});
+    cards.forEach(function(c){ io.observe(c); });
+  } else { cards.forEach(function(c){ c.classList.add('cx-in'); }); }
+  if(!reduce && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    cards.forEach(function(c){
+      c.addEventListener('pointermove',function(e){
+        var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+        c.style.setProperty('--mx',(x*100).toFixed(1)+'%'); c.style.setProperty('--my',(y*100).toFixed(1)+'%');
+        c.style.setProperty('--ry',((x-.5)*10).toFixed(2)+'deg'); c.style.setProperty('--rx',((.5-y)*8).toFixed(2)+'deg');
+      });
+      c.addEventListener('pointerleave',function(){ c.style.setProperty('--rx','0deg'); c.style.setProperty('--ry','0deg'); });
+    });
+  }
+})();
+</script>
 </body>
 </html>
