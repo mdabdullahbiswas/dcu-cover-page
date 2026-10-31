@@ -104,7 +104,7 @@ var COVER_TYPES = [{"v": "assignment", "en": "Assignment", "bn": "অ্যা�
       '<div class="dl-bar">' +
       '<a class="dl-brand" href="index.html" aria-label="DCU Unofficial — হোম">' +
       '<img src="logo.png" alt="" width="38" height="38">' +
-      '<span class="dl-brand-txt"><b>DCU</b><small>Unofficial · শিক্ষার্থী টুলকিট</small></span></a>' +
+      '<span class="dl-brand-txt"><b>DCU</b><small>Core · শিক্ষার্থী টুলকিট</small></span></a>' +
       '<nav class="dl-nav" id="dlNav" aria-label="প্রধান নেভিগেশন">' + links.join("") + "</nav>" +
       '<div class="dl-actions">' +
       '<button type="button" class="dl-icon-btn dl-theme" data-dl-theme aria-label="থিম পরিবর্তন করুন" aria-pressed="false" title="থিম পরিবর্তন">' +
