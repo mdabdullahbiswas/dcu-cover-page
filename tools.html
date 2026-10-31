@@ -131,6 +131,14 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 .need li::marker{color:#B8862B;font-weight:800}
 @media (max-width:520px){.clg{grid-template-columns:1fr}}
 </style>
+
+<style>
+/* সিভি বিল্ডার: প্রতিটি অংশের আলাদা সেক্টর রঙ */
+.cvg{position:relative;margin:12px 0;padding:14px 14px 12px 18px;border-radius:14px;background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);box-shadow:0 8px 20px -16px rgba(15,23,42,.18)}
+.cvg::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--accent-grad,linear-gradient(135deg,#60A5FA,#2563EB))}
+.cvg>label{color:var(--accent-deep,#1E40AF);font-weight:700}
+.cvg input:focus,.cvg textarea:focus,.cvg select:focus{border-color:var(--accent,#2563EB);box-shadow:0 0 0 4px var(--accent-soft,#DBEAFE)}
+</style>
 </head>
 <body data-page="tools">
 <div id="hdr"></div>
@@ -269,18 +277,26 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <div><label class="t">সিভির ভাষা|CV Language</label><select id="cvl"><option value="en">English</option><option value="bn">বাংলা</option></select></div></div>
 <button class="bs t" id="cvsmp" style="margin-top:10px">নমুনা তথ্য যুক্ত করুন|Load Sample Data</button> <button class="bs t" id="cvclr">সব তথ্য মুছে ফেলুন|Clear All</button>
 <div id="cvdl" style="display:none"></div>
-<div class="g3"><div><label class="t">পূর্ণ নাম|Full Name</label><input id="cvn" maxlength="60"></div><div><label class="t">পদবি / পেশাগত লক্ষ্য|Professional Title / Objective</label><input id="cvj" maxlength="80" autocomplete="off"></div></div>
+<div class="cvg sec-1"><div class="g3"><div><label class="t">পূর্ণ নাম|Full Name</label><input id="cvn" maxlength="60"></div><div><label class="t">পদবি / পেশাগত লক্ষ্য|Professional Title / Objective</label><input id="cvj" maxlength="80" autocomplete="off"></div></div>
 <div class="g3"><div><label class="t">ইমেইল|Email</label><input id="cve" type="email"></div><div><label class="t">মোবাইল নম্বর|Phone</label><input id="cvh"></div><div><label class="t">ঠিকানা|Address</label><input id="cva"></div></div>
-<label class="t">পেশাগত লিংক (LinkedIn, GitHub, পোর্টফোলিও)|Professional Links (LinkedIn, GitHub, Portfolio)</label><textarea id="cvk" style="display:none"></textarea><div class="rp" id="rp_cvk"></div>
+</div>
+<div class="cvg sec-2"><label class="t">পেশাগত লিংক (LinkedIn, GitHub, পোর্টফোলিও)|Professional Links (LinkedIn, GitHub, Portfolio)</label><textarea id="cvk" style="display:none"></textarea><div class="rp" id="rp_cvk"></div>
 <label class="t">প্রোফাইল ছবি (ঐচ্ছিক)|Profile Photo (optional)</label><input id="cvf" type="file" accept="image/*">
-<label class="t">পেশাগত সারসংক্ষেপ|Professional Summary</label><select id="cvsm"><option value="" class="t">— নমুনা নির্বাচন করুন —|— Select a sample —</option><option value="0" class="t">সদ্য স্নাতক|Recent Graduate</option><option value="1" class="t">অভিজ্ঞ পেশাজীবী|Experienced Professional</option><option value="2" class="t">গবেষণা ও একাডেমিক|Research & Academic</option><option value="3" class="t">আইটি ও ওয়েব|IT & Web</option><option value="4" class="t">মার্কেটিং ও ডিজাইন|Marketing & Design</option><option value="5" class="t">শিক্ষকতা|Teaching</option></select><textarea id="cvs"></textarea>
-<label class="t">শিক্ষাগত যোগ্যতা|Education</label><textarea id="cvd" style="display:none"></textarea><div class="rp" id="rp_cvd"></div>
-<label class="t">কর্ম অভিজ্ঞতা|Work Experience</label><textarea id="cvx" style="display:none"></textarea><div class="rp" id="rp_cvx"></div>
-<label class="t">প্রজেক্ট|Projects</label><textarea id="cvr" style="display:none"></textarea><div class="rp" id="rp_cvr"></div>
-<label class="t">দক্ষতা (লিখুন অথবা নিচের সাজেশন থেকে নির্বাচন করুন)|Skills (type, or select from the suggestions below)</label><input id="cvsk"><div class="sgc" id="sg_cvsk"></div>
+</div>
+<div class="cvg sec-3"><label class="t">পেশাগত সারসংক্ষেপ|Professional Summary</label><select id="cvsm"><option value="" class="t">— নমুনা নির্বাচন করুন —|— Select a sample —</option><option value="0" class="t">সদ্য স্নাতক|Recent Graduate</option><option value="1" class="t">অভিজ্ঞ পেশাজীবী|Experienced Professional</option><option value="2" class="t">গবেষণা ও একাডেমিক|Research & Academic</option><option value="3" class="t">আইটি ও ওয়েব|IT & Web</option><option value="4" class="t">মার্কেটিং ও ডিজাইন|Marketing & Design</option><option value="5" class="t">শিক্ষকতা|Teaching</option></select><textarea id="cvs"></textarea>
+</div>
+<div class="cvg sec-4"><label class="t">শিক্ষাগত যোগ্যতা|Education</label><textarea id="cvd" style="display:none"></textarea><div class="rp" id="rp_cvd"></div>
+</div>
+<div class="cvg sec-5"><label class="t">কর্ম অভিজ্ঞতা|Work Experience</label><textarea id="cvx" style="display:none"></textarea><div class="rp" id="rp_cvx"></div>
+</div>
+<div class="cvg sec-6"><label class="t">প্রজেক্ট|Projects</label><textarea id="cvr" style="display:none"></textarea><div class="rp" id="rp_cvr"></div>
+</div>
+<div class="cvg sec-7"><label class="t">দক্ষতা (লিখুন অথবা নিচের সাজেশন থেকে নির্বাচন করুন)|Skills (type, or select from the suggestions below)</label><input id="cvsk"><div class="sgc" id="sg_cvsk"></div>
 <label class="t">ভাষাজ্ঞান|Languages</label><input id="cvg"><div class="sgc" id="sg_cvg"></div>
-<label class="t">অর্জন ও সনদ|Achievements & Certifications</label><textarea id="cvc" style="display:none"></textarea><div class="rp" id="rp_cvc"></div>
+</div>
+<div class="cvg sec-8"><label class="t">অর্জন ও সনদ|Achievements & Certifications</label><textarea id="cvc" style="display:none"></textarea><div class="rp" id="rp_cvc"></div>
 <label class="t">রেফারেন্স (ঐচ্ছিক)|References (optional)</label><textarea id="cvrf" style="min-height:56px"></textarea>
+</div>
 <button class="bt t" id="cvpr">PDF ডাউনলোড / প্রিন্ট|Download PDF / Print</button>
 <p class="hint t">প্রিন্ট ডায়ালগে "Save as PDF" নির্বাচন করুন এবং "Background graphics" চালু রাখুন।|In the print dialog, choose "Save as PDF" and keep "Background graphics" enabled.</p></div>
 <div id="cvw"><div id="cvp"></div></div></div></section>
@@ -717,6 +733,7 @@ function cvR(){
  $('#cvp').className='cv'+tp;$('#cvp').innerHTML=h;cvFit();
 }
 (()=>{const o=ld('dcuCv',{});CVF.forEach(i=>{if(o[i]!==undefined)$('#'+i).value=o[i]})})();
+(()=>{if(ld('dcuCv',null)===null){Object.keys(SMP).forEach(k=>{if($('#'+k))$('#'+k).value=SMP[k]});cvSave();cvR()}})();
 CVF.forEach(i=>$('#'+i).addEventListener('input',()=>{cvSave();cvR()}));
 $('#cvf').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const b=await createImageBitmap(f),c=document.createElement('canvas'),m=Math.min(b.width,b.height);c.width=c.height=360;c.getContext('2d').drawImage(b,(b.width-m)/2,(b.height-m)/2,m,m,0,0,360,360);PH=c.toDataURL('image/jpeg',.85);cvSave();cvR()}catch(x){}};
 $('#cvsm').onchange=e=>{if(e.target.value==='')return;$('#cvs').value=SUMS[+e.target.value][$('#cvl').value=='bn'?1:0];e.target.value='';cvSave();cvR()};
