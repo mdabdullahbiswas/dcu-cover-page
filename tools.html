@@ -724,6 +724,8 @@ if(window.ResizeObserver){var h=document.getElementById('hdr');if(h)new ResizeOb
 </script>
 <script>
 
+const $RESULT='https://resapi.eco.du.ac.bd/';
+const $COLS=[['Program','প্রোগ্রাম'],['Exam Year','পরীক্ষার বছর'],['Exam','পরীক্ষা'],['Registration Number','রেজিস্ট্রেশন নম্বর'],['Roll Number','রোল নম্বর']];
 /* ===== ৯. রেজাল্ট ===== */
 function resR(){$('#rl').href=$RESULT;$('#cols').innerHTML=$COLS.map(c=>`<li>${esc($lang()=='en'?c[0]:c[1])}</li>`).join('')}
 $('#rcp').onclick=async()=>{try{await navigator.clipboard.writeText($RESULT)}catch(e){}};
