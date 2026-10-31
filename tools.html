@@ -100,6 +100,20 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <script src="dcu-layout.js" defer></script>
 <script src="dcu-lang.js" defer></script>
 <script src="site-shared.js"></script>
+<script>
+(function(){var m=location.search.match(/[?&]embed=([a-z]+)/);if(!m)return;document.documentElement.classList.add('embed');
+document.addEventListener('DOMContentLoaded',function(){var s=document.getElementById(m[1]);if(s)s.classList.add('em-on');});})();
+</script>
+<style>
+/* embed mode: used by the homepage showcase. Shows one tool section only. */
+html.embed,html.embed body{background:transparent!important;margin:0!important;padding:0!important;overflow:hidden!important}
+html.embed body>*:not(main){display:none!important}
+html.embed main{padding:0!important;margin:0!important;max-width:none!important;width:100%!important}
+html.embed main>*:not(section){display:none!important}
+html.embed main>section:not(.em-on){display:none!important}
+html.embed main>section.em-on{display:block!important;margin:0!important;padding:14px!important;border-radius:0!important}
+html.embed a,html.embed button,html.embed input,html.embed select,html.embed textarea{pointer-events:none!important}
+</style>
 </head>
 <body data-page="tools">
 <div id="hdr"></div>
@@ -420,6 +434,7 @@ const blank=()=>[0,0,0,0,0,0].map(()=>({n:'',c:4,g:''}));
 let C=ld('dcuCg',null);if(!C||!C.s)C={sc:'ugc',rt:0,s:[blank()]};C.sc='ugc';
 const gp=g=>{const r=GS[C.sc].find(a=>a[0]==g);return r?r[1]:null};
 let SUM='';
+const $lang=()=>(document.documentElement.getAttribute('data-lang')||'bn');
 const yl=n=>{if($lang()=='en'){const v=n%100,x=(v>=11&&v<=13)?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th');return n+x+' Year'}
  const b=['','১ম','২য়','৩য়','৪র্থ','৫ম','৬ষ্ঠ','৭ম','৮ম','৯ম','১০ম'][n];return (b||String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d])+'তম')+' বর্ষ'};
 function cgR(){$('#cgs').value=C.sc;$('#cgr').checked=!!C.rt;
