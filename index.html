@@ -346,13 +346,34 @@ body.dark .sh .mn{background:transparent}
 /* lead text: soft rise after the headline */
 .hp-lead{animation:hpUp 1s var(--ease) .5s both}
 
-@media(max-width:900px){.hp-spark:nth-child(n+9){display:none}}
+
 @media(prefers-reduced-motion:reduce){.hp-spark{display:none}}
 
 /* stat labels: bilingual via CSS (works without script; follows data-lang) */
 .hp-bl .en{display:none}
 :root[data-lang="en"] .hp-bl .bn{display:none}
 :root[data-lang="en"] .hp-bl .en{display:inline}
+
+/* =========================================================
+   MOBILE / TOUCH: lighter hero so it scrolls and animates smoothly
+   (no blur filters, no endless border/halo loops, fewer sparks)
+   ========================================================= */
+@keyframes hpFadeM{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+@media (max-width:700px),(pointer:coarse){
+  .hp-panel{animation:hpFadeM .6s ease both!important;filter:none!important}
+  .hp-panel::after{animation:none!important;opacity:.35!important}
+  .hp-spot{display:none!important}
+  .hp-orb.a,.hp-orb.b{animation:none!important;filter:none!important}
+  .hp-tilt{transform:none!important;will-change:auto}
+  .hp-tilt:before{animation:none!important;filter:none!important;opacity:.45}
+  .hp-h1.t{animation:hpFadeM .7s ease .1s both!important;text-shadow:none;filter:none!important}
+  .hp-eyebrow::after,.hp-chip::after{display:none!important}
+  .hp-eyebrow,.hp-chip,.hp-stat{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .hp-ring,.hp-ring:before,.hp-mock:after{animation:none!important}
+  .hp-mock .hp-sk{animation:none!important;clip-path:none!important}
+  .hp-in{animation:hpFadeM .6s ease both}
+  .hp-stat:hover{transform:none}
+}
 </style>
 <link rel="stylesheet" href="dcu-layout.css">
 <link rel="stylesheet" href="dcu-lang.css">
@@ -741,7 +762,7 @@ body.dark .sh .mn{background:transparent}
   if (!panel || reduce) return;
 
   /* rising sparks inside the hero */
-  var n = window.innerWidth < 700 ? 8 : 16;
+  var n = window.innerWidth < 700 ? 4 : 16;
   for (var i = 0; i < n; i++) {
     var sp = document.createElement('span');
     sp.className = 'hp-spark';
