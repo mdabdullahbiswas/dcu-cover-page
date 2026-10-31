@@ -1,1 +1,28 @@
-{"name":"DCU Cover Page Generator","short_name":"DCU Cover","start_url":".","display":"standalone","background_color":"#0a2240","theme_color":"#0a2240","icons":[{"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"any"}]}
+{
+  "name": "DCU Cover Page Generator",
+  "short_name": "DCU Cover",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a2240",
+  "theme_color": "#0a2240",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
