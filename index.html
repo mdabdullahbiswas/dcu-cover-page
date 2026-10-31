@@ -390,11 +390,151 @@ body.dark .sh .mn{background:transparent}
 @media(max-width:900px){.hp-show{height:380px}}
 @media(prefers-reduced-motion:reduce){.hp-slide{transition:none}}
 
-/* real tool preview inside the showcase */
-.hp-sl-body{position:relative;z-index:1;flex:1;margin:12px 0;border-radius:14px;overflow:hidden;background:#fff;border:1px solid rgba(184,140,40,.22);display:block;padding:0}
-.hp-fr{position:absolute;inset:0;overflow:hidden;border-radius:14px}
-.hp-fr iframe{position:absolute;left:0;top:0;transform-origin:0 0;border:0;background:transparent;pointer-events:none;overflow:hidden}
-.hp-panel{overflow:hidden;overflow:clip}
+
+/* =========================================================
+   TOOL SHOWCASE v2 — dark navy glass + gold, premium visuals
+   ========================================================= */
+@property --p{syntax:'<percentage>';inherits:false;initial-value:0%}
+.hp-slide{background:linear-gradient(165deg,rgba(24,46,82,.97),rgba(7,18,38,.98));color:#F1F5F9;border:1px solid rgba(232,196,108,.22);box-shadow:0 34px 60px -22px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.08)}
+.hp-slide::before{border-color:rgba(232,196,108,.12)}
+.hp-slide::after{background:linear-gradient(105deg,transparent 40%,rgba(255,243,201,.16) 50%,transparent 60%)}
+.hp-sl-ic{background:linear-gradient(135deg,#F3D98A,#B8862B);color:#0B1F3A;box-shadow:0 6px 16px -6px rgba(232,196,108,.6)}
+.hp-sl-head .hp-bl{color:#F8E7B5}
+.hp-sl-no{color:#E8C46C}
+.hp-sl-body{background:radial-gradient(circle at 50% 0%,rgba(232,196,108,.16),transparent 62%),rgba(255,255,255,.025);border:1px solid rgba(232,196,108,.16);display:flex;align-items:center;justify-content:center;padding:0}
+.hp-sl-foot{color:#F8E7B5}
+.hp-sl-go{color:#0B1F3A}
+
+.v-stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:14px}
+.hp-slide.on .v-stage>*{animation:vUp .8s var(--ease) both}
+.hp-slide.on .v-stage>*:nth-child(2){animation-delay:.1s}
+.hp-slide.on .v-stage>*:nth-child(3){animation-delay:.2s}
+@keyframes vUp{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:none}}
+.v-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#E8C46C;box-shadow:0 0 0 0 rgba(232,196,108,.7);animation:vPing 1.8s infinite}
+@keyframes vPing{0%{box-shadow:0 0 0 0 rgba(232,196,108,.7)}70%,100%{box-shadow:0 0 0 7px rgba(232,196,108,0)}}
+.v-now{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:#F8E7B5;padding:6px 12px;border-radius:99px;background:rgba(232,196,108,.1);border:1px solid rgba(232,196,108,.25)}
+.v-live{position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:800;letter-spacing:1.5px;color:#F8E7B5}
+
+/* 1 share card */
+.v-card{width:78%;aspect-ratio:1.58;border-radius:16px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,#132E55,#0B1F3A 60%,#0E2446);border:1px solid rgba(232,196,108,.55);box-shadow:0 22px 40px -16px rgba(0,0,0,.8),0 0 40px -10px rgba(232,196,108,.25)}
+.v-card::before{content:"";position:absolute;inset:7px;border:1px solid rgba(232,196,108,.3);border-radius:10px;pointer-events:none}
+.v-card::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,243,201,.28) 50%,transparent 60%);transform:translateX(-120%)}
+.hp-slide.on .v-card::after{animation:vSweep 2.8s var(--ease) .4s infinite}
+@keyframes vSweep{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+.v-seal{width:50px;height:50px;border-radius:50%;padding:3px;background:conic-gradient(#E8C46C,#FFF3C9,#8F6A17,#D4AF37,#E8C46C);display:grid}
+.v-seal i{font-style:normal;border-radius:50%;background:radial-gradient(circle at 35% 30%,#1B3B6B,#0B1F3A);display:grid;place-items:center;font-family:Georgia,serif;font-weight:800;font-size:20px;color:#F8E7B5}
+.v-nm{font-size:12px;color:#fff}
+.v-rule{width:56px;height:1px;background:linear-gradient(90deg,transparent,#E8C46C,transparent)}
+.v-card small{font-size:7px;letter-spacing:2px;color:#E8C46C;font-weight:700}
+
+/* 2 routine */
+.v-routine{gap:10px}
+.v-days,.v-grid{width:100%;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.v-days span{font-size:9px;font-weight:700;text-align:center;color:#E8C46C;letter-spacing:.5px}
+.v-grid i{height:24px;border-radius:7px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.v-grid i.g{background:linear-gradient(135deg,#F3D98A,#B8862B);border:0}
+.v-grid i.t{background:rgba(45,212,191,.2);border-color:rgba(45,212,191,.4)}
+.v-grid i.b{background:rgba(96,165,250,.2);border-color:rgba(96,165,250,.4)}
+.v-grid i.g.live{animation:vPulse 2s ease-in-out infinite}
+.hp-slide.on .v-grid i{animation:vPop .6s var(--ease) both;animation-delay:calc(var(--d,0)*.05s + .2s)}
+@keyframes vPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes vPulse{0%,100%{box-shadow:0 0 0 0 rgba(232,196,108,.5)}50%{box-shadow:0 0 0 5px rgba(232,196,108,0)}}
+
+/* 3 CGPA */
+.v-cgpa{gap:12px}
+.v-big{text-align:center}
+.v-num{display:block;font-size:50px;font-weight:800;line-height:1;background:linear-gradient(180deg,#FFF3C9,#E8C46C 55%,#B8862B);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.v-big small{display:block;margin-top:6px;font-size:10px;letter-spacing:4px;color:#94A3B8;font-weight:700}
+.v-rows{width:82%}
+.v-rows div{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:7px 2px;border-bottom:1px solid rgba(255,255,255,.08)}
+.v-rows span{color:#CBD5E1}
+.v-rows em{font-style:normal;font-weight:800;font-size:11px;padding:3px 10px;border-radius:99px;background:linear-gradient(135deg,#F3D98A,#B8862B);color:#0B1F3A}
+.v-rows em.b{background:rgba(96,165,250,.2);color:#BFDBFE}
+
+/* 4 exam */
+.v-exam{gap:16px}
+.v-ring{width:124px;height:124px;border-radius:50%;padding:9px;background:conic-gradient(#E8C46C var(--p),rgba(255,255,255,.08) 0);box-shadow:0 0 30px -8px rgba(232,196,108,.4)}
+.hp-slide.on .v-ring{animation:vRing 1.6s var(--ease) .3s both}
+@keyframes vRing{from{--p:0%}to{--p:72%}}
+.v-ring>div{width:100%;height:100%;border-radius:50%;background:#0B1F3A;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.v-ring b{font-size:34px;font-weight:800;color:#F8E7B5;line-height:1}
+.v-ring small{font-size:9px;color:#94A3B8;margin-top:3px}
+.v-bars{width:84%;display:flex;flex-direction:column;gap:9px}
+.v-bars div{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center;font-size:11px;color:#CBD5E1}
+.v-bars i{height:6px;border-radius:6px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
+.v-bars i::after{content:"";position:absolute;inset:0;width:var(--w);border-radius:6px;background:linear-gradient(90deg,#B8862B,#F3D98A);transform-origin:left}
+.hp-slide.on .v-bars i::after{animation:vGrow 1.2s var(--ease) .4s both}
+@keyframes vGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* 5 CV */
+.v-doc{width:86%;height:76%;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(232,196,108,.2);position:relative}
+.v-head{display:flex;gap:10px;align-items:center;padding-bottom:10px;border-bottom:1px solid rgba(232,196,108,.18)}
+.v-head>i{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#F3D98A,#B8862B);flex:0 0 30px}
+.v-head b{display:block;width:70px;height:9px;border-radius:5px;background:#F8E7B5}
+.v-head s{display:block;width:46px;height:5px;border-radius:4px;background:rgba(232,196,108,.6);margin-top:6px;text-decoration:none}
+.v-cols{display:grid;grid-template-columns:34% 1fr;gap:12px}
+.v-cols u{display:block;height:5px;border-radius:4px;background:rgba(255,255,255,.14);margin-bottom:9px}
+.v-side u:first-child{background:rgba(232,196,108,.7)}
+.v-main u:nth-child(odd){width:88%}
+.hp-slide.on .v-cols u{animation:vGrowX .9s var(--ease) both}
+.hp-slide.on .v-cols u:nth-child(2){animation-delay:.1s}
+.hp-slide.on .v-cols u:nth-child(3){animation-delay:.2s}
+.hp-slide.on .v-cols u:nth-child(4){animation-delay:.3s}
+@keyframes vGrowX{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
+
+/* 6 frame */
+.v-frame{gap:18px}
+.v-avatar{width:124px;height:124px;border-radius:50%;position:relative;display:grid;place-items:center}
+.v-avatar::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(#E8C46C,#FFF3C9,#8F6A17,#D4AF37,#E8C46C);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));animation:vSpin 7s linear infinite}
+.v-avatar i{font-style:normal;width:100%;height:100%;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#1B3B6B,#0B1F3A);color:#F8E7B5;font-size:38px;font-weight:800;font-family:Georgia,serif}
+.v-orb{position:absolute;inset:-6px;border-radius:50%;animation:vSpin 4s linear infinite;pointer-events:none}
+.v-orb::after{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#FFF3C9;box-shadow:0 0 12px 3px rgba(232,196,108,.8)}
+@keyframes vSpin{to{transform:rotate(360deg)}}
+.v-sw{display:flex;gap:10px}
+.v-sw b{width:16px;height:16px;border-radius:50%;background:#B8862B;border:2px solid transparent}
+.v-sw b:nth-child(2){background:#1B3B6B}
+.v-sw b:nth-child(3){background:#D9A5A5}
+.v-sw b.on{border-color:#F8E7B5;box-shadow:0 0 0 3px rgba(232,196,108,.25)}
+
+/* 7 PDF */
+.v-pdf{gap:14px}
+.v-pages{position:relative;width:100%;height:112px}
+.v-pages span{position:absolute;top:14px;width:64px;height:82px;border-radius:9px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:10px;font-weight:800;color:#0B1F3A;background:linear-gradient(160deg,#FFFFFF,#E9DDBE);box-shadow:0 14px 26px -10px rgba(0,0,0,.7);transition:transform 1s var(--ease)}
+.v-pages .p1{left:calc(50% - 92px);transform:rotate(-9deg)}
+.v-pages .p2{left:calc(50% - 32px);transform:none;background:linear-gradient(160deg,#F3D98A,#B8862B);color:#0B1F3A}
+.v-pages .p3{left:calc(50% + 28px);transform:rotate(9deg)}
+.hp-slide.on .v-pages .p1{animation:vMergeL 2.2s var(--ease) .6s both}
+.hp-slide.on .v-pages .p3{animation:vMergeR 2.2s var(--ease) .6s both}
+.hp-slide.on .v-pages .p2{animation:vMergeM 2.2s var(--ease) .6s both}
+@keyframes vMergeL{0%{transform:rotate(-9deg)}60%,100%{transform:translateX(92px) rotate(0)}}
+@keyframes vMergeR{0%{transform:rotate(9deg)}60%,100%{transform:translateX(-28px) rotate(0)}}
+@keyframes vMergeM{0%{transform:none}60%,100%{transform:translateY(-10px) scale(1.04)}}
+.v-out{font-size:12px;font-weight:800;color:#0B1F3A;padding:7px 16px;border-radius:99px;background:linear-gradient(135deg,#F3D98A,#B8862B);box-shadow:0 10px 24px -10px rgba(232,196,108,.7)}
+.hp-slide.on .v-out{animation:vFadeIn .6s ease 2.4s both}
+@keyframes vFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* 8 calculator */
+.v-calc{gap:12px}
+.v-disp{width:92%;padding:12px 14px;border-radius:12px;text-align:right;background:rgba(0,0,0,.4);border:1px solid rgba(232,196,108,.25);box-shadow:inset 0 0 20px rgba(0,0,0,.5)}
+.v-disp small{display:block;font-size:11px;color:#94A3B8}
+.v-disp b{display:block;font-size:30px;font-weight:800;color:#F8E7B5;line-height:1.1;font-variant-numeric:tabular-nums}
+.hp-slide.on .v-disp b{animation:vFadeIn .6s ease .9s both}
+.v-keys{width:92%;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.v-keys i{font-style:normal;text-align:center;font-size:12px;font-weight:700;padding:7px 0;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);color:#E2E8F0}
+.v-keys i.hot{background:linear-gradient(135deg,#F3D98A,#B8862B);color:#0B1F3A;border:0;animation:vKey 2s ease-in-out infinite}
+@keyframes vKey{0%,100%{box-shadow:0 0 0 0 rgba(232,196,108,.6)}50%{box-shadow:0 0 0 6px rgba(232,196,108,0)}}
+
+/* 9 results */
+.v-res{gap:14px}
+.v-score{text-align:center}
+.v-score b{display:block;font-size:44px;font-weight:800;line-height:1;background:linear-gradient(180deg,#FFF3C9,#E8C46C 55%,#B8862B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.v-score small{font-size:10px;letter-spacing:4px;color:#94A3B8;font-weight:700}
+.v-sb{width:88%;display:flex;flex-direction:column;gap:9px}
+.v-sb div{display:grid;grid-template-columns:56px 1fr 26px;gap:10px;align-items:center;font-size:11px;color:#CBD5E1}
+.v-sb i{height:6px;border-radius:6px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
+.v-sb i::after{content:"";position:absolute;inset:0;width:var(--w);border-radius:6px;background:linear-gradient(90deg,#B8862B,#F3D98A);transform-origin:left}
+.hp-slide.on .v-sb i::after{animation:vGrow 1.2s var(--ease) .4s both}
+.v-sb em{font-style:normal;font-weight:800;color:#F8E7B5;text-align:right}
 </style>
 <link rel="stylesheet" href="dcu-layout.css">
 <link rel="stylesheet" href="dcu-lang.css">
@@ -436,47 +576,47 @@ body.dark .sh .mn{background:transparent}
       <div class="hp-show" id="hpShow">
         <a class="hp-slide" data-id="card" href="tools.html#card" data-i="0" aria-label="Share Card">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/></svg></span><span class="hp-bl"><span class="bn">শেয়ার কার্ড</span><span class="en">Share Card</span></span><em class="hp-sl-no">01</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="card" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage"><div class="v-card"><span class="v-seal"><i>D</i></span><b class="v-nm">আপনার নাম</b><span class="v-rule"></span><small>DHAKA CENTRAL UNIVERSITY</small></div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="routine" href="tools.html#routine" data-i="1" aria-label="Class Routine">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span class="hp-bl"><span class="bn">ক্লাস রুটিন</span><span class="en">Class Routine</span></span><em class="hp-sl-no">02</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="routine" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage v-routine"><div class="v-days"><span>শনি</span><span>রবি</span><span>সোম</span><span>মঙ্গল</span><span>বুধ</span></div><div class="v-grid"><i class="g" style="--d:0"></i><i class="" style="--d:1"></i><i class="t" style="--d:2"></i><i class="" style="--d:3"></i><i class="" style="--d:4"></i><i class="b" style="--d:5"></i><i class="" style="--d:6"></i><i class="g" style="--d:7"></i><i class="" style="--d:8"></i><i class="t" style="--d:9"></i><i class="" style="--d:10"></i><i class="" style="--d:11"></i><i class="" style="--d:12"></i><i class="b" style="--d:13"></i><i class="g" style="--d:14"></i><i class="" style="--d:15"></i><i class="t" style="--d:16"></i><i class="" style="--d:17"></i><i class="" style="--d:18"></i><i class="" style="--d:19"></i></div><div class="v-now"><span class="v-dot"></span><span class="hp-bl"><span class="bn">এখন: CSE 301 · ১০:৩০</span><span class="en">Now: CSE 301 · 10:30</span></span></div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="cgpa" href="tools.html#cgpa" data-i="2" aria-label="CGPA Calculator">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h6v6"/></svg></span><span class="hp-bl"><span class="bn">CGPA ক্যালকুলেটর</span><span class="en">CGPA Calculator</span></span><em class="hp-sl-no">03</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="cgpa" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage v-cgpa"><div class="v-big"><b class="v-num" data-to="3.75">0.00</b><small>CGPA</small></div><div class="v-rows"><div><span>CSE 101</span><em>A</em></div><div><span>MAT 201</span><em>A-</em></div><div><span>PHY 110</span><em class="b">B+</em></div></div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="exam" href="tools.html#exam" data-i="3" aria-label="Exam Planner">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span><span class="hp-bl"><span class="bn">পরীক্ষা প্ল্যানার</span><span class="en">Exam Planner</span></span><em class="hp-sl-no">04</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="exam" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage v-exam"><div class="v-ring"><div><b>12</b><small class="hp-bl"><span class="bn">দিন বাকি</span><span class="en">days left</span></small></div></div><div class="v-bars"><div><span>গণিত</span><i style="--w:82%"></i></div><div><span>পদার্থ</span><i style="--w:58%"></i></div><div><span>ইংরেজি</span><i style="--w:34%"></i></div></div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="cv" href="tools.html#cv" data-i="4" aria-label="CV Builder">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span class="hp-bl"><span class="bn">সিভি বিল্ডার</span><span class="en">CV Builder</span></span><em class="hp-sl-no">05</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="cv" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage v-cv"><div class="v-doc"><div class="v-head"><i></i><div><b></b><s></s></div></div><div class="v-cols"><div class="v-side"><u></u><u></u><u></u></div><div class="v-main"><u></u><u></u><u></u><u></u></div></div></div><span class="v-live"><span class="v-dot"></span>LIVE</span></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="frame" href="tools.html#frame" data-i="5" aria-label="Profile Frame">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg></span><span class="hp-bl"><span class="bn">প্রোফাইল ফ্রেম</span><span class="en">Profile Frame</span></span><em class="hp-sl-no">06</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="frame" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage v-frame"><div class="v-avatar"><span class="v-orb"></span><i>আ</i></div><div class="v-sw"><b class="on"></b><b></b><b></b></div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="pdf" href="tools.html#pdf" data-i="6" aria-label="PDF Toolkit">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/></svg></span><span class="hp-bl"><span class="bn">PDF টুলকিট</span><span class="en">PDF Toolkit</span></span><em class="hp-sl-no">07</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="pdf" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage v-pdf"><div class="v-pages"><span class="p1">PDF</span><span class="p2">PDF</span><span class="p3">PDF</span></div><div class="v-out">3 → 1 PDF</div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="calc" href="tools.html#calc" data-i="7" aria-label="Scientific Calculator">
-          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 13h2M13 13h2M9 17h2M13 17h2"/></svg></span><span class="hp-bl"><span class="bn">সায়েন্টিফিক ক্যালকুলেটর</span><span class="en">Scientific Calculator</span></span><em class="hp-sl-no">08</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="calc" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 13h2M13 13h2M9 17h2M13 13h2"/></svg></span><span class="hp-bl"><span class="bn">সায়েন্টিফিক ক্যালকুলেটর</span><span class="en">Scientific Calculator</span></span><em class="hp-sl-no">08</em></span>
+          <span class="hp-sl-body"><div class="v-stage v-calc"><div class="v-disp"><small>2 + 3 × 4</small><b>14</b></div><div class="v-keys"><i>7</i><i>8</i><i>9</i><i>÷</i><i>4</i><i>5</i><i>6</i><i>×</i><i>1</i><i>2</i><i>3</i><i>−</i><i>0</i><i>.</i><i class="hot">=</i><i>+</i></div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <a class="hp-slide" data-id="result" href="tools.html#result" data-i="8" aria-label="Results Portal">
           <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="hp-bl"><span class="bn">রেজাল্ট</span><span class="en">Results Portal</span></span><em class="hp-sl-no">09</em></span>
-          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="result" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-body"><div class="v-stage v-res"><div class="v-score"><b>3.80</b><small>GPA</small></div><div class="v-sb"><div><span>গণিত</span><i style="--w:86%"></i><em>86</em></div><div><span>পদার্থ</span><i style="--w:72%"></i><em>72</em></div><div><span>রসায়ন</span><i style="--w:64%"></i><em>64</em></div></div></div></span>
           <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
         </a>
         <span class="hp-prog" aria-hidden="true"></span>
@@ -856,76 +996,60 @@ body.dark .sh .mn{background:transparent}
 </script>
 
 <script>
-/* Tool showcase: auto-rotate, pause on hover, dots/arrows, keyboard-friendly. */
+/* Tool showcase: auto-rotate, pause on hover, arrows/dots, count-up numbers. */
 (function () {
   var show = document.getElementById('hpShow');
   var panel = document.querySelector('.hp-panel');
   if (!show) return;
   var slides = [].slice.call(show.querySelectorAll('.hp-slide'));
-  var dots = [].slice.call(document.querySelectorAll('.hp-pg'));
+  var dots = [].slice.call(show.parentNode.querySelectorAll('.hp-pg'));
   var prog = show.querySelector('.hp-prog');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var DUR = 4600, i = 0, timer = 0, hovering = false;
 
-
+  function countTo(el) {
+    var to = parseFloat(el.getAttribute('data-to')) || 0, dec = (String(to).split('.')[1] || '').length, t0 = null, dur = 1300;
+    if (reduce) { el.textContent = to.toFixed(dec); return; }
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = (to * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
   function restartProgress() {
     if (!prog) return;
-    prog.style.animation = 'none';
-    void prog.offsetWidth;
-    prog.style.animation = '';
+    prog.style.animation = 'none'; void prog.offsetWidth; prog.style.animation = '';
   }
-
-  var W = 900; /* CSS width the real tool page is laid out at */
-  function load(k) {
-    var f = slides[k] && slides[k].querySelector('iframe');
-    if (f && !f.getAttribute('src')) f.setAttribute('src', 'tools.html?embed=' + slides[k].getAttribute('data-id'));
-  }
-  function fit() {
-    slides.forEach(function (sl) {
-      var body = sl.querySelector('.hp-sl-body'), f = sl.querySelector('iframe');
-      if (!body || !f) return;
-      var bw = body.clientWidth, bh = body.clientHeight;
-      var sc = bw / W;
-      f.style.width = W + 'px';
-      f.style.height = (bh / sc) + 'px';
-      f.style.transform = 'scale(' + sc + ')';
-    });
-  }
-  window.addEventListener('resize', fit);
-
   function go(n) {
     n = (n + slides.length) % slides.length;
-    [n - 1, n, n + 1].forEach(function (k) { load((k + slides.length) % slides.length); });
-    slides.forEach(function (s, k) {
-      s.classList.toggle('on', k === n);
-      s.classList.toggle('prev', k < n);
-      s.setAttribute('aria-hidden', k === n ? 'false' : 'true');
-      s.tabIndex = k === n ? 0 : -1;
+    slides.forEach(function (sl, k) {
+      sl.classList.toggle('on', k === n);
+      sl.classList.toggle('prev', k < n);
+      sl.setAttribute('aria-hidden', k === n ? 'false' : 'true');
+      sl.tabIndex = k === n ? 0 : -1;
     });
     dots.forEach(function (d, k) { d.classList.toggle('on', k === n); });
+    var nums = slides[n].querySelectorAll('.v-num[data-to]');
+    [].forEach.call(nums, countTo);
     i = n;
     restartProgress();
   }
-
   function schedule() {
     clearTimeout(timer);
     if (reduce || hovering) return;
     timer = setTimeout(function () { go(i + 1); schedule(); }, DUR);
   }
-
   dots.forEach(function (d) {
     d.addEventListener('click', function () { go(+d.getAttribute('data-go')); schedule(); });
   });
   document.querySelectorAll('.hp-ctrl .hp-arrow').forEach(function (a) {
     a.addEventListener('click', function () { go(i + (+a.getAttribute('data-dir'))); schedule(); });
   });
-
   show.addEventListener('pointerenter', function () { hovering = true; clearTimeout(timer); });
   show.addEventListener('pointerleave', function () { hovering = false; go(i); schedule(); });
-
-  /* iframes can scroll the clipped hero container; keep it pinned */
-  panel.addEventListener('scroll', function () { panel.scrollTop = 0; panel.scrollLeft = 0; });
-  fit();
+  if (panel) panel.addEventListener('scroll', function () { panel.scrollTop = 0; panel.scrollLeft = 0; });
   go(0);
   schedule();
 })();
