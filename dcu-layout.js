@@ -148,7 +148,7 @@ var COVER_TYPES = [{"v": "assignment", "en": "Assignment", "bn": "অ্যা�
       col("টুলস", toolLinks) +
       col("সাইট", siteLinks) +
       "</div>" +
-      '<div class="dl-foot-bar"><span>© <span data-dl-year></span> DCU Unofficial</span>' +
+      '<div class="dl-foot-bar"><span>© <span data-dl-year></span> DCU Core</span>' +
       "<span>এটি একটি শিক্ষার্থী-উদ্যোগ, কোনো সরকারি বা প্রাতিষ্ঠানিক ওয়েবসাইট নয়।</span></div>" +
       "</footer>"
     );
