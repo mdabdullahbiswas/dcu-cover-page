@@ -631,3 +631,7 @@ body #ftr {
     transition: none !important;
   }
 }
+
+
+/* menu item chosen: close the dropdown even while the pointer or focus is still on it */
+.dl-dd.dl-closed .dl-menu { opacity: 0 !important; visibility: hidden !important; }
