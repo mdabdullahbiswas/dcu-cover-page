@@ -140,7 +140,7 @@ body.dark .sh .mn{background:transparent}
 .hp-stat b{display:block;font-size:clamp(22px,3vw,28px);color:var(--gold-light);font-weight:800;line-height:1.1}
 .hp-stat span{font-size:12.5px;color:#CBD5E1}
 
-.hp-mockwrap{justify-self:center;width:min(100%,330px)}
+.hp-mockwrap{justify-self:center;width:min(100%,400px)}
 .hp-mock{position:relative;overflow:hidden;aspect-ratio:3/4;border-radius:22px;background:linear-gradient(160deg,#FFFFFF,#FBF3DC);color:var(--navy);padding:22px;box-shadow:0 30px 60px -18px rgba(0,0,0,.6);animation:hpFloat 7s ease-in-out infinite;transform:rotate(-3deg)}
 .hp-mock:after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.7) 50%,transparent 60%);transform:translateX(-100%);animation:hpSweep 5.5s ease-in-out infinite;pointer-events:none}
 @keyframes hpFloat{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-10px)}}
@@ -231,7 +231,7 @@ body.dark .sh .mn{background:transparent}
 /* ---------- responsive (no sideways scroll, 44px targets) ---------- */
 @media(max-width:900px){
   .hp-panel{grid-template-columns:1fr;gap:28px}
-  .hp-mockwrap{order:-1;width:min(100%,220px);margin:0}
+  .hp-mockwrap{order:-1;width:min(100%,300px);margin:0}
   .hp-split{grid-template-columns:1fr}
 }
 @media(max-width:700px){
@@ -295,7 +295,7 @@ body.dark .sh .mn{background:transparent}
 
 /* magnetic primary/secondary buttons (translate property, so hover transform still works) */
 .hp-panel .hp-btn{transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s,border-color .3s,translate .45s var(--ease)}
-.hp-panel .hp-btn.p{animation:hpCta 3.2s ease-in-out 1.4s infinite}
+
 @keyframes hpCta{0%,100%{box-shadow:0 14px 28px -12px rgba(212,175,55,.8)}50%{box-shadow:0 16px 42px -8px rgba(232,196,108,.95),0 0 0 6px rgba(232,196,108,.12)}}
 
 /* stat cards: lift + gold edge on hover */
@@ -309,13 +309,7 @@ body.dark .sh .mn{background:transparent}
 .hp-tilt .hp-mock{transform-style:preserve-3d}
 
 /* floating glass badges around the cover */
-.hp-float{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:14px;background:rgba(11,31,58,.78);border:1px solid rgba(232,196,108,.42);color:#F8E7B5;font-size:12.5px;font-weight:700;white-space:nowrap;box-shadow:0 18px 36px -16px rgba(0,0,0,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:hpBob 5.5s ease-in-out infinite}
-.hp-float b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--brand-grad);color:var(--navy);font-size:11px;line-height:1}
-.hp-float.f1{left:-34px;top:16%}
-.hp-float.f2{right:-22px;bottom:14%;animation-delay:-2.6s}
-@keyframes hpBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 
-@media(max-width:900px){.hp-float{display:none}.hp-tilt:before{inset:-6%}}
 @media(hover:none){.hp-panel.is-hover .hp-spot{display:none}}
 
 /* =========================================================
@@ -346,8 +340,6 @@ body.dark .sh .mn{background:transparent}
 @keyframes hpChipSweep{0%{transform:translateX(-120%)}40%,100%{transform:translateX(120%)}}
 
 /* glass badges: soft shine on the edge */
-.hp-float{overflow:hidden}
-.hp-float::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.22) 50%,transparent 60%);transform:translateX(-120%);animation:hpChipSweep 4.6s var(--ease) infinite;pointer-events:none}
 
 /* headline: letters "breathe" glow on the gold part */
 .hp-h1.t{text-shadow:0 0 28px rgba(232,196,108,.18)}
@@ -357,6 +349,52 @@ body.dark .sh .mn{background:transparent}
 
 @media(max-width:900px){.hp-spark:nth-child(n+9){display:none}}
 @media(prefers-reduced-motion:reduce){.hp-spark{display:none}}
+
+/* stat labels: bilingual via CSS (works without script; follows data-lang) */
+.hp-bl .en{display:none}
+:root[data-lang="en"] .hp-bl .bn{display:none}
+:root[data-lang="en"] .hp-bl .en{display:inline}
+
+/* =========================================================
+   TOOL SHOWCASE (replaces the cover mock beside the hero)
+   ========================================================= */
+.hp-show{position:relative;height:430px;perspective:1200px}
+.hp-slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px;border-radius:22px;overflow:hidden;text-decoration:none;color:var(--navy);background:linear-gradient(160deg,#FFFFFF,#FBF3DC);box-shadow:0 30px 60px -18px rgba(0,0,0,.6);opacity:0;pointer-events:none;transform:translate3d(70px,0,0) rotateY(-18deg) scale(.9);transform-origin:center;transition:opacity .7s var(--ease),transform .9s var(--ease),filter .7s;filter:blur(3px);cursor:pointer}
+.hp-slide.prev{transform:translate3d(-70px,0,0) rotateY(18deg) scale(.9)}
+.hp-slide.on{opacity:1;transform:none;pointer-events:auto;filter:none}
+.hp-slide::before{content:"";position:absolute;inset:7px;border-radius:16px;border:1px solid rgba(184,140,40,.4);pointer-events:none}
+.hp-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.75) 50%,transparent 60%);transform:translateX(-120%);pointer-events:none}
+.hp-slide.on::after{animation:hpSweepOnce 1.6s var(--ease) .3s 1 both}
+@keyframes hpSweepOnce{to{transform:translateX(120%)}}
+.hp-slide:hover .hp-sl-go{transform:translateX(4px)}
+
+.hp-sl-head{position:relative;display:flex;align-items:center;gap:10px;z-index:1}
+.hp-sl-ic{width:34px;height:34px;border-radius:10px;background:var(--navy);color:var(--gold-light);display:grid;place-items:center;flex:0 0 34px}
+.hp-sl-ic svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hp-sl-head .hp-bl{font-weight:800;font-size:14px;line-height:1.2}
+.hp-sl-no{margin-left:auto;font-style:normal;font-size:11px;font-weight:800;color:#8F6A17;letter-spacing:1px}
+.hp-sl-body{position:relative;z-index:1;flex:1;margin:12px 0;border-radius:14px;background:#fff;border:1px solid rgba(184,140,40,.22);padding:12px;display:flex;flex-direction:column;justify-content:center;gap:8px;overflow:hidden}
+.hp-sl-foot{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:800}
+.hp-sl-go{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#E8C46C,#B8862B);color:var(--navy);transition:transform .4s var(--ease)}
+
+/* controls */
+.hp-prog{position:absolute;left:0;bottom:0;height:0;width:100%}
+.hp-ctrl{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px}
+.hp-dots{display:flex;gap:6px;align-items:center}
+.hp-dots button.hp-pg{box-sizing:content-box;width:8px;height:8px;min-width:8px;min-height:8px;max-width:none;margin:0;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.3);box-shadow:none;cursor:pointer;transition:width .5s var(--ease),background .4s}
+.hp-dots button.hp-pg.on{width:26px;min-width:26px;background:linear-gradient(90deg,#E8C46C,#B8862B)}
+.hp-ctrl button.hp-arrow{box-sizing:border-box;width:34px;height:34px;min-width:34px;padding:0;margin:0;border-radius:50%;border:1px solid rgba(232,196,108,.4);background:rgba(255,255,255,.06);color:var(--gold-light);font-size:20px;line-height:1;cursor:pointer;transition:background .3s,border-color .3s}
+.hp-arrow:hover{background:rgba(232,196,108,.18);border-color:#E8C46C}
+.hp-dot:focus-visible,.hp-arrow:focus-visible,.hp-slide:focus-visible{outline:2px solid #E8C46C;outline-offset:3px}
+
+@media(max-width:900px){.hp-show{height:380px}}
+@media(prefers-reduced-motion:reduce){.hp-slide{transition:none}}
+
+/* real tool preview inside the showcase */
+.hp-sl-body{position:relative;z-index:1;flex:1;margin:12px 0;border-radius:14px;overflow:hidden;background:#fff;border:1px solid rgba(184,140,40,.22);display:block;padding:0}
+.hp-fr{position:absolute;inset:0;overflow:hidden;border-radius:14px}
+.hp-fr iframe{position:absolute;left:0;top:0;transform-origin:0 0;border:0;background:transparent;pointer-events:none;overflow:hidden}
+.hp-panel{overflow:hidden;overflow:clip}
 </style>
 <link rel="stylesheet" href="dcu-layout.css">
 <link rel="stylesheet" href="dcu-lang.css">
@@ -387,27 +425,67 @@ body.dark .sh .mn{background:transparent}
       </div>
 
       <div class="hp-stats hp-in" style="--d:400ms">
-        <div class="hp-stat"><b class="cnt" data-count data-to="9">0</b><span class="t">টুল|Tools</span></div>
-        <div class="hp-stat"><b class="cnt" data-count data-to="100">0</b><span class="t">% ব্রাউজারে|% in-browser</span></div>
-        <div class="hp-stat"><b class="cnt" data-count data-to="0">0</b><span class="t">সার্ভারে আপলোড|Server uploads</span></div>
+        <div class="hp-stat"><b class="cnt" data-count data-to="20" data-suffix="+">0</b><span class="hp-bl"><span class="bn">টুল ও টেমপ্লেট</span><span class="en">Tools &amp; templates</span></span></div>
+        <div class="hp-stat"><b class="cnt" data-count data-to="100" data-suffix="%">0</b><span class="hp-bl"><span class="bn">ব্রাউজারে চলে</span><span class="en">Runs in your browser</span></span></div>
+        <div class="hp-stat"><b class="cnt" data-count data-to="0" data-prefix="৳">0</b><span class="hp-bl"><span class="bn">সব টুল বিনামূল্যে</span><span class="en">All tools free</span></span></div>
       </div>
     </div>
 
-    <div class="hp-mockwrap hp-in" style="--d:280ms" aria-hidden="true">
+    <div class="hp-mockwrap hp-in" style="--d:280ms">
     <div class="hp-tilt">
-      <div class="hp-mock">
-        <span class="hp-frame"></span>
-        <div class="hp-m-top">DHAKA CENTRAL UNIVERSITY</div>
-        <div class="hp-m-title">ASSIGNMENT</div>
-        <div class="hp-m-rule"></div>
-        <div class="hp-ring"><i>DCU</i></div>
-        <div class="hp-sk" style="width:80%"></div>
-        <div class="hp-sk" style="width:62%"></div>
-        <div class="hp-sk" style="width:72%"></div>
-        <span class="hp-chip">PREMIUM COVER</span>
+      <div class="hp-show" id="hpShow">
+        <a class="hp-slide" data-id="card" href="tools.html#card" data-i="0" aria-label="Share Card">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/></svg></span><span class="hp-bl"><span class="bn">শেয়ার কার্ড</span><span class="en">Share Card</span></span><em class="hp-sl-no">01</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="card" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="routine" href="tools.html#routine" data-i="1" aria-label="Class Routine">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><span class="hp-bl"><span class="bn">ক্লাস রুটিন</span><span class="en">Class Routine</span></span><em class="hp-sl-no">02</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="routine" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="cgpa" href="tools.html#cgpa" data-i="2" aria-label="CGPA Calculator">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h6v6"/></svg></span><span class="hp-bl"><span class="bn">CGPA ক্যালকুলেটর</span><span class="en">CGPA Calculator</span></span><em class="hp-sl-no">03</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="cgpa" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="exam" href="tools.html#exam" data-i="3" aria-label="Exam Planner">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span><span class="hp-bl"><span class="bn">পরীক্ষা প্ল্যানার</span><span class="en">Exam Planner</span></span><em class="hp-sl-no">04</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="exam" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="cv" href="tools.html#cv" data-i="4" aria-label="CV Builder">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><span class="hp-bl"><span class="bn">সিভি বিল্ডার</span><span class="en">CV Builder</span></span><em class="hp-sl-no">05</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="cv" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="frame" href="tools.html#frame" data-i="5" aria-label="Profile Frame">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg></span><span class="hp-bl"><span class="bn">প্রোফাইল ফ্রেম</span><span class="en">Profile Frame</span></span><em class="hp-sl-no">06</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="frame" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="pdf" href="tools.html#pdf" data-i="6" aria-label="PDF Toolkit">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/></svg></span><span class="hp-bl"><span class="bn">PDF টুলকিট</span><span class="en">PDF Toolkit</span></span><em class="hp-sl-no">07</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="pdf" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="calc" href="tools.html#calc" data-i="7" aria-label="Scientific Calculator">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 13h2M13 13h2M9 17h2M13 17h2"/></svg></span><span class="hp-bl"><span class="bn">সায়েন্টিফিক ক্যালকুলেটর</span><span class="en">Scientific Calculator</span></span><em class="hp-sl-no">08</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="calc" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <a class="hp-slide" data-id="result" href="tools.html#result" data-i="8" aria-label="Results Portal">
+          <span class="hp-sl-head"><span class="hp-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="hp-bl"><span class="bn">রেজাল্ট</span><span class="en">Results Portal</span></span><em class="hp-sl-no">09</em></span>
+          <span class="hp-sl-body"><span class="hp-fr"><iframe data-id="result" tabindex="-1" aria-hidden="true" title="preview"></iframe></span></span>
+          <span class="hp-sl-foot"><span class="hp-bl"><span class="bn">টুলটি খুলুন</span><span class="en">Open tool</span></span><span class="hp-sl-go">→</span></span>
+        </a>
+        <span class="hp-prog" aria-hidden="true"></span>
       </div>
-      <span class="hp-float f1"><b aria-hidden="true">✓</b><span class="t">পিডিএফ প্রস্তুত|PDF ready</span></span>
-      <span class="hp-float f2"><span class="t">A4 · প্রিমিয়াম|A4 · Premium</span></span>
+      <div class="hp-ctrl">
+        <button type="button" class="hp-arrow" data-dir="-1" aria-label="Previous">‹</button>
+        <div class="hp-dots"><button type="button" class="hp-pg" data-go="0" aria-label="Share Card"></button><button type="button" class="hp-pg" data-go="1" aria-label="Class Routine"></button><button type="button" class="hp-pg" data-go="2" aria-label="CGPA Calculator"></button><button type="button" class="hp-pg" data-go="3" aria-label="Exam Planner"></button><button type="button" class="hp-pg" data-go="4" aria-label="CV Builder"></button><button type="button" class="hp-pg" data-go="5" aria-label="Profile Frame"></button><button type="button" class="hp-pg" data-go="6" aria-label="PDF Toolkit"></button><button type="button" class="hp-pg" data-go="7" aria-label="Scientific Calculator"></button><button type="button" class="hp-pg" data-go="8" aria-label="Results Portal"></button></div>
+        <button type="button" class="hp-arrow" data-dir="1" aria-label="Next">›</button>
+      </div>
     </div>
     </div>
   </div>
@@ -521,12 +599,13 @@ body.dark .sh .mn{background:transparent}
   var els = document.querySelectorAll('.rv');
   function countUp(el) {
     var to = +el.getAttribute('data-to') || 0;
-    if (reduce) { el.textContent = to; return; }
+    var pre = el.getAttribute('data-prefix') || '', suf = el.getAttribute('data-suffix') || '';
+    if (reduce) { el.textContent = pre + to + suf; return; }
     var t0 = null, dur = 1400;
     function step(ts) {
       if (t0 === null) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
-      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      el.textContent = pre + Math.round(to * (1 - Math.pow(1 - p, 3))) + suf;
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -731,15 +810,6 @@ body.dark .sh .mn{background:transparent}
     tgx = 0; tgy = 0; tsx = 50; tsy = 40; kick();
   });
 
-  panel.querySelectorAll('.hp-btn').forEach(function (b) {
-    b.addEventListener('pointermove', function (e) {
-      var r = b.getBoundingClientRect();
-      var dx = (e.clientX - (r.left + r.width / 2)) * 0.22;
-      var dy = (e.clientY - (r.top + r.height / 2)) * 0.3;
-      b.style.translate = dx.toFixed(1) + 'px ' + dy.toFixed(1) + 'px';
-    });
-    b.addEventListener('pointerleave', function () { b.style.translate = ''; });
-  });
 })();
 </script>
 
@@ -782,17 +852,82 @@ body.dark .sh .mn{background:transparent}
     par();
   }
 
-  /* headline depth: text shifts a few px with the cursor */
-  var h1 = panel.querySelector('.hp-h1');
-  if (h1 && fine) {
-    panel.addEventListener('pointermove', function (e) {
-      var r = panel.getBoundingClientRect();
-      var x = (e.clientX - r.left) / r.width - 0.5;
-      var y = (e.clientY - r.top) / r.height - 0.5;
-      h1.style.translate = (x * -10).toFixed(1) + 'px ' + (y * -6).toFixed(1) + 'px';
-    });
-    panel.addEventListener('pointerleave', function () { h1.style.translate = ''; });
+})();
+</script>
+
+<script>
+/* Tool showcase: auto-rotate, pause on hover, dots/arrows, keyboard-friendly. */
+(function () {
+  var show = document.getElementById('hpShow');
+  var panel = document.querySelector('.hp-panel');
+  if (!show) return;
+  var slides = [].slice.call(show.querySelectorAll('.hp-slide'));
+  var dots = [].slice.call(document.querySelectorAll('.hp-pg'));
+  var prog = show.querySelector('.hp-prog');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DUR = 4600, i = 0, timer = 0, hovering = false;
+
+
+  function restartProgress() {
+    if (!prog) return;
+    prog.style.animation = 'none';
+    void prog.offsetWidth;
+    prog.style.animation = '';
   }
+
+  var W = 900; /* CSS width the real tool page is laid out at */
+  function load(k) {
+    var f = slides[k] && slides[k].querySelector('iframe');
+    if (f && !f.getAttribute('src')) f.setAttribute('src', 'tools.html?embed=' + slides[k].getAttribute('data-id'));
+  }
+  function fit() {
+    slides.forEach(function (sl) {
+      var body = sl.querySelector('.hp-sl-body'), f = sl.querySelector('iframe');
+      if (!body || !f) return;
+      var bw = body.clientWidth, bh = body.clientHeight;
+      var sc = bw / W;
+      f.style.width = W + 'px';
+      f.style.height = (bh / sc) + 'px';
+      f.style.transform = 'scale(' + sc + ')';
+    });
+  }
+  window.addEventListener('resize', fit);
+
+  function go(n) {
+    n = (n + slides.length) % slides.length;
+    [n - 1, n, n + 1].forEach(function (k) { load((k + slides.length) % slides.length); });
+    slides.forEach(function (s, k) {
+      s.classList.toggle('on', k === n);
+      s.classList.toggle('prev', k < n);
+      s.setAttribute('aria-hidden', k === n ? 'false' : 'true');
+      s.tabIndex = k === n ? 0 : -1;
+    });
+    dots.forEach(function (d, k) { d.classList.toggle('on', k === n); });
+    i = n;
+    restartProgress();
+  }
+
+  function schedule() {
+    clearTimeout(timer);
+    if (reduce || hovering) return;
+    timer = setTimeout(function () { go(i + 1); schedule(); }, DUR);
+  }
+
+  dots.forEach(function (d) {
+    d.addEventListener('click', function () { go(+d.getAttribute('data-go')); schedule(); });
+  });
+  document.querySelectorAll('.hp-ctrl .hp-arrow').forEach(function (a) {
+    a.addEventListener('click', function () { go(i + (+a.getAttribute('data-dir'))); schedule(); });
+  });
+
+  show.addEventListener('pointerenter', function () { hovering = true; clearTimeout(timer); });
+  show.addEventListener('pointerleave', function () { hovering = false; go(i); schedule(); });
+
+  /* iframes can scroll the clipped hero container; keep it pinned */
+  panel.addEventListener('scroll', function () { panel.scrollTop = 0; panel.scrollLeft = 0; });
+  fit();
+  go(0);
+  schedule();
 })();
 </script>
 </body>
