@@ -17,7 +17,7 @@
 
   /* header + footer strings (Bengali -> English) */
   var DICT = {
-    "Unofficial · শিক্ষার্থী টুলকিট": "Unofficial · Student Toolkit",
+    "Core · শিক্ষার্থী টুলকিট": "Core · Student Toolkit",
     "হোম": "Home",
     "কভার পেজ": "Cover Page",
     "টুলস": "Tools",
