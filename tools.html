@@ -308,7 +308,7 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <h3 class="t" style="margin:16px 0 6px">পোর্টালে যা লাগবে|What the portal asks for</h3><ol id="cols" class="need"></ol>
 <div class="pv" style="margin-top:12px"><span class="t">রেজাল্ট সরাসরি ইউনিভার্সিটির পোর্টাল থেকে আসে। এই সাইট রেজাল্ট সংরক্ষণ বা পরিবর্তন করে না।|Results come directly from the university portal. This site does not store or alter results.</span></div>
 <p class="hint t" style="margin-top:14px">নিচে পোর্টালটি সরাসরি দেখানো হলো। ফর্ম না এলে উপরের বাটনে চেপে নতুন ট্যাবে খুলুন।|The portal is shown directly below. If the form does not appear, open it in a new tab with the button above.</p>
-<iframe id="rf" src="https://resapi.eco.du.ac.bd/" title="রেজাল্ট পোর্টাল|Result Portal" loading="lazy" referrerpolicy="no-referrer" style="display:block;width:100%;height:640px;border:1px solid rgba(0,0,0,.12);border-radius:14px;margin-top:8px;background:#fff"></iframe></div>
+<iframe id="rf" data-src="https://resapi.eco.du.ac.bd/" title="রেজাল্ট পোর্টাল|Result Portal" loading="lazy" referrerpolicy="no-referrer" style="display:block;width:100%;height:640px;border:1px solid rgba(0,0,0,.12);border-radius:14px;margin-top:8px;background:#fff"></iframe></div>
 <div class="bx cx-wrap sec-2">
   <h2 class="t">ঢাকা সেন্ট্রাল ইউনিভার্সিটির সাতটি কলেজ|The Seven Colleges of Dhaka Central University</h2>
   <p class="hint t">কার্ডে চাপ দিয়ে কলেজের অবস্থান মানচিত্রে দেখুন।|Tap a card to see the college on the map.</p>
@@ -404,6 +404,20 @@ function dragPan(el,cv,xs,ys,get){let st=null;
 const TB=['card','frame','cv','routine','cgpa','exam','pdf','calc','result'];
 function go(){let h=location.hash.slice(1);if(!TB.includes(h))h='card';$$('main section').forEach(s=>s.classList.toggle('on',s.id==h));$$('.tabs button').forEach(b=>{const o=b.dataset.t==h;b.classList.toggle('on',o);b.setAttribute('aria-selected',o)});if(typeof cvFit=='function')cvFit();scrollTo(0,0);requestAnimationFrame(()=>scrollTo(0,0))}
 $$('.tabs button').forEach(b=>b.onclick=()=>{if(location.hash.slice(1)==b.dataset.t)go();else location.hash=b.dataset.t});addEventListener('hashchange',go);go();
+/* পোর্টাল ফ্রেম শুধু রেজাল্ট ট্যাব খোলা থাকলে লোড হবে */
+function syncRF(){var f=document.getElementById('rf');if(!f)return;if(location.hash.slice(1)==='result'){if(!f.getAttribute('src'))f.setAttribute('src',f.dataset.src)}else if(f.getAttribute('src')){f.setAttribute('src','about:blank');f.removeAttribute('src')}}
+addEventListener('hashchange',syncRF);syncRF();
+/* এই পেজেই থাকা অবস্থায় মেনু/লিংকে ক্লিক করলে সবসময় ট্যাব বদলাবে */
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a[href^="tools.html#"]');
+  if(!a||!/tools\.html$/.test(location.pathname))return;
+  var h=a.getAttribute('href').split('#')[1];
+  if(!h)return;
+  e.preventDefault();
+  if(location.hash.slice(1)===h){go()}else{location.hash=h}
+  var d=a.closest('details');if(d)d.open=false;
+  document.activeElement&&document.activeElement.blur&&document.activeElement.blur();
+});
 /* মেনু/ফুটারের লিংকে ক্লিক করলে (এমনকি একই ট্যাবে থাকলেও) সবসময় পেজের ওপর থেকে দেখাবে */
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 document.addEventListener('click',e=>{if(e.target.closest('#hdr a,#ftr a'))setTimeout(go,30)});
