@@ -100,20 +100,6 @@ body.dark #sgd{background:#1b2433;color:#e6edf5;border-color:#33445a}
 <script src="dcu-layout.js" defer></script>
 <script src="dcu-lang.js" defer></script>
 <script src="site-shared.js"></script>
-<script>
-(function(){var m=location.search.match(/[?&]embed=([a-z]+)/);if(!m)return;document.documentElement.classList.add('embed');
-document.addEventListener('DOMContentLoaded',function(){var s=document.getElementById(m[1]);if(s)s.classList.add('em-on');});})();
-</script>
-<style>
-/* embed mode: used by the homepage showcase. Shows one tool section only. */
-html.embed,html.embed body{background:transparent!important;margin:0!important;padding:0!important;overflow:hidden!important}
-html.embed body>*:not(main){display:none!important}
-html.embed main{padding:0!important;margin:0!important;max-width:none!important;width:100%!important}
-html.embed main>*:not(section){display:none!important}
-html.embed main>section:not(.em-on){display:none!important}
-html.embed main>section.em-on{display:block!important;margin:0!important;padding:14px!important;border-radius:0!important}
-html.embed a,html.embed button,html.embed input,html.embed select,html.embed textarea{pointer-events:none!important}
-</style>
 </head>
 <body data-page="tools">
 <div id="hdr"></div>
