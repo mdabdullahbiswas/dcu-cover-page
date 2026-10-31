@@ -263,6 +263,60 @@ body.dark .sh .mn{background:transparent}
   html{scroll-behavior:auto}
 }
 .hp-band.is-dragging{cursor:grabbing}
+
+/* =========================================================
+   PREMIUM HERO LAYER v2 (adds to the rules above)
+   ========================================================= */
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+
+/* cursor-driven spotlight behind the hero */
+.hp-panel{background:
+  radial-gradient(520px circle at var(--sx,50%) var(--sy,40%),rgba(232,196,108,.13),transparent 70%),
+  linear-gradient(125deg,#06142A,var(--navy) 45%,var(--navy-2))}
+.hp-spot{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
+.hp-panel.is-hover .hp-spot{opacity:1}
+
+/* animated light-sweep hairline around the whole hero */
+.hp-panel::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;z-index:2;pointer-events:none;
+  background:conic-gradient(from var(--ang),transparent 0 72%,rgba(232,196,108,.9) 84%,#FFF3C9 88%,transparent 96%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:hpBorder 7s linear infinite;opacity:.75}
+@keyframes hpBorder{to{--ang:360deg}}
+
+/* headline: blur-in reveal + existing gold shine */
+.hp-h1.t{animation:hpBlurIn 1.1s var(--ease) .16s both,hpShine 8s linear infinite}
+@keyframes hpBlurIn{from{opacity:0;filter:blur(12px);transform:translate3d(0,22px,0)}to{opacity:1;filter:blur(0);transform:none}}
+
+/* eyebrow pill: periodic light sweep */
+.hp-eyebrow{position:relative;overflow:hidden}
+.hp-eyebrow::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(232,196,108,.38) 50%,transparent 70%);transform:translateX(-120%);animation:hpEyeSweep 3.6s var(--ease) 1.2s infinite;pointer-events:none}
+@keyframes hpEyeSweep{0%{transform:translateX(-120%)}45%,100%{transform:translateX(120%)}}
+
+/* magnetic primary/secondary buttons (translate property, so hover transform still works) */
+.hp-panel .hp-btn{transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s,border-color .3s,translate .45s var(--ease)}
+.hp-panel .hp-btn.p{animation:hpCta 3.2s ease-in-out 1.4s infinite}
+@keyframes hpCta{0%,100%{box-shadow:0 14px 28px -12px rgba(212,175,55,.8)}50%{box-shadow:0 16px 42px -8px rgba(232,196,108,.95),0 0 0 6px rgba(232,196,108,.12)}}
+
+/* stat cards: lift + gold edge on hover */
+.hp-stat{transition:transform .45s var(--ease),border-color .4s,background .4s}
+.hp-stat:hover{transform:translateY(-4px);border-color:rgba(232,196,108,.55);background:rgba(255,255,255,.1)}
+
+/* cover card: 3D tilt that follows the cursor + golden halo */
+.hp-tilt{position:relative;width:100%;transform-style:preserve-3d;transform:perspective(1100px) rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg));transition:transform .7s var(--ease);will-change:transform}
+.hp-tilt:before{content:"";position:absolute;inset:-12%;border-radius:48px;background:radial-gradient(circle,rgba(232,196,108,.34),transparent 65%);filter:blur(18px);z-index:-1;pointer-events:none;animation:hpHalo 6s ease-in-out infinite}
+@keyframes hpHalo{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.06)}}
+.hp-tilt .hp-mock{transform-style:preserve-3d}
+
+/* floating glass badges around the cover */
+.hp-float{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:14px;background:rgba(11,31,58,.78);border:1px solid rgba(232,196,108,.42);color:#F8E7B5;font-size:12.5px;font-weight:700;white-space:nowrap;box-shadow:0 18px 36px -16px rgba(0,0,0,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:hpBob 5.5s ease-in-out infinite}
+.hp-float b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--brand-grad);color:var(--navy);font-size:11px;line-height:1}
+.hp-float.f1{left:-34px;top:16%}
+.hp-float.f2{right:-22px;bottom:14%;animation-delay:-2.6s}
+@keyframes hpBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+
+@media(max-width:900px){.hp-float{display:none}.hp-tilt:before{inset:-6%}}
+@media(hover:none){.hp-panel.is-hover .hp-spot{display:none}}
 </style>
 <link rel="stylesheet" href="dcu-layout.css">
 <link rel="stylesheet" href="dcu-lang.css">
@@ -280,6 +334,7 @@ body.dark .sh .mn{background:transparent}
   <div class="hp-panel">
     <span class="hp-orb a" aria-hidden="true"></span>
     <span class="hp-orb b" aria-hidden="true"></span>
+    <span class="hp-spot" aria-hidden="true"></span>
 
     <div>
       <span class="hp-eyebrow hp-in" style="--d:80ms"><span class="hp-dot" aria-hidden="true"></span><span class="t">শিক্ষার্থীদের জন্য তৈরি|Built for students</span></span>
@@ -299,6 +354,7 @@ body.dark .sh .mn{background:transparent}
     </div>
 
     <div class="hp-mockwrap hp-in" style="--d:280ms" aria-hidden="true">
+    <div class="hp-tilt">
       <div class="hp-mock">
         <span class="hp-frame"></span>
         <div class="hp-m-top">DHAKA CENTRAL UNIVERSITY</div>
@@ -310,6 +366,9 @@ body.dark .sh .mn{background:transparent}
         <div class="hp-sk" style="width:72%"></div>
         <span class="hp-chip">PREMIUM COVER</span>
       </div>
+      <span class="hp-float f1"><b aria-hidden="true">✓</b><span class="t">পিডিএফ প্রস্তুত|PDF ready</span></span>
+      <span class="hp-float f2"><span class="t">A4 · প্রিমিয়াম|A4 · Premium</span></span>
+    </div>
     </div>
   </div>
 </header>
@@ -590,6 +649,57 @@ body.dark .sh .mn{background:transparent}
   }
 
   requestAnimationFrame(frame);
+})();
+</script>
+
+<script>
+/* Premium hero: cursor spotlight, cover tilt, magnetic buttons. Desktop pointers only. */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (reduce || !fine) return;
+  var panel = document.querySelector('.hp-panel');
+  var tilt = document.querySelector('.hp-tilt');
+  if (!panel) return;
+
+  var tx = 0, ty = 0, tgx = 0, tgy = 0, sx = 50, sy = 40, tsx = 50, tsy = 40, raf = 0;
+  function loop() {
+    tx += (tgx - tx) * 0.1; ty += (tgy - ty) * 0.1;
+    sx += (tsx - sx) * 0.12; sy += (tsy - sy) * 0.12;
+    if (tilt) {
+      tilt.style.setProperty('--tx', tx.toFixed(2) + 'deg');
+      tilt.style.setProperty('--ty', ty.toFixed(2) + 'deg');
+    }
+    panel.style.setProperty('--sx', sx.toFixed(1) + '%');
+    panel.style.setProperty('--sy', sy.toFixed(1) + '%');
+    var busy = Math.abs(tgx - tx) + Math.abs(tgy - ty) + Math.abs(tsx - sx) + Math.abs(tsy - sy) > 0.02;
+    raf = busy ? requestAnimationFrame(loop) : 0;
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(loop); }
+
+  panel.addEventListener('pointerenter', function () { panel.classList.add('is-hover'); });
+  panel.addEventListener('pointermove', function (e) {
+    var r = panel.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    tsx = x * 100; tsy = y * 100;
+    tgy = (x - 0.5) * 12;   // rotateY
+    tgx = (0.5 - y) * 9;    // rotateX
+    kick();
+  });
+  panel.addEventListener('pointerleave', function () {
+    panel.classList.remove('is-hover');
+    tgx = 0; tgy = 0; tsx = 50; tsy = 40; kick();
+  });
+
+  panel.querySelectorAll('.hp-btn').forEach(function (b) {
+    b.addEventListener('pointermove', function (e) {
+      var r = b.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width / 2)) * 0.22;
+      var dy = (e.clientY - (r.top + r.height / 2)) * 0.3;
+      b.style.translate = dx.toFixed(1) + 'px ' + dy.toFixed(1) + 'px';
+    });
+    b.addEventListener('pointerleave', function () { b.style.translate = ''; });
+  });
 })();
 </script>
 </body>
